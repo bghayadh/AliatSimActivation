@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/Aliatnetwork"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0A5EA8"
+    tools:context="com.example.aliatsimactivation.MainActivity">
+
+    <!-- Button Sim Registration -->
+    <Button
+        android:id="@+id/Btnsimreg"
+        android:layout_width="200dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="1dp"
+        android:text="SIM REGISTRATION"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:backgroundTint="@color/red"
+        style="@style/Widget.MaterialComponents.Button"
+        />
+
+
+
+
+    <!-- Button Mobile Charge -->
+    <Button
+        android:id="@+id/Btnmobcharge"
+        android:layout_width="200dp"
+        android:layout_height="70dp"
+        android:layout_below="@+id/Btnsimreg"
+        android:layout_marginStart="1dp"
+        android:text="MOBILE CHARGE"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:backgroundTint="@color/red"
+        style="@style/Widget.MaterialComponents.Button"
+        />
+
+
+    <!-- Button Reseller Charge -->
+    <Button
+        android:id="@+id/Btnrescharge"
+        android:layout_width="200dp"
+        android:layout_height="70dp"
+        android:text="RESELLER CHARGE"
+        android:layout_marginStart="1dp"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:backgroundTint="@color/red"
+        android:layout_below="@+id/Btnmobcharge"
+        style="@style/Widget.MaterialComponents.Button"
+        />
+
+    <!-- display Exit button -->
+    <Button
+        android:id="@+id/BtnExit"
+        android:layout_width="80dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginVertical="20dp"
+        android:textColor="@color/white"
+        android:text="EXIT"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:backgroundTint="@color/red"
+        android:layout_alignParentRight="true"
+        />
+
+
+
+
+</RelativeLayout>
