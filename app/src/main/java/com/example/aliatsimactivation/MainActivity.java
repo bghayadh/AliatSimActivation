@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -60,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //Show message to know where are we transferred
                 Toast.makeText(MainActivity.this,  "Welcome to Mobile Charge page",Toast.LENGTH_SHORT).show();
-                // Intent intent =new Intent(MainActivity.this,MobileChargeListViewActivity.class);
-                // startActivity(intent);
+                Intent intent =new Intent(MainActivity.this,MobileChargeListViewActivity.class);
+                startActivity(intent);
             }
         });
 

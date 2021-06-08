@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0A5EA8"
+    tools:context=".ClientRechargeStatusfragment">
+
+
+    <Spinner
+        android:layout_width="500dp"
+        android:layout_height="50dp"
+        android:id="@+id/remainSpinner"/>
+
+
+    <TextView
+        android:layout_width="400dp"
+        android:layout_height="50dp"
+        android:gravity="center_horizontal"
+        android:textColor="#29f803"
+        android:textSize="18dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/remainSpinner"
+        android:backgroundTint="@null"
+        android:id="@+id/txtreport"/>
+
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/remainstatusRecView"
+        android:layout_width="match_parent"
+        android:layout_height="565dp"
+        android:layout_below="@+id/txtreport"
+        android:layout_marginTop="-1dp"
+        android:scrollbarSize="12dp"
+
+        android:scrollbars="vertical"
+        tools:layout_editor_absoluteX="191dp" />
+
+
+    <Button
+        android:id="@+id/btnmain"
+        android:layout_width="130dp"
+        android:layout_height="60dp"
+        android:text="Main Page"
+        android:textStyle="bold"
+        android:layout_marginStart="5dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="@color/red"
+        />
+
+</RelativeLayout>

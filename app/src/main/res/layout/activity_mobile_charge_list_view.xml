@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0A5EA8"
+    >
+
+    <Button
+        android:id="@+id/btnprevious"
+        android:layout_width="133dp"
+        android:layout_height="50dp"
+        android:text="PREVIOUS"
+        android:layout_marginStart="1dp"
+        android:backgroundTint="@color/red"
+        />
+
+    <Button
+        android:id="@+id/btnnext"
+        android:layout_width="133dp"
+        android:layout_height="50dp"
+        android:text="NEXT"
+        android:backgroundTint="@color/red"
+        android:layout_toRightOf="@+id/btnprevious"
+        android:layout_marginStart="5dp"
+        />
+
+    <Button
+        android:id="@+id/btnnew"
+        android:layout_width="133dp"
+        android:layout_height="50dp"
+        android:text="NEW"
+        android:layout_marginRight="5dp"
+        android:backgroundTint="@color/red"
+        android:layout_toRightOf="@+id/btnnext"
+        android:layout_marginStart="5dp"
+        />
+
+    <Button
+        android:id="@+id/btndate"
+        android:layout_width="133dp"
+        android:layout_height="50dp"
+        android:text="PICK DATE"
+        android:layout_marginRight="5dp"
+        android:backgroundTint="@color/red"
+        android:layout_below="@+id/btnprevious"
+        android:layout_marginStart="1dp"
+        />
+
+    <EditText
+        android:id="@+id/editTextdate"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:textColor="@color/yellow"
+        android:layout_marginStart="5dp"
+        android:layout_below="@+id/btnprevious"
+        android:layout_toRightOf="@+id/btndate"
+        android:hint="date" />
+
+
+    <!-- display Main Page button -->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/mobilechargeRecView"
+        android:layout_width="match_parent"
+        android:layout_height="565dp"
+        android:layout_below="@+id/btndate"
+        android:layout_marginTop="-1dp"
+        android:scrollbarSize="12dp"
+
+        android:scrollbars="vertical"
+        tools:layout_editor_absoluteX="191dp" />
+
+    <Button
+        android:id="@+id/btnmain"
+        android:layout_width="130dp"
+        android:layout_height="60dp"
+        android:text="Main Page"
+        android:textStyle="bold"
+        android:layout_marginStart="5dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="@color/red"
+        />
+</RelativeLayout>

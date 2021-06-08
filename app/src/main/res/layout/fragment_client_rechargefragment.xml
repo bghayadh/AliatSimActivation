@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0A5EA8"
+    android:id="@+id/mobileinfofragment"
+    tools:context=".ClientRechargefragment">
+
+
+
+
+    <!-- Add textagent -->
+    <TextView
+        android:layout_width="160dp"
+        android:layout_height="50dp"
+        android:text="Agent Sub Number"
+        android:textColor="#29f803"
+        android:textSize="18dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@null"
+        android:id="@+id/txtagent"/>
+
+
+    <!-- Add texclient -->
+
+    <EditText
+        android:id="@+id/editTextagent"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="55dp"
+        android:layout_marginTop="-1dp"
+        android:layout_toRightOf="@+id/txtagent"
+        android:ems="10"
+        android:hint="agent_sub_nb"
+        android:textColor="@color/yellow" />
+
+    <TextView
+        android:layout_width="160dp"
+        android:layout_height="50dp"
+        android:text="Client Sub Number"
+        android:layout_marginTop="12dp"
+        android:textColor="#29f803"
+        android:textSize="18dp"
+        android:layout_below="@+id/txtagent"
+        android:backgroundTint="@null"
+        android:id="@+id/txtclient"/>
+
+    <EditText
+        android:id="@+id/editTextclient"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:textColor="@color/yellow"
+        android:layout_marginStart="5dp"
+        android:layout_below="@+id/txtagent"
+        android:layout_toRightOf="@+id/txtclient"
+        android:hint="client_sub_nb" />
+
+    <!-- Add texamount -->
+    <TextView
+        android:layout_width="160dp"
+        android:layout_height="50dp"
+        android:text="Amount"
+        android:layout_marginTop="12dp"
+        android:textColor="#29f803"
+        android:textSize="18dp"
+        android:layout_below="@+id/txtclient"
+        android:backgroundTint="@null"
+        android:id="@+id/txtamount"/>
+
+    <EditText
+        android:id="@+id/editTextamount"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:textColor="@color/yellow"
+        android:layout_marginStart="5dp"
+        android:layout_below="@+id/txtclient"
+        android:layout_toRightOf="@+id/txtamount"
+        android:hint="Amount" />
+
+    <!-- Add textsatus -->
+    <TextView
+        android:layout_width="160dp"
+        android:layout_height="50dp"
+        android:text="Recharge Status"
+        android:layout_marginTop="12dp"
+        android:textColor="#29f803"
+        android:textSize="18dp"
+        android:layout_below="@+id/txtamount"
+        android:backgroundTint="@null"
+        android:id="@+id/txtstatus"/>
+
+    <EditText
+        android:id="@+id/editTextstatus"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:textColor="@color/yellow"
+        android:layout_marginStart="5dp"
+        android:layout_below="@+id/txtamount"
+        android:layout_toRightOf="@+id/txtstatus"
+        android:enabled="false"
+        android:hint="recharge_status" />
+
+    <Spinner
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/txtamount"
+        android:layout_toRightOf="@+id/editTextstatus"
+        android:id="@+id/statusSpinner"/>
+
+
+    <Button
+        android:id="@+id/btnrecharge"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="3dp"
+        android:text="Recharge"
+        android:textStyle="bold"
+        android:layout_below="@+id/txtstatus"
+        android:backgroundTint="@color/red"
+        />
+
+    <Button
+        android:id="@+id/btnbalance"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="3dp"
+        android:text="Get Balance"
+        android:textStyle="bold"
+        android:layout_below="@+id/txtstatus"
+        android:layout_toRightOf="@+id/btnrecharge"
+        android:backgroundTint="@color/red"
+        />
+
+    <EditText
+        android:id="@+id/editTextcodehere"
+        android:layout_width="400dp"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:textColor="@color/yellow"
+        android:layout_marginStart="5dp"
+        android:layout_below="@+id/btnrecharge"
+        android:enabled="false"
+        android:hint="" />
+
+
+    <Button
+        android:id="@+id/btnsave"
+        android:layout_width="133dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="3dp"
+        android:text="Save"
+        android:textStyle="bold"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="@color/red"
+        />
+
+    <Button
+        android:id="@+id/btndelete"
+        android:layout_width="133dp"
+        android:layout_height="60dp"
+        android:text="Delete"
+        android:textStyle="bold"
+        android:layout_marginStart="5dp"
+        android:layout_toRightOf="@+id/btnsave"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="@color/red"
+        />
+    <Button
+        android:id="@+id/btnmain"
+        android:layout_width="130dp"
+        android:layout_height="60dp"
+        android:text="Main Page"
+        android:textStyle="bold"
+        android:layout_marginStart="5dp"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/btndelete"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="@color/red"
+        />
+
+
+
+</RelativeLayout>
