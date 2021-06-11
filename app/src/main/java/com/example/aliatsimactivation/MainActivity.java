@@ -47,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Show message to know where are we transferred
                 Toast.makeText(MainActivity.this,  "Welcome to Sim Registration page",Toast.LENGTH_SHORT).show();
-                //Intent intent = new Intent(MainActivity.this, SIMRegistrationListView.class);
-                // startActivity(intent);
+                Intent intent = new Intent(MainActivity.this, SimRegListViewActivity.class);
+                 startActivity(intent);
             }
 
         });
@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //Show message to know where are we transferred
                 Toast.makeText(MainActivity.this,  "Welcome to Mobile Charge page",Toast.LENGTH_SHORT).show();
-                Intent intent =new Intent(MainActivity.this,MobileChargeListViewActivity.class);
-                startActivity(intent);
+                 Intent intent =new Intent(MainActivity.this, ClientChargeListViewActivity.class);
+                 startActivity(intent);
             }
         });
 
@@ -72,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //Show message to know where are we transferred
                 Toast.makeText(MainActivity.this,  "Welcome to Reseller Charge page",Toast.LENGTH_SHORT).show();
-                // Intent intent =new Intent(MainActivity.this,ResellerChargeListViewActivity.class);
-                // startActivity(intent);
+                 Intent intent =new Intent(MainActivity.this,ResellerChargeListViewActivity.class);
+                 startActivity(intent);
             }
         });
 

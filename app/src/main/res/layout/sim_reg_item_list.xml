@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:stretchColumns="1,2,3,4,5">
+
+    <TableRow
+        android:background="@drawable/cast_skip_ad_label_border">
+
+        <TextView
+            android:id="@+id/sim_id"
+            android:textColor="@color/white"
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/name_id"
+            android:textColor="@color/white"
+            android:layout_width="12dp"
+            android:layout_height="match_parent"
+            android:nextFocusRight="@id/sim_id"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/lastname_id"
+            android:textColor="@color/white"
+            android:layout_width="16dp"
+            android:layout_height="wrap_content"
+            android:nextFocusRight="@id/name_id"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/nationality_id"
+            android:textColor="@color/white"
+            android:layout_width="3dp"
+            android:layout_height="wrap_content"
+            android:nextFocusRight="@id/lastname_id"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/email_id"
+            android:textColor="@color/white"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:nextFocusRight="@id/nationality_id"
+            android:text="TextView" />
+    </TableRow>
+
+</TableLayout>

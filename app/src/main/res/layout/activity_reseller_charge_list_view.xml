@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0A5EA8"
+    tools:context=".ResellerChargeListViewActivity">
+
+
+    <!-- Edit Text for testing-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="123dp">
+
+        <Button
+            android:id="@+id/btnPrevious"
+            android:layout_width="133dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="1dp"
+            android:backgroundTint="@color/red"
+            android:text="PREVIOUS" />
+
+        <Button
+            android:id="@+id/btnNext"
+            android:layout_width="133dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="5dp"
+            android:layout_toRightOf="@+id/btnPrevious"
+            android:backgroundTint="@color/red"
+            android:text="NEXT" />
+
+        <Button
+            android:id="@+id/btnNew"
+            android:layout_width="133dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/btnNext"
+            android:backgroundTint="@color/red"
+            android:text="NEW" />
+
+        <EditText
+            android:id="@+id/DATE"
+            android:layout_width="133dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/btnNext"
+            android:layout_alignEnd="@+id/btnNext"
+            android:layout_alignBottom="@+id/btnNext"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="74dp"
+            android:layout_marginBottom="-51dp"
+            android:ems="10"
+            android:hint="Input date"
+            android:inputType="date" />
+
+        <Button
+            android:id="@+id/BtnDate"
+            android:layout_width="175dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/btnNew"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="17dp"
+            android:layout_marginBottom="28dp"
+            android:text="Select Date"
+            app:backgroundTint="@color/red" />
+    </RelativeLayout>
+
+    <TableLayout
+        android:id="@+id/tableid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="110dp"
+        android:background="@drawable/cast_skip_ad_label_border"
+        android:stretchColumns="1,2,3,4,5">
+
+        <TableRow
+            android:layout_height="29dp"
+            android:background="@drawable/cast_skip_ad_label_border">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_column="1"
+                android:padding="10dp"
+                android:text="ChargeID"
+                android:textColor="@color/yellowheader"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_column="1"
+                android:padding="10dp"
+                android:text="Reseller"
+                android:textColor="@color/yellowheader"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_column="1"
+                android:padding="10dp"
+                android:text="Date"
+                android:textColor="@color/yellowheader"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_column="1"
+                android:padding="10dp"
+                android:text="Amount"
+                android:textColor="@color/yellowheader"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_column="1"
+                android:padding="10dp"
+                android:text="Status"
+                android:textColor="@color/yellowheader"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+        </TableRow>
+
+    </TableLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/resellerrecview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="160dp" />
+    <!-- display Main Page button -->
+    <Button
+        android:id="@+id/BtnMain"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="263dp"
+        android:layout_marginTop="600dp"
+        android:backgroundTint="@color/red"
+        android:text="Main Page"
+        android:textColor="@color/white"
+        android:textSize="15dp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/BtnDel"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="600dp"
+        android:backgroundTint="@color/red"
+        android:text="Delete"
+        android:textColor="@color/white"
+        android:textSize="15dp"
+        android:textStyle="bold" />
+</FrameLayout>

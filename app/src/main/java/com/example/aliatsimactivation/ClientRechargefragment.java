@@ -245,7 +245,7 @@ public class ClientRechargefragment extends Fragment {
                         stmt1.close();
 
                         // send data from fragment to super activity
-                        ((MobileChargeInfoActivity)getActivity()).getfromfragment(globalmobchargeid);
+                        ((ClientChargeInfoActivity)getActivity()).getfromfragment(globalmobchargeid);
 
                         stmtinsert1 = conn.prepareStatement("insert into MOBILE_CHARGE (MOB_CHARGE_ID,AGENT_SUB_NUMBER,CLIENT_SUB_NUMBER,CHARGED_DATE,AMOUNT,RECHARGE_STATUS) values " +
                                 "('"+globalmobchargeid +"', '"+ editTextagent.getText()  +"', '"+ editTextclient.getText () +"', sysdate,'"+ editTextamount.getText ()  +"','"+ editTextstatus.getText()  +"')");
@@ -313,7 +313,7 @@ public class ClientRechargefragment extends Fragment {
                     throwables.printStackTrace ( );
                 }
 
-                Intent intent = new Intent(getActivity(),MobileChargeListViewActivity.class);
+                Intent intent = new Intent(getActivity(), ClientChargeListViewActivity.class);
                 startActivity(intent);
 
             }
@@ -327,7 +327,7 @@ public class ClientRechargefragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Intent intent =new Intent(getActivity(),MainActivity.class);
+                Intent intent =new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
             }
         });

@@ -1,6 +1,6 @@
 package com.example.aliatsimactivation;
 import oracle.sql.TIMESTAMP;
-public class MobileChargeListView {
+public class ClientChargeListView {
 
     private String MOBCHARGEID;
     private String AGENTSUBNUM;
@@ -8,7 +8,7 @@ public class MobileChargeListView {
     private String AMOUNT;
     private String RECHARGESTATUS;
 
-    public MobileChargeListView(String MOBCHARGEID, String AGENTSUBNUM, String CLIENTSUBNUM, String AMOUNT, String RECHARGESTATUS) {
+    public ClientChargeListView(String MOBCHARGEID, String AGENTSUBNUM, String CLIENTSUBNUM, String AMOUNT, String RECHARGESTATUS) {
 
         this.MOBCHARGEID = MOBCHARGEID;
         this.AGENTSUBNUM = AGENTSUBNUM;

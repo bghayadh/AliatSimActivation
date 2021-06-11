@@ -1,12 +1,12 @@
 package com.example.aliatsimactivation;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-public class MobileChargePagerAdapter extends FragmentPagerAdapter {
+
+public class ResellerPagerAdapter extends FragmentPagerAdapter {
     private int numOfTabs;
-    public MobileChargePagerAdapter (FragmentManager fm,int numOfTabs) {
+    public ResellerPagerAdapter(FragmentManager fm, int numOfTabs) {
         super(fm);
         this.numOfTabs=numOfTabs;
     }
@@ -16,9 +16,9 @@ public class MobileChargePagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case 0: return new ClientRechargefragment();
-            case 1: return new ClientRechargeStatusfragment();
-            case 2: return new MobileTestfragment();
+            case 0: return new ResellerrechargeFragment();
+            case 1: return new ResellerstatusFragment();
+            case 2: return new ResellertestFragment();
             default:  return null;
         }
 
@@ -28,8 +28,5 @@ public class MobileChargePagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return numOfTabs;
     }
-
 }
-
-
 

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0A5EA8">
+
+    <Button
+        android:id="@+id/btnprevious"
+        android:layout_width="133dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="1dp"
+        android:backgroundTint="@color/red"
+        android:text="PREVIOUS" />
+
+    <Button
+        android:id="@+id/btnnext"
+        android:layout_width="133dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="5dp"
+        android:layout_toRightOf="@+id/btnprevious"
+        android:backgroundTint="@color/red"
+        android:text="NEXT" />
+
+    <Button
+        android:id="@+id/btnnew"
+        android:layout_width="133dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_toRightOf="@+id/btnnext"
+        android:backgroundTint="@color/red"
+        android:text="NEW" />
+
+    <Button
+        android:id="@+id/btnmain"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/simRecView"
+        android:layout_alignParentRight="true"
+        android:backgroundTint="@color/red"
+        android:text="Main Page"
+        android:textColor="@color/white"
+        android:textSize="15dp"
+        android:textStyle="bold" />
+    <!-- display Main Page button -->
+
+    <Button
+        android:id="@+id/btndelete"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/simRecView"
+        android:backgroundTint="@color/red"
+        android:text="Delete"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/textdate"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+
+        android:layout_marginTop="55dp"
+
+        android:layout_marginEnd="111dp"
+        android:layout_toStartOf="@+id/Btnselectdate"
+        android:ems="10"
+        android:inputType="date"
+        android:text="SELECTED DATE"
+        android:textColor="#FBFBFB" />
+
+    <TableLayout
+        android:id="@+id/tableid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="120dp"
+        android:background="@drawable/cast_skip_ad_label_border"
+        android:stretchColumns="1,2,3,4,5">>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/cast_skip_ad_label_border">
+
+            <TextView
+                android:layout_column="1"
+                android:padding="3dp"
+                android:text="SIM ID"
+                android:textColor="@color/yellowheader"
+                android:textSize="14dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_column="1"
+                android:padding="3dp"
+                android:text="NAME"
+                android:textColor="@color/yellowheader"
+                android:textSize="14dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_column="1"
+                android:padding="3dp"
+                android:text="LAST NAME"
+                android:textColor="@color/yellowheader"
+                android:textSize="14dp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_column="1"
+                android:padding="3dp"
+                android:text="NATIONALITY"
+                android:textColor="@color/yellowheader"
+                android:textSize="14dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_column="1"
+                android:padding="2dp"
+                android:text="EMAIL"
+                android:textColor="@color/yellowheader"
+                android:textSize="14dp"
+                android:textStyle="bold" />
+
+        </TableRow>
+    </TableLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/simRecView"
+        android:layout_width="match_parent"
+        android:layout_height="360dp"
+        android:layout_below="@+id/btnprevious"
+        android:layout_marginTop="102dp"
+        android:scrollbarSize="12dp"
+        android:scrollbars="vertical"
+        tools:layout_editor_absoluteX="191dp" />
+
+    <Button
+        android:id="@+id/Btnselectdate"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:layout_below="@+id/btnnew"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="0dp"
+        android:backgroundTint="@color/red"
+        android:text="Select Date"
+        android:textColor="@color/white"
+        android:textSize="15dp"
+        android:textStyle="bold" />
+
+
+</RelativeLayout>

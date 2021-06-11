@@ -1,6 +1,6 @@
 package com.example.aliatsimactivation;
 
-public class RemainStatus {
+public class ClientStatusListView {
 
 
     private String MOBCHARGEID;
@@ -8,7 +8,7 @@ public class RemainStatus {
     private String AMOUNT;
 
 
-    public RemainStatus(String MOBCHARGEID, String CLIENTSUBNUM, String AMOUNT) {
+    public ClientStatusListView(String MOBCHARGEID, String CLIENTSUBNUM, String AMOUNT) {
 
         this.MOBCHARGEID = MOBCHARGEID;
         this.CLIENTSUBNUM = CLIENTSUBNUM;

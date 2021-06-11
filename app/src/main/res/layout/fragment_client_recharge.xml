@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobileinfo"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0A5EA8">
+
+    <Button
+        android:id="@+id/btngetbalance"
+        android:layout_width="145dp"
+        android:layout_height="60dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="-7dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginBottom="259dp"
+        android:layout_toRightOf="@+id/btndelete"
+        android:backgroundTint="@color/red"
+        android:text="Get Balance"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btnrecharge"
+        android:layout_width="133dp"
+        android:layout_height="60dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="259dp"
+        android:backgroundTint="@color/red"
+        android:text="Recharge"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtagentsub"
+        android:layout_width="170dp"
+        android:layout_height="50dp"
+
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@null"
+        android:text="Agent Sub Number"
+        android:textColor="#29f803"
+        android:textSize="18dp" />
+
+
+    <EditText
+        android:id="@+id/editTextagentsub"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="5dp"
+        android:layout_toRightOf="@+id/txtagentsub"
+        android:ems="10"
+        android:hint="agent_sub_nb"
+        android:textColor="@color/white" />
+
+    <!-- Add texcity -->
+    <TextView
+        android:id="@+id/txtclientsub"
+        android:layout_width="170dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/txtagentsub"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="@null"
+        android:text="Reseller Sub Number"
+        android:textColor="#29f803"
+        android:textSize="18dp" />
+
+    <EditText
+        android:id="@+id/editTextresellersub"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/txtagentsub"
+        android:layout_marginStart="5dp"
+        android:layout_toRightOf="@+id/txtclientsub"
+        android:ems="10"
+        android:hint="reseller_sub_nb"
+        android:textColor="@color/white" />
+
+    <!-- Add texaddress -->
+    <TextView
+        android:id="@+id/txtamount"
+        android:layout_width="170dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/txtclientsub"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="@null"
+        android:text="Amount"
+        android:textColor="#29f803"
+        android:textSize="18dp" />
+
+    <EditText
+        android:id="@+id/editTextamount"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/txtclientsub"
+        android:layout_marginStart="5dp"
+        android:layout_toRightOf="@+id/txtamount"
+        android:ems="10"
+        android:hint="Amount"
+        android:textColor="@color/white" />
+
+    <!-- Add texlongitude -->
+    <TextView
+        android:id="@+id/txtrechargestatus"
+        android:layout_width="170dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/txtamount"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="@null"
+        android:text="Recharge Status"
+        android:textColor="#29f803"
+        android:textSize="18dp" />
+
+    <Spinner
+        android:id="@+id/myspinner"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/txtamount"
+        android:layout_marginStart="5dp"
+        android:layout_toRightOf="@+id/txtrechargestatus"
+        android:ems="10"
+        android:enabled="false"
+        android:entries="@array/status"
+        android:text="0"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/btnsave"
+        android:layout_width="133dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="3dp"
+        android:text="Save"
+        android:textStyle="bold"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="@color/red"
+        />
+
+    <Button
+        android:id="@+id/btndelete"
+        android:layout_width="133dp"
+        android:layout_height="60dp"
+        android:text="Delete"
+        android:textStyle="bold"
+        android:layout_marginStart="5dp"
+        android:layout_toRightOf="@+id/btnsave"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="@color/red"
+        />
+    <Button
+        android:id="@+id/btnmain"
+        android:layout_width="130dp"
+        android:layout_height="60dp"
+        android:text="Main Page"
+        android:textStyle="bold"
+        android:layout_marginStart="5dp"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/btndelete"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="@color/red"
+        />
+
+    <TextView
+        android:id="@+id/editTextget"
+        android:layout_width="344dp"
+        android:layout_height="139dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="42dp"
+        android:layout_marginBottom="80dp"
+        android:textColor="@color/white"
+        android:textSize="24sp" />
+</RelativeLayout>
+
+

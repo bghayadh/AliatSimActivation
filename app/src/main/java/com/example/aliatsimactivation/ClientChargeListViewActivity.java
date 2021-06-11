@@ -2,7 +2,6 @@ package com.example.aliatsimactivation;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Editable;
@@ -25,13 +24,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class MobileChargeListViewActivity extends AppCompatActivity{
+public class ClientChargeListViewActivity extends AppCompatActivity{
     private RecyclerView mobilechargeRecView;
     private int arraysize=0;
     private int varraysize=0;
     private int pagination=0;
     public Connection connmobilecharge;
-    public ArrayList<MobileChargeListView> mobilecharge,mobilechargedb;
+    public ArrayList<ClientChargeListView> mobilecharge,mobilechargedb;
     private Button btnprevious,btnnext,btnnew,btndate,btnmain;
     TextView editTextdate;
     DatePickerDialog datePickerDialog;
@@ -61,7 +60,7 @@ public class MobileChargeListViewActivity extends AppCompatActivity{
                  }
 
                  public void openMobileChargeInfoActivity() {
-                     Intent intent = new Intent (MobileChargeListViewActivity.this, MobileChargeInfoActivity.class);
+                     Intent intent = new Intent (ClientChargeListViewActivity.this, ClientChargeInfoActivity.class);
                      intent.putExtra ("message_key", "0");
                      startActivity (intent);
                  }
@@ -135,7 +134,7 @@ public class MobileChargeListViewActivity extends AppCompatActivity{
                      int year = c.get (Calendar.YEAR);
                      int month = c.get (Calendar.MONTH);
                      int dayOfMonth = c.get (Calendar.DAY_OF_MONTH);
-                     datePickerDialog = new DatePickerDialog (MobileChargeListViewActivity.this,
+                     datePickerDialog = new DatePickerDialog (ClientChargeListViewActivity.this,
                              new DatePickerDialog.OnDateSetListener ( ) {
                                  @Override
                                  public void onDateSet(DatePicker datePicker, int year, int month, int day) {
@@ -198,7 +197,7 @@ public class MobileChargeListViewActivity extends AppCompatActivity{
                          try {
                              if (!rs2.next ( )) break;
                              arraysize = arraysize + 1;
-                             mobilechargedb.add (new MobileChargeListView (rs2.getString ("MOB_CHARGE_ID"), rs2.getString ("AGENT_SUB_NUMBER"), rs2.getString ("CLIENT_SUB_NUMBER"), rs2.getString ("AMOUNT"), rs2.getString ("RECHARGE_STATUS")));
+                             mobilechargedb.add (new ClientChargeListView(rs2.getString ("MOB_CHARGE_ID"), rs2.getString ("AGENT_SUB_NUMBER"), rs2.getString ("CLIENT_SUB_NUMBER"), rs2.getString ("AMOUNT"), rs2.getString ("RECHARGE_STATUS")));
                          } catch (SQLException throwables) {
                              throwables.printStackTrace ( );
                          }
@@ -221,16 +220,16 @@ public class MobileChargeListViewActivity extends AppCompatActivity{
                          varraysize = 0;
                          for (i = varraysize; i < 10; i++) {
                              if (varraysize < arraysize) {
-                                 mobilecharge.add (new MobileChargeListView (mobilechargedb.get (i).getMOBCHARGEID ( ), mobilechargedb.get (i).getAGENTSUBNUM ( ), mobilechargedb.get (i).getCLIENTSUBNUM ( ), mobilechargedb.get (i).getAMOUNT ( ), mobilechargedb.get (i).getRECHARGESTATUS ( )));
+                                 mobilecharge.add (new ClientChargeListView(mobilechargedb.get (i).getMOBCHARGEID ( ), mobilechargedb.get (i).getAGENTSUBNUM ( ), mobilechargedb.get (i).getCLIENTSUBNUM ( ), mobilechargedb.get (i).getAMOUNT ( ), mobilechargedb.get (i).getRECHARGESTATUS ( )));
                                  varraysize = varraysize + 1;
                              }
                          }
                          pagination = pagination + 1;
                          //connect data to coveragelistadapter
-                         MobileChargeRecViewAdapter adapter = new MobileChargeRecViewAdapter (MobileChargeListViewActivity.this);
+                         ClientChargeRecViewAdapter adapter = new ClientChargeRecViewAdapter(ClientChargeListViewActivity.this);
                          adapter.setContacts (mobilecharge);
                          mobilechargeRecView.setAdapter (adapter);
-                         mobilechargeRecView.setLayoutManager (new LinearLayoutManager (MobileChargeListViewActivity.this));
+                         mobilechargeRecView.setLayoutManager (new LinearLayoutManager (ClientChargeListViewActivity.this));
                      }
                  }
              });
@@ -266,15 +265,15 @@ public class MobileChargeListViewActivity extends AppCompatActivity{
                 }
                   catch (IllegalArgumentException | ClassNotFoundException | SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
                     System.out.println ("error1 is: " + e.toString ( ));
-                    Toast.makeText (MobileChargeListViewActivity.this, "" + e.toString ( ), Toast.LENGTH_SHORT).show ( );
+                    Toast.makeText (ClientChargeListViewActivity.this, "" + e.toString ( ), Toast.LENGTH_SHORT).show ( );
                     Intent intent = new Intent (getApplicationContext ( ), MainActivity.class);
                     startActivity (intent);
                }   catch (IllegalAccessException e) {
                 System.out.println("error2 is: " +e.toString());
-                Toast.makeText (MobileChargeListViewActivity.this,"" +e.toString(),Toast.LENGTH_SHORT).show ();
+                Toast.makeText (ClientChargeListViewActivity.this,"" +e.toString(),Toast.LENGTH_SHORT).show ();
                 }   catch (java.lang.InstantiationException e) {
                 System.out.println("error3 is: " +e.toString());
-                Toast.makeText (MobileChargeListViewActivity.this,"" +e.toString(),Toast.LENGTH_SHORT).show ();
+                Toast.makeText (ClientChargeListViewActivity.this,"" +e.toString(),Toast.LENGTH_SHORT).show ();
                 }
     }
 
@@ -309,7 +308,7 @@ public class MobileChargeListViewActivity extends AppCompatActivity{
                 try {
                     if (!rs1.next()) break;
                     arraysize=arraysize+1;
-                    mobilechargedb.add(new MobileChargeListView(rs1.getString("MOB_CHARGE_ID"),rs1.getString("AGENT_SUB_NUMBER"),rs1.getString("CLIENT_SUB_NUMBER"),rs1.getString("AMOUNT"),rs1.getString("RECHARGE_STATUS")));
+                    mobilechargedb.add(new ClientChargeListView(rs1.getString("MOB_CHARGE_ID"),rs1.getString("AGENT_SUB_NUMBER"),rs1.getString("CLIENT_SUB_NUMBER"),rs1.getString("AMOUNT"),rs1.getString("RECHARGE_STATUS")));
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
@@ -333,16 +332,16 @@ public class MobileChargeListViewActivity extends AppCompatActivity{
                 varraysize = 0;
                 for (i = varraysize; i < 10; i++) {
                     if (varraysize < arraysize) {
-                        mobilecharge.add (new MobileChargeListView(mobilechargedb.get (i).getMOBCHARGEID ( ), mobilechargedb.get (i).getAGENTSUBNUM ( ), mobilechargedb.get (i).getCLIENTSUBNUM ( ), mobilechargedb.get (i).getAMOUNT ( ), mobilechargedb.get (i).getRECHARGESTATUS ( )));
+                        mobilecharge.add (new ClientChargeListView(mobilechargedb.get (i).getMOBCHARGEID ( ), mobilechargedb.get (i).getAGENTSUBNUM ( ), mobilechargedb.get (i).getCLIENTSUBNUM ( ), mobilechargedb.get (i).getAMOUNT ( ), mobilechargedb.get (i).getRECHARGESTATUS ( )));
                         varraysize = varraysize + 1;
                     }
                 }
                 pagination = pagination + 1;
                 //connect data to coveragelistadapter
-                MobileChargeRecViewAdapter adapter = new MobileChargeRecViewAdapter (MobileChargeListViewActivity.this);
+                ClientChargeRecViewAdapter adapter = new ClientChargeRecViewAdapter(ClientChargeListViewActivity.this);
                 adapter.setContacts (mobilecharge);
                 mobilechargeRecView.setAdapter (adapter);
-                mobilechargeRecView.setLayoutManager (new LinearLayoutManager(MobileChargeListViewActivity.this));
+                mobilechargeRecView.setLayoutManager (new LinearLayoutManager(ClientChargeListViewActivity.this));
             }
 
 

@@ -1,9 +1,6 @@
 package com.example.aliatsimactivation;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,36 +10,32 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class RemainStatusRecViewAdapter extends RecyclerView.Adapter<RemainStatusRecViewAdapter.ViewHolder> {
+public class ClientStatusRecViewAdapter extends RecyclerView.Adapter<ClientStatusRecViewAdapter.ViewHolder> {
 
 
-    private ArrayList<RemainStatus> mobilecharge = new ArrayList<>();
+    private ArrayList<ClientStatusListView> mobilecharge = new ArrayList<>();
     private Context context;
     Connection conn;
 
-    public RemainStatusRecViewAdapter(Context context) {
+    public ClientStatusRecViewAdapter(Context context) {
         this.context=context;
     }
 
     @NonNull
     @Override
-    public RemainStatusRecViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ClientStatusRecViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.remain_status_list_item,parent,false);
-        RemainStatusRecViewAdapter.ViewHolder holder =new RemainStatusRecViewAdapter.ViewHolder (view);
+        ClientStatusRecViewAdapter.ViewHolder holder =new ClientStatusRecViewAdapter.ViewHolder (view);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RemainStatusRecViewAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ClientStatusRecViewAdapter.ViewHolder holder, int position) {
         holder.txtmobchargeid.setText(mobilecharge.get(position).getMOBCHARGEID ());
         holder.txtclientsubnumber.setText(mobilecharge.get(position).getCLIENTSUBNUM ());
         holder.txtamount.setText(mobilecharge.get(position).getAMOUNT ());
@@ -64,7 +57,7 @@ public class RemainStatusRecViewAdapter extends RecyclerView.Adapter<RemainStatu
         return mobilecharge.size();
     }
 
-    public void setContacts(ArrayList<RemainStatus> mobilecharge) {
+    public void setContacts(ArrayList<ClientStatusListView> mobilecharge) {
         this.mobilecharge = mobilecharge;
         notifyDataSetChanged();
     }

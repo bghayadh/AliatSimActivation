@@ -14,27 +14,27 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class MobileChargeRecViewAdapter extends RecyclerView.Adapter<MobileChargeRecViewAdapter.ViewHolder> {
+public class ClientChargeRecViewAdapter extends RecyclerView.Adapter<ClientChargeRecViewAdapter.ViewHolder> {
 
 
-    private ArrayList<MobileChargeListView> mobilecharge=new ArrayList<>();
+    private ArrayList<ClientChargeListView> mobilecharge=new ArrayList<>();
     private Context context;
 
-    public MobileChargeRecViewAdapter(Context context) {
+    public ClientChargeRecViewAdapter(Context context) {
         this.context=context;
     }
 
     @NonNull
     @Override
-    public MobileChargeRecViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ClientChargeRecViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.mob_charge_list_item,parent,false);
-        MobileChargeRecViewAdapter.ViewHolder holder =new MobileChargeRecViewAdapter.ViewHolder (view);
+        ClientChargeRecViewAdapter.ViewHolder holder =new ClientChargeRecViewAdapter.ViewHolder (view);
         return holder;
     }
 
 
     @Override
-    public void onBindViewHolder(@NonNull MobileChargeRecViewAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ClientChargeRecViewAdapter.ViewHolder holder, int position) {
         holder.txtmobchargeid.setText(mobilecharge.get(position).getMOBCHARGEID ());
         holder.txtagentsubnumber.setText(mobilecharge.get(position).getAGENTSUBNUM ());
         holder.txtclientsubnumber.setText(mobilecharge.get(position).getCLIENTSUBNUM ());
@@ -48,7 +48,7 @@ public class MobileChargeRecViewAdapter extends RecyclerView.Adapter<MobileCharg
                 System.out.println(mobilecharge.get(position).getMOBCHARGEID ());
 
                 // pass on click mobilechargeid value to new activity MobileChargeinfoactivity
-                Intent intent =  new Intent(context, MobileChargeInfoActivity.class);
+                Intent intent =  new Intent(context, ClientChargeInfoActivity.class);
                 intent.putExtra("message_key", mobilecharge.get(position).getMOBCHARGEID ());
                 context.startActivity(intent);
 
@@ -62,7 +62,7 @@ public class MobileChargeRecViewAdapter extends RecyclerView.Adapter<MobileCharg
         return mobilecharge.size();
     }
 
-    public void setContacts(ArrayList<MobileChargeListView> mobilecharge) {
+    public void setContacts(ArrayList<ClientChargeListView> mobilecharge) {
         this.mobilecharge = mobilecharge;
         notifyDataSetChanged();
     }

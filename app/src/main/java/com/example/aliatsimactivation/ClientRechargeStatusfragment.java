@@ -37,7 +37,7 @@ public class ClientRechargeStatusfragment extends Fragment {
     private int arraysize=0;
     private int varraysize=0;
     private int pagination=0;
-    public ArrayList<RemainStatus> mobilecharge,mobilechargedb;
+    public ArrayList<ClientStatusListView> mobilecharge,mobilechargedb;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -135,7 +135,7 @@ public class ClientRechargeStatusfragment extends Fragment {
                     try {
                         if (!rs2.next()) break;
                         arraysize=arraysize+1;
-                        mobilechargedb.add(new RemainStatus(rs2.getString("MOB_CHARGE_ID"),rs2.getString("CLIENT_SUB_NUMBER"),rs2.getString("AMOUNT")));
+                        mobilechargedb.add(new ClientStatusListView(rs2.getString("MOB_CHARGE_ID"),rs2.getString("CLIENT_SUB_NUMBER"),rs2.getString("AMOUNT")));
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
@@ -158,13 +158,13 @@ public class ClientRechargeStatusfragment extends Fragment {
                     varraysize = 0;
                     for (i = varraysize; i < 10; i++) {
                         if (varraysize < arraysize) {
-                            mobilecharge.add (new RemainStatus(mobilechargedb.get (i).getMOBCHARGEID ( ), mobilechargedb.get (i).getCLIENTSUBNUM ( ), mobilechargedb.get (i).getAMOUNT ( )));
+                            mobilecharge.add (new ClientStatusListView(mobilechargedb.get (i).getMOBCHARGEID ( ), mobilechargedb.get (i).getCLIENTSUBNUM ( ), mobilechargedb.get (i).getAMOUNT ( )));
                             varraysize = varraysize + 1;
                         }
                     }
                     pagination = pagination + 1;
                     //connect data to MobileChargeRecViewadapter
-                    RemainStatusRecViewAdapter adapter = new RemainStatusRecViewAdapter (getActivity());
+                    ClientStatusRecViewAdapter adapter = new ClientStatusRecViewAdapter(getActivity());
                     adapter.setContacts (mobilecharge);
                     remainstatusRecView.setAdapter (adapter);
                     remainstatusRecView.setLayoutManager (new LinearLayoutManager(getActivity()));
