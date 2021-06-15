@@ -11,13 +11,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AliatSimActivation">
-        <activity android:name=".ClientChargeInfoActivity"></activity>
+        <activity android:name=".UserRegister"></activity>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".ClientChargeInfoActivity" />
         <activity android:name=".ClientChargeListViewActivity" />
-        <activity android:name=".ResellerChargeInfoActivity"></activity>
-        <activity android:name=".ResellerChargeListViewActivity"></activity>
-        <activity android:name=".SimRegInfo"></activity>
-        <activity android:name=".SimRegListViewActivity"></activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".ResellerChargeInfoActivity" />
+        <activity android:name=".ResellerChargeListViewActivity" />
+        <activity android:name=".SimRegInfo" />
+        <activity android:name=".SimRegListViewActivity" />
+        <activity android:name=".SimRegSignature"/>
+        <activity android:name=".UserLoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

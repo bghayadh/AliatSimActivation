@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0A5EA8"
+    tools:context=".UserRegister">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp">
+        <TextView
+            android:layout_marginTop="8dp"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:text="First Name"
+            android:id="@+id/fname"/>
+
+        <EditText
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/edtfname"
+            android:hint="Enter First Name"
+            android:layout_marginLeft="200dp"/>
+
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:text="Last Name"
+            android:id="@+id/lname"
+            android:layout_below="@+id/fname"/>
+        <EditText
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/edtlname"
+            android:hint="Enter Last Name"
+            android:layout_below="@+id/fname"
+            android:layout_marginLeft="200dp"/>
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:text="Region"
+            android:id="@+id/region"
+            android:layout_below="@+id/lname"/>
+        <EditText
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/edtregion"
+            android:hint="Enter Region"
+            android:layout_below="@+id/edtlname"
+            android:layout_marginLeft="200dp"/>
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:text="Address"
+            android:id="@+id/address"
+            android:layout_below="@id/region"/>
+        <EditText
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/edtaddress"
+            android:hint="Enter Address"
+            android:layout_below="@+id/edtregion"
+            android:layout_marginLeft="200dp"/>
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:text="Phone Number"
+            android:id="@+id/phonenb"
+            android:layout_below="@id/address"/>
+        <EditText
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/edtphone"
+            android:inputType="phone"
+            android:hint="Enter Phone Number"
+            android:layout_below="@+id/edtaddress"
+            android:layout_marginLeft="200dp"/>
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:text="PIN"
+            android:id="@+id/pin"
+            android:layout_below="@id/phonenb"/>
+        <EditText
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/edtpin"
+            android:hint="Enter Your PIN"
+            android:inputType="numberPassword"
+            android:maxLength="6"
+            android:layout_below="@+id/edtphone"
+            android:layout_marginLeft="200dp"/>
+
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:text="Verify"
+            android:id="@+id/verify"
+            android:backgroundTint="@color/red"
+            android:layout_below="@id/pin"/>
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:text="Register"
+            android:backgroundTint="@color/red"
+            android:id="@+id/register"
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            android:layout_below="@id/pin"/>
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="" />
+
+    <Button
+        android:id="@+id/BtnData"
+        android:layout_width="80dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginVertical="20dp"
+        android:textColor="@color/white"
+        android:text="DATA"
+        android:backgroundTint="@color/red"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:layout_alignParentRight="true"
+        android:visibility="invisible"
+        />
+</RelativeLayout>

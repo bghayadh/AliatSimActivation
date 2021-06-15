@@ -7,4 +7,8 @@
         <item>Failed</item>
         <item>Canceled</item>
     </string-array>
+    <string-array name="entries">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
 </resources>

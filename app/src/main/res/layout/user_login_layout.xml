@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0A5EA8"
+    tools:context=".UserLoginActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MSISDN"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="162dp"
+        android:id="@+id/phnbr"
+        android:textColor="@color/yellow">
+    </TextView>
+
+    <!--edit text for MSISDN-->
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:hint="Phone Number"
+        android:id="@+id/edtphnbr"
+        android:layout_marginTop="150dp"
+        android:layout_marginLeft="160dp">
+    </EditText>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PIN"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/phnbr"
+        android:id="@+id/loginpin"
+        android:textColor="@color/yellow">
+    </TextView>
+
+    <!--edit text for PIN-->
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:hint="PIN"
+        android:layout_below="@+id/edtphnbr"
+        android:id="@+id/edtloginpin"
+        android:inputType="numberPassword"
+        android:layout_marginLeft="160dp">
+    </EditText>
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="LOGIN"
+        android:layout_centerInParent="true"
+        android:id="@+id/login"
+        android:backgroundTint="@color/red">
+    </Button>
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Sign Up"
+        android:id="@+id/signup"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/login"
+        android:backgroundTint="@color/red">
+    </Button>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_view1">
+
+    </TextView>
+
+</RelativeLayout>
