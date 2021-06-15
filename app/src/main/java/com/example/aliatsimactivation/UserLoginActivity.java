@@ -47,11 +47,10 @@ public class UserLoginActivity extends AppCompatActivity {
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                File fileDir1 = new File(getFilesDir(),"MSISDN.txt");
-                File file1 = new File(getApplicationContext().getFilesDir(),"MSISDN.txt");
-                file1.delete();
+
+
                 //get the values of the msisdn and pin edittexts
-               /* EditText msisdn =(EditText) findViewById(R.id.edtphnbr);
+               EditText msisdn =(EditText) findViewById(R.id.edtphnbr);
                 EditText pin =(EditText) findViewById(R.id.edtloginpin);
                 String msisdn1=msisdn.getText().toString();
                 String pin1=pin.getText().toString();
@@ -65,7 +64,7 @@ public class UserLoginActivity extends AppCompatActivity {
                 else
                 {
                     Toast.makeText(getApplicationContext(),"Invalid MSISDN or PIN",Toast.LENGTH_LONG).show();
-                }*/
+                }
 
             }
         });
@@ -78,14 +77,25 @@ public class UserLoginActivity extends AppCompatActivity {
             }
         });
 
-        //check if the file is found in the given directory and call the load function
+    //check if the file is found in the given directory and call the load function
         File fileDir = new File(getFilesDir(),"MSISDN.txt");
         File file = new File(getApplicationContext().getFilesDir(),"MSISDN.txt");
+        String sessionId = getIntent().getStringExtra("key");
+        System.out.println(sessionId);
+        TextView tv3=findViewById(R.id.text_view3);
+        tv3.setText(sessionId);
+
         if(file.exists())
         {
-            Toast.makeText(getApplicationContext(),"Found",Toast.LENGTH_LONG).show();
-            LoadData();
+            Toast.makeText(getApplicationContext(), "Found", Toast.LENGTH_LONG).show();
+            if (tv3.getText().toString() == sessionId) {
+                LoadData();
+            } else  {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
         }
+
 
         BtnExit.setOnClickListener (new View.OnClickListener ( ) {
             @Override
@@ -160,7 +170,7 @@ public class UserLoginActivity extends AppCompatActivity {
                 //delete the file after sending data from file into database
                 File fileDir1 = new File(getFilesDir(),"Offlinedata.txt");
                 File file1 = new File(getApplicationContext().getFilesDir(),"Offlinedata.txt");
-                file.delete();
+                file1.delete();
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
