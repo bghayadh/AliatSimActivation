@@ -84,7 +84,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                System.exit(-3);
+                Intent intent =new Intent(MainActivity.this,UserLoginActivity.class);
+                startActivity(intent);
             }
         });
 
