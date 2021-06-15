@@ -188,6 +188,8 @@ public class UserRegister extends AppCompatActivity {
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
+
+                    createandSaveMSISDNandPIN();
                 }catch (Exception e)
                 {
                     System.out.println("saving offline");

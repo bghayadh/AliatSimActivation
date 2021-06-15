@@ -120,5 +120,11 @@ public class UserLoginActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onRestart() {
+        this.recreate();
+        super.onRestart();
+    }
+
 
 }
