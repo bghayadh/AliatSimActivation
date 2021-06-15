@@ -20,6 +20,7 @@ public class UserLoginActivity extends AppCompatActivity {
     private String file = "MSISDN.txt";
     private String s0,s1;
     private String fileContents,fileContents2;
+    private Button BtnExit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,7 @@ public class UserLoginActivity extends AppCompatActivity {
 
         Button btnlogin = findViewById(R.id.login);
         Button btnregister = findViewById(R.id.signup);
+        BtnExit=findViewById(R.id.BtnExit);
 
         //logging into main page
         btnlogin.setOnClickListener(new View.OnClickListener() {
@@ -70,6 +72,14 @@ public class UserLoginActivity extends AppCompatActivity {
 
             LoadData();
         }
+
+        BtnExit.setOnClickListener (new View.OnClickListener ( ) {
+            @Override
+            public void onClick(View v) {
+
+                System.exit(0);
+            }
+        });
     }
 
     //function to have the ability to load a file from the storage and fill the values in edittexts
@@ -109,4 +119,6 @@ public class UserLoginActivity extends AppCompatActivity {
         pin.setText(s1);
 
     }
+
+
 }

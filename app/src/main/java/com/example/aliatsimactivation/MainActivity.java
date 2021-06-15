@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -82,7 +83,8 @@ public class MainActivity extends AppCompatActivity {
         BtnExit.setOnClickListener (new View.OnClickListener ( ) {
             @Override
             public void onClick(View v) {
-                System.exit(0);
+
+                System.exit(-3);
             }
         });
 
