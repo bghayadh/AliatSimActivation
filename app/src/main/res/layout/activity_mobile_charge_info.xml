@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tabClientRecharge"
-            android:text="ClientRecharge" />
+            android:text="ClientCharge" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
@@ -53,8 +53,8 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tabMobileTest"
-            android:text="MobileTest" />
+            android:id="@+id/tabClientReport"
+            android:text="ClientReport" />
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager.widget.ViewPager

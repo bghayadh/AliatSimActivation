@@ -90,6 +90,7 @@ public class UserLoginActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Found", Toast.LENGTH_LONG).show();
             if (tv3.getText().toString() == sessionId) {
                 LoadData();
+                btnregister.setEnabled(false);
             } else  {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
@@ -101,7 +102,7 @@ public class UserLoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                System.exit(0);
+                finishAffinity();
             }
         });
 
@@ -187,6 +188,10 @@ public class UserLoginActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    public void onBackPressed() {
+        finishAffinity();
     }
 
     //function to have the ability to load a file from the storage and fill the values in edittexts

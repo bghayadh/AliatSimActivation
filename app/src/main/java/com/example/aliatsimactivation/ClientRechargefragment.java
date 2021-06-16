@@ -15,6 +15,9 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -36,6 +39,8 @@ public class ClientRechargefragment extends Fragment {
     public Connection conn;
     private Spinner statusSpinner;
     private String globalmobchargeid;
+    private String file = "MSISDN.txt";
+    private String s0,s1,Result;
 
 
 
@@ -126,7 +131,41 @@ public class ClientRechargefragment extends Fragment {
         Button btnrecharge = (Button) V.findViewById(R.id.btnrecharge);
         Button btnbalance = (Button) V.findViewById(R.id.btnbalance);
         TextView editTextcodehere= (TextView) V.findViewById(R.id.editTextcodehere);
+        TextView tv = (TextView) V.findViewById(R.id.text_view);
 
+        File file = new File(getActivity().getFilesDir(),"MSISDN.txt");
+        if(file.exists()) {
+
+            StringBuilder text = new StringBuilder();
+
+            try {
+                FileInputStream fIn = getActivity().openFileInput("MSISDN.txt");
+                int c;
+                String temp = "";
+
+                while ((c = fIn.read()) != -1) {
+                    temp = temp + Character.toString((char) c);
+                }
+                text.append(temp);
+                text.append('\n');
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            tv.setText(text.toString());
+            tv.setVisibility(View.INVISIBLE);
+            Result = String.valueOf(tv.getText());
+            System.out.println("RESULT" +Result);
+            String[] data = Result.split(":");
+            String s0 = data[0];
+
+            editTextagent.setText(s0);
+        }
+        else
+        {
+            System.out.println("login filevdon't exist");
+        }
 
         //read passes value of mobcharge_id from recylserview
 

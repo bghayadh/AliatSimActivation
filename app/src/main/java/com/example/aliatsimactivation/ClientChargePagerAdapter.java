@@ -18,7 +18,7 @@ public class ClientChargePagerAdapter extends FragmentPagerAdapter {
         switch (position) {
             case 0: return new ClientRechargefragment();
             case 1: return new ClientRechargeStatusfragment();
-            case 2: return new ClientTestfragment();
+            case 2: return new ClientReportfragment();
             default:  return null;
         }
 

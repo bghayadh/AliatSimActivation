@@ -23,7 +23,7 @@ public class ClientChargeInfoActivity extends AppCompatActivity {
         TabLayout tabLayout = findViewById(R.id.tabBar);
         TabItem tabClientRecharge = findViewById(R.id.tabClientRecharge);
         TabItem tabClientStatus = findViewById(R.id.tabClientStatus);
-        TabItem tabMobileTest = findViewById(R.id.tabMobileTest);
+        TabItem tabMobileTest = findViewById(R.id.tabClientReport);
         ViewPager viewPager = findViewById(R.id.viewPager);
 
 
