@@ -13,16 +13,27 @@
         android:id="@+id/remainSpinner"/>
 
 
-    <TextView
-        android:layout_width="400dp"
+    <Button
+        android:id="@+id/btndate"
+        android:layout_width="133dp"
         android:layout_height="50dp"
-        android:gravity="center_horizontal"
-        android:textColor="#29f803"
-        android:textSize="18dp"
-        android:layout_marginTop="10dp"
+        android:text="PICK DATE"
+        android:layout_marginRight="5dp"
+        android:backgroundTint="@color/red"
         android:layout_below="@+id/remainSpinner"
-        android:backgroundTint="@null"
-        android:id="@+id/txtreport"/>
+        android:layout_marginStart="1dp"
+        />
+
+    <EditText
+        android:id="@+id/editTextdate"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:textColor="@color/yellow"
+        android:layout_marginStart="5dp"
+        android:layout_below="@+id/remainSpinner"
+        android:layout_toRightOf="@+id/btndate"
+        android:hint="date" />
 
 
 
@@ -31,7 +42,7 @@
         android:id="@+id/remainstatusRecView"
         android:layout_width="match_parent"
         android:layout_height="565dp"
-        android:layout_below="@+id/txtreport"
+        android:layout_below="@+id/btndate"
         android:layout_marginTop="-1dp"
         android:scrollbarSize="12dp"
 
@@ -40,6 +51,28 @@
 
 
     <Button
+        android:id="@+id/btnprevious"
+        android:layout_width="133dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="3dp"
+        android:text="Previous"
+        android:textStyle="bold"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="@color/red"
+        />
+
+    <Button
+        android:id="@+id/btnnext"
+        android:layout_width="133dp"
+        android:layout_height="60dp"
+        android:text="Next"
+        android:textStyle="bold"
+        android:layout_marginStart="5dp"
+        android:layout_toRightOf="@+id/btnprevious"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="@color/red"
+        />
+    <Button
         android:id="@+id/btnmain"
         android:layout_width="130dp"
         android:layout_height="60dp"
@@ -47,6 +80,7 @@
         android:textStyle="bold"
         android:layout_marginStart="5dp"
         android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/btnnext"
         android:layout_alignParentBottom="true"
         android:backgroundTint="@color/red"
         />
