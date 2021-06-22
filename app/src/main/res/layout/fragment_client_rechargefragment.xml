@@ -150,6 +150,19 @@
         android:hint="" />
 
 
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:id="@+id/BtnData"
+        android:textColor="@color/white"
+        app:cornerRadius="50dp"
+        android:layout_above="@id/btnsave"
+        android:visibility="gone"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+        android:backgroundTint="@color/red"
+        android:layout_marginStart="320dp">
+    </com.google.android.material.button.MaterialButton>
+
     <Button
         android:id="@+id/btnsave"
         android:layout_width="133dp"

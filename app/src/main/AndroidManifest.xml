@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.aliatsimactivation">
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
@@ -11,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AliatSimActivation">
-        <activity android:name=".UserRegister"></activity>
+        <activity android:name=".ClientOfflineDataActivity"></activity>
+        <activity android:name=".UserRegister" />
         <activity android:name=".MainActivity" />
         <activity android:name=".ClientChargeInfoActivity" />
         <activity android:name=".ClientChargeListViewActivity" />
@@ -19,7 +22,7 @@
         <activity android:name=".ResellerChargeListViewActivity" />
         <activity android:name=".SimRegInfo" />
         <activity android:name=".SimRegListViewActivity" />
-        <activity android:name=".SimRegSignature"/>
+        <activity android:name=".SimRegSignature" />
         <activity android:name=".UserLoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

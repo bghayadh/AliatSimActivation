@@ -6,8 +6,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -32,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
         BtnMobCharge=findViewById(R.id.Btnmobcharge);
         BtnResCharge=findViewById(R.id.Btnrescharge);
         BtnExit=findViewById(R.id.BtnExit);
+
+
 
         // check if we have permission to get our location in manifest xml file
         try {
@@ -60,10 +65,23 @@ public class MainActivity extends AppCompatActivity {
         BtnMobCharge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Show message to know where are we transferred
-                Toast.makeText(MainActivity.this,  "Welcome to Mobile Charge page",Toast.LENGTH_SHORT).show();
-                 Intent intent =new Intent(MainActivity.this, ClientChargeListViewActivity.class);
-                 startActivity(intent);
+                //check network connection
+                ConnectivityManager connMgr = (ConnectivityManager) getApplicationContext ( )
+                        .getSystemService(Context.CONNECTIVITY_SERVICE);
+
+                NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+                if (networkInfo != null && networkInfo.isConnected()) {
+                    Toast.makeText(MainActivity.this,  "Welcome to Mobile Charge page",Toast.LENGTH_SHORT).show();
+                    Intent intent =new Intent(MainActivity.this, ClientChargeListViewActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(MainActivity.this,  "Not Connected",Toast.LENGTH_SHORT).show();
+                    Intent i=new Intent(getApplicationContext(),ClientChargeInfoActivity.class);
+                    startActivity(i);
+                }
+
+
             }
         });
 
