@@ -1,7 +1,7 @@
 package com.example.aliatsimactivation;
 
 import android.content.Context;
-import android.content.ContextWrapper;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -28,6 +28,7 @@ public class SimRegSignature extends AppCompatActivity {
     private Bitmap bmp;
     private File file;
     private Button submit,reset;
+    private String SIG;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,7 @@ public class SimRegSignature extends AppCompatActivity {
         lay = (LinearLayout) findViewById(R.id.lay);
         submit = findViewById(R.id.BtnSubmit);
         reset=findViewById(R.id.btnReset);
+
         dv = new DrawingView(SimRegSignature.this);
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
@@ -46,6 +48,8 @@ public class SimRegSignature extends AppCompatActivity {
         mPaint.setStrokeCap(Paint.Cap.ROUND);
         mPaint.setStrokeWidth(8);
         lay.addView(dv);
+        Intent intent = SimRegSignature.this.getIntent();
+        SIG = intent.getStringExtra("sign");
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,13 +180,13 @@ public class SimRegSignature extends AppCompatActivity {
     private void captureScreen() {
         View v = lay;
         v.setDrawingCacheEnabled(true);
-        ContextWrapper cw = new ContextWrapper(getApplicationContext());
 
         bmp = Bitmap.createBitmap(v.getDrawingCache());
         v.setDrawingCacheEnabled(false);
         // File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
         // Get image file save path and name.
-        file = new File("/sdcard/Pictures", "Signature"+System.currentTimeMillis() + ".jpg");
+        file = new File("/sdcard/Pictures", SIG+ ".jpg");
+
 
         Log.d("path", file.toString());
         FileOutputStream fileOutputStream =null;

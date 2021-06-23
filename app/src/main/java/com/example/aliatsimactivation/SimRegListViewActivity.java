@@ -1,9 +1,5 @@
 package com.example.aliatsimactivation;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +9,10 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -80,6 +80,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
             @Override
             public void onClick(View v) {
                 Intent intent= new Intent(getApplicationContext(), SimRegInfo.class);
+                intent.putExtra("message_key","0");
                 startActivity(intent);
             }
         });
