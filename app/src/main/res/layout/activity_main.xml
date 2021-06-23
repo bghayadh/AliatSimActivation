@@ -11,13 +11,14 @@
     <!-- Button Sim Registration -->
     <Button
         android:id="@+id/Btnsimreg"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_marginStart="1dp"
         android:text="SIM REGISTRATION"
         android:textStyle="bold"
         android:textSize="15dp"
         android:backgroundTint="@color/red"
+        android:drawableRight="@drawable/ic_baseline_assignment_ind_24"
         style="@style/Widget.MaterialComponents.Button"
         />
 
@@ -27,11 +28,12 @@
     <!-- Button Mobile Charge -->
     <Button
         android:id="@+id/Btnmobcharge"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_below="@+id/Btnsimreg"
         android:layout_marginStart="1dp"
         android:text="MOBILE CHARGE"
+        android:drawableRight="@drawable/ic_baseline_phonelink_ring_24"
         android:textStyle="bold"
         android:textSize="15dp"
         android:backgroundTint="@color/red"
@@ -39,15 +41,17 @@
         />
 
 
+
     <!-- Button Reseller Charge -->
     <Button
         android:id="@+id/Btnrescharge"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="70dp"
         android:text="RESELLER CHARGE"
         android:layout_marginStart="1dp"
         android:textStyle="bold"
         android:textSize="15dp"
+        android:drawableRight="@drawable/ic_baseline_business_24"
         android:backgroundTint="@color/red"
         android:layout_below="@+id/Btnmobcharge"
         style="@style/Widget.MaterialComponents.Button"

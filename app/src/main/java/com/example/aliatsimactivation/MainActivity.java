@@ -51,10 +51,20 @@ public class MainActivity extends AppCompatActivity {
         BtnSIMReg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Show message to know where are we transferred
-                Toast.makeText(MainActivity.this,  "Welcome to Sim Registration page",Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(MainActivity.this, SimRegListViewActivity.class);
-                 startActivity(intent);
+                ConnectivityManager connMgr = (ConnectivityManager) getApplicationContext ( )
+                        .getSystemService(Context.CONNECTIVITY_SERVICE);
+
+                NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+                if (networkInfo != null && networkInfo.isConnected()) {
+                    Toast.makeText(MainActivity.this,  "Welcome to Mobile Charge page",Toast.LENGTH_SHORT).show();
+                    Intent intent =new Intent(MainActivity.this, SimRegListViewActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(MainActivity.this,  "Not Connected",Toast.LENGTH_SHORT).show();
+                    Intent i=new Intent(getApplicationContext(),SimRegInfo.class);
+                    startActivity(i);
+                }
             }
 
         });
@@ -89,10 +99,11 @@ public class MainActivity extends AppCompatActivity {
         BtnResCharge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Show message to know where are we transferred
-                Toast.makeText(MainActivity.this,  "Welcome to Reseller Charge page",Toast.LENGTH_SHORT).show();
-                 Intent intent =new Intent(MainActivity.this,ResellerChargeListViewActivity.class);
-                 startActivity(intent);
+
+                    Toast.makeText(MainActivity.this,  "Welcome to Mobile Charge page",Toast.LENGTH_SHORT).show();
+                    Intent intent =new Intent(MainActivity.this, ResellerChargeListViewActivity.class);
+                    startActivity(intent);
+
             }
         });
 
