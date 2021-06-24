@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                 NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
                 if (networkInfo != null && networkInfo.isConnected()) {
-                    Toast.makeText(MainActivity.this,  "Welcome to Mobile Charge page",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this,  "Welcome to Sim Registration page",Toast.LENGTH_SHORT).show();
                     Intent intent =new Intent(MainActivity.this, SimRegListViewActivity.class);
                     startActivity(intent);
                 } else {
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent =new Intent(MainActivity.this, ClientChargeListViewActivity.class);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(MainActivity.this,  "Not Connected",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this,  "No Connection",Toast.LENGTH_SHORT).show();
                     Intent i=new Intent(getApplicationContext(),ClientChargeInfoActivity.class);
                     startActivity(i);
                 }
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                    Toast.makeText(MainActivity.this,  "Welcome to Mobile Charge page",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this,  "Welcome to Reseller Charge page",Toast.LENGTH_SHORT).show();
                     Intent intent =new Intent(MainActivity.this, ResellerChargeListViewActivity.class);
                     startActivity(intent);
 

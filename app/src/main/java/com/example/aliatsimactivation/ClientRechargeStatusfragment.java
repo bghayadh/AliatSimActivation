@@ -1,7 +1,10 @@
 package com.example.aliatsimactivation;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -93,6 +96,17 @@ public class ClientRechargeStatusfragment extends Fragment {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_client_recharge_statusfragment, container, false);
         View V = inflater.inflate (R.layout.fragment_client_recharge_statusfragment, container, false);
+
+        //check network connection
+        ConnectivityManager connMgr = (ConnectivityManager) getActivity ( )
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+
+
+
         Button btndate = (Button) V.findViewById(R.id.btndate);
         EditText  editTextdate = (EditText) V.findViewById (R.id.editTextdate);
         Button btnmain = (Button) V.findViewById(R.id.btnmain);
@@ -116,7 +130,6 @@ public class ClientRechargeStatusfragment extends Fragment {
         remainSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), remaining.get(position) + " Selected" ,Toast.LENGTH_SHORT).show();
 
                 btndate.setOnClickListener (new View.OnClickListener ( ) {
                     @Override
@@ -263,6 +276,10 @@ public class ClientRechargeStatusfragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        } else {
+            Toast.makeText(getActivity(), "No Connection",Toast.LENGTH_SHORT).show();
+        }
 
         return V;
     }

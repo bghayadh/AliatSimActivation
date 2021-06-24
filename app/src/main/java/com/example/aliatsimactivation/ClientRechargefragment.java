@@ -106,7 +106,6 @@ public class ClientRechargefragment extends Fragment {
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
         if (networkInfo != null && networkInfo.isConnected()) {
-            Toast.makeText(getActivity(), "Connected", Toast.LENGTH_SHORT).show();
 
 
             // Creating the status dropdown spinner
@@ -130,7 +129,6 @@ public class ClientRechargefragment extends Fragment {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     String Mytext = statusSpinner.getSelectedItem().toString();
                     editTextstatus.setText(Mytext);
-                    Toast.makeText(getActivity(), status.get(position) + " Selected", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -426,7 +424,6 @@ public class ClientRechargefragment extends Fragment {
 
 
         } else {
-            Toast.makeText(getActivity(), "Not Connected", Toast.LENGTH_SHORT).show();
 
 
             // Creating the status dropdown spinner
@@ -449,7 +446,6 @@ public class ClientRechargefragment extends Fragment {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     String Mytext = statusSpinner.getSelectedItem().toString();
                     editTextstatus.setText(Mytext);
-                    Toast.makeText(getActivity(), status.get(position) + " Selected", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -565,7 +561,6 @@ public class ClientRechargefragment extends Fragment {
                         bw.write(Amount);
                         bw.write(Status);
                         bw.close();
-                        Toast.makeText(getActivity(), fileName+" is saved to\n" +dir, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getActivity(),ClientOfflineDataActivity.class);
                         startActivity(intent);
                     } catch (FileNotFoundException e) {

@@ -87,7 +87,6 @@ public class UserLoginActivity extends AppCompatActivity {
 
         if(file.exists())
         {
-            Toast.makeText(getApplicationContext(), "Found", Toast.LENGTH_LONG).show();
             if (tv3.getText().toString() == sessionId) {
                 LoadData();
                 btnregister.setEnabled(false);
