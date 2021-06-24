@@ -98,7 +98,7 @@ public class ClientChargeListViewActivity extends AppCompatActivity{
              } catch (SQLException throwables) {
                  throwables.printStackTrace ( );
              }
-             String sqlStmt = "select sysdate from MOBILE_CHARGE";
+             String sqlStmt = "select to_char(sysdate,'YYYY-MON-DD') from MOBILE_CHARGE";
              ResultSet rs1 = null;
              try {
                  rs1 = stmt1.executeQuery (sqlStmt);
@@ -108,7 +108,7 @@ public class ClientChargeListViewActivity extends AppCompatActivity{
              while (true) {
                  try {
                      if (!rs1.next ( )) break;
-                     editTextdate.setText (rs1.getString ("sysdate"));
+                     editTextdate.setText (rs1.getString("to_char(sysdate,'YYYY-MON-DD')"));
 
                  } catch (SQLException throwables) {
                      throwables.printStackTrace ( );
