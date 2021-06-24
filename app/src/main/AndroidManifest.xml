@@ -22,9 +22,10 @@
         <activity android:name=".ResellerChargeInfoActivity" />
         <activity android:name=".ResellerChargeListViewActivity" />
         <activity android:name=".SimRegInfo" />
+        <activity android:name=".UserLoginActivity"/>
         <activity android:name=".SimRegListViewActivity" />
         <activity android:name=".SimRegSignature" />
-        <activity android:name=".UserLoginActivity">
+        <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

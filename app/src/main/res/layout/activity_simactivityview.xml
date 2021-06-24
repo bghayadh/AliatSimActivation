@@ -18,7 +18,7 @@
 
         <TextView
             android:id="@+id/firstname"
-            android:layout_width="110dp"
+            android:layout_width="150dp"
             android:layout_height="match_parent"
             android:layout_marginTop="17dp"
             android:text="First Name"
@@ -38,7 +38,7 @@
             android:id="@+id/textView2"
             android:layout_marginTop="25dp"
             android:layout_below="@+id/firstname"
-            android:layout_width="110dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:text="Middle Name"
@@ -51,14 +51,15 @@
             android:layout_toRightOf="@+id/textView2"
             android:layout_below="@+id/efirstname"
             android:layout_height="match_parent"
-
             android:layout_marginTop="12dp"
             android:hint="Middle Name"
             android:textColorHint="@color/yellowheader"
             android:inputType="textPersonName" />
+
+
         <TextView
             android:id="@+id/textView3"
-            android:layout_width="110dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView2"
             android:textSize="16dp"
@@ -80,31 +81,9 @@
          />
         <TextView
             android:id="@+id/textView20"
-            android:layout_width="110dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView3"
-            android:textSize="16dp"
-            android:textColor="@color/mixte"
-            android:text="Agent ID"
-            android:layout_marginTop="32dp"
-            />
-
-        <EditText
-            android:id="@+id/eagentid"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColorHint="@color/yellowheader"
-            android:layout_marginTop="5dp"
-            android:layout_below="@id/elastname"
-            android:hint="Agent ID"
-            android:layout_toRightOf="@id/textView20"
-            android:inputType="textPersonName"
-            />
-        <TextView
-            android:id="@+id/textView21"
-            android:layout_width="110dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textView20"
             android:textSize="16dp"
             android:textColor="@color/mixte"
             android:text="Agent Number"
@@ -117,28 +96,50 @@
             android:layout_height="wrap_content"
             android:textColorHint="@color/yellowheader"
             android:layout_marginTop="5dp"
-            android:layout_below="@id/eagentid"
+            android:layout_below="@id/elastname"
             android:hint="Agent Number"
+            android:layout_toRightOf="@id/textView20"
+            android:inputType="textPersonName"
+            />
+        <TextView
+            android:id="@+id/textView21"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView20"
+            android:textSize="16dp"
+            android:textColor="@color/mixte"
+            android:text="Client ID Number"
+            android:layout_marginTop="32dp"
+            />
+
+        <EditText
+            android:id="@+id/eagentid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/yellowheader"
+            android:layout_marginTop="15dp"
+            android:layout_below="@id/eagentnum"
+            android:hint="Client ID Number"
             android:layout_toRightOf="@id/textView21"
             android:inputType="textPersonName"
             />
 
         <TextView
             android:id="@+id/textView4"
-            android:layout_width="110dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:layout_below="@+id/textView21"
-            android:text="Mobile Number"
+            android:text="Client Mobile Number"
             android:textColor="@color/mixte"
             android:textSize="16dp"
         />
 
         <EditText
             android:id="@+id/emobilenumber"
-            android:layout_below="@id/eagentnum"
-            android:layout_toRightOf="@+id/textView3"
-            android:layout_marginTop="5dp"
+            android:layout_below="@id/eagentid"
+            android:layout_toRightOf="@+id/textView4"
+            android:layout_marginTop="15dp"
             android:textColorHint="@color/yellowheader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -147,7 +148,7 @@
 
         <TextView
             android:id="@+id/textView5"
-            android:layout_width="110dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:textColor="@color/mixte"
@@ -169,7 +170,7 @@
         <TextView
             android:id="@+id/textView7"
             android:layout_below="@+id/textView5"
-            android:layout_width="110dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="35dp"
             android:textColor="@color/mixte"
@@ -191,10 +192,10 @@
         <TextView
             android:id="@+id/textView8"
             android:layout_below="@+id/textView7"
-            android:layout_width="110dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="32dp"
             android:textColor="@color/mixte"
             android:text="Email"
             />
@@ -205,7 +206,6 @@
             android:layout_below="@id/ealtirnativenumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:hint="Email"
             android:textColorHint="@color/yellowheader"
             android:inputType="textEmailAddress"
@@ -215,7 +215,7 @@
         <TextView
             android:id="@+id/textView9"
             android:layout_below="@id/textView8"
-            android:layout_width="110dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
             android:textColor="@color/mixte"
@@ -236,7 +236,7 @@
         <TextView
             android:id="@+id/textView10"
             android:layout_below="@id/textView9"
-            android:layout_width="110dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:text="Postal Address"
@@ -259,7 +259,7 @@
         <TextView
             android:id="@+id/textView11"
             android:layout_below="@id/textView10"
-            android:layout_width="110dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:textSize="16dp"
@@ -271,15 +271,15 @@
             android:id="@+id/spinner"
             android:layout_below="@id/epostaladdress"
             android:layout_toRightOf="@id/textView11"
+            android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:entries="@array/entries" />
 
         <TextView
             android:id="@+id/textView6"
             android:layout_below="@id/textView11"
-            android:layout_width="110dp"
+            android:layout_width="130dp"
             android:layout_marginTop="20dp"
             android:layout_height="wrap_content"
             android:text="Nationality"
@@ -290,7 +290,7 @@
             android:id="@+id/radioGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+
             android:layout_below="@+id/spinner"
             android:layout_toRightOf="@+id/textView6"
             android:orientation="horizontal">
@@ -314,10 +314,10 @@
 
         <TextView
             android:id="@+id/textView12"
-            android:layout_width="110dp"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
              android:layout_below="@+id/textView6"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="40dp"
             android:text="Signiture"
             android:textSize="16dp"
             android:textColor="@color/mixte"/>
@@ -339,16 +339,15 @@
             android:layout_below="@+id/spinner"
             android:layout_marginTop="80dp"
             android:layout_toRightOf="@id/bsigniture"
-            android:backgroundTint="@color/red"
-            android:text="Path" />
+            android:backgroundTint="@color/red" />
 
 
         <TextView
             android:id="@+id/textView13"
             android:layout_below="@+id/textView12"
-            android:layout_width="110dp"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="40dp"
             android:textSize="16dp"
             android:textColor="@color/mixte"
             android:text="ID Front Side"
@@ -367,20 +366,19 @@
 
         <TextView
             android:id="@+id/frontpath"
-            android:layout_width="wrap_content"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/bsigniture"
             android:layout_marginTop="21dp"
             android:layout_toRightOf="@+id/bfront"
-            android:backgroundTint="@color/red"
-            android:text="Front Image" />
+            android:backgroundTint="@color/red" />
 
         <TextView
             android:id="@+id/textView14"
             android:layout_below="@+id/textView13"
-            android:layout_width="110dp"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="44dp"
+            android:layout_marginTop="48dp"
             android:text="ID Back Side"
             android:textSize="16dp"
             android:textColor="@color/mixte"
@@ -395,24 +393,16 @@
             android:layout_toRightOf="@+id/textView14"
             android:backgroundTint="@color/red"
             android:text="Back Image" />
-        <TextView
-            android:id="@+id/textView23"
-            android:layout_below="@+id/textView14"
-            android:layout_width="110dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="44dp"
-            android:text="Activate your Sim"
-            android:textSize="16dp"
-            android:textColor="@color/mixte"
-            />
+
 
         <Button
             android:id="@+id/activatesim"
             android:layout_width="108dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/bback"
+            android:layout_below="@id/chterms"
             android:layout_marginTop="16dp"
-            android:layout_toRightOf="@+id/textView23"
+            android:layout_toLeftOf="@+id/submitbtn"
+            android:layout_marginRight="50dp"
             android:backgroundTint="@color/red"
             android:text="Activate" />
 
@@ -423,14 +413,13 @@
             android:layout_below="@id/bfront"
             android:layout_marginTop="27dp"
             android:layout_toRightOf="@+id/bback"
-            android:backgroundTint="@color/red"
-            android:text="Back Image" />
+            android:backgroundTint="@color/red" />
 
         <CheckBox
             android:id="@+id/chterms"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textView23"
+            android:layout_below="@id/bback"
             android:layout_marginTop="27dp"
             android:backgroundTint="@color/red"
             android:text="Terms and Conditions agreement"
@@ -446,7 +435,7 @@
             android:textColor="@color/white"
             app:cornerRadius="50dp"
             android:layout_marginTop="15dp"
-            android:layout_centerInParent="true"
+            android:layout_alignParentRight="true"
             style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
             android:backgroundTint="@color/red">
         </com.google.android.material.button.MaterialButton>
