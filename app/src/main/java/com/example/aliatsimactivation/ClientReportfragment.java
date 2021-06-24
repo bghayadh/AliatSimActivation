@@ -534,6 +534,17 @@ public class ClientReportfragment extends Fragment {
 
         } else {
             Toast.makeText(getActivity(), "No Connection",Toast.LENGTH_SHORT).show();
+
+            Button btnmain = (Button) V.findViewById(R.id.btnmain);
+            btnmain.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    startActivity(intent);
+                }
+            });
+
         }
 
         return V;

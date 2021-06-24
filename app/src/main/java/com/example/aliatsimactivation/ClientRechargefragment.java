@@ -522,6 +522,17 @@ public class ClientRechargefragment extends Fragment {
             });
 
 
+            Button btnmain = (Button) V.findViewById(R.id.btnmain);
+            btnmain.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+
             //counting the number of files
             File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
             File[] files = dir.listFiles();
