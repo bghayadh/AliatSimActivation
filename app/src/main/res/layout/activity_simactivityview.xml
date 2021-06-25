@@ -16,6 +16,16 @@
         android:background="#0A5EA8">
 
 
+        <Button
+            android:id="@+id/BtnMainn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/submitbtn"
+            android:layout_alignParentRight="true"
+            android:backgroundTint="@color/red"
+            android:text="MainPage"
+            tools:layout_below="@id/submitbtn" />
+
         <TextView
             android:id="@+id/firstname"
             android:layout_width="150dp"
@@ -425,6 +435,19 @@
             android:text="Terms and Conditions agreement"
             android:textColor="@color/yellowheader"
             android:textSize="20sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/BtnData"
+            style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_below="@id/chterms"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/red"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            app:cornerRadius="50dp"></com.google.android.material.button.MaterialButton>
 
         <com.google.android.material.button.MaterialButton
             android:layout_width="50dp"

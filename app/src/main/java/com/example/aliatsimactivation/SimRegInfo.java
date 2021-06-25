@@ -3,11 +3,15 @@ package com.example.aliatsimactivation;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -26,9 +30,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -42,6 +49,7 @@ import java.util.GregorianCalendar;
 
 public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
     private String gender=null;
+    private int count;
     public Connection conn;
     private String globalsimid;
     private Button submit,frontid,backid,activatesim;
@@ -117,8 +125,14 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ConnectivityManager connMgr = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        setContentView(R.layout.activity_simactivityview);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+            Toast.makeText(SimRegInfo.this, "Connected", Toast.LENGTH_SHORT).show();
+
+            setContentView(R.layout.activity_simactivityview);
         editfname=(TextView)findViewById(R.id.efirstname);
          editmname=(TextView)findViewById(R.id.emiddlename);
          editlname=(TextView)findViewById(R.id.elastname);
@@ -268,9 +282,9 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 else {
                 Intent a = new Intent(getApplicationContext(), SimRegSignature.class);
                 SIGN=editfname.getText().toString()+editlname.getText().toString()+"_SIGNATURE_"+editagent.getText().toString()+"_"+editidagent.getText().toString();
-                textS.setText(SIGN);
                 a.putExtra("sign",SIGN);
-                startActivity(a);}
+                startActivity(a);
+                    textS.setText(SIGN);}
             }
         });
         editdate.setOnClickListener(new View.OnClickListener() {
@@ -442,8 +456,12 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                if(isChecked){
                    submit.setEnabled(true);
                }
-               else {
+               else if(count >5) {
                    submit.setEnabled(false);
+               }
+               else{
+                   submit.setEnabled(false);
+
                }
            }
        });
@@ -454,11 +472,316 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 startActivity(a);
            }
        });
+            File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+            File[] files = dir.listFiles();
+             count =0;
+            for (File f: files)
+            {
+                String name = f.getName();
+                if (name.endsWith(".txt"))
+                    count++;
+                System.out.println("COUNT IS:" +count);
+            }
+
+
+            //BtnData appear in case offline files exist
+            Button BtnData = (Button)findViewById(R.id.BtnData);
+            BtnData.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(SimRegInfo.this,SimRegOfflineDataActivity.class);
+                    startActivity(i);
+                }
+            });
+            Button Btnmain = (Button)findViewById(R.id.BtnMainn);
+            Btnmain.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(SimRegInfo.this,MainActivity.class);
+                    startActivity(i);
+                }
+            });
+
+            if (count !=0)
+            {
+                BtnData.setVisibility(View.VISIBLE); //SHOW the button
+                BtnData.setText(String.valueOf(count));
+            }
 
 
 
 
-    }
+
+
+        }else {
+            Toast.makeText(SimRegInfo.this, "Not Connected", Toast.LENGTH_SHORT).show();
+
+            setContentView(R.layout.activity_simactivityview);
+            editfname=(TextView)findViewById(R.id.efirstname);
+            editmname=(TextView)findViewById(R.id.emiddlename);
+            editlname=(TextView)findViewById(R.id.elastname);
+            TextView editmobile=(TextView)findViewById(R.id.emobilenumber);
+            editdate=(TextView)findViewById(R.id.edateofbirth);
+            kenya=findViewById(R.id.ekenian);
+            foreign=findViewById(R.id.eforien);
+            TextView editaltnumber=(TextView)findViewById(R.id.ealtirnativenumber);
+            TextView editemail=(TextView)findViewById(R.id.email);
+            TextView editphylocation=(TextView)findViewById(R.id.ephysicallocation);
+            TextView editpost=(TextView)findViewById(R.id.epostaladdress);
+            textB=findViewById(R.id.backpath);
+            textF=findViewById(R.id.frontpath);
+            textS=findViewById(R.id.sigpath);
+
+            editagent=(TextView)findViewById(R.id.eagentnum);
+            editidagent=(TextView)findViewById(R.id.eagentid);
+            Intent intent = SimRegInfo.this.getIntent();
+
+            sign= findViewById(R.id.bsigniture);
+            submit=findViewById(R.id.submitbtn);
+            frontid=findViewById(R.id.bfront);
+            backid=findViewById(R.id.bback);
+            activatesim=findViewById(R.id.activatesim);
+            checkBox=findViewById(R.id.chterms);
+
+            Spinner s = (Spinner)findViewById(R.id.spinner);
+            if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED){
+
+                ActivityCompat.requestPermissions(SimRegInfo.this,new String[]{
+                        Manifest.permission.CAMERA},100);
+                ActivityCompat.requestPermissions(SimRegInfo.this,new String[]{
+                        Manifest.permission.CAMERA},101);
+
+            }
+
+            File file = new File(SimRegInfo.this.getFilesDir(),"MSISDN.txt");
+            if(file.exists()) {
+
+                StringBuilder text = new StringBuilder();
+
+                try {
+                    FileInputStream fIn = SimRegInfo.this.openFileInput("MSISDN.txt");
+                    int c;
+                    String temp = "";
+
+                    while ((c = fIn.read()) != -1) {
+                        temp = temp + Character.toString((char) c);
+                    }
+                    text.append(temp);
+                    text.append('\n');
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+                Result=text.toString();
+                System.out.println("RESULT" +Result);
+                String[] data = Result.split(":");
+                String s0 = data[0];
+
+                editagent.setText(s0);
+            }
+            else
+            {
+                System.out.println("login filevdon't exist");
+            }
+            //counting the number of files
+            File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+            File[] files = dir.listFiles();
+             count =0;
+            for (File f: files)
+            {
+                String name = f.getName();
+                if (name.endsWith(".txt"))
+                    count++;
+                System.out.println("COUNT IS:" +count);
+            }
+            sign.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(editfname.getText().toString().matches("")||editlname.getText().toString().matches("")||editidagent.getText().toString().matches("")) {
+                        Toast.makeText(SimRegInfo.this, "INSERT YOUR NAME and  ID NUMBER", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Intent a = new Intent(getApplicationContext(), SimRegSignature.class);
+                        SIGN=editfname.getText().toString()+editlname.getText().toString()+"_SIGNATURE_"+editagent.getText().toString()+"_"+editidagent.getText().toString();
+                        a.putExtra("sign",SIGN);
+                        startActivity(a);
+                        textS.setText(SIGN);}
+                }
+            });
+            editdate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showDatePickerDialog();
+                }
+            });
+
+            submit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (editfname.getText().toString().matches("")){
+                        editfname.setError("Empty Field");
+                    }
+                    if (editmname.getText().toString().matches("")) {
+                        editmname.setError("Empty Field");
+                    }
+                    if(editlname.getText().toString().matches("")){
+                        editlname.setError("Empty Field");
+                    }
+                    if(editmobile.getText().toString().matches("")){
+                        editmobile.setError("Empty Field");
+                    }
+                    if(editaltnumber.getText().toString().matches("")){
+                        editaltnumber.setError("Empty Field");
+                    }
+                    if(editemail.getText().toString().matches("")) {
+                        editemail.setError("Empty Field");
+                    }
+                    if(editphylocation.getText().toString().matches("")){
+                        editphylocation.setError("Empty Field");
+                    }
+                    if(editpost.getText().toString().matches("")) {
+                        editpost.setError("Empty Field");
+                    }
+                    else{
+                        new AlertDialog.Builder(SimRegInfo.this)
+                                .setTitle("Submit")
+                                .setMessage("Are you sure you want to Submit this form?")
+
+                                // Specifying a listener allows you to take an action before dismissing the dialog.
+                                // The dialog is automatically dismissed when a dialog button is clicked.
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if (s.getSelectedItemPosition() == 0) {
+
+                                            gender = "Male";
+                                        }
+                                        if (s.getSelectedItemPosition() == 1) {
+
+                                            gender = "Female";
+                                        }
+                                        if (kenya.isChecked()) {
+                                            nationality = "Kenyan";
+                                        }
+                                        if (foreign.isChecked()) {
+                                            nationality = "Foreign";
+                                        }
+                                        try {
+                                            ActivityCompat.requestPermissions(SimRegInfo.this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},23);
+                                            File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+                                            dir.mkdirs();
+                                            String fileName = "SIM_" + editidagent.getText().toString() + ".txt";
+                                            File file = new File(dir,fileName);
+                                            FileWriter fw = new FileWriter(file.getAbsoluteFile());
+                                            BufferedWriter bw = new BufferedWriter(fw);
+                                            bw.write(editfname.getText().toString()+"\n");
+                                            bw.write(editmname.getText().toString()+"\n");
+                                            bw.write(editfname.getText().toString()+"\n");
+                                            bw.write(editmobile.getText().toString()+"\n");
+                                            bw.write(editdate.getText().toString()+"\n");
+                                            bw.write(nationality.toString()+"\n");
+                                            bw.write(editaltnumber.getText().toString()+"\n");
+                                            bw.write(editemail.getText().toString()+"\n");
+                                            bw.write(editphylocation.getText().toString()+"\n");
+                                            bw.write(editpost.getText().toString()+"\n");
+                                            bw.write(gender.toString()+"\n");
+                                            bw.write(editagent.getText().toString()+"\n");
+                                            bw.write(editidagent.getText().toString()+"\n");
+                                            bw.write(SIGN.toString()+"\n");
+                                            bw.write(FRONT.toString()+"\n");
+                                            bw.write(BACK.toString());
+                                            bw.close();
+                                            Toast.makeText(SimRegInfo.this, fileName+" is saved to\n" +dir, Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(SimRegInfo.this,SimRegOfflineDataActivity.class);
+                                            startActivity(intent);
+                                        } catch (FileNotFoundException e) {
+                                            e.printStackTrace();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+                                })
+
+                                // A null listener allows the button to dismiss the dialog and take no further action.
+                                .setNegativeButton(android.R.string.no, null)
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+
+                    }
+                } });
+            frontid.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(editfname.getText().toString().matches("")||editlname.getText().toString().matches("")||editidagent.getText().toString().matches("")) {
+                        Toast.makeText(SimRegInfo.this, "INSERT YOUR NAME and  ID NUMBER", Toast.LENGTH_SHORT).show();
+                    }
+                    else {Intent intent= new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(intent,100);}
+                }
+            });
+            backid.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(editfname.getText().toString().matches("")||editlname.getText().toString().matches("")||editidagent.getText().toString().matches("")) {
+                        Toast.makeText(SimRegInfo.this, "INSERT YOUR NAME and  ID NUMBER", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Intent intent= new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(intent,101);}
+                }
+            });
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked){
+                        submit.setEnabled(true);
+                    }
+                    else if(count >5) {
+                        submit.setEnabled(false);
+                    }
+                    else{
+                        submit.setEnabled(false);
+
+                    }
+                }
+            });
+            activatesim.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent a=new Intent(SimRegInfo.this,Activate_Sim.class);
+                    startActivity(a);
+                }
+            });
+            //BtnData appear in case offline files exist
+            Button BtnData = (Button)findViewById(R.id.BtnData);
+            BtnData.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(SimRegInfo.this,SimRegOfflineDataActivity.class);
+                    startActivity(i);
+                }
+            });
+            Button Btnmain = (Button)findViewById(R.id.BtnMainn);
+            Btnmain.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(SimRegInfo.this,MainActivity.class);
+                    startActivity(i);
+                }
+            });
+
+            if (count !=0)
+            {
+                BtnData.setVisibility(View.VISIBLE); //SHOW the button
+                BtnData.setText(String.valueOf(count));
+            }
+
+
+
+        }}
 
 
     public void connecttoDB() {

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0A5EA8"
+    >
+
+    <!-- display Main Page button -->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/offlinedataRecView"
+        android:layout_width="match_parent"
+        android:layout_height="565dp"
+        android:layout_marginTop="-1dp"
+        android:scrollbarSize="12dp"
+
+        android:scrollbars="vertical"
+        tools:layout_editor_absoluteX="191dp" />
+
+    <!-- display Bazk button -->
+    <Button
+        android:id="@+id/btnback"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginVertical="20dp"
+        android:textColor="@color/white"
+        android:text="BACK"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:backgroundTint="@color/red"
+        android:layout_alignParentRight="true"
+        />
+
+</RelativeLayout>
