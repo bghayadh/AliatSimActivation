@@ -34,7 +34,7 @@
 
     <Button
         android:id="@+id/btnmain"
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:layout_below="@id/simRecView"
         android:layout_alignParentRight="true"
@@ -42,39 +42,31 @@
         android:text="Main Page"
         android:textColor="@color/white"
         android:textSize="15dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:drawableRight="@mipmap/ic_main_page"/>
     <!-- display Main Page button -->
 
-    <Button
-        android:id="@+id/btndelete"
-        android:layout_width="150dp"
-        android:layout_height="60dp"
-        android:layout_below="@id/simRecView"
-        android:backgroundTint="@color/red"
-        android:text="Delete"
-        android:textStyle="bold" />
 
-    <EditText
+
+    <TextView
         android:id="@+id/textdate"
-        android:layout_width="150dp"
+        android:layout_width="match_parent"
         android:layout_height="60dp"
-
-        android:layout_marginTop="55dp"
-
-        android:layout_marginEnd="111dp"
-        android:layout_toStartOf="@+id/Btnselectdate"
-        android:ems="10"
+        android:layout_below="@id/btnnew"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="35dp"
+        android:layout_toRightOf="@id/Btnselectdate"
         android:inputType="date"
-        android:text="SELECTED DATE"
-        android:textColor="#FBFBFB" />
+        android:textSize="16dp"
+        android:hint="SELECTED DATE"
+        android:textColor="@color/white" />
 
     <TableLayout
         android:id="@+id/tableid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="120dp"
-        android:background="@drawable/cast_skip_ad_label_border"
-        android:stretchColumns="1,2,3,4,5">>
+        android:stretchColumns="1,2,3,4,5">
 
         <TableRow
             android:layout_width="wrap_content"
@@ -84,9 +76,9 @@
             <TextView
                 android:layout_column="1"
                 android:padding="3dp"
-                android:text="SIM ID"
+                android:text="REG ID"
                 android:textColor="@color/yellowheader"
-                android:textSize="14dp"
+                android:textSize="16dp"
                 android:textStyle="bold" />
 
             <TextView
@@ -94,7 +86,7 @@
                 android:padding="3dp"
                 android:text="NAME"
                 android:textColor="@color/yellowheader"
-                android:textSize="14dp"
+                android:textSize="16dp"
                 android:textStyle="bold" />
 
             <TextView
@@ -102,7 +94,7 @@
                 android:padding="3dp"
                 android:text="LAST NAME"
                 android:textColor="@color/yellowheader"
-                android:textSize="14dp"
+                android:textSize="16dp"
                 android:textStyle="bold" />
 
 
@@ -119,7 +111,7 @@
                 android:padding="2dp"
                 android:text="EMAIL"
                 android:textColor="@color/yellowheader"
-                android:textSize="14dp"
+                android:textSize="16dp"
                 android:textStyle="bold" />
 
         </TableRow>
@@ -137,14 +129,15 @@
 
     <Button
         android:id="@+id/Btnselectdate"
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
         android:layout_height="60dp"
-        android:layout_below="@+id/btnnew"
-        android:layout_alignParentRight="true"
+        android:drawableRight="@mipmap/ic_calender"
+        android:layout_alignParentLeft="true"
         android:layout_marginTop="0dp"
         android:backgroundTint="@color/red"
         android:text="Select Date"
         android:textColor="@color/white"
+        android:layout_below="@id/btnprevious"
         android:textSize="15dp"
         android:textStyle="bold" />
 

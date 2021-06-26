@@ -6,63 +6,84 @@
     android:layout_height="match_parent"
     android:background="#0A5EA8"
     tools:context=".UserLoginActivity">
-
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_spalsh"
+        android:layout_marginBottom="100dp">
+    </ImageView>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="MSISDN"
         android:layout_marginLeft="50dp"
-        android:layout_marginTop="162dp"
+        android:layout_marginTop="130dp"
         android:id="@+id/phnbr"
-        android:textColor="@color/yellow">
+        android:textStyle="bold"
+        android:textSize="25dp"
+        android:textColor="@color/yellowheader">
     </TextView>
 
     <!--edit text for MSISDN-->
     <EditText
-        android:layout_width="200dp"
+        android:layout_width="190dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:hint="Phone Number"
         android:id="@+id/edtphnbr"
-        android:layout_marginTop="150dp"
-        android:layout_marginLeft="160dp">
+        android:textSize="25dp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:layout_toRightOf="@id/phnbr"
+        android:layout_marginTop="120dp"
+        >
     </EditText>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="PIN"
-        android:layout_marginLeft="50dp"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:layout_marginLeft="78dp"
         android:layout_marginTop="15dp"
         android:layout_below="@+id/phnbr"
         android:id="@+id/loginpin"
-        android:textColor="@color/yellow">
+        android:textColor="@color/yellowheader">
     </TextView>
 
     <!--edit text for PIN-->
     <EditText
-        android:layout_width="200dp"
+        android:layout_width="190dp"
         android:layout_height="wrap_content"
         android:hint="PIN"
+        android:textSize="25dp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:layout_marginStart="37dp"
         android:layout_below="@+id/edtphnbr"
         android:id="@+id/edtloginpin"
-        android:inputType="numberPassword"
-        android:layout_marginLeft="160dp">
+        android:layout_toRightOf="@id/loginpin"
+        android:inputType="numberPassword">
     </EditText>
 
     <Button
         android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:text="LOGIN"
-        android:layout_centerInParent="true"
+        android:layout_marginTop="340dp"
+        android:layout_marginStart="107dp"
         android:id="@+id/login"
+        android:textSize="25dp"
         android:backgroundTint="@color/red">
     </Button>
     <Button
         android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:text="Sign Up"
         android:id="@+id/signup"
         android:layout_centerInParent="true"
+        android:textSize="25dp"
         android:layout_below="@+id/login"
         android:backgroundTint="@color/red">
     </Button>

@@ -18,7 +18,7 @@
         android:textStyle="bold"
         android:textSize="15dp"
         android:backgroundTint="@color/red"
-        android:drawableRight="@drawable/ic_baseline_assignment_ind_24"
+        android:drawableRight="@mipmap/ic_sim_card"
         style="@style/Widget.MaterialComponents.Button"
         />
 
@@ -33,7 +33,7 @@
         android:layout_below="@+id/Btnsimreg"
         android:layout_marginStart="1dp"
         android:text="MOBILE CHARGE"
-        android:drawableRight="@drawable/ic_baseline_phonelink_ring_24"
+        android:drawableRight="@mipmap/ic_mobile_charge"
         android:textStyle="bold"
         android:textSize="15dp"
         android:backgroundTint="@color/red"
@@ -51,7 +51,7 @@
         android:layout_marginStart="1dp"
         android:textStyle="bold"
         android:textSize="15dp"
-        android:drawableRight="@drawable/ic_baseline_business_24"
+        android:drawableRight="@mipmap/ic_reseller_charge"
         android:backgroundTint="@color/red"
         android:layout_below="@+id/Btnmobcharge"
         style="@style/Widget.MaterialComponents.Button"

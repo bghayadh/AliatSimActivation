@@ -144,9 +144,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         TextView editemail=(TextView)findViewById(R.id.email);
         TextView editphylocation=(TextView)findViewById(R.id.ephysicallocation);
         TextView editpost=(TextView)findViewById(R.id.epostaladdress);
-        textB=findViewById(R.id.backpath);
-        textF=findViewById(R.id.frontpath);
-        textS=findViewById(R.id.sigpath);
+
 
         editagent=(TextView)findViewById(R.id.eagentnum);
          editidagent=(TextView)findViewById(R.id.eagentid);
@@ -248,9 +246,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             s.setSelection(1);
                         }
                         editidagent.setText(rs1.getString("AGENT_ID"));
-                        textF.setText(rs1.getString("ID_FRONT_SIDE_PHOTO"));
-                        textB.setText(rs1.getString("ID_BACK_SID_PHOTO"));
-                        textS.setText(rs1.getString("SIGNATURE"));
+
 
 
 
@@ -528,9 +524,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             TextView editemail=(TextView)findViewById(R.id.email);
             TextView editphylocation=(TextView)findViewById(R.id.ephysicallocation);
             TextView editpost=(TextView)findViewById(R.id.epostaladdress);
-            textB=findViewById(R.id.backpath);
-            textF=findViewById(R.id.frontpath);
-            textS=findViewById(R.id.sigpath);
+
 
             editagent=(TextView)findViewById(R.id.eagentnum);
             editidagent=(TextView)findViewById(R.id.eagentid);

@@ -5,12 +5,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent" android:layout_width="match_parent"
+    android:layout_height="wrap_content" android:layout_width="match_parent"
     android:background="#0A5EA8">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:padding="40dp"
         tools:context=".MainActivity"
         android:background="#0A5EA8">
@@ -18,13 +18,15 @@
 
         <Button
             android:id="@+id/BtnMainn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="160dp"
+            android:layout_height="60dp"
             android:layout_below="@id/submitbtn"
             android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="20dp"
             android:backgroundTint="@color/red"
-            android:text="MainPage"
-            tools:layout_below="@id/submitbtn" />
+            android:drawableRight="@mipmap/ic_main_page"
+            android:text="Main Page" />
 
         <TextView
             android:id="@+id/firstname"
@@ -342,14 +344,6 @@
             android:backgroundTint="@color/red"
             android:text="Sign Please" />
 
-        <TextView
-            android:id="@+id/sigpath"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/spinner"
-            android:layout_marginTop="80dp"
-            android:layout_toRightOf="@id/bsigniture"
-            android:backgroundTint="@color/red" />
 
 
         <TextView
@@ -374,14 +368,7 @@
             android:backgroundTint="@color/red"
             android:text="Front Image" />
 
-        <TextView
-            android:id="@+id/frontpath"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/bsigniture"
-            android:layout_marginTop="21dp"
-            android:layout_toRightOf="@+id/bfront"
-            android:backgroundTint="@color/red" />
+
 
         <TextView
             android:id="@+id/textView14"
@@ -407,23 +394,16 @@
 
         <Button
             android:id="@+id/activatesim"
-            android:layout_width="108dp"
-            android:layout_height="wrap_content"
+            android:layout_width="160dp"
+            android:layout_height="60dp"
             android:layout_below="@id/chterms"
             android:layout_marginTop="16dp"
-            android:layout_toLeftOf="@+id/submitbtn"
-            android:layout_marginRight="50dp"
+            android:layout_toLeftOf="@+id/BtnData"
+            android:drawableRight="@mipmap/ic_activate"
             android:backgroundTint="@color/red"
             android:text="Activate" />
 
-        <TextView
-            android:id="@+id/backpath"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/bfront"
-            android:layout_marginTop="27dp"
-            android:layout_toRightOf="@+id/bback"
-            android:backgroundTint="@color/red" />
+
 
         <CheckBox
             android:id="@+id/chterms"
@@ -449,19 +429,19 @@
             android:visibility="gone"
             app:cornerRadius="50dp"></com.google.android.material.button.MaterialButton>
 
-        <com.google.android.material.button.MaterialButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+        <Button
+            android:layout_width="160dp"
+            android:layout_height="60dp"
+            android:text="Save"
             android:layout_below="@id/chterms"
-            android:drawableTop="@drawable/ic_baseline_send_24"
+            android:drawableRight="@mipmap/ic_submit"
             android:id="@+id/submitbtn"
             android:textColor="@color/white"
-            app:cornerRadius="50dp"
             android:layout_marginTop="15dp"
-            android:layout_alignParentRight="true"
-            style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
-            android:backgroundTint="@color/red">
-        </com.google.android.material.button.MaterialButton>
+            android:layout_marginStart="10dp"
+            android:layout_toRightOf="@id/activatesim"
+             android:backgroundTint="@color/red">
+        </Button>
     </RelativeLayout>
 
 
