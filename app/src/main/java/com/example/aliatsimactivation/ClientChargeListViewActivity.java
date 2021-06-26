@@ -21,8 +21,11 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class ClientChargeListViewActivity extends AppCompatActivity{
     private RecyclerView mobilechargeRecView;
@@ -35,216 +38,186 @@ public class ClientChargeListViewActivity extends AppCompatActivity{
     TextView editTextdate;
     DatePickerDialog datePickerDialog;
 
-     @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
-         super.onCreate (savedInstanceState);
-         setContentView (R.layout.activity_mobile_charge_list_view);
-         btnprevious = findViewById (R.id.btnprevious);
-         btnnext = findViewById (R.id.btnnext);
-         btnnew = findViewById (R.id.btnnew);
-         btndate = findViewById (R.id.btndate);
-         btnmain = findViewById (R.id.btnmain);
-         editTextdate = findViewById (R.id.editTextdate);
+        super.onCreate (savedInstanceState);
+        setContentView (R.layout.activity_mobile_charge_list_view);
+        btnprevious = findViewById (R.id.btnprevious);
+        btnnext = findViewById (R.id.btnnext);
+        btnnew = findViewById (R.id.btnnew);
+        btndate = findViewById (R.id.btndate);
+        btnmain = findViewById (R.id.btnmain);
+        editTextdate = findViewById (R.id.editTextdate);
 
 
-             // get mobilecharge data by default
-             GetMobileChargeData (1, 10);
+        // get mobilecharge data by default
+        GetMobileChargeData (1, 10);
 
-             // button new
-             btnnew.setOnClickListener (new View.OnClickListener ( ) {
-                 @Override
-                 public void onClick(View v) {
-                     // call bla(Vnk new page of siteinfo
-                     openMobileChargeInfoActivity ( );
+        // button new
+        btnnew.setOnClickListener (new View.OnClickListener ( ) {
+            @Override
+            public void onClick(View v) {
+                // call bla(Vnk new page of siteinfo
+                openMobileChargeInfoActivity ( );
 
-                 }
+            }
 
-                 public void openMobileChargeInfoActivity() {
-                     Intent intent = new Intent (ClientChargeListViewActivity.this, ClientChargeInfoActivity.class);
-                     intent.putExtra ("message_key", "0");
-                     startActivity (intent);
-                 }
+            public void openMobileChargeInfoActivity() {
+                Intent intent = new Intent (ClientChargeListViewActivity.this, ClientChargeInfoActivity.class);
+                intent.putExtra ("message_key", "0");
+                startActivity (intent);
+            }
 
-             });
+        });
 
-             //button previuos
-             btnprevious.setOnClickListener (new View.OnClickListener ( ) {
-                 @Override
-                 public void onClick(View v) {
-                     pagination = pagination - 2;
-                     if (pagination <= 0) {
-                         pagination = 0;
-                     }
-                     GetMobileChargeData (( pagination * 10 ) + 1, ( pagination * 10 ) + 10);
-                 }
+        //button previuos
+        btnprevious.setOnClickListener (new View.OnClickListener ( ) {
+            @Override
+            public void onClick(View v) {
+                pagination = pagination - 2;
+                if (pagination <= 0) {
+                    pagination = 0;
+                }
+                GetMobileChargeData (( pagination * 10 ) + 1, ( pagination * 10 ) + 10);
+            }
 
-             });
+        });
 
-             //button Next
-             btnnext.setOnClickListener (new View.OnClickListener ( ) {
-                 @Override
-                 public void onClick(View v) {
-                     GetMobileChargeData (( pagination * 10 ) + 1, ( pagination * 10 ) + 10);
-                 }
-             });
+        //button Next
+        btnnext.setOnClickListener (new View.OnClickListener ( ) {
+            @Override
+            public void onClick(View v) {
+                GetMobileChargeData (( pagination * 10 ) + 1, ( pagination * 10 ) + 10);
+            }
+        });
 
-
-             // getting the current date (sysdate from database)
-             connecttoDB ( );
-
-             Statement stmt1 = null;
-             try {
-                 stmt1 = connmobilecharge.createStatement ( );
-             } catch (SQLException throwables) {
-                 throwables.printStackTrace ( );
-             }
-             String sqlStmt = "select to_char(sysdate,'YYYY-MON-DD') from MOBILE_CHARGE";
-             ResultSet rs1 = null;
-             try {
-                 rs1 = stmt1.executeQuery (sqlStmt);
-             } catch (SQLException throwables) {
-                 throwables.printStackTrace ( );
-             }
-             while (true) {
-                 try {
-                     if (!rs1.next ( )) break;
-                     editTextdate.setText (rs1.getString("to_char(sysdate,'YYYY-MON-DD')"));
-
-                 } catch (SQLException throwables) {
-                     throwables.printStackTrace ( );
-                 }
-             }
-             try {
-                 rs1.close ( );
-             } catch (SQLException throwables) {
-                 throwables.printStackTrace ( );
-             }
-             try {
-                 stmt1.close ( );
-                 connmobilecharge.close ( );
-             } catch (SQLException throwables) {
-                 throwables.printStackTrace ( );
-             }
-
-             //button Date
-             btndate.setOnClickListener (new View.OnClickListener ( ) {
-                 @Override
-                 public void onClick(View v) {
-                     Calendar c = Calendar.getInstance ( );
-                     int year = c.get (Calendar.YEAR);
-                     int month = c.get (Calendar.MONTH);
-                     int dayOfMonth = c.get (Calendar.DAY_OF_MONTH);
-                     datePickerDialog = new DatePickerDialog (ClientChargeListViewActivity.this,
-                             new DatePickerDialog.OnDateSetListener ( ) {
-                                 @Override
-                                 public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                                     if (day < 10 && month < 9) {
-                                         editTextdate.setText (year + "-0" + ( month + 1 ) + "-0" + day);
-                                     }
-                                     if (day > 10 && month < 9) {
-                                         editTextdate.setText (year + "-0" + ( month + 1 ) + "-" + day);
-                                     }
-                                     if (day < 10 && month > 9) {
-                                         editTextdate.setText (year + "-" + ( month + 1 ) + "-0" + day);
-                                     }
-                                     if (day > 10 && month > 9) {
-                                         editTextdate.setText (year + "-" + ( month + 1 ) + "-" + day);
-                                     }
-                                 }
-                             }, year, month, dayOfMonth);
-                     datePickerDialog.show ( );
-
-                 }
-
-             });
-
-             // On TextChanged action
-             editTextdate = (TextView) findViewById (R.id.editTextdate);
-             editTextdate.addTextChangedListener (new TextWatcher ( ) {
-
-                 public void afterTextChanged(Editable s) {
-                 }
-
-                 public void beforeTextChanged(CharSequence s, int start,
-                                               int count, int after) {
-                 }
-
-                 public void onTextChanged(CharSequence s, int start,
-                                           int before, int count) {
-                     connecttoDB();
-                     mobilechargeRecView = findViewById (R.id.mobilechargeRecView);
-                     mobilecharge = new ArrayList<> ( );
-                     mobilechargedb = new ArrayList<> ( );
-
-                     //Add data for moobilechargelistview recyclerview
-                     Statement stmt2 = null;
-                     int i = 0;
-                     try {
-                         stmt2 = connmobilecharge.createStatement ( );
-                     } catch (SQLException throwables) {
-                         throwables.printStackTrace ( );
-                     }
-
-                     String sqlStmt2 = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY MOB_CHARGE_ID) row_num,MOB_CHARGE_ID,AGENT_SUB_NUMBER,CLIENT_SUB_NUMBER,CHARGED_DATE,AMOUNT,RECHARGE_STATUS, TOTAL_BALANCE from MOBILE_CHARGE order by MOB_CHARGE_ID) T WHERE TO_CHAR(CHARGED_DATE, 'YYYY-MM-DD') = '" + editTextdate.getText ( ) + "' ";
-
-                     ResultSet rs2 = null;
-                     try {
-                         rs2 = stmt2.executeQuery (sqlStmt2);
-                     } catch (SQLException throwables) {
-                         throwables.printStackTrace ( );
-                     }
-                     while (true) {
-                         try {
-                             if (!rs2.next ( )) break;
-                             arraysize = arraysize + 1;
-                             mobilechargedb.add (new ClientChargeListView(rs2.getString ("MOB_CHARGE_ID"), rs2.getString ("AGENT_SUB_NUMBER"), rs2.getString ("CLIENT_SUB_NUMBER"), rs2.getString ("AMOUNT"), rs2.getString ("RECHARGE_STATUS")));
-                         } catch (SQLException throwables) {
-                             throwables.printStackTrace ( );
-                         }
-                     }
-                     try {
-                         rs2.close ( );
-                     } catch (SQLException throwables) {
-                         throwables.printStackTrace ( );
-                     }
-                     try {
-                         stmt2.close ( );
-                         connmobilecharge.close ( );
-                     } catch (SQLException throwables) {
-                         throwables.printStackTrace ( );
-                     }
-                     arraysize = mobilechargedb.size ( );
-                     if (arraysize > 0) {
-                         //System.out.println("Array Size is : "+arraysize);
-                         mobilecharge.clear ( );
-                         varraysize = 0;
-                         for (i = varraysize; i < 10; i++) {
-                             if (varraysize < arraysize) {
-                                 mobilecharge.add (new ClientChargeListView(mobilechargedb.get (i).getMOBCHARGEID ( ), mobilechargedb.get (i).getAGENTSUBNUM ( ), mobilechargedb.get (i).getCLIENTSUBNUM ( ), mobilechargedb.get (i).getAMOUNT ( ), mobilechargedb.get (i).getRECHARGESTATUS ( )));
-                                 varraysize = varraysize + 1;
-                             }
-                         }
-                         pagination = pagination + 1;
-                         //connect data to coveragelistadapter
-                         ClientChargeRecViewAdapter adapter = new ClientChargeRecViewAdapter(ClientChargeListViewActivity.this);
-                         adapter.setContacts (mobilecharge);
-                         mobilechargeRecView.setAdapter (adapter);
-                         mobilechargeRecView.setLayoutManager (new LinearLayoutManager (ClientChargeListViewActivity.this));
-                     }
-                 }
-             });
+        // getting the current date
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df=new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        editTextdate.setText(df.format(c));
 
 
-             //// return to main page
-             btnmain.setOnClickListener (new View.OnClickListener ( ) {
-                 @Override
-                 public void onClick(View v) {
+        connecttoDB ( );
 
-                     Intent intent = new Intent (getApplicationContext ( ), MainActivity.class);
-                     startActivity (intent);
-                 }
-             });
-         }
+        //button Date
+        btndate.setOnClickListener (new View.OnClickListener ( ) {
+            @Override
+            public void onClick(View v) {
+                Calendar c = Calendar.getInstance ( );
+                int year = c.get (Calendar.YEAR);
+                int month = c.get (Calendar.MONTH);
+                int dayOfMonth = c.get (Calendar.DAY_OF_MONTH);
+                datePickerDialog = new DatePickerDialog (ClientChargeListViewActivity.this,
+                        new DatePickerDialog.OnDateSetListener ( ) {
+                            @Override
+                            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                                if (day < 10 && month < 9) {
+                                    editTextdate.setText (year + "-0" + ( month + 1 ) + "-0" + day);
+                                }
+                                if (day > 10 && month < 9) {
+                                    editTextdate.setText (year + "-0" + ( month + 1 ) + "-" + day);
+                                }
+                                if (day < 10 && month > 9) {
+                                    editTextdate.setText (year + "-" + ( month + 1 ) + "-0" + day);
+                                }
+                                if (day > 10 && month > 9) {
+                                    editTextdate.setText (year + "-" + ( month + 1 ) + "-" + day);
+                                }
+                            }
+                        }, year, month, dayOfMonth);
+                datePickerDialog.show ( );
+
+            }
+
+        });
+
+        // On TextChanged action
+        editTextdate = (TextView) findViewById (R.id.editTextdate);
+        editTextdate.addTextChangedListener (new TextWatcher ( ) {
+
+            public void afterTextChanged(Editable s) {
+            }
+
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                connecttoDB();
+                mobilechargeRecView = findViewById (R.id.mobilechargeRecView);
+                mobilecharge = new ArrayList<> ( );
+                mobilechargedb = new ArrayList<> ( );
+
+                //Add data for moobilechargelistview recyclerview
+                Statement stmt2 = null;
+                int i = 0;
+                try {
+                    stmt2 = connmobilecharge.createStatement ( );
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace ( );
+                }
+
+                String sqlStmt2 = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY MOB_CHARGE_ID) row_num,MOB_CHARGE_ID,AGENT_SUB_NUMBER,CLIENT_SUB_NUMBER,CHARGED_DATE,AMOUNT,RECHARGE_STATUS, TOTAL_BALANCE from MOBILE_CHARGE order by MOB_CHARGE_ID) T WHERE TO_CHAR(CHARGED_DATE, 'YYYY-MM-DD') = '" + editTextdate.getText ( ) + "' ";
+
+                ResultSet rs2 = null;
+                try {
+                    rs2 = stmt2.executeQuery (sqlStmt2);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace ( );
+                }
+                while (true) {
+                    try {
+                        if (!rs2.next ( )) break;
+                        arraysize = arraysize + 1;
+                        mobilechargedb.add (new ClientChargeListView(rs2.getString ("MOB_CHARGE_ID"), rs2.getString ("CLIENT_SUB_NUMBER"), rs2.getString ("AMOUNT"), rs2.getString ("RECHARGE_STATUS")));
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace ( );
+                    }
+                }
+                try {
+                    rs2.close ( );
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace ( );
+                }
+                try {
+                    stmt2.close ( );
+                    connmobilecharge.close ( );
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace ( );
+                }
+                arraysize = mobilechargedb.size ( );
+                if (arraysize > 0) {
+                    //System.out.println("Array Size is : "+arraysize);
+                    mobilecharge.clear ( );
+                    varraysize = 0;
+                    for (i = varraysize; i < 10; i++) {
+                        if (varraysize < arraysize) {
+                            mobilecharge.add (new ClientChargeListView(mobilechargedb.get (i).getMOBCHARGEID ( ), mobilechargedb.get (i).getCLIENTSUBNUM ( ), mobilechargedb.get (i).getAMOUNT ( ), mobilechargedb.get (i).getRECHARGESTATUS ( )));
+                            varraysize = varraysize + 1;
+                        }
+                    }
+                    pagination = pagination + 1;
+                    //connect data to coveragelistadapter
+                    ClientChargeRecViewAdapter adapter = new ClientChargeRecViewAdapter(ClientChargeListViewActivity.this);
+                    adapter.setContacts (mobilecharge);
+                    mobilechargeRecView.setAdapter (adapter);
+                    mobilechargeRecView.setLayoutManager (new LinearLayoutManager (ClientChargeListViewActivity.this));
+                }
+            }
+        });
+
+
+        //// return to main page
+        btnmain.setOnClickListener (new View.OnClickListener ( ) {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent (getApplicationContext ( ), MainActivity.class);
+                startActivity (intent);
+            }
+        });
+    }
 
 
 
@@ -254,27 +227,27 @@ public class ClientChargeListViewActivity extends AppCompatActivity{
         String url = oradb.getoraurl ();
         String userName = oradb.getorausername ();
         String password = oradb.getorapwd ();
-            try {
-                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder ( ).permitAll ( ).build ( );
-                StrictMode.setThreadPolicy (policy);
-                System.out.println ("BEFORE");
-                Class.forName ("oracle.jdbc.driver.OracleDriver").newInstance ( );
-                System.out.println ("AFTER 1");
-                    connmobilecharge = DriverManager.getConnection (url, userName, password);
-                    System.out.println ("AFTER 2");
-                }
-                  catch (IllegalArgumentException | ClassNotFoundException | SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
-                    System.out.println ("error1 is: " + e.toString ( ));
-                    Toast.makeText (ClientChargeListViewActivity.this, "" + e.toString ( ), Toast.LENGTH_SHORT).show ( );
-                    Intent intent = new Intent (getApplicationContext ( ), MainActivity.class);
-                    startActivity (intent);
-               }   catch (IllegalAccessException e) {
-                System.out.println("error2 is: " +e.toString());
-                Toast.makeText (ClientChargeListViewActivity.this,"" +e.toString(),Toast.LENGTH_SHORT).show ();
-                }   catch (java.lang.InstantiationException e) {
-                System.out.println("error3 is: " +e.toString());
-                Toast.makeText (ClientChargeListViewActivity.this,"" +e.toString(),Toast.LENGTH_SHORT).show ();
-                }
+        try {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder ( ).permitAll ( ).build ( );
+            StrictMode.setThreadPolicy (policy);
+            System.out.println ("BEFORE");
+            Class.forName ("oracle.jdbc.driver.OracleDriver").newInstance ( );
+            System.out.println ("AFTER 1");
+            connmobilecharge = DriverManager.getConnection (url, userName, password);
+            System.out.println ("AFTER 2");
+        }
+        catch (IllegalArgumentException | ClassNotFoundException | SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
+            System.out.println ("error1 is: " + e.toString ( ));
+            Toast.makeText (ClientChargeListViewActivity.this, "" + e.toString ( ), Toast.LENGTH_SHORT).show ( );
+            Intent intent = new Intent (getApplicationContext ( ), MainActivity.class);
+            startActivity (intent);
+        }   catch (IllegalAccessException e) {
+            System.out.println("error2 is: " +e.toString());
+            Toast.makeText (ClientChargeListViewActivity.this,"" +e.toString(),Toast.LENGTH_SHORT).show ();
+        }   catch (InstantiationException e) {
+            System.out.println("error3 is: " +e.toString());
+            Toast.makeText (ClientChargeListViewActivity.this,"" +e.toString(),Toast.LENGTH_SHORT).show ();
+        }
     }
 
 
@@ -282,67 +255,67 @@ public class ClientChargeListViewActivity extends AppCompatActivity{
 
         connecttoDB();
 
-                 // define recyclerview of mobilechargelistview
-            mobilechargeRecView=findViewById(R.id.mobilechargeRecView);
-            mobilecharge =new ArrayList<>();
-            mobilechargedb=new ArrayList<>();
+        // define recyclerview of mobilechargelistview
+        mobilechargeRecView=findViewById(R.id.mobilechargeRecView);
+        mobilecharge =new ArrayList<>();
+        mobilechargedb=new ArrayList<>();
 
-            //Add data for moobilechargelistview recyclerview
-            Statement stmt1 = null;
-            int i=0;
+        //Add data for moobilechargelistview recyclerview
+        Statement stmt1 = null;
+        int i=0;
+        try {
+            stmt1 = connmobilecharge.createStatement();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        String  sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY MOB_CHARGE_ID) row_num,MOB_CHARGE_ID,AGENT_SUB_NUMBER,CLIENT_SUB_NUMBER, AMOUNT,RECHARGE_STATUS, TOTAL_BALANCE from MOBILE_CHARGE order by MOB_CHARGE_ID) T WHERE row_num >= '" + vfrom +"' AND row_num <='" + vto +"'";
+
+        ResultSet rs1 = null;
+        try {
+            rs1 = stmt1.executeQuery(sqlStmt);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        while (true) {
             try {
-                stmt1 = connmobilecharge.createStatement();
+                if (!rs1.next()) break;
+                arraysize=arraysize+1;
+                mobilechargedb.add(new ClientChargeListView(rs1.getString("MOB_CHARGE_ID"),rs1.getString("CLIENT_SUB_NUMBER"),rs1.getString("AMOUNT"),rs1.getString("RECHARGE_STATUS")));
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
+        }
+        try {
+            rs1.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        try {
+            stmt1.close();
+            connmobilecharge.close ();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        arraysize=mobilechargedb.size ();
 
-            String  sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY MOB_CHARGE_ID) row_num,MOB_CHARGE_ID,AGENT_SUB_NUMBER,CLIENT_SUB_NUMBER, AMOUNT,RECHARGE_STATUS, TOTAL_BALANCE from MOBILE_CHARGE order by MOB_CHARGE_ID) T WHERE row_num >= '" + vfrom +"' AND row_num <='" + vto +"'";
-
-            ResultSet rs1 = null;
-            try {
-                rs1 = stmt1.executeQuery(sqlStmt);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-            while (true) {
-                try {
-                    if (!rs1.next()) break;
-                    arraysize=arraysize+1;
-                    mobilechargedb.add(new ClientChargeListView(rs1.getString("MOB_CHARGE_ID"),rs1.getString("AGENT_SUB_NUMBER"),rs1.getString("CLIENT_SUB_NUMBER"),rs1.getString("AMOUNT"),rs1.getString("RECHARGE_STATUS")));
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
+        if (arraysize >0) {
+            //System.out.println("Array Size is : "+arraysize);
+            mobilecharge.clear ( );
+            varraysize = 0;
+            for (i = varraysize; i < 10; i++) {
+                if (varraysize < arraysize) {
+                    mobilecharge.add (new ClientChargeListView(mobilechargedb.get (i).getMOBCHARGEID ( ), mobilechargedb.get (i).getCLIENTSUBNUM ( ), mobilechargedb.get (i).getAMOUNT ( ), mobilechargedb.get (i).getRECHARGESTATUS ( )));
+                    varraysize = varraysize + 1;
                 }
             }
-            try {
-                rs1.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-            try {
-                stmt1.close();
-                connmobilecharge.close ();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-            arraysize=mobilechargedb.size ();
-
-            if (arraysize >0) {
-                //System.out.println("Array Size is : "+arraysize);
-                mobilecharge.clear ( );
-                varraysize = 0;
-                for (i = varraysize; i < 10; i++) {
-                    if (varraysize < arraysize) {
-                        mobilecharge.add (new ClientChargeListView(mobilechargedb.get (i).getMOBCHARGEID ( ), mobilechargedb.get (i).getAGENTSUBNUM ( ), mobilechargedb.get (i).getCLIENTSUBNUM ( ), mobilechargedb.get (i).getAMOUNT ( ), mobilechargedb.get (i).getRECHARGESTATUS ( )));
-                        varraysize = varraysize + 1;
-                    }
-                }
-                pagination = pagination + 1;
-                //connect data to coveragelistadapter
-                ClientChargeRecViewAdapter adapter = new ClientChargeRecViewAdapter(ClientChargeListViewActivity.this);
-                adapter.setContacts (mobilecharge);
-                mobilechargeRecView.setAdapter (adapter);
-                mobilechargeRecView.setLayoutManager (new LinearLayoutManager(ClientChargeListViewActivity.this));
-            }
+            pagination = pagination + 1;
+            //connect data to coveragelistadapter
+            ClientChargeRecViewAdapter adapter = new ClientChargeRecViewAdapter(ClientChargeListViewActivity.this);
+            adapter.setContacts (mobilecharge);
+            mobilechargeRecView.setAdapter (adapter);
+            mobilechargeRecView.setLayoutManager (new LinearLayoutManager(ClientChargeListViewActivity.this));
+        }
 
 
 

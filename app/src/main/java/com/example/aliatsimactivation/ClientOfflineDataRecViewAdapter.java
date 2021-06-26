@@ -42,14 +42,14 @@ public class ClientOfflineDataRecViewAdapter extends RecyclerView.Adapter<Client
 
     @NonNull
     @Override
-    public ClientOfflineDataRecViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.offline_list_item,parent,false);
-        ClientOfflineDataRecViewAdapter.ViewHolder holder =new ClientOfflineDataRecViewAdapter.ViewHolder (view);
+        ViewHolder holder =new ViewHolder (view);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ClientOfflineDataRecViewAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.txttitle.setText(offlinedata.get(position).getTITLE ());
 
         holder.parent.setOnClickListener(new View.OnClickListener() {
@@ -129,31 +129,31 @@ public class ClientOfflineDataRecViewAdapter extends RecyclerView.Adapter<Client
                     calendar.setTime(date);
                     int year = calendar.get(Calendar.YEAR);
                     String mobchargeID;
-                    mobchargeID = "MOB_CHARGE_" + year + "_";
+                    mobchargeID = "MOB_CHG_" + year + "_";
                     String globalmobchargeid = "";
                     try {
                         // if it is a new MOB_charge we will use insert
-                            Statement stmt = null;
-                            stmt = conn.createStatement();
-                            String sqlStmt = "select MOB_CHARGE_SEQ.nextval as nbr from dual";
-                            ResultSet rs = null;
+                        Statement stmt = null;
+                        stmt = conn.createStatement();
+                        String sqlStmt = "select MOB_CHARGE_SEQ.nextval as nbr from dual";
+                        ResultSet rs = null;
+                        try {
+                            rs = stmt.executeQuery(sqlStmt);
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+
+                        while (true) {
                             try {
-                                rs = stmt.executeQuery(sqlStmt);
+                                if (!rs.next()) break;
+                                globalmobchargeid = mobchargeID + rs.getString("nbr");
+
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
                             }
-
-                            while (true) {
-                                try {
-                                    if (!rs.next()) break;
-                                    globalmobchargeid = mobchargeID + rs.getString("nbr");
-
-                                } catch (SQLException throwables) {
-                                    throwables.printStackTrace();
-                                }
-                            }
-                            rs.close();
-                            stmt.close();
+                        }
+                        rs.close();
+                        stmt.close();
 
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
@@ -219,7 +219,7 @@ public class ClientOfflineDataRecViewAdapter extends RecyclerView.Adapter<Client
         } catch (IllegalAccessException e) {
             System.out.println("error is: " + e.toString());
             Toast.makeText(context, "" + e.toString(), Toast.LENGTH_SHORT).show();
-        } catch (java.lang.InstantiationException e) {
+        } catch (InstantiationException e) {
             System.out.println("error is: " + e.toString());
         }
     }

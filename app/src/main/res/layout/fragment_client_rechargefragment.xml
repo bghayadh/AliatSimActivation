@@ -124,6 +124,7 @@
         android:textStyle="bold"
         android:layout_below="@+id/txtstatus"
         android:backgroundTint="@color/red"
+        android:drawableRight="@drawable/ic_baseline_phonelink_ring_24"
         />
 
     <Button
@@ -135,10 +136,11 @@
         android:textStyle="bold"
         android:layout_below="@+id/txtstatus"
         android:layout_toRightOf="@+id/btnrecharge"
+        android:drawableRight="@drawable/ic_baseline_phonelink_ring_24"
         android:backgroundTint="@color/red"
         />
 
-    <EditText
+    <TextView
         android:id="@+id/editTextcodehere"
         android:layout_width="400dp"
         android:layout_height="50dp"
@@ -196,6 +198,7 @@
         android:layout_toRightOf="@+id/btndelete"
         android:layout_alignParentBottom="true"
         android:backgroundTint="@color/red"
+        android:drawableRight="@mipmap/ic_main_page"
         />
 
     <TextView

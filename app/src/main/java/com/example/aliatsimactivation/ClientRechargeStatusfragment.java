@@ -6,11 +6,6 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -23,16 +18,22 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -114,6 +115,11 @@ public class ClientRechargeStatusfragment extends Fragment {
         Button btnnext = (Button) V.findViewById(R.id.btnnext);
         remainstatusRecView = V.findViewById(R.id.remainstatusRecView);
         Spinner remainSpinner = (Spinner) V.findViewById(R.id.remainSpinner);
+
+
+            Date c = Calendar.getInstance().getTime();
+            SimpleDateFormat df=new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+            editTextdate.setText(df.format(c));
 
 
         // Creating the status remainig spinner

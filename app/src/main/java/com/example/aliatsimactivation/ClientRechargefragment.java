@@ -263,7 +263,7 @@ public class ClientRechargefragment extends Fragment {
                     calendar.setTime(date);
                     int year = calendar.get(Calendar.YEAR);
                     String mobchargeID;
-                    mobchargeID = "MOB_CHARGE_" + year + "_";
+                    mobchargeID = "MOB_CHG_" + year + "_";
 
                     // connect to Oracle DB
                     connecttoDB();
@@ -606,7 +606,7 @@ public class ClientRechargefragment extends Fragment {
 
         }
 
-            return V;
+        return V;
     }
 
     public void connecttoDB() {

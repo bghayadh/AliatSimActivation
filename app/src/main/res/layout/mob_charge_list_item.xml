@@ -13,8 +13,8 @@
         android:background="#F50CFA03" />
 
     <TextView
-        android:layout_width="133dp"
-        android:layout_height="20dp"
+        android:layout_width="135dp"
+        android:layout_height="30dp"
         android:id="@+id/txtmobchargeid"
         android:textStyle="bold"
         android:textColor="@color/white"
@@ -23,10 +23,11 @@
         />
 
     <TextView
-        android:layout_width="133dp"
-        android:layout_height="20dp"
-        android:id="@+id/txtagentsubnumber"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:id="@+id/txtclientsubnumber"
         android:textStyle="bold"
+        android:layout_marginStart="10dp"
         android:textColor="@color/white"
         android:textAlignment="center"
         android:layout_marginTop="5dp"
@@ -34,22 +35,10 @@
         />
 
     <TextView
-        android:layout_width="133dp"
-        android:layout_height="20dp"
-        android:id="@+id/txtclientsubnumber"
-        android:textStyle="bold"
-        android:layout_marginStart="10dp"
-        android:textColor="@color/white"
-        android:textAlignment="center"
-        android:layout_marginTop="5dp"
-        android:layout_toRightOf="@+id/txtagentsubnumber"
-        />
-
-    <TextView
-        android:layout_width="133dp"
-        android:layout_height="20dp"
+        android:layout_width="65dp"
+        android:layout_height="30dp"
         android:id="@+id/txtamount"
-        android:layout_below="@+id/txtmobchargeid"
+        android:layout_toRightOf="@+id/txtclientsubnumber"
         android:textStyle="bold"
         android:textColor="@color/white"
         android:textAlignment="center"
@@ -57,16 +46,15 @@
         />
 
     <TextView
-        android:layout_width="266dp"
-        android:layout_height="20dp"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
         android:id="@+id/txtrechargestatus"
         android:textStyle="bold"
-        android:layout_below="@+id/txtclientsubnumber"
+        android:layout_toRightOf="@+id/txtamount"
         android:layout_marginStart="10dp"
         android:textColor="@color/white"
         android:textAlignment="center"
         android:layout_marginTop="5dp"
-        android:layout_toRightOf="@+id/txtamount"
         />
 
 

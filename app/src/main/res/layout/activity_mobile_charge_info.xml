@@ -13,7 +13,7 @@
         android:layout_width="130dp"
         android:layout_height="40dp"
         android:text="Mobile_Charge_ID"
-        android:textColor="@color/white"
+        android:textColor="#29f803"
         tools:layout_editor_absoluteX="139dp"
         tools:layout_editor_absoluteY="139dp" />
 
@@ -42,19 +42,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tabClientRecharge"
-            android:text="ClientCharge" />
+            android:text="Charge" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tabClientStatus"
-            android:text="ClientStatus" />
+            android:text="Status" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tabClientReport"
-            android:text="ClientReport" />
+            android:text="Statistics" />
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager.widget.ViewPager

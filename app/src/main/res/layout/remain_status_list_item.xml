@@ -13,7 +13,7 @@
         android:background="#F50CFA03" />
 
     <TextView
-        android:layout_width="103dp"
+        android:layout_width="135dp"
         android:layout_height="50dp"
         android:id="@+id/txtmobchargeid"
         android:textStyle="bold"
@@ -23,7 +23,7 @@
         />
 
     <TextView
-        android:layout_width="123dp"
+        android:layout_width="107dp"
         android:layout_height="50dp"
         android:id="@+id/txtclientsubnumber"
         android:textStyle="bold"
@@ -35,7 +35,7 @@
         />
 
     <TextView
-        android:layout_width="123dp"
+        android:layout_width="107dp"
         android:layout_height="50dp"
         android:id="@+id/txtamount"
         android:textStyle="bold"

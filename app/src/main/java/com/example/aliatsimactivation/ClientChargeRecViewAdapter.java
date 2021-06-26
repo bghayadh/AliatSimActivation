@@ -26,17 +26,16 @@ public class ClientChargeRecViewAdapter extends RecyclerView.Adapter<ClientCharg
 
     @NonNull
     @Override
-    public ClientChargeRecViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.mob_charge_list_item,parent,false);
-        ClientChargeRecViewAdapter.ViewHolder holder =new ClientChargeRecViewAdapter.ViewHolder (view);
+        ViewHolder holder =new ViewHolder (view);
         return holder;
     }
 
 
     @Override
-    public void onBindViewHolder(@NonNull ClientChargeRecViewAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.txtmobchargeid.setText(mobilecharge.get(position).getMOBCHARGEID ());
-        holder.txtagentsubnumber.setText(mobilecharge.get(position).getAGENTSUBNUM ());
         holder.txtclientsubnumber.setText(mobilecharge.get(position).getCLIENTSUBNUM ());
         holder.txtamount.setText(mobilecharge.get(position).getAMOUNT ());
         holder.txtrechargestatus.setText(mobilecharge.get(position).getRECHARGESTATUS ());
@@ -69,12 +68,11 @@ public class ClientChargeRecViewAdapter extends RecyclerView.Adapter<ClientCharg
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private RelativeLayout parent;
-        private TextView txtmobchargeid,txtagentsubnumber,txtclientsubnumber,txtamount,txtrechargestatus;
+        private TextView txtmobchargeid,txtclientsubnumber,txtamount,txtrechargestatus;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             txtmobchargeid=itemView.findViewById(R.id.txtmobchargeid);
-            txtagentsubnumber=itemView.findViewById(R.id.txtagentsubnumber);
             txtclientsubnumber=itemView.findViewById(R.id.txtclientsubnumber);
             txtamount=itemView.findViewById(R.id.txtamount);
             txtrechargestatus=itemView.findViewById(R.id.txtrechargestatus);

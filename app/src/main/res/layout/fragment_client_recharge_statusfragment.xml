@@ -3,25 +3,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#0A5EA8"
     tools:context=".ClientRechargeStatusfragment">
 
 
+    <TextView
+        android:id="@+id/txtstatus"
+        android:layout_width="180dp"
+        android:layout_height="30dp"
+        android:text="Status"
+        android:textAlignment="center"
+        android:layout_marginTop="15dp"
+        android:textStyle="bold"
+        android:textColor="#FDF903"
+        android:background="@color/mixte"/>
+
     <Spinner
-        android:layout_width="500dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:textAlignment="center"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_toRightOf="@id/txtstatus"
         android:id="@+id/remainSpinner"/>
 
 
     <Button
         android:id="@+id/btndate"
-        android:layout_width="133dp"
+        android:layout_width="180dp"
         android:layout_height="50dp"
         android:text="PICK DATE"
         android:layout_marginRight="5dp"
         android:backgroundTint="@color/red"
+        android:layout_marginTop="5dp"
         android:layout_below="@+id/remainSpinner"
         android:layout_marginStart="1dp"
+        android:drawableRight="@mipmap/ic_calender"
         />
 
     <EditText
@@ -31,9 +49,11 @@
         android:ems="10"
         android:textColor="@color/yellow"
         android:layout_marginStart="5dp"
+        android:textAlignment="center"
+        android:layout_marginTop="5dp"
         android:layout_below="@+id/remainSpinner"
         android:layout_toRightOf="@+id/btndate"
-        android:hint="date" />
+        android:background="@null"/>
 
 
 
@@ -83,6 +103,7 @@
         android:layout_toRightOf="@+id/btnnext"
         android:layout_alignParentBottom="true"
         android:backgroundTint="@color/red"
+        android:drawableRight="@mipmap/ic_main_page"
         />
 
 </RelativeLayout>
