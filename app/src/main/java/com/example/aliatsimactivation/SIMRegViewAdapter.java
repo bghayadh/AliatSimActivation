@@ -39,9 +39,8 @@ public class SIMRegViewAdapter extends RecyclerView.Adapter<SIMRegViewAdapter.Vi
 
         holder.sim_id.setText(list.get(position).getSimRegListViewId());
         holder.name_id.setText(list.get(position).getName());
-        holder.lastname_id.setText(list.get(position).getLastname());
-        holder.nationality_id.setText(list.get(position).getNationality());
-        holder.email_id.setText(list.get (position).getEmail());
+        holder.mobile_id.setText(list.get(position).getMobile());
+        holder.simstatus_id.setText(list.get (position).getStatus());
         holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,15 +72,14 @@ public class SIMRegViewAdapter extends RecyclerView.Adapter<SIMRegViewAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TableLayout parent;
-        private TextView sim_id,name_id,lastname_id,nationality_id,email_id;
+        private TextView sim_id,name_id,mobile_id,simstatus_id;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             sim_id=itemView.findViewById(R.id.sim_id);
             name_id=itemView.findViewById(R.id.name_id);
-            lastname_id=itemView.findViewById(R.id.lastname_id);
-            nationality_id=itemView.findViewById(R.id.nationality_id);
-            email_id=itemView.findViewById(R.id.email_id);
+            mobile_id=itemView.findViewById(R.id.mobile_id);
+            simstatus_id=itemView.findViewById(R.id.simstatus_id);
             parent=itemView.findViewById(R.id.parent11);
         }
     }

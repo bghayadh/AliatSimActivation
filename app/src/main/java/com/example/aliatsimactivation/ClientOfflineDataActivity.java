@@ -31,7 +31,7 @@ public class ClientOfflineDataActivity extends AppCompatActivity {
         for (File f: files)
         {
             String name = f.getName();
-            if (name.endsWith(".txt"))
+            if ( name.startsWith("Client") && name.endsWith(".txt"))
                 count++;
         }
 

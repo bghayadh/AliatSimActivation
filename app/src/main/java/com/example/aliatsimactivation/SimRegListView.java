@@ -3,61 +3,45 @@ package com.example.aliatsimactivation;
 public class SimRegListView<V> {
     private String SimRegListViewId;
     private String name;
-    private String lastname;
-    private String nationality;
-    private String email;
-    public SimRegListView(String simRegListViewId, String name, String lastname,  String nationality, String email) {
+    private String mobile;
+    private String status;
+
+    public SimRegListView(String simRegListViewId, String name, String mobile, String status) {
         SimRegListViewId = simRegListViewId;
         this.name = name;
-        this.lastname = lastname;
-
-        this.nationality = nationality;
-        this.email = email;
-
-    }
-
-    public SimRegListView() {
+        this.mobile = mobile;
+        this.status = status;
     }
 
     public String getSimRegListViewId() {
         return SimRegListViewId;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-
-    public String getNationality() {
-        return nationality;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
     public void setSimRegListViewId(String simRegListViewId) {
         SimRegListViewId = simRegListViewId;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setLastname(String lastname) {
-        lastname = lastname;
+    public String getMobile() {
+        return mobile;
     }
 
-
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

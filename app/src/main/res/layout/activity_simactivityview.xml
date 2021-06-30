@@ -5,12 +5,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="wrap_content" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:layout_width="match_parent"
     android:background="#0A5EA8">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:padding="40dp"
         tools:context=".MainActivity"
         android:background="#0A5EA8">
@@ -23,10 +23,13 @@
             android:layout_below="@id/submitbtn"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
+            android:layout_marginStart="10dp"
+
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/red"
             android:drawableRight="@mipmap/ic_main_page"
             android:text="Main Page" />
+
 
         <TextView
             android:id="@+id/firstname"
@@ -43,6 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="First Name"
+            android:textColor="@color/yellow"
             android:textColorHint="@color/yellowheader"
             android:inputType="textPersonName" />
 
@@ -65,6 +69,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="12dp"
             android:hint="Middle Name"
+            android:textColor="@color/yellow"
             android:textColorHint="@color/yellowheader"
             android:inputType="textPersonName" />
 
@@ -88,6 +93,7 @@
             android:layout_marginTop="16dp"
             android:layout_below="@id/emiddlename"
             android:hint="Last Name"
+            android:textColor="@color/yellow"
             android:layout_toRightOf="@id/textView3"
             android:inputType="textPersonName"
          />
@@ -110,6 +116,7 @@
             android:layout_marginTop="5dp"
             android:layout_below="@id/elastname"
             android:hint="Agent Number"
+            android:textColor="@color/yellow"
             android:layout_toRightOf="@id/textView20"
             android:inputType="textPersonName"
             />
@@ -132,6 +139,7 @@
             android:layout_marginTop="15dp"
             android:layout_below="@id/eagentnum"
             android:hint="Client ID Number"
+            android:textColor="@color/yellow"
             android:layout_toRightOf="@id/textView21"
             android:inputType="textPersonName"
             />
@@ -155,6 +163,7 @@
             android:textColorHint="@color/yellowheader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/yellow"
             android:hint="Moblie Number"
             android:inputType="phone" />
 
@@ -177,6 +186,7 @@
             android:layout_toRightOf="@id/textView5"
             android:hint="Date of Birth"
             android:textColorHint="@color/yellowheader"
+            android:textColor="@color/yellow"
             android:inputType="textPersonName" />
 
         <TextView
@@ -198,6 +208,7 @@
             android:textColorHint="@color/yellowheader"
             android:layout_toRightOf="@id/textView7"
             android:layout_height="wrap_content"
+            android:textColor="@color/yellow"
             android:hint="Alternative Number"
             android:inputType="textPersonName" />
 
@@ -219,6 +230,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Email"
+            android:textColor="@color/yellow"
             android:textColorHint="@color/yellowheader"
             android:inputType="textEmailAddress"
              />
@@ -242,6 +254,7 @@
             android:layout_marginTop="12dp"
             android:layout_toRightOf="@+id/textView9"
             android:hint="Your address"
+            android:textColor="@color/yellow"
             android:textColorHint="@color/yellowheader"
             android:inputType="textPersonName" />
 
@@ -263,6 +276,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:textColor="@color/yellow"
             android:hint="Postal Number"
             android:inputType="textPersonName"
             android:textColorHint="@color/yellowheader"
@@ -284,6 +298,7 @@
             android:layout_below="@id/epostaladdress"
             android:layout_toRightOf="@id/textView11"
             android:layout_marginTop="15dp"
+            android:textColor="@color/yellow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:entries="@array/entries" />
@@ -323,12 +338,30 @@
                 android:textColor="@color/yellowheader"
                 android:textSize="16dp" />
         </RadioGroup>
+        <TextView
+            android:id="@+id/textView25"
+            android:layout_below="@id/radioGroup"
+            android:layout_width="130dp"
+            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content"
+            android:text="Status"
+            android:textSize="16dp"
+            android:textColor="@color/mixte"
+            />
+
+        <Spinner
+            android:id="@+id/statusSpinner"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/radioGroup"
+            android:layout_toRightOf="@+id/textView25"
+            android:entries="@array/Simstatus" />
 
         <TextView
             android:id="@+id/textView12"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
-             android:layout_below="@+id/textView6"
+             android:layout_below="@+id/textView25"
             android:layout_marginTop="40dp"
             android:text="Signiture"
             android:textSize="16dp"
@@ -336,14 +369,24 @@
 
         <Button
             android:id="@+id/bsigniture"
-            android:layout_width="108dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/spinner"
-            android:layout_marginTop="69dp"
+            android:layout_width="160dp"
+            android:layout_height="60dp"
+            android:layout_below="@+id/statusSpinner"
+            android:layout_marginTop="30dp"
             android:layout_toRightOf="@id/textView12"
-            android:backgroundTint="@color/red"
-            android:text="Sign Please" />
+            android:backgroundTint="@color/silver"
+            android:text="Sign Please"
+            android:textColor="@color/black"/>
 
+        <TextView
+            android:id="@+id/sigpath"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/statusSpinner"
+            android:layout_marginTop="50dp"
+            android:layout_toRightOf="@id/bsigniture"
+            android:backgroundTint="@color/red"
+            android:visibility="gone" />
 
 
         <TextView
@@ -360,15 +403,24 @@
 
         <Button
             android:id="@+id/bfront"
-            android:layout_width="108dp"
-            android:layout_height="wrap_content"
+            android:layout_width="160dp"
+            android:layout_height="60dp"
             android:layout_below="@+id/bsigniture"
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@+id/textView13"
+            android:backgroundTint="@color/silver"
+            android:text="Front Image"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/frontpath"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/bsigniture"
+            android:layout_marginTop="21dp"
+            android:layout_toRightOf="@+id/bfront"
             android:backgroundTint="@color/red"
-            android:text="Front Image" />
-
-
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/textView14"
@@ -383,13 +435,14 @@
 
         <Button
             android:id="@+id/bback"
-            android:layout_width="108dp"
-            android:layout_height="wrap_content"
+            android:layout_width="160dp"
+            android:layout_height="60dp"
             android:layout_below="@id/bfront"
             android:layout_marginTop="16dp"
             android:layout_toRightOf="@+id/textView14"
-            android:backgroundTint="@color/red"
-            android:text="Back Image" />
+            android:backgroundTint="@color/silver"
+            android:text="Back Image"
+            android:textColor="@color/black"/>
 
 
         <Button
@@ -398,21 +451,32 @@
             android:layout_height="60dp"
             android:layout_below="@id/chterms"
             android:layout_marginTop="16dp"
-            android:layout_toLeftOf="@+id/BtnData"
-            android:drawableRight="@mipmap/ic_activate"
+            android:layout_toRightOf="@id/submitbtn"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="10dp"
+
             android:backgroundTint="@color/red"
+            android:drawableRight="@mipmap/ic_activate"
             android:text="Activate" />
 
-
+        <TextView
+            android:id="@+id/backpath"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/bfront"
+            android:layout_marginTop="27dp"
+            android:layout_toRightOf="@+id/bback"
+            android:backgroundTint="@color/red"
+            android:visibility="gone" />
 
         <CheckBox
             android:id="@+id/chterms"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/bback"
-            android:layout_marginTop="27dp"
+            android:layout_marginTop="11dp"
             android:backgroundTint="@color/red"
-            android:text="Terms and Conditions agreement"
+            android:text="Accept Terms And Conditions (MANDATORY)"
             android:textColor="@color/yellowheader"
             android:textSize="20sp" />
 
@@ -421,7 +485,7 @@
             style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:layout_below="@id/chterms"
+            android:layout_below="@id/activatesim"
             android:layout_alignParentLeft="true"
             android:layout_marginTop="15dp"
             android:backgroundTint="@color/red"
@@ -439,8 +503,7 @@
             android:textColor="@color/white"
             android:layout_marginTop="15dp"
             android:layout_marginStart="10dp"
-            android:layout_toRightOf="@id/activatesim"
-             android:backgroundTint="@color/red">
+            android:backgroundTint="@color/red">
         </Button>
     </RelativeLayout>
 

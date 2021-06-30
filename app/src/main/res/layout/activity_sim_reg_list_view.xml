@@ -9,7 +9,7 @@
         android:id="@+id/btnprevious"
         android:layout_width="133dp"
         android:layout_height="50dp"
-        android:layout_marginStart="1dp"
+        android:layout_marginStart="1.5dp"
         android:backgroundTint="@color/red"
         android:text="PREVIOUS" />
 
@@ -89,19 +89,11 @@
                 android:textSize="16dp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:layout_column="1"
-                android:padding="3dp"
-                android:text="LAST NAME"
-                android:textColor="@color/yellowheader"
-                android:textSize="16dp"
-                android:textStyle="bold" />
-
 
             <TextView
                 android:layout_column="1"
                 android:padding="3dp"
-                android:text="NATIONALITY"
+                android:text="Client Number"
                 android:textColor="@color/yellowheader"
                 android:textSize="14dp"
                 android:textStyle="bold" />
@@ -109,7 +101,7 @@
             <TextView
                 android:layout_column="1"
                 android:padding="2dp"
-                android:text="EMAIL"
+                android:text="STATUS"
                 android:textColor="@color/yellowheader"
                 android:textSize="16dp"
                 android:textStyle="bold" />

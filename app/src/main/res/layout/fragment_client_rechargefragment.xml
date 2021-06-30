@@ -124,7 +124,7 @@
         android:textStyle="bold"
         android:layout_below="@+id/txtstatus"
         android:backgroundTint="@color/red"
-        android:drawableRight="@drawable/ic_baseline_phonelink_ring_24"
+        android:drawableRight="@drawable/ic_recharge"
         />
 
     <Button
@@ -136,7 +136,7 @@
         android:textStyle="bold"
         android:layout_below="@+id/txtstatus"
         android:layout_toRightOf="@+id/btnrecharge"
-        android:drawableRight="@drawable/ic_baseline_phonelink_ring_24"
+        android:drawableRight="@drawable/ic_balance"
         android:backgroundTint="@color/red"
         />
 

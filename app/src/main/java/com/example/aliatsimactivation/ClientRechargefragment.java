@@ -113,6 +113,7 @@ public class ClientRechargefragment extends Fragment {
             Spinner statusSpinner = (Spinner) V.findViewById(R.id.statusSpinner);
             TextView editTextstatus = (TextView) V.findViewById(R.id.editTextstatus);
             ArrayList<String> status = new ArrayList<>();
+            status.add("New");
             status.add("In Progress");
             status.add("Success");
             status.add("Failed");
@@ -258,6 +259,7 @@ public class ClientRechargefragment extends Fragment {
             btnsave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    editTextstatus.setText("In Progress");
                     Date date = new Date();
                     Calendar calendar = new GregorianCalendar();
                     calendar.setTime(date);
@@ -395,7 +397,7 @@ public class ClientRechargefragment extends Fragment {
             for (File f: files)
             {
                 String name = f.getName();
-                if (name.endsWith(".txt"))
+                if (name.startsWith("Client") && name.endsWith(".txt"))
                     count++;
                 System.out.println("COUNT IS:" +count);
             }
@@ -430,6 +432,7 @@ public class ClientRechargefragment extends Fragment {
             Spinner statusSpinner = (Spinner) V.findViewById(R.id.statusSpinner);
             TextView editTextstatus = (TextView) V.findViewById(R.id.editTextstatus);
             ArrayList<String> status = new ArrayList<>();
+            status.add("New");
             status.add("In Progress");
             status.add("Success");
             status.add("Failed");

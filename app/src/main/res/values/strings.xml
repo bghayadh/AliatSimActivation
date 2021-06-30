@@ -7,6 +7,12 @@
         <item>Failed</item>
         <item>Canceled</item>
     </string-array>
+    <string-array name="Simstatus">
+        <item>New</item>
+        <item>In Progress</item>
+        <item>Success</item>
+        <item>Not Success</item>
+    </string-array>
     <string-array name="entries">
         <item>Male</item>
         <item>Female</item>

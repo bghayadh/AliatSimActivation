@@ -43,9 +43,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
     private String gender=null;
@@ -59,9 +61,15 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     private RadioButton kenya,foreign;
     private CheckBox checkBox;
     private TextView editdate, editmname;
+    private Integer a;
+    private Integer fb=0;
+
+    private String emailpattern="[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+
     TextView editlname,editfname,textF,textB,textS;
     private String file1 = "MSISDN.txt";
-    private String s0,s1,Result,FRONT,BACK,SIGN;
+    private String s0,s1,Result;
+    private String FRONT,BACK,SIGN=null;
     TextView editidagent,editagent;
 
     @Override
@@ -144,22 +152,27 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         TextView editemail=(TextView)findViewById(R.id.email);
         TextView editphylocation=(TextView)findViewById(R.id.ephysicallocation);
         TextView editpost=(TextView)findViewById(R.id.epostaladdress);
-
-
+            Spinner sp =(Spinner)findViewById(R.id.statusSpinner);
+        textB=findViewById(R.id.backpath);
+        textF=findViewById(R.id.frontpath);
+        textS=findViewById(R.id.sigpath);
+            Date cc = Calendar.getInstance().getTime();
+            System.out.println("Current time=> "+cc);
+            SimpleDateFormat df=new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+            editdate.setText("20-6-2020");
         editagent=(TextView)findViewById(R.id.eagentnum);
          editidagent=(TextView)findViewById(R.id.eagentid);
         Intent intent = SimRegInfo.this.getIntent();
         String str = intent.getStringExtra("message_key");
+
         globalsimid = str.toString();
         sign= findViewById(R.id.bsigniture);
         submit=findViewById(R.id.submitbtn);
-        submit.setEnabled(false);
         frontid=findViewById(R.id.bfront);
         backid=findViewById(R.id.bback);
         activatesim=findViewById(R.id.activatesim);
         checkBox=findViewById(R.id.chterms);
-
-        Spinner s = (Spinner)findViewById(R.id.spinner);
+            Spinner s = (Spinner)findViewById(R.id.spinner);
         if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED){
 
             ActivityCompat.requestPermissions(SimRegInfo.this,new String[]{
@@ -201,6 +214,18 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         {
             System.out.println("login filevdon't exist");
         }
+            File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+            File[] files = dir.listFiles();
+            count =0;
+            for (File f: files)
+            {
+                String name = f.getName();
+                if (name.endsWith(".txt"))
+                    count++;
+                System.out.println("COUNT IS:" +count);
+            }
+
+
         connecttoDB();
 
         PreparedStatement stmtinsert1 = null;
@@ -208,10 +233,9 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         try {
             // if it is a new Warehouse we will use insert
             if (globalsimid!="0") {
-
                 Statement stmt1 = null;
                 stmt1 = conn.createStatement ( );
-                String sqlStmt = "select FIRST_NAME,MIDDLE_NAME,LAST_NAME,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHISICAL_LOCATION,POSTAL_ADDRESS,GENDER,AGENT_ID,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO FROM SIM_REGISTRATION where SIM_REG_ID = '"+globalsimid+"'";
+                String sqlStmt = "select FIRST_NAME,MIDDLE_NAME,LAST_NAME,STATUS,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHISICAL_LOCATION,POSTAL_ADDRESS,GENDER,AGENT_ID,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO FROM SIM_REGISTRATION where SIM_REG_ID = '"+globalsimid+"'";
                 ResultSet rs1 = null;
                 try {
                     rs1 = stmt1.executeQuery (sqlStmt);
@@ -226,7 +250,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         editmname.setText(rs1.getString("MIDDLE_NAME"));
                         editlname.setText(rs1.getString("LAST_NAME"));
                         editmobile.setText(rs1.getString("MOBILE_NUMBER"));
-                        editdate.setText(rs1.getString("DATE_OF_BIRTH").substring(0,10));
+                        editdate.setText(rs1.getString("DATE_OF_BIRTH").substring(8,10)+"-"+rs1.getString("DATE_OF_BIRTH").substring(5,7)+"-"+rs1.getString("DATE_OF_BIRTH").substring(0,4));
                         if(rs1.getString("NATIONALITY").matches("Foreign")){
                             foreign.setChecked(true);
                             kenya.setChecked(false);
@@ -245,8 +269,28 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         if(rs1.getString("GENDER").matches("Female")){
                             s.setSelection(1);
                         }
-                        editidagent.setText(rs1.getString("AGENT_ID"));
+                        if(rs1.getString("STATUS").matches("New")){
+                            sp.setSelection(0);
+                        }
+                        if(rs1.getString("STATUS").matches("In Progress")){
+                            sp.setSelection(1);
+                        }
+                        if(rs1.getString("STATUS").matches("Success")){
+                            sp.setSelection(2);
+                        }
+                        if(rs1.getString("STATUS").matches("Not Success")){
+                            sp.setSelection(3);
+                        }
 
+                        editidagent.setText(rs1.getString("AGENT_ID"));
+                        textF.setText(rs1.getString("ID_FRONT_SIDE_PHOTO"));
+                        textB.setText(rs1.getString("ID_BACK_SID_PHOTO"));
+                        textS.setText(rs1.getString("SIGNATURE"));
+                        SIGN=rs1.getString("SIGNATURE");
+                        FRONT=rs1.getString("ID_FRONT_SIDE_PHOTO");
+                        BACK=rs1.getString("ID_BACK_SID_PHOTO");
+
+                        checkBox.setChecked(true);
 
 
 
@@ -283,42 +327,79 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     textS.setText(SIGN);}
             }
         });
+
         editdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePickerDialog();
+
+
             }
         });
+
+
+
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String dY[]=editdate.getText().toString().split("-");
+                fb=getAge(Integer.parseInt(dY[2]),Integer.parseInt(dY[1]),Integer.parseInt(dY[0]));
+                System.out.println(fb);
+                if(editfname.getText().toString().matches("")||editmname.getText().toString().matches("")||editlname.getText().toString().matches("")||editmobile.getText().toString().matches("")||editaltnumber.getText().toString().matches("")||editemail.getText().toString().matches("")||editphylocation.getText().toString().matches("")||editpost.getText().toString().matches("")||!editemail.getText().toString().matches(emailpattern)||fb<18||!checkBox.isChecked()||SIGN==null||FRONT==null||BACK==null||fb==0||editdate.getText().toString()==null) {
 
-                if (editfname.getText().toString().matches("")){
-                    editfname.setError("Empty Field");
-                }
-                 if (editmname.getText().toString().matches("")) {
-                    editmname.setError("Empty Field");
-                }
-                 if(editlname.getText().toString().matches("")){
-                    editlname.setError("Empty Field");
-                }
-                 if(editmobile.getText().toString().matches("")){
-                    editmobile.setError("Empty Field");
-                }
-                 if(editaltnumber.getText().toString().matches("")){
-                    editaltnumber.setError("Empty Field");
-                }
-                 if(editemail.getText().toString().matches("")) {
-                    editemail.setError("Empty Field");
-                }
-                 if(editphylocation.getText().toString().matches("")){
-                    editphylocation.setError("Empty Field");
-                }
-                 if(editpost.getText().toString().matches("")) {
-                    editpost.setError("Empty Field");
-                }
-                else{
+                    if (editfname.getText().toString().matches("")) {
+                        editfname.setError("Empty Field");
+                    }
+                    if (editmname.getText().toString().matches("")) {
+                        editmname.setError("Empty Field");
+                    }
+                    if (editlname.getText().toString().matches("")) {
+                        editlname.setError("Empty Field");
+                    }
+                    if (editmobile.getText().toString().matches("")) {
+                        editmobile.setError("Empty Field");
+                    }
+                    if (editaltnumber.getText().toString().matches("")) {
+                        editaltnumber.setError("Empty Field");
+                    }
+                    if (editemail.getText().toString().matches("")) {
+                        editemail.setError("Empty Field");
+                    }
+                    if (editphylocation.getText().toString().matches("")) {
+                        editphylocation.setError("Empty Field");
+                    }
+                    if (editpost.getText().toString().matches("")) {
+                        editpost.setError("Empty Field");
+                    }
+                    if (!editemail.getText().toString().matches(emailpattern)) {
+                        editemail.setError("Invalid email address");
+                    }
+                    if (fb < 18 && fb>=0) {
+                        editdate.setError("Under Age");
+                    }
+                    else if(fb>=18){
+                        editdate.setError(null);
+                    }
+                    if(count>5){
+                        Toast.makeText(SimRegInfo.this, "You Already Have 5 Unsubmitted Files", Toast.LENGTH_SHORT).show();
+                    }
+                    if(!checkBox.isChecked()){
+                        Toast.makeText(SimRegInfo.this, "Accept Terms And Conditions", Toast.LENGTH_SHORT).show();
+                    }
+                    if(SIGN==null){
+                        sign.setError("Please Sign");
+                    }
+                    if(FRONT==null){
+                        frontid.setError("Please Sign");
+                    }
+                    if(BACK==null){
+                        backid.setError("Please Sign");
+                    }
+
+
+
+                }else{
                      new AlertDialog.Builder(SimRegInfo.this)
                              .setTitle("Submit")
                              .setMessage("Are you sure you want to Submit this form?")
@@ -341,6 +422,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                      if (foreign.isChecked()) {
                                          nationality = "Foreign";
                                      }
+                                     String b = "In Progress";
+
                                      Date date = new Date();
                                      Calendar calendar = new GregorianCalendar();
                                      calendar.setTime(date);
@@ -382,8 +465,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                              // send data from fragment to super activity
 
 
-                                             stmtinsert1 = conn.prepareStatement("insert into SIM_REGISTRATION (SIM_REG_ID,CREATION_DATE,LAST_MODIFIED_DATE,FIRST_NAME,MIDDLE_NAME,LAST_NAME,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHISICAL_LOCATION,POSTAL_ADDRESS,GENDER,AGENT_NUMBER,AGENT_ID,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO) values " +
-                                                     "('" + globalsimid + "' ,sysdate, sysdate,'" + editfname.getText() + "','" + editmname.getText() + "', '" + editlname.getText() + "','" + editmobile.getText() + "',TO_DATE('" + editdate.getText() + "','DD-MM-YYYY'),'" + nationality + "','" + editaltnumber.getText() + "','" + editemail.getText() + "','" + editphylocation.getText() + "','" + editpost.getText() + "','" + gender + "','" + editagent.getText() + "','" + editidagent.getText() + "','" + SIGN + "','" + FRONT + "','" + BACK + "')");
+                                             stmtinsert1 = conn.prepareStatement("insert into SIM_REGISTRATION (SIM_REG_ID,STATUS,CREATION_DATE,LAST_MODIFIED_DATE,FIRST_NAME,MIDDLE_NAME,LAST_NAME,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHISICAL_LOCATION,POSTAL_ADDRESS,GENDER,AGENT_NUMBER,AGENT_ID,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO) values " +
+                                                     "('" + globalsimid +"','"+b+ "' ,sysdate, sysdate,'" + editfname.getText() + "','" + editmname.getText() + "', '" + editlname.getText() + "','" + editmobile.getText() + "',TO_DATE('" + editdate.getText() + "','DD-MM-YYYY'),'" + nationality + "','" + editaltnumber.getText() + "','" + editemail.getText() + "','" + editphylocation.getText() + "','" + editpost.getText() + "','" + gender + "','" + editagent.getText() + "','" + editidagent.getText() + "','" + SIGN + "','" + FRONT + "','" + BACK + "')");
 
                      /*   Bundle bundle = new Bundle();
                         bundle.putString("key1", globalwareid);
@@ -394,7 +477,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                              ///added for pass data in fragment
                                          }else{
 
-                                             stmtinsert1 = conn.prepareStatement("update SIM_REGISTRATION set CREATION_DATE=sysdate,LAST_MODIFIED_DATE=sysdate,FIRST_NAME='"+editfname.getText()+"',MIDDLE_NAME='" + editmname.getText() + "',LAST_NAME='" + editlname.getText() +"',MOBILE_NUMBER='" + editmobile.getText() + "',NATIONALITY='" + nationality + "',ALTERNATIVE_NUMBER='"+editaltnumber.getText()+"',EMAIL_ADDRESS='"+editemail.getText()+"',PHISICAL_LOCATION='"+editphylocation.getText()+"',POSTAL_ADDRESS='"+editpost.getText()+"',GENDER='"+gender+"',AGENT_NUMBER='"+editagent.getText()+"',AGENT_ID='"+editidagent.getText()+"',SIGNATURE='"+SIGN+"',ID_FRONT_SIDE_PHOTO='"+FRONT+"',ID_BACK_SID_PHOTO='"+BACK+"' where SIM_REG_ID ='"+globalsimid+"'");
+                                             stmtinsert1 = conn.prepareStatement("update SIM_REGISTRATION set CREATION_DATE=sysdate,LAST_MODIFIED_DATE=sysdate,FIRST_NAME='"+editfname.getText()+"',MIDDLE_NAME='" + editmname.getText() + "',LAST_NAME='" + editlname.getText() +"',STATUS='"+b+"',MOBILE_NUMBER='" + editmobile.getText() + "',NATIONALITY='" + nationality + "',ALTERNATIVE_NUMBER='"+editaltnumber.getText()+"',EMAIL_ADDRESS='"+editemail.getText()+"',PHISICAL_LOCATION='"+editphylocation.getText()+"',POSTAL_ADDRESS='"+editpost.getText()+"',GENDER='"+gender+"',AGENT_NUMBER='"+editagent.getText()+"',AGENT_ID='"+editidagent.getText()+"',SIGNATURE='"+SIGN+"',ID_FRONT_SIDE_PHOTO='"+FRONT+"',ID_BACK_SID_PHOTO='"+BACK+"' where SIM_REG_ID ='"+globalsimid+"'");
                                          }
                                      } catch (SQLException throwables) {
                                          throwables.printStackTrace();
@@ -446,21 +529,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 startActivityForResult(intent,101);}
             }
         });
-       checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-           @Override
-           public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-               if(isChecked){
-                   submit.setEnabled(true);
-               }
-               else if(count >5) {
-                   submit.setEnabled(false);
-               }
-               else{
-                   submit.setEnabled(false);
 
-               }
-           }
-       });
+
        activatesim.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
@@ -468,16 +538,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 startActivity(a);
            }
        });
-            File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-            File[] files = dir.listFiles();
-             count =0;
-            for (File f: files)
-            {
-                String name = f.getName();
-                if (name.endsWith(".txt"))
-                    count++;
-                System.out.println("COUNT IS:" +count);
-            }
+
 
 
             //BtnData appear in case offline files exist
@@ -486,6 +547,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(SimRegInfo.this,SimRegOfflineDataActivity.class);
+                    i.putExtra("message_key",globalsimid);
                     startActivity(i);
                 }
             });
@@ -524,8 +586,14 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             TextView editemail=(TextView)findViewById(R.id.email);
             TextView editphylocation=(TextView)findViewById(R.id.ephysicallocation);
             TextView editpost=(TextView)findViewById(R.id.epostaladdress);
-
-
+            textB=findViewById(R.id.backpath);
+            textF=findViewById(R.id.frontpath);
+            textS=findViewById(R.id.sigpath);
+            Spinner sp =(Spinner)findViewById(R.id.statusSpinner);
+            Date cc = Calendar.getInstance().getTime();
+            System.out.println("Current time=> "+cc);
+            SimpleDateFormat df=new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+            editdate.setText(df.format(cc));
             editagent=(TextView)findViewById(R.id.eagentnum);
             editidagent=(TextView)findViewById(R.id.eagentid);
             Intent intent = SimRegInfo.this.getIntent();
@@ -536,7 +604,6 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             backid=findViewById(R.id.bback);
             activatesim=findViewById(R.id.activatesim);
             checkBox=findViewById(R.id.chterms);
-
             Spinner s = (Spinner)findViewById(R.id.spinner);
             if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED){
 
@@ -586,7 +653,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             for (File f: files)
             {
                 String name = f.getName();
-                if (name.endsWith(".txt"))
+                if (name.startsWith("SIM") && name.endsWith(".txt"))
                     count++;
                 System.out.println("COUNT IS:" +count);
             }
@@ -604,42 +671,75 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         textS.setText(SIGN);}
                 }
             });
+
             editdate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     showDatePickerDialog();
+
                 }
             });
 
             submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    String dY[]=editdate.getText().toString().split("-");
+                    fb=getAge(Integer.parseInt(dY[2]),Integer.parseInt(dY[1]),Integer.parseInt(dY[0]));
+                    if(editfname.getText().toString().matches("")||editmname.getText().toString().matches("")||editlname.getText().toString().matches("")||editmobile.getText().toString().matches("")||editaltnumber.getText().toString().matches("")||editemail.getText().toString().matches("")||editphylocation.getText().toString().matches("")||editpost.getText().toString().matches("")||!editemail.getText().toString().matches(emailpattern)||fb<18||!checkBox.isChecked()||SIGN==null||FRONT==null||BACK==null||fb==0||editdate.getText().toString()==null) {
 
-                    if (editfname.getText().toString().matches("")){
-                        editfname.setError("Empty Field");
-                    }
-                    if (editmname.getText().toString().matches("")) {
-                        editmname.setError("Empty Field");
-                    }
-                    if(editlname.getText().toString().matches("")){
-                        editlname.setError("Empty Field");
-                    }
-                    if(editmobile.getText().toString().matches("")){
-                        editmobile.setError("Empty Field");
-                    }
-                    if(editaltnumber.getText().toString().matches("")){
-                        editaltnumber.setError("Empty Field");
-                    }
-                    if(editemail.getText().toString().matches("")) {
-                        editemail.setError("Empty Field");
-                    }
-                    if(editphylocation.getText().toString().matches("")){
-                        editphylocation.setError("Empty Field");
-                    }
-                    if(editpost.getText().toString().matches("")) {
-                        editpost.setError("Empty Field");
-                    }
-                    else{
+                        if (editfname.getText().toString().matches("")) {
+                            editfname.setError("Empty Field");
+                        }
+                        if (editmname.getText().toString().matches("")) {
+                            editmname.setError("Empty Field");
+                        }
+                        if (editlname.getText().toString().matches("")) {
+                            editlname.setError("Empty Field");
+                        }
+                        if (editmobile.getText().toString().matches("")) {
+                            editmobile.setError("Empty Field");
+                        }
+                        if (editaltnumber.getText().toString().matches("")) {
+                            editaltnumber.setError("Empty Field");
+                        }
+                        if (editemail.getText().toString().matches("")) {
+                            editemail.setError("Empty Field");
+                        }
+                        if (editphylocation.getText().toString().matches("")) {
+                            editphylocation.setError("Empty Field");
+                        }
+                        if (editpost.getText().toString().matches("")) {
+                            editpost.setError("Empty Field");
+                        }
+                        if (!editemail.getText().toString().matches(emailpattern)) {
+                            editemail.setError("Invalid email address");
+                        }
+                        if (fb < 18 && fb>=0) {
+                            editdate.setError("Under Age");
+                        }
+                        else if(fb>=18){
+                            editdate.setError(null);
+                        }
+
+                        if(count>5){
+                            Toast.makeText(SimRegInfo.this, "You Already Have 5 Unsubmitted Files", Toast.LENGTH_SHORT).show();
+                        }
+                        if(!checkBox.isChecked()){
+                            Toast.makeText(SimRegInfo.this, "Accept Terms And Conditions", Toast.LENGTH_SHORT).show();
+                        }
+                        if(SIGN==null){
+                            sign.setError("Please Sign");
+                        }
+                        if(FRONT==null){
+                            frontid.setError("Please Sign");
+                        }
+                        if(BACK==null){
+                            backid.setError("Please Sign");
+                        }
+
+
+
+                    }else{
                         new AlertDialog.Builder(SimRegInfo.this)
                                 .setTitle("Submit")
                                 .setMessage("Are you sure you want to Submit this form?")
@@ -662,8 +762,22 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                         if (foreign.isChecked()) {
                                             nationality = "Foreign";
                                         }
+                                        String b = "New";
+
+                                        if(sp.getSelectedItemPosition()==0){
+                                            b="New";
+                                        }
+                                        if(sp.getSelectedItemPosition()==1){
+                                            b="In Progress";
+                                        }
+                                        if(sp.getSelectedItemPosition()==2){
+                                            b="Success";
+                                        }
+                                        if(sp.getSelectedItemPosition()==3){
+                                            b="Not Success";
+                                        }
                                         try {
-                                            ActivityCompat.requestPermissions(SimRegInfo.this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},23);
+                                            ActivityCompat.requestPermissions(SimRegInfo.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},23);
                                             File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
                                             dir.mkdirs();
                                             String fileName = "SIM_" + editidagent.getText().toString() + ".txt";
@@ -685,7 +799,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                             bw.write(editidagent.getText().toString()+"\n");
                                             bw.write(SIGN.toString()+"\n");
                                             bw.write(FRONT.toString()+"\n");
-                                            bw.write(BACK.toString());
+                                            bw.write(BACK.toString()+"\n");
+                                            bw.write(b);
                                             bw.close();
                                             Toast.makeText(SimRegInfo.this, fileName+" is saved to\n" +dir, Toast.LENGTH_SHORT).show();
                                             Intent intent = new Intent(SimRegInfo.this,SimRegOfflineDataActivity.class);
@@ -727,21 +842,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         startActivityForResult(intent,101);}
                 }
             });
-            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if(isChecked){
-                        submit.setEnabled(true);
-                    }
-                    else if(count >5) {
-                        submit.setEnabled(false);
-                    }
-                    else{
-                        submit.setEnabled(false);
 
-                    }
-                }
-            });
+
             activatesim.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -819,5 +921,27 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         String date= dayOfMonth+"-"+(month+1)+"-"+year;
         editdate.setText(date);
+
+
+    }
+    private Integer getAge(int year, int month, int day){
+        Calendar dob = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+
+
+        dob.set(year, month, day);
+
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+        if ((today.get(Calendar.DAY_OF_YEAR)+30) < dob.get(Calendar.DAY_OF_YEAR)){
+            age--;
+        }
+
+
+
+        Integer ageInt = new Integer(age);
+
+
+        return ageInt;
     }
 }

@@ -5,14 +5,14 @@ public class ClientStatusListView {
 
     private String MOBCHARGEID;
     private String CLIENTSUBNUM;
-    private String AMOUNT;
+    private String RECHARGESTATUS;
 
 
-    public ClientStatusListView(String MOBCHARGEID, String CLIENTSUBNUM, String AMOUNT) {
+    public ClientStatusListView(String MOBCHARGEID, String CLIENTSUBNUM, String RECHARGESTATUS) {
 
         this.MOBCHARGEID = MOBCHARGEID;
         this.CLIENTSUBNUM = CLIENTSUBNUM;
-        this.AMOUNT = AMOUNT;
+        this.RECHARGESTATUS = RECHARGESTATUS;
 
     }
 
@@ -32,11 +32,11 @@ public class ClientStatusListView {
         this.CLIENTSUBNUM = CLIENTSUBNUM;
     }
 
-    public String getAMOUNT() {
-        return AMOUNT;
+    public String getRECHARGESTATUS() {
+        return RECHARGESTATUS;
     }
 
-    public void setAMOUNT(String AMOUNT) {
-        this.AMOUNT = AMOUNT;
+    public void setRECHARGESTATUS(String AMOUNT) {
+        this.RECHARGESTATUS = RECHARGESTATUS;
     }
 }

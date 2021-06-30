@@ -4,58 +4,48 @@
     android:layout_width="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/parent11"
-    android:layout_width="match_parent"
-    android:layout_height="45dp"
-    android:stretchColumns="1,2,3,4,5">
+    <TableLayout
+        android:id="@+id/parent11"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:stretchColumns="1,2,3,4">
 
-    <TableRow >
+        <TableRow >
 
-        <TextView
-            android:id="@+id/sim_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="TextView"
-            android:textColor="@color/white" />
+            <TextView
+                android:id="@+id/sim_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="TextView"
+                android:textColor="@color/white" />
 
-        <TextView
-            android:id="@+id/name_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:nextFocusRight="@id/sim_id"
-            android:padding="10dp"
-            android:text="TextView"
-            android:textColor="@color/white" />
+            <TextView
+                android:id="@+id/name_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:nextFocusRight="@id/sim_id"
+                android:padding="10dp"
+                android:text="TextView"
+                android:textColor="@color/white" />
 
-        <TextView
-            android:id="@+id/lastname_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:nextFocusRight="@id/name_id"
-            android:text="TextView"
-            android:textColor="@color/white" />
+            <TextView
+                android:id="@+id/mobile_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="TextView"
+                android:textColor="@color/white" />
 
-        <TextView
-            android:id="@+id/nationality_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:nextFocusRight="@id/lastname_id"
-            android:text="TextView"
-            android:padding="10dp"
-            android:textColor="@color/white" />
+            <TextView
+                android:id="@+id/simstatus_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:nextFocusRight="@id/mobile_id"
+                android:padding="10dp"
+                android:text="TextView"
+                android:textColor="@color/white" />
+        </TableRow>
 
-        <TextView
-            android:id="@+id/email_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:nextFocusRight="@id/nationality_id"
-            android:padding="10dp"
-            android:text="TextView"
-            android:textColor="@color/white" />
-    </TableRow>
-
-</TableLayout>
+    </TableLayout>
 </RelativeLayout>

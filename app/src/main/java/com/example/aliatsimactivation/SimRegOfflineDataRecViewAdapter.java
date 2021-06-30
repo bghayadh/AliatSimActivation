@@ -41,14 +41,14 @@ public class SimRegOfflineDataRecViewAdapter extends RecyclerView.Adapter<SimReg
 
     @NonNull
     @Override
-    public SimRegOfflineDataRecViewAdapter.ViewHolder onCreateViewHolder(@NonNull  ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull  ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.sim_offline_list_item,parent,false);
-        SimRegOfflineDataRecViewAdapter.ViewHolder holder =new SimRegOfflineDataRecViewAdapter.ViewHolder(view);
+        ViewHolder holder =new ViewHolder(view);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull  SimRegOfflineDataRecViewAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull  ViewHolder holder, int position) {
         holder.txttitle.setText(offlinedata.get(position).getTITLE ());
         holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +121,7 @@ public class SimRegOfflineDataRecViewAdapter extends RecyclerView.Adapter<SimReg
             String o = details[13];
             String p = details[14];
             String q = details[15];
+            String r = details[16];
             System.out.println(a);
             System.out.println(b);
             System.out.println(c);
@@ -137,10 +138,12 @@ public class SimRegOfflineDataRecViewAdapter extends RecyclerView.Adapter<SimReg
                     System.out.println(o);
                     System.out.println(p);
                     System.out.println(q);
+                    System.out.println(r);
 
 
 
-            //send the data to database
+
+                    //send the data to database
             connecttoDB();
             Date date = new Date();
             Calendar calendar = new GregorianCalendar();
@@ -183,8 +186,8 @@ public class SimRegOfflineDataRecViewAdapter extends RecyclerView.Adapter<SimReg
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
-                    String sqlStmt = ("insert into SIM_REGISTRATION (SIM_REG_ID,CREATION_DATE,LAST_MODIFIED_DATE,FIRST_NAME,MIDDLE_NAME,LAST_NAME,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHISICAL_LOCATION,POSTAL_ADDRESS,GENDER,AGENT_NUMBER,AGENT_ID,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO) values " +
-                            "('" + globalsimid + "' ,sysdate, sysdate,'" + a + "','" + b + "', '" + c + "','" + d + "',TO_DATE('" + e + "','DD-MM-YYYY'),'" + f + "','" + g + "','" + h+ "','" + j + "','" +k+ "','" + l + "','" + m+ "','" + n+ "','" +o+ "','" + p +"','"+q+ "')");
+                    String sqlStmt = ("insert into SIM_REGISTRATION (SIM_REG_ID,STATUS,CREATION_DATE,LAST_MODIFIED_DATE,FIRST_NAME,MIDDLE_NAME,LAST_NAME,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHISICAL_LOCATION,POSTAL_ADDRESS,GENDER,AGENT_NUMBER,AGENT_ID,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO) values " +
+                            "('" + globalsimid +"','"+r+"' ,sysdate, sysdate,'" + a + "','" + b + "', '" + c + "','" + d + "',TO_DATE('" + e + "','DD-MM-YYYY'),'" + f + "','" + g + "','" + h+ "','" + j + "','" +k+ "','" + l + "','" + m+ "','" + n+ "','" +o+ "','" + p +"','"+q+ "')");
             ResultSet rs1 = null;
             try {
                 rs1 = stmt1.executeQuery(sqlStmt);
@@ -235,7 +238,7 @@ public class SimRegOfflineDataRecViewAdapter extends RecyclerView.Adapter<SimReg
         } catch (IllegalAccessException e) {
             System.out.println("error is: " + e.toString());
             Toast.makeText(context, "" + e.toString(), Toast.LENGTH_SHORT).show();
-        } catch (java.lang.InstantiationException e) {
+        } catch (InstantiationException e) {
             System.out.println("error is: " + e.toString());
         }
     }

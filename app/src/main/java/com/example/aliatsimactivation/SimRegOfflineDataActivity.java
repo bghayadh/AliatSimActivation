@@ -14,7 +14,9 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class SimRegOfflineDataActivity extends AppCompatActivity {
-    Intent intent;
+
+
+
     private RecyclerView offlinedataRecView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +24,8 @@ public class SimRegOfflineDataActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sim_reg_offline_data);
         offlinedataRecView=findViewById(R.id.offlinedataRecView);
         Button btnback = findViewById(R.id.btnback);
+        Intent intent = this.getIntent();
+        String simid=intent.getStringExtra("message_key");
 
         //counting the number of files
         File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
@@ -30,7 +34,7 @@ public class SimRegOfflineDataActivity extends AppCompatActivity {
         for (File f: files)
         {
             String name = f.getName();
-            if (name.endsWith(".txt"))
+            if (name.startsWith("SIM") && name.endsWith(".txt"))
                 count++;
         }
 
@@ -107,6 +111,7 @@ public class SimRegOfflineDataActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i=new Intent(getApplicationContext(),SimRegInfo.class);
+                i.putExtra("message_key",simid);
                 startActivity(i);
             }
         });

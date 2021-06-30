@@ -37,7 +37,7 @@
     <TextView
         android:layout_width="107dp"
         android:layout_height="50dp"
-        android:id="@+id/txtamount"
+        android:id="@+id/txtstatus"
         android:textStyle="bold"
         android:textAlignment="center"
         android:textColor="@color/white"
@@ -53,7 +53,7 @@
         android:id="@+id/sendImage"
         android:background="@drawable/ic_baseline_send_24"
         android:layout_marginTop="15dp"
-        android:layout_toRightOf="@+id/txtamount"
+        android:layout_toRightOf="@+id/txtstatus"
         />
 
 
