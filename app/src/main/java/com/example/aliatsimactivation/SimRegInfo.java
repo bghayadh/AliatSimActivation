@@ -220,7 +220,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             for (File f: files)
             {
                 String name = f.getName();
-                if (name.endsWith(".txt"))
+                if (name.startsWith("SIM") && name.endsWith(".txt"))
                     count++;
                 System.out.println("COUNT IS:" +count);
             }
@@ -429,7 +429,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                      calendar.setTime(date);
                                      int year = calendar.get(Calendar.YEAR);
                                      String simID;
-                                     simID = "SIMREG_" + year + "_";
+                                     simID = "REG_" + year + "_";
                                      connecttoDB();
 
                                      PreparedStatement stmtinsert1 = null;

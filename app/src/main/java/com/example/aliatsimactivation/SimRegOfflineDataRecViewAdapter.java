@@ -150,7 +150,7 @@ public class SimRegOfflineDataRecViewAdapter extends RecyclerView.Adapter<SimReg
             calendar.setTime(date);
             int year = calendar.get(Calendar.YEAR);
             String simID;
-            simID = "SIMREG_" + year + "_";
+            simID = "REG_" + year + "_";
             String globalsimid = "";
             try {
 

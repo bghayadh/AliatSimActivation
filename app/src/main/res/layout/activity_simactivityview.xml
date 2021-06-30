@@ -362,7 +362,7 @@
             android:layout_width="130dp"
             android:layout_height="wrap_content"
              android:layout_below="@+id/textView25"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="50dp"
             android:text="Signiture"
             android:textSize="16dp"
             android:textColor="@color/mixte"/>
@@ -383,7 +383,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/statusSpinner"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="60dp"
             android:layout_toRightOf="@id/bsigniture"
             android:backgroundTint="@color/red"
             android:visibility="gone" />
@@ -394,7 +394,7 @@
             android:layout_below="@+id/textView12"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="70dp"
             android:textSize="16dp"
             android:textColor="@color/mixte"
             android:text="ID Front Side"
@@ -406,7 +406,7 @@
             android:layout_width="160dp"
             android:layout_height="60dp"
             android:layout_below="@+id/bsigniture"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:layout_toRightOf="@+id/textView13"
             android:backgroundTint="@color/silver"
             android:text="Front Image"
@@ -427,7 +427,7 @@
             android:layout_below="@+id/textView13"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="60dp"
             android:text="ID Back Side"
             android:textSize="16dp"
             android:textColor="@color/mixte"
@@ -476,9 +476,9 @@
             android:layout_below="@id/bback"
             android:layout_marginTop="11dp"
             android:backgroundTint="@color/red"
-            android:text="Accept Terms And Conditions (MANDATORY)"
+            android:text="I confirm that I have verified the identification documents presented for registration."
             android:textColor="@color/yellowheader"
-            android:textSize="20sp" />
+            android:textSize="16dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/BtnData"

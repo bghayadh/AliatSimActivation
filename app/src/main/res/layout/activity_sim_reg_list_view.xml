@@ -32,19 +32,7 @@
         android:backgroundTint="@color/red"
         android:text="NEW" />
 
-    <Button
-        android:id="@+id/btnmain"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_below="@id/simRecView"
-        android:layout_alignParentRight="true"
-        android:backgroundTint="@color/red"
-        android:text="Main Page"
-        android:textColor="@color/white"
-        android:textSize="15dp"
-        android:textStyle="bold"
-        android:drawableRight="@mipmap/ic_main_page"/>
-    <!-- display Main Page button -->
+
 
 
 
@@ -71,11 +59,14 @@
         <TableRow
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/cast_skip_ad_label_border">
+            >
 
             <TextView
                 android:layout_column="1"
-                android:padding="3dp"
+                android:id="@+id/txtregid"
+                android:layout_width="match_parent"
+                android:textAlignment="center"
+                android:padding="8dp"
                 android:text="REG ID"
                 android:textColor="@color/yellowheader"
                 android:textSize="16dp"
@@ -83,7 +74,9 @@
 
             <TextView
                 android:layout_column="1"
-                android:padding="3dp"
+                android:textAlignment="center"
+                android:padding="8dp"
+                android:layout_width="match_parent"
                 android:text="NAME"
                 android:textColor="@color/yellowheader"
                 android:textSize="16dp"
@@ -92,15 +85,19 @@
 
             <TextView
                 android:layout_column="1"
-                android:padding="3dp"
-                android:text="Client Number"
+                android:textAlignment="center"
+                android:padding="8dp"
+                android:layout_width="match_parent"
+                android:text="NUMBER"
                 android:textColor="@color/yellowheader"
                 android:textSize="14dp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_column="1"
-                android:padding="2dp"
+                android:textAlignment="center"
+                android:layout_width="wrap_content"
+                android:padding="8dp"
                 android:text="STATUS"
                 android:textColor="@color/yellowheader"
                 android:textSize="16dp"
@@ -112,12 +109,26 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/simRecView"
         android:layout_width="match_parent"
-        android:layout_height="360dp"
+        android:layout_height="395dp"
         android:layout_below="@+id/btnprevious"
         android:layout_marginTop="102dp"
         android:scrollbarSize="12dp"
         android:scrollbars="vertical"
         tools:layout_editor_absoluteX="191dp" />
+
+    <!-- display Main Page button -->
+    <Button
+        android:id="@+id/btnmain"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="@color/red"
+        android:text="Main Page"
+        android:textColor="@color/white"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:drawableRight="@mipmap/ic_main_page"/>
 
     <Button
         android:id="@+id/Btnselectdate"
