@@ -21,7 +21,6 @@ import java.util.concurrent.ExecutionException;
 
 public class Activate_Sim extends AppCompatActivity implements ActivationResponse {
     private Button btnip,btnsms,btnexit;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,7 +91,6 @@ public class Activate_Sim extends AppCompatActivity implements ActivationRespons
             btnsms.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                 }
             });
             btnexit.setOnClickListener(new View.OnClickListener() {

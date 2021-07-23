@@ -69,7 +69,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     private String globalsimid;
     private Button submit, frontid, backid, activatesim;
     private Button sign;
-    private File file;
+    private File file,OfflineFile;
     private String nationality = "";
     private RadioButton kenya;
     private RadioButton foreign;
@@ -215,8 +215,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             editidagent.setText(Off4);
             String myFileName = "SIM_" + editidagent.getText().toString() + ".txt";
             File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-            File myFile = new File(directory,myFileName);
-            if (myFile.exists())
+            OfflineFile = new File(directory,myFileName);
+            if (OfflineFile.exists())
             {
                 String Off1 = intent.getStringExtra("offline1");
                 editfname.setText(Off1);
@@ -272,6 +272,9 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 String Off16 = intent.getStringExtra("offline16");
                 textB.setText(Off16);
                 BACK = Off16;
+
+                checkBox.setChecked(true);
+
             }
 
 
@@ -527,7 +530,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                         PreparedStatement stmtinsert1 = null;
 
                                         try {
-                                            if (globalsimid.equalsIgnoreCase("0") || myFile.exists()) {
+                                            if (globalsimid.equalsIgnoreCase("0") || OfflineFile.exists()) {
                                                 // if it is a new Warehouse we will use insert
 
                                                 Statement stmt1 = null;
@@ -572,8 +575,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                         try {
                                             stmtinsert1.executeUpdate();
                                             Toast.makeText(SimRegInfo.this, "Saving Completed", Toast.LENGTH_SHORT).show();
-                                            Intent a = new Intent(SimRegInfo.this, SimRegListViewActivity.class);
-                                            startActivity(a);
+                                            //Intent a = new Intent(SimRegInfo.this, SimRegListViewActivity.class);
+                                            //startActivity(a);
                                         } catch (SQLException throwables) {
                                             throwables.printStackTrace();
                                         }
@@ -740,6 +743,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     SignImageStatus();
                     FrontImageStatus();
                     BackImageStatus();
+                    OfflineFile.delete();
                 }
             });
 
@@ -753,13 +757,13 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 }
             });
 
-
+/*
             if(signsave.exists() || frontsave.exists() || backsave.exists()){
                 startTimer();
             } else {
                 mTextViewCountDown.setVisibility(View.INVISIBLE);
             }
-
+*/
 
 
         } else {
@@ -1156,6 +1160,13 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             e.printStackTrace();
         }
 
+        File signsave = new File("/sdcard/Pictures", SIGN + ".jpg");
+        File frontsave = new File("/sdcard/Pictures", FRONT + ".jpg");
+        File backsave = new File("/sdcard/Pictures", BACK + ".jpg");
+        signsave.delete();
+        frontsave.delete();
+        backsave.delete();
+
     }
 
 
@@ -1508,7 +1519,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
     }
 
-
+/*
 
     private void startTimer() {
         mEndTime = System.currentTimeMillis() + mTimeLeftInMillis;
@@ -1587,5 +1598,5 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             }
         }
     }
-
+*/
 }
