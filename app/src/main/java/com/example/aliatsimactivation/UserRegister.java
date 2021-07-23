@@ -5,22 +5,30 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.provider.MediaStore;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPReply;
+
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -28,19 +36,113 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Random;
 
 public class UserRegister extends AppCompatActivity {
     private static final String FILE_NAME="example.txt";
-    private Button verify,register,BtnData;
+    private Button verify,register,BtnData,BtnAgentImage,BtnFrontID,BtnBackID;
     private String myText,RegisterResult;
-    private String Code="112233";
+    private String Code;
     private EditText edtfname,edtlname,edtregion,edtaddress,edtphonenbr,edtpin;
     private TextView tv;
     private String file = "MSISDN.txt";
     private String secondfile = "Offlinedata.txt";
     private String fileContents,fileContents2;
-    private String secondfileContents,secondfileContents2,secondfileContents3,secondfileContents4,secondfileContents5,secondfileContents6;
+    private String secondfileContents,secondfileContents2,secondfileContents3,secondfileContents4,secondfileContents5,secondfileContents6,secondfileContent7,secondfileContent8,secondfileContent9;
+    private String AgentImage,AgentFrontID,AgentBackID;
     Connection conn;
+    String server = "ftp.ipage.com";
+    int port = 21;
+    String user = "beid";
+    String pass = "10th@Loop";
+    FTPClient ftpClient = new FTPClient();
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==100)
+        {
+            AgentImage=edtfname.getText().toString()+"_"+edtlname.getText().toString()+"_AGENT_"+edtphonenbr.getText().toString();
+
+            Bitmap bmp=(Bitmap)data.getExtras().get("data");
+
+           File agentimage = new File("/sdcard/Pictures", AgentImage+ ".jpg");
+
+
+            FileOutputStream fileOutputStream =null;
+            try {
+                fileOutputStream = new FileOutputStream(agentimage);
+
+                // Compress bitmap to png image.
+                bmp.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
+
+                // Flush bitmap to image file.
+                fileOutputStream.flush();
+
+                // Close the output stream.
+                fileOutputStream.close();
+               // textF.setText("/sdcard/Pictures/"+FRONT);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if(requestCode==101)
+        {
+            AgentFrontID=edtfname.getText().toString()+"_"+edtlname.getText().toString()+"_FRONT_"+edtphonenbr.getText().toString();
+
+            Bitmap bmp=(Bitmap)data.getExtras().get("data");
+
+            File agentfrontid = new File("/sdcard/Pictures", AgentFrontID+ ".jpg");
+
+            FileOutputStream fileOutputStream =null;
+            try {
+                fileOutputStream = new FileOutputStream(agentfrontid);
+
+                // Compress bitmap to png image.
+                bmp.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
+
+                // Flush bitmap to image file.
+                fileOutputStream.flush();
+
+                // Close the output stream.
+                fileOutputStream.close();
+                // textF.setText("/sdcard/Pictures/"+FRONT);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+        if (requestCode==102)
+        {
+            AgentBackID=edtfname.getText().toString()+"_"+edtlname.getText().toString()+"_Back_"+edtphonenbr.getText().toString();
+
+            Bitmap bmp=(Bitmap)data.getExtras().get("data");
+
+            File agentfrontid = new File("/sdcard/Pictures", AgentBackID+ ".jpg");
+
+            FileOutputStream fileOutputStream =null;
+            try {
+                fileOutputStream = new FileOutputStream(agentfrontid);
+
+                // Compress bitmap to png image.
+                bmp.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
+
+                // Flush bitmap to image file.
+                fileOutputStream.flush();
+
+                // Close the output stream.
+                fileOutputStream.close();
+                // textF.setText("/sdcard/Pictures/"+FRONT);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,12 +162,49 @@ public class UserRegister extends AppCompatActivity {
         String MSISDN=edtphonenbr.getText().toString();
         edtpin=findViewById(R.id.edtpin);
         String PIN=edtpin.getText().toString();
+        BtnAgentImage=findViewById(R.id.btnagentimg);
+        BtnFrontID=findViewById(R.id.btnagentfrontid);
+        BtnBackID=findViewById(R.id.btnagentbackid);
         tv=findViewById(R.id.text_view);
 
+        BtnAgentImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(edtfname.getText().toString().matches("")||edtlname.getText().toString().matches("") || edtphonenbr.getText().toString().matches("")) {
+                    Toast.makeText(UserRegister.this, "INSERT YOUR NAME and MSISDN", Toast.LENGTH_SHORT).show();
+                }
+                else {Intent intent= new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(intent,100);}
+            }
+        });
+
+        BtnFrontID.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(edtfname.getText().toString().matches("")||edtlname.getText().toString().matches("") || edtphonenbr.getText().toString().matches("")) {
+                    Toast.makeText(UserRegister.this, "INSERT YOUR NAME and MSISDN", Toast.LENGTH_SHORT).show();
+                }
+                else {Intent intent= new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(intent,101);}
+            }
+        });
+
+        BtnBackID.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(edtfname.getText().toString().matches("")||edtlname.getText().toString().matches("") || edtphonenbr.getText().toString().matches("")) {
+                    Toast.makeText(UserRegister.this, "INSERT YOUR NAME and MSISDN", Toast.LENGTH_SHORT).show();
+                }
+                else {Intent intent= new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(intent,102);}
+            }
+        });
 
 
 
 
+        Code=generateSessionKey(6);
+        System.out.println("result: "+Code);
 
 
 
@@ -110,7 +249,38 @@ public class UserRegister extends AppCompatActivity {
                                 System.out.println("Succeed");
                                 verify.setVisibility(View.GONE);
                                 register.setVisibility(View.VISIBLE);
+                                connecttoDB();
 
+                                try {
+
+
+                                    PreparedStatement stmtinsert1 = null;
+
+                                    try {
+
+                                        stmtinsert1 = conn.prepareStatement("insert into SIM_REGISTER_LOGIN (VERIFICATION_CODE) values " +
+                                                "('" +Code.toString()+"')");
+
+                                    } catch (SQLException throwables) {
+                                        throwables.printStackTrace();
+                                    }
+                                    try {
+                                        stmtinsert1.executeUpdate();
+                                        Toast.makeText(getApplicationContext(), "Saving Completed", Toast.LENGTH_SHORT).show();
+                                    } catch (SQLException throwables) {
+                                        throwables.printStackTrace();
+                                    }
+                                    try {
+                                        stmtinsert1.close();
+                                        conn.close();
+                                    } catch (SQLException throwables) {
+                                        throwables.printStackTrace();
+                                    }
+
+                                }catch (Exception e)
+                                {
+                                    System.out.println("saving offline");
+                                }
                             }
                             else {
                                 AlertDialog.Builder mydialog1 = new AlertDialog.Builder(UserRegister.this);
@@ -167,8 +337,18 @@ public class UserRegister extends AppCompatActivity {
 
                     try {
 
-                        stmtinsert1 = conn.prepareStatement("insert into SIM_REGISTER_LOGIN (MSISDN,PIN_CODE,FIRST_NAME,LAST_NAME,REGION,ADDRESS,CREATION_DATE) values " +
-                                "('" + edtphonenbr.getText().toString() + "','" + edtpin.getText().toString() + "','" + edtfname.getText().toString() + "','" + edtlname.getText().toString() + "','" + edtregion.getText().toString() + "','" + edtaddress.getText().toString() + "',sysdate)");
+                        stmtinsert1 = conn.prepareStatement("UPDATE SIM_REGISTER_LOGIN " +
+                                " set " +
+                                " MSISDN='" + edtphonenbr.getText().toString() +"'," +
+                                "PIN_CODE='" + edtpin.getText().toString() +"'," +
+                                "FIRST_NAME='" + edtfname.getText().toString() + "'," +
+                                "LAST_NAME='" + edtlname.getText().toString() + "'," +
+                                "REGION='" + edtregion.getText().toString() +"'," +
+                                "ADDRESS='" + edtaddress.getText().toString() +"',CREATION_DATE=sysdate," +
+                                "AGENT_IMAGE='"+AgentImage+"'," +
+                                "AGENT_FRONT_ID='"+AgentFrontID+"'," +
+                                "AGENT_BACK_ID='"+AgentBackID+"'" +
+                                "where VERIFICATION_CODE='"+Code+"'");
 
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
@@ -191,6 +371,85 @@ public class UserRegister extends AppCompatActivity {
                 {
                     System.out.println("saving offline");
                 }
+
+
+                File myFile = new File("/sdcard/Pictures", AgentImage + ".jpg");
+                String agentimagepath = String.valueOf(myFile);
+                String agentimagename = AgentImage + ".jpg";
+
+
+                File myFile1 = new File("/sdcard/Pictures", AgentFrontID + ".jpg");
+                String agentfrontidpath = String.valueOf(myFile1);
+                String agentfrontidname = AgentFrontID+ ".jpg";
+
+                File myFile2 = new File("/sdcard/Pictures", AgentBackID + ".jpg");
+                String agentbackidpath = String.valueOf(myFile2);
+                String agentbackidname =AgentBackID+ ".jpg";
+
+                try {
+                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                    StrictMode.setThreadPolicy(policy);
+                    ftpClient.connect(server, port);
+                    if (FTPReply.isPositiveCompletion(ftpClient.getReplyCode())) {
+                        // login using username & password
+                        boolean status = ftpClient.login(user, pass);
+                        ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+                        ftpClient.enterLocalPassiveMode();
+                        String workingDir = ftpClient.printWorkingDirectory();
+                        System.out.println("OUR PWD IS " + workingDir);
+                        ftpClient.changeWorkingDirectory(workingDir + "AGENT");
+
+                        //return true if the directory found
+                        System.out.println(ftpClient.changeWorkingDirectory(workingDir + "AGENT"));
+                        workingDir = ftpClient.printWorkingDirectory();
+                      //  PathSignFTP = workingDir + "/" + SIGN + ".jpg";
+                       // PathFrontFTP = workingDir + "/" + FRONT + ".jpg";
+                      //  PathBackFTP = workingDir + "/" + BACK + ".jpg";
+                        System.out.println("Directory: " + workingDir);
+                        // upload file
+                        try {
+
+                            FileInputStream srcFileStream = new FileInputStream(agentimagepath);
+                            ftpClient.storeFile(agentimagename, srcFileStream);
+
+                            FileInputStream srcFileStream1 = new FileInputStream(agentfrontidpath);
+                            ftpClient.storeFile(agentfrontidname, srcFileStream1);
+
+                            FileInputStream srcFileStream2 = new FileInputStream(agentbackidpath);
+                            ftpClient.storeFile(agentbackidname, srcFileStream2);
+
+                            srcFileStream.close();
+
+                            Toast.makeText(getApplicationContext(), "upload Completed", Toast.LENGTH_SHORT).show();
+
+
+                        } catch (Exception e) {
+                            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        }
+
+                    }
+
+
+                } catch (IOException e) {
+                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+                try {
+                    ftpClient.login(user, pass);
+                } catch (IOException e) {
+                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+                ftpClient.enterLocalPassiveMode();
+
+                try {
+                    ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+                } catch (IOException e) {
+                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+                //////////////////////////////////////////////////////////////////////
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             }
@@ -232,6 +491,9 @@ public class UserRegister extends AppCompatActivity {
         secondfileContents4= edtaddress.getText().toString();
         secondfileContents5= edtphonenbr.getText().toString();
         secondfileContents6= edtpin.getText().toString();
+        secondfileContent7=AgentImage;
+        secondfileContent8=AgentFrontID;
+        secondfileContent9=AgentBackID;
         try {
             FileOutputStream fOut = openFileOutput(secondfile, MODE_PRIVATE);
             fOut.write(secondfileContents.getBytes());
@@ -246,6 +508,11 @@ public class UserRegister extends AppCompatActivity {
             fOut.write(":".getBytes());
             fOut.write(secondfileContents6.getBytes());
             fOut.write(":".getBytes());
+            fOut.write(secondfileContent7.getBytes());
+            fOut.write(":".getBytes());
+            fOut.write(secondfileContent8.getBytes());
+            fOut.write(":".getBytes());
+            fOut.write(secondfileContent9.getBytes());
             fOut.close();
             File fileDir = new File(getFilesDir(), secondfile);
             Toast.makeText(getBaseContext(), "File saved at" + fileDir, Toast.LENGTH_LONG).show();
@@ -285,4 +552,20 @@ public class UserRegister extends AppCompatActivity {
             Toast.makeText (UserRegister.this,"" +e.toString(),Toast.LENGTH_SHORT).show ();
         }
     }
+
+    public static String generateSessionKey(int length){
+        String alphabet =
+                new String("0123456789"); // 9
+
+        int n = alphabet.length(); // 10
+
+        String result = new String();
+        Random r = new Random(); // 11
+
+        for (int i=0; i<length; i++) // 12
+            result = result + alphabet.charAt(r.nextInt(n)); //13
+
+        return result;
+    }
 }
+

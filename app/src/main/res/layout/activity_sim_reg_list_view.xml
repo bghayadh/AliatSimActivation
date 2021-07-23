@@ -11,7 +11,8 @@
         android:layout_height="50dp"
         android:layout_marginStart="1.5dp"
         android:backgroundTint="@color/red"
-        android:text="PREVIOUS" />
+        android:drawableLeft="@mipmap/ic_prev"
+        android:text="PREV" />
 
     <Button
         android:id="@+id/btnnext"
@@ -20,6 +21,7 @@
         android:layout_marginStart="5dp"
         android:layout_toRightOf="@+id/btnprevious"
         android:backgroundTint="@color/red"
+        android:drawableRight="@mipmap/ic_next"
         android:text="NEXT" />
 
     <Button
@@ -30,6 +32,7 @@
         android:layout_marginRight="5dp"
         android:layout_toRightOf="@+id/btnnext"
         android:backgroundTint="@color/red"
+        android:drawableLeft="@mipmap/ic_new"
         android:text="NEW" />
 
 
@@ -41,11 +44,11 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_below="@id/btnnew"
-        android:layout_marginTop="15dp"
-        android:layout_marginStart="35dp"
+        android:layout_marginTop="13dp"
         android:layout_toRightOf="@id/Btnselectdate"
         android:inputType="date"
-        android:textSize="16dp"
+        android:textAlignment="center"
+        android:textSize="20dp"
         android:hint="SELECTED DATE"
         android:textColor="@color/white" />
 
@@ -56,54 +59,7 @@
         android:layout_marginTop="120dp"
         android:stretchColumns="1,2,3,4,5">
 
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            >
 
-            <TextView
-                android:layout_column="1"
-                android:id="@+id/txtregid"
-                android:layout_width="match_parent"
-                android:textAlignment="center"
-                android:padding="8dp"
-                android:text="REG ID"
-                android:textColor="@color/yellowheader"
-                android:textSize="16dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_column="1"
-                android:textAlignment="center"
-                android:padding="8dp"
-                android:layout_width="match_parent"
-                android:text="NAME"
-                android:textColor="@color/yellowheader"
-                android:textSize="16dp"
-                android:textStyle="bold" />
-
-
-            <TextView
-                android:layout_column="1"
-                android:textAlignment="center"
-                android:padding="8dp"
-                android:layout_width="match_parent"
-                android:text="NUMBER"
-                android:textColor="@color/yellowheader"
-                android:textSize="14dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_column="1"
-                android:textAlignment="center"
-                android:layout_width="wrap_content"
-                android:padding="8dp"
-                android:text="STATUS"
-                android:textColor="@color/yellowheader"
-                android:textSize="16dp"
-                android:textStyle="bold" />
-
-        </TableRow>
     </TableLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -134,7 +90,7 @@
         android:id="@+id/Btnselectdate"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
-        android:drawableRight="@mipmap/ic_calender"
+        android:drawableRight="@drawable/ic_calander"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="0dp"
         android:backgroundTint="@color/red"

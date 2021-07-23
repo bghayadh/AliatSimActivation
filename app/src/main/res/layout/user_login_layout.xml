@@ -15,9 +15,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="MSISDN"
+        android:text="Agent MSISDN"
         android:layout_marginLeft="50dp"
-        android:layout_marginTop="130dp"
+        android:layout_marginTop="120dp"
         android:id="@+id/phnbr"
         android:textStyle="bold"
         android:textSize="25dp"
@@ -26,16 +26,16 @@
 
     <!--edit text for MSISDN-->
     <EditText
-        android:layout_width="190dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:hint="Phone Number"
         android:id="@+id/edtphnbr"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:layout_toRightOf="@id/phnbr"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="110dp"
         >
     </EditText>
 
@@ -45,7 +45,8 @@
         android:text="PIN"
         android:textSize="25dp"
         android:textStyle="bold"
-        android:layout_marginLeft="78dp"
+        android:textAlignment="center"
+        android:layout_marginLeft="120dp"
         android:layout_marginTop="15dp"
         android:layout_below="@+id/phnbr"
         android:id="@+id/loginpin"
@@ -54,16 +55,15 @@
 
     <!--edit text for PIN-->
     <EditText
-        android:layout_width="190dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:hint="PIN"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:layout_marginStart="37dp"
+        android:layout_marginLeft="227dp"
         android:layout_below="@+id/edtphnbr"
         android:id="@+id/edtloginpin"
-        android:layout_toRightOf="@id/loginpin"
         android:inputType="numberPassword">
     </EditText>
 
@@ -71,7 +71,7 @@
         android:layout_width="200dp"
         android:layout_height="60dp"
         android:text="LOGIN"
-        android:layout_marginTop="340dp"
+        android:layout_marginTop="350dp"
         android:layout_marginStart="107dp"
         android:id="@+id/login"
         android:textSize="25dp"

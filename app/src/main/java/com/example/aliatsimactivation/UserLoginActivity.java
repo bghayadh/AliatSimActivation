@@ -11,6 +11,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPReply;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -19,6 +22,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Random;
 
 public class UserLoginActivity extends AppCompatActivity {
     private TextView tv;
@@ -31,6 +35,11 @@ public class UserLoginActivity extends AppCompatActivity {
     private String secondfileContents,secondfileContents2,secondfileContents3,secondfileContents4,secondfileContents5,secondfileContents6;
     private Connection conn;
     private TextView tv2;
+    String server = "ftp.ipage.com";
+    int port = 21;
+    String user = "beid";
+    String pass = "10th@Loop";
+    FTPClient ftpClient = new FTPClient();
 
 
 
@@ -47,6 +56,7 @@ public class UserLoginActivity extends AppCompatActivity {
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
 
 
                 //get the values of the msisdn and pin edittexts
@@ -141,6 +151,9 @@ public class UserLoginActivity extends AppCompatActivity {
                 String s3 = data[3];
                 String s4 = data[4];
                 String s5 = data[5];
+                String s6 = data[6];
+                String s7 = data[7];
+                String s8 = data[8];
 
                 Statement stmt1 = null;
                 try {
@@ -148,8 +161,8 @@ public class UserLoginActivity extends AppCompatActivity {
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
-                String sqlStmt = ("insert into SIM_REGISTER_LOGIN (MSISDN,PIN_CODE,FIRST_NAME,LAST_NAME,REGION,ADDRESS,CREATION_DATE) values " +
-                        "('" + s4.toString() + "','" + s5.toString() + "','" + s0.toString() + "','" + s1.toString() + "','" + s2.toString() + "','" + s3.toString() + "',sysdate)");
+                String sqlStmt = ("insert into SIM_REGISTER_LOGIN (MSISDN,PIN_CODE,FIRST_NAME,LAST_NAME,REGION,ADDRESS,CREATION_DATE,AGENT_IMAGE,AGENT_FRONT_ID,AGENT_BACK_ID) values " +
+                        "('" + s4.toString() + "','" + s5.toString() + "','" + s0.toString() + "','" + s1.toString() + "','" + s2.toString() + "','" + s3.toString() + "',sysdate,'"+s6.toString()+"','"+s7.toString()+"','"+s8.toString()+"')");
                 ResultSet rs1 = null;
                 try {
                     rs1 = stmt1.executeQuery(sqlStmt);
@@ -167,6 +180,82 @@ public class UserLoginActivity extends AppCompatActivity {
                     throwables.printStackTrace();
                 }
 
+                File myFile = new File("/sdcard/Pictures", s6.toString() + ".jpg");
+                String agentimagepath = String.valueOf(myFile);
+                String agentimagename = s6.toString() + ".jpg";
+
+
+                File myFile1 = new File("/sdcard/Pictures", s7.toString() + ".jpg");
+                String agentfrontidpath = String.valueOf(myFile1);
+                String agentfrontidname = s7.toString()+ ".jpg";
+
+                File myFile2 = new File("/sdcard/Pictures", s8.toString() + ".jpg");
+                String agentbackidpath = String.valueOf(myFile2);
+                String agentbackidname =s8.toString()+ ".jpg";
+
+                try {
+                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                    StrictMode.setThreadPolicy(policy);
+                    ftpClient.connect(server, port);
+                    if (FTPReply.isPositiveCompletion(ftpClient.getReplyCode())) {
+                        // login using username & password
+                        boolean status = ftpClient.login(user, pass);
+                        ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+                        ftpClient.enterLocalPassiveMode();
+                        String workingDir = ftpClient.printWorkingDirectory();
+                        System.out.println("OUR PWD IS " + workingDir);
+                        ftpClient.changeWorkingDirectory(workingDir + "AGENT");
+
+                        //return true if the directory found
+                        System.out.println(ftpClient.changeWorkingDirectory(workingDir + "AGENT"));
+                        workingDir = ftpClient.printWorkingDirectory();
+                        //  PathSignFTP = workingDir + "/" + SIGN + ".jpg";
+                        // PathFrontFTP = workingDir + "/" + FRONT + ".jpg";
+                        //  PathBackFTP = workingDir + "/" + BACK + ".jpg";
+                        System.out.println("Directory: " + workingDir);
+                        // upload file
+                        try {
+
+                            FileInputStream srcFileStream = new FileInputStream(agentimagepath);
+                            ftpClient.storeFile(agentimagename, srcFileStream);
+
+                            FileInputStream srcFileStream1 = new FileInputStream(agentfrontidpath);
+                            ftpClient.storeFile(agentfrontidname, srcFileStream1);
+
+                            FileInputStream srcFileStream2 = new FileInputStream(agentbackidpath);
+                            ftpClient.storeFile(agentbackidname, srcFileStream2);
+
+                            srcFileStream.close();
+
+                            Toast.makeText(getApplicationContext(), "upload Completed", Toast.LENGTH_SHORT).show();
+
+
+                        } catch (Exception e) {
+                            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        }
+
+                    }
+
+
+                } catch (IOException e) {
+                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+                try {
+                    ftpClient.login(user, pass);
+                } catch (IOException e) {
+                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+                ftpClient.enterLocalPassiveMode();
+
+                try {
+                    ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+                } catch (IOException e) {
+                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
                 //delete the file after sending data from file into database
                 File fileDir1 = new File(getFilesDir(),"Offlinedata.txt");
                 File file1 = new File(getApplicationContext().getFilesDir(),"Offlinedata.txt");
@@ -261,5 +350,20 @@ public class UserLoginActivity extends AppCompatActivity {
             System.out.println("error3 is: " +e.toString());
             Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();
         }
+    }
+
+    public static String generateSessionKey(int length){
+        String alphabet =
+                new String("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"); // 9
+
+        int n = alphabet.length(); // 10
+
+        String result = new String();
+        Random r = new Random(); // 11
+
+        for (int i=0; i<length; i++) // 12
+            result = result + alphabet.charAt(r.nextInt(n)); //13
+
+        return result;
     }
 }

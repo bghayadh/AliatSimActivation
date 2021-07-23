@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,14 +10,16 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="120dp"
+        android:id="@+id/imageView1"
         android:src="@drawable/download">
 
     </ImageView>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp">
+        android:layout_marginTop="120dp">
 
         <TextView
             android:layout_marginTop="8dp"
@@ -137,13 +140,89 @@
             android:layout_below="@+id/edtphone"
             android:layout_marginLeft="200dp"/>
 
+    
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/agentimage"
+            android:layout_below="@+id/pin"
+            android:text="Agent Image"
+            android:textSize="20dp"
+            android:textColor="@color/yellowheader"
+            android:textAlignment="center"
+            android:textStyle="bold">
+        </TextView>
+        
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:backgroundTint="@color/silver"
+            android:text="Agent Image"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:layout_below="@+id/edtpin"
+            android:layout_toRightOf="@+id/agentimage"
+            android:layout_marginTop="15dp"
+            android:id="@+id/btnagentimg">
+        </Button>
+
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/frontid"
+            android:layout_below="@+id/agentimage"
+            android:text="Agent Front ID"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            android:textColor="@color/yellowheader"
+            android:textStyle="bold"
+            android:layout_marginTop="40dp">
+        </TextView>
+
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:backgroundTint="@color/silver"
+            android:text="Agent Front ID"
+            android:textColor="@color/black"
+            android:layout_below="@+id/btnagentimg"
+            android:layout_toRightOf="@id/frontid"
+            android:id="@+id/btnagentfrontid"
+            android:layout_marginTop="10dp">
+        </Button>
+
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/backid"
+            android:layout_below="@id/frontid"
+            android:text="Agent Back ID"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            android:textColor="@color/yellowheader"
+            android:textStyle="bold"
+            android:layout_marginTop="30dp">
+        </TextView>
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:backgroundTint="@color/silver"
+            android:text="Agent Back ID"
+            android:id="@+id/btnagentbackid"
+            android:textColor="@color/black"
+            android:layout_below="@id/btnagentfrontid"
+            android:layout_toRightOf="@+id/backid"
+            android:layout_marginTop="10dp">
+        </Button>
+
         <Button
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:text="Verify"
             android:id="@+id/verify"
+            android:layout_marginTop="10dp"
             android:backgroundTint="@color/red"
-            android:layout_below="@id/pin"/>
+            android:layout_below="@id/backid"/>
         <Button
             android:layout_width="200dp"
             android:layout_height="50dp"
@@ -151,10 +230,9 @@
             android:backgroundTint="@color/red"
             android:id="@+id/register"
             android:visibility="gone"
+            android:layout_marginTop="10dp"
             android:layout_centerInParent="true"
-            android:layout_below="@id/pin"/>
-
-
+            android:layout_below="@id/backid"/>
     </RelativeLayout>
 
     <TextView
@@ -175,6 +253,7 @@
         android:textStyle="bold"
         android:textSize="15dp"
         android:layout_alignParentRight="true"
-        android:visibility="invisible"
+        android:visibility="gone"
         />
+
 </RelativeLayout>

@@ -11,7 +11,7 @@
         <item>New</item>
         <item>In Progress</item>
         <item>Success</item>
-        <item>Not Success</item>
+        <item>Failed</item>
     </string-array>
     <string-array name="entries">
         <item>Male</item>

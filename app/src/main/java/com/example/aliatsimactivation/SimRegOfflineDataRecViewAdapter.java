@@ -82,7 +82,7 @@ public class SimRegOfflineDataRecViewAdapter extends RecyclerView.Adapter<SimReg
             sendImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-            Toast.makeText(context,"sending..." ,Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,"Loading..." ,Toast.LENGTH_SHORT).show();
 
             // reading the file from directory
             String name = txttitle.getText().toString();
@@ -140,87 +140,42 @@ public class SimRegOfflineDataRecViewAdapter extends RecyclerView.Adapter<SimReg
                     System.out.println(q);
                     System.out.println(r);
 
-
-
-
-                    //send the data to database
-            connecttoDB();
-            Date date = new Date();
-            Calendar calendar = new GregorianCalendar();
-            calendar.setTime(date);
-            int year = calendar.get(Calendar.YEAR);
-            String simID;
-            simID = "REG_" + year + "_";
-            String globalsimid = "";
-            try {
-
-
-                Statement stmt1 = null;
-                stmt1 = conn.createStatement();
-                String sqlStmt = "select SIM_REGISTRATION_SEQ.nextval as nbr from dual";
-                ResultSet rs1 = null;
-                try {
-                    rs1 = stmt1.executeQuery(sqlStmt);
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-
-                while (true) {
-                    try {
-                        if (!rs1.next()) break;
-                        globalsimid = simID + rs1.getString("nbr");
-                        //System.out.println(rs1.getString("compteur"));
-
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
-                }
-                rs1.close();
-                stmt1.close();
-            }catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-            Statement stmt1 = null;
-            try {
-                stmt1 = conn.createStatement();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-                    String sqlStmt = ("insert into SIM_REGISTRATION (SIM_REG_ID,STATUS,CREATION_DATE,LAST_MODIFIED_DATE,FIRST_NAME,MIDDLE_NAME,LAST_NAME,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHISICAL_LOCATION,POSTAL_ADDRESS,GENDER,AGENT_NUMBER,AGENT_ID,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO) values " +
-                            "('" + globalsimid +"','"+r+"' ,sysdate, sysdate,'" + a + "','" + b + "', '" + c + "','" + d + "',TO_DATE('" + e + "','DD-MM-YYYY'),'" + f + "','" + g + "','" + h+ "','" + j + "','" +k+ "','" + l + "','" + m+ "','" + n+ "','" +o+ "','" + p +"','"+q+ "')");
-            ResultSet rs1 = null;
-            try {
-                rs1 = stmt1.executeQuery(sqlStmt);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-            try {
-                rs1.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-            try {
-                stmt1.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-
-
+/*
             //delete the file after sending data from file into database
             File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
             File myFile = new File(dir,name);
             myFile.delete();
+*/
+
+            String globalsimid = "";
             Intent intent = new Intent(context,SimRegInfo.class);
             intent.putExtra("message_key",globalsimid);
+            intent.putExtra("offline1",a);
+            intent.putExtra("offline2",b);
+            intent.putExtra("offline3",c);
+            intent.putExtra("offline4",n);
+            intent.putExtra("offline5",d);
+            intent.putExtra("offline6",e);
+            intent.putExtra("offline7",g);
+            intent.putExtra("offline8",h);
+            intent.putExtra("offline9",j);
+            intent.putExtra("offline10",k);
+            intent.putExtra("offline11",l);
+            intent.putExtra("offline12",f);
+            intent.putExtra("offline13",r);
+            intent.putExtra("offline14",o);
+            intent.putExtra("offline15",p);
+            intent.putExtra("offline16",q);
             context.startActivity(intent);
 
-        }
-    });
+          }
+      });
 
-
-
-}
     }
+
+   }
+
+
     public void connecttoDB() {
         // connect to DB
         OraDB oradb = new OraDB();
@@ -242,4 +197,5 @@ public class SimRegOfflineDataRecViewAdapter extends RecyclerView.Adapter<SimReg
             System.out.println("error is: " + e.toString());
         }
     }
+
 }

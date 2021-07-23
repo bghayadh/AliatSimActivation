@@ -46,7 +46,7 @@
         android:backgroundTint="@color/red"
         android:layout_below="@+id/btnprevious"
         android:layout_marginStart="1dp"
-        android:drawableRight="@mipmap/ic_calender"
+        android:drawableRight="@drawable/ic_calander"
         />
 
     <EditText

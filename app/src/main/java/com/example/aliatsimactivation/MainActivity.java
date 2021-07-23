@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_CODE = 100;
 
     //define buttons
-    private Button BtnMobCharge, BtnResCharge,BtnExit,BtnSIMReg;
+    private Button BtnMobCharge, BtnResCharge,BtnExit,BtnSIMReg,BtnSimReport;
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         BtnSIMReg=findViewById(R.id.Btnsimreg);
         BtnMobCharge=findViewById(R.id.Btnmobcharge);
         BtnResCharge=findViewById(R.id.Btnrescharge);
+        BtnSimReport=findViewById(R.id.Btnsimreport);
         BtnExit=findViewById(R.id.BtnExit);
 
 
@@ -106,8 +107,16 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
+        
+        //open sim registration reports
+        BtnSimReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this,"Welcome To Sim Registration Reports",Toast.LENGTH_LONG).show();
+                Intent intent=new Intent(MainActivity.this,SimRegistrationReport.class);
+                startActivity(intent);
+            }
+        });
         // exit button
         BtnExit.setOnClickListener (new View.OnClickListener ( ) {
             @Override

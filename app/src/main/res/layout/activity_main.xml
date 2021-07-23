@@ -57,6 +57,19 @@
         style="@style/Widget.MaterialComponents.Button"
         />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:id="@+id/Btnsimreport"
+        android:text="Sim Registration Report"
+        android:backgroundTint="@color/red"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:layout_below="@id/Btnrescharge"
+       android:drawableRight="@drawable/ic_sim_reports"
+        style="@style/Widget.MaterialComponents.Button">
+    </Button>
+
     <!-- display Exit button -->
     <Button
         android:id="@+id/BtnExit"

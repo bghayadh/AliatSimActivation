@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.aliatsimactivation">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -12,8 +14,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AliatSimActivation">
-        <activity android:name=".Activate_Sim"></activity>
+        android:theme="@style/Theme.AliatSimActivation"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".SimRegistrationReport"></activity>
+        <activity android:name=".Activate_Sim" />
         <activity android:name=".ClientOfflineDataActivity" />
         <activity android:name=".UserRegister" />
         <activity android:name=".MainActivity" />
@@ -22,7 +26,7 @@
         <activity android:name=".ResellerChargeInfoActivity" />
         <activity android:name=".ResellerChargeListViewActivity" />
         <activity android:name=".SimRegInfo" />
-        <activity android:name=".UserLoginActivity"/>
+        <activity android:name=".UserLoginActivity" />
         <activity android:name=".SimRegListViewActivity" />
         <activity android:name=".SimRegSignature" />
         <activity android:name=".SimRegOfflineDataActivity" />

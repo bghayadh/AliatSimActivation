@@ -135,7 +135,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
             throwables.printStackTrace();
         }
 
-        String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,SIM_REG_ID,FIRST_NAME ,LAST_NAME,MOBILE_NUMBER,STATUS from SIM_REGISTRATION) T";
+        String sqlStmt = "SELECT * FROM (select  ROW_NUMBER() OVER (ORDER BY CREATION_DATE DESC) row_num,SIM_REG_ID,FIRST_NAME ,LAST_NAME,MOBILE_NUMBER,STATUS from SIM_REGISTRATION) T";
 
         ResultSet rs1 = null;
 
@@ -175,10 +175,12 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
             varraysize = 0;
 
 
-                for (i = arraysize-1; i >arraysize-11; i--) {
-
-                    simA.add (new SimRegListView (simdb.get (i).getSimRegListViewId ( ), simdb.get (i).getName( ), simdb.get (i).getMobile ( ), simdb.get (i).getStatus ( )));
-
+                for (i = varraysize; i < 10; i++) {
+                    if(varraysize<arraysize)
+                    {
+                        simA.add(new SimRegListView(simdb.get(i).getSimRegListViewId(), simdb.get(i).getName(), simdb.get(i).getMobile(), simdb.get(i).getStatus()));
+                        varraysize=varraysize+1;
+                    }
             pagination = pagination + 1;
             //connect data to coveragelistadapter
             SIMRegViewAdapter adapter = new SIMRegViewAdapter (SimRegListViewActivity.this);

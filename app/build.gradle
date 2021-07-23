@@ -47,4 +47,6 @@ dependencies {
     // used them for Google maps
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'com.google.android.gms:play-services:11.8.0'
+    //api integration
+    implementation 'com.google.code.gson:gson:2.8.5'
 }

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TableLayout
+        android:id="@+id/parent11"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:stretchColumns="1,2,3">
+
+        <TableRow >
+
+            <TextView
+                android:id="@+id/msidn"
+                android:layout_width="133dp"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="TextView"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="133dp"
+                android:layout_height="wrap_content"
+                android:nextFocusRight="@id/msidn"
+                android:padding="10dp"
+                android:text="TextView"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/verification"
+                android:layout_width="133dp"
+                android:layout_height="wrap_content"
+                android:nextFocusRight="@id/status"
+                android:padding="10dp"
+                android:textAlignment="center"
+                android:text="TextView"
+                android:textColor="@color/white" />
+
+
+        </TableRow>
+
+    </TableLayout>
+</RelativeLayout>

@@ -11,13 +11,14 @@
   <!-- Button Sim Registration -->
   <Button
       android:id="@+id/Btnsms"
-      android:layout_width="200dp"
+      android:layout_width="match_parent"
       android:layout_height="70dp"
       android:layout_marginStart="1dp"
       android:text="Activate Via SMS"
       android:textStyle="bold"
       android:textSize="15dp"
       android:backgroundTint="@color/red"
+      android:drawableRight="@mipmap/ic_activate_via_sms"
       style="@style/Widget.MaterialComponents.Button"
       />
 
@@ -27,13 +28,14 @@
   <!-- Button Mobile Charge -->
   <Button
       android:id="@+id/Btnip"
-      android:layout_width="200dp"
+      android:layout_width="match_parent"
       android:layout_height="70dp"
       android:layout_below="@+id/Btnsms"
       android:layout_marginStart="1dp"
       android:text="Activate Via IP"
       android:textStyle="bold"
       android:textSize="15dp"
+      android:drawableRight="@mipmap/ic_activate_via_ip"
       android:backgroundTint="@color/red"
       style="@style/Widget.MaterialComponents.Button"
       />
