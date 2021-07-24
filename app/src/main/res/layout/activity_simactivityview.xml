@@ -538,12 +538,10 @@
 
         <Button
             android:id="@+id/activatesim"
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_below="@id/chterms"
             android:layout_marginTop="50dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginStart="10dp"
             android:backgroundTint="@color/red"
             android:drawableRight="@mipmap/ic_activate"
             android:text="Activate" />
@@ -559,19 +557,19 @@
             android:id="@+id/submitbtn"
             android:textColor="@color/white"
             android:layout_marginTop="1dp"
-            android:layout_marginStart="10dp"
             android:backgroundTint="@color/red">
         </Button>
 
         <Button
             android:id="@+id/Btnftp"
-            android:layout_width="100dp"
+            android:layout_width="110dp"
             android:layout_height="60dp"
             android:layout_below="@id/activatesim"
-            android:layout_toRightOf="@+id/submitbtn"
+            android:layout_toEndOf="@+id/submitbtn"
             android:backgroundTint="@color/red"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="1dp"
+            android:drawableRight="@drawable/ic_ftp"
             android:text="FTP" />
 
 
@@ -582,19 +580,18 @@
             android:layout_below="@id/activatesim"
             android:layout_toRightOf="@+id/Btnftp"
             android:backgroundTint="@color/red"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="1dp"
-            android:text="Delete" />
+            android:drawableRight="@mipmap/ic_delete"
+            android:text="Del" />
 
 
         <Button
             android:id="@+id/BtnMainn"
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_below="@id/Btnftp"
-            android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="10dp"
             android:layout_marginTop="1dp"
             android:backgroundTint="@color/red"
             android:drawableRight="@mipmap/ic_main_page"

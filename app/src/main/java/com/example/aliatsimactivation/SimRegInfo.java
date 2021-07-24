@@ -575,8 +575,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                         try {
                                             stmtinsert1.executeUpdate();
                                             Toast.makeText(SimRegInfo.this, "Saving Completed", Toast.LENGTH_SHORT).show();
-                                            //Intent a = new Intent(SimRegInfo.this, SimRegListViewActivity.class);
-                                            //startActivity(a);
+                                            Intent a = new Intent(SimRegInfo.this, SimRegListViewActivity.class);
+                                            startActivity(a);
                                         } catch (SQLException throwables) {
                                             throwables.printStackTrace();
                                         }
@@ -792,7 +792,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             editagent = (TextView) findViewById(R.id.eagentnum);
             editidagent = (TextView) findViewById(R.id.eagentid);
             Intent intent = SimRegInfo.this.getIntent();
-
+            editagent.setEnabled(false);
             sign = findViewById(R.id.bsigniture);
             submit = findViewById(R.id.submitbtn);
             frontid = findViewById(R.id.bfront);

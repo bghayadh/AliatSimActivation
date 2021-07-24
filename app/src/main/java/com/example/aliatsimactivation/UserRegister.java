@@ -219,13 +219,16 @@ public class UserRegister extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //permit the user to verify if one edittext is empty
-                if (TextUtils.isEmpty(edtfname.getText()) || TextUtils.isEmpty(edtlname.getText()) || TextUtils.isEmpty(edtregion.getText()) || TextUtils.isEmpty(edtaddress.getText()) || TextUtils.isEmpty(edtphonenbr.getText()) || TextUtils.isEmpty(edtpin.getText())) {
+                if (TextUtils.isEmpty(edtfname.getText()) || TextUtils.isEmpty(edtlname.getText()) || TextUtils.isEmpty(edtregion.getText()) || TextUtils.isEmpty(edtaddress.getText()) || TextUtils.isEmpty(edtphonenbr.getText()) || TextUtils.isEmpty(edtpin.getText()) || TextUtils.isEmpty(AgentImage) || TextUtils.isEmpty(AgentFrontID) || TextUtils.isEmpty(AgentBackID)) {
                     edtfname.setError("Enter First Name");
                     edtlname.setError("Enter Last Name");
                     edtregion.setError("Enter Region");
                     edtaddress.setError("Enter Address");
                     edtphonenbr.setError("Enter Phone Number");
                     edtpin.setError("Enter PIN");
+                    BtnAgentImage.setError("Take a Photo");
+                    BtnFrontID.setError("Take a Photo");
+                    BtnBackID.setError("Take a Photo");
 
                 } else {
 
