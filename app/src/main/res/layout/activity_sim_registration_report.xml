@@ -152,15 +152,38 @@
         android:visibility="gone"
         android:layout_below="@+id/btnsearchsimregreport"
         android:layout_toRightOf="@+id/btndatesearch" />
+    <Button
+        android:id="@+id/btnprevious"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:text="PREVIOUS"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="160dp"
+        android:visibility="visible"
+        android:drawableLeft="@mipmap/ic_prev"
+        android:backgroundTint="@color/red"
+        />
 
+    <Button
+        android:id="@+id/btnnext"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:text="NEXT"
+        android:drawableRight="@mipmap/ic_next"
+        android:backgroundTint="@color/red"
+        android:visibility="gone"
+        android:layout_marginTop="160dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="5dp"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="340dp"
         android:id="@+id/simregreport"
-        android:layout_below="@+id/btndatesearch"
-        android:layout_marginTop="160dp"
-        android:visibility="gone">
+        android:layout_below="@+id/btnprevious"
+        android:scrollbars="vertical"
+        android:visibility="visible">
     </androidx.recyclerview.widget.RecyclerView>
 
 
@@ -168,7 +191,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
-        android:layout_below="@id/simregreport"
+        android:layout_marginTop="540dp"
         android:id="@+id/dailyreport1"
         android:visibility="gone"
         android:paddingRight="10dp">

@@ -41,6 +41,7 @@ public class SimRegistrationReport extends AppCompatActivity implements DatePick
     Connection conn;
     private EditText edtdate;
     private RecyclerView simregreport;
+    private Button btnnext,btnprevious;
     private TextView today_total1,today_success1,today_failed1,today_progress1;
     private TableLayout dailyreport1;
     @Override
@@ -51,6 +52,8 @@ public class SimRegistrationReport extends AppCompatActivity implements DatePick
         Button btnmain = (Button) findViewById(R.id.btnmain);
         Button btnsearch = (Button) findViewById(R.id.btnsearchsimregreport);
         Button btndate=(Button) findViewById(R.id.btndatesearch);
+        btnnext=findViewById(R.id.btnnext);
+        btnprevious=findViewById(R.id.btnprevious);
         edtdate=(EditText) findViewById(R.id.editTextdate);
         TextView dailyreporttext = (TextView) findViewById(R.id.dailyreporttxt);
         TableLayout dailyreport=(TableLayout) findViewById(R.id.dailyreport);
@@ -234,6 +237,8 @@ public class SimRegistrationReport extends AppCompatActivity implements DatePick
                                 simregreport.setVisibility(View.VISIBLE);
                                 btndate.setVisibility(View.VISIBLE);
                                 edtdate.setVisibility(View.VISIBLE);
+                                btnnext.setVisibility(View.VISIBLE);
+                                btnprevious.setVisibility(View.VISIBLE);
 
                                 return true;
 
