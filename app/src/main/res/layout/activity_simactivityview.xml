@@ -278,15 +278,31 @@
             android:text="Gender"
             />
 
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_below="@id/epostaladdress"
-            android:layout_toRightOf="@id/textView11"
-            android:layout_marginTop="15dp"
-            android:textColor="@color/yellow"
+        <RadioGroup
+            android:id="@+id/radioGroupgender"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:entries="@array/entries" />
+
+            android:layout_below="@+id/epostaladdress"
+            android:layout_toRightOf="@+id/textView11"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/emale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MALE"
+                android:textColor="@color/yellowheader"
+                android:textSize="16dp" />
+
+            <RadioButton
+                android:id="@+id/efemale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FEMALE"
+                android:textColor="@color/yellowheader"
+                android:textSize="16dp" />
+        </RadioGroup>
 
         <TextView
             android:id="@+id/textView6"
@@ -303,7 +319,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:layout_below="@+id/spinner"
+            android:layout_below="@+id/radioGroupgender"
             android:layout_toRightOf="@+id/textView6"
             android:orientation="horizontal">
 
@@ -347,12 +363,14 @@
             android:layout_height="1dp"
             android:layout_below="@+id/statusSpinner"
             android:background="#F50CFA03" />
+
+
         <TextView
             android:id="@+id/textView12"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView25"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="60dp"
             android:text="Signiture"
             android:textSize="16dp"
             android:textColor="@color/mixte"/>
@@ -396,7 +414,7 @@
             android:layout_below="@+id/textView12"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="60dp"
             android:textSize="16dp"
             android:textColor="@color/mixte"
             android:text="ID Front Side"
@@ -408,7 +426,7 @@
             android:layout_width="160dp"
             android:layout_height="60dp"
             android:layout_below="@+id/bsigniture"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="16dp"
             android:layout_toRightOf="@+id/textView13"
             android:backgroundTint="@color/silver"
             android:text="Front Image"
@@ -421,7 +439,7 @@
             android:clickable="true"
             android:layout_below="@+id/signimgIcon"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="58dp"
+            android:layout_marginTop="48dp"
             android:layout_toRightOf="@+id/bfront"
             android:src="@drawable/imgbtn_foreground"
             android:visibility="gone"/>
@@ -441,7 +459,7 @@
             android:layout_below="@+id/textView13"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="52dp"
             android:text="ID Back Side"
             android:textSize="16dp"
             android:textColor="@color/mixte"
@@ -465,7 +483,7 @@
             android:clickable="true"
             android:layout_below="@+id/frontimgIcon"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="53dp"
+            android:layout_marginTop="45dp"
             android:layout_toRightOf="@+id/bback"
             android:src="@drawable/imgbtn_foreground"
             android:visibility="gone"/>
@@ -516,7 +534,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/txttimer"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="20dp"
             android:backgroundTint="@color/red"
             android:text="I confirm that I have verified the identification documents presented for registration."
             android:textColor="@color/yellowheader"
@@ -534,6 +552,7 @@
             android:textColor="@color/white"
             android:visibility="gone"
             app:cornerRadius="50dp"></com.google.android.material.button.MaterialButton>
+
 
 
         <Button

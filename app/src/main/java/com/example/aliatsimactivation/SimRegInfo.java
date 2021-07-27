@@ -6,7 +6,6 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -73,6 +72,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     private String nationality = "";
     private RadioButton kenya;
     private RadioButton foreign;
+    private RadioButton male;
+    private RadioButton female;
     private CheckBox checkBox;
     private TextView editdate, editmname;
     private Integer a;
@@ -132,7 +133,16 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 Log.v("ID Gestures", e.getMessage());
                 e.printStackTrace();
             }
+
+            frontimgIcon = findViewById(R.id.frontimgIcon);
+            File frontsave = new File("/sdcard/Pictures", FRONT + ".jpg");
+            if (frontsave.exists()) {
+                frontimgIcon.setVisibility(View.VISIBLE);
+                frontimgIcon.setBackgroundResource(0);
+            }
+
         }
+
         if (requestCode == 101) {
             BACK = editfname.getText().toString() + editlname.getText().toString() + "_BACK_" + editagent.getText().toString() + "_" + editidagent.getText().toString();
 
@@ -158,6 +168,14 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 Log.v("ID Gestures", e.getMessage());
                 e.printStackTrace();
             }
+
+            backimgIcon = findViewById(R.id.backimgIcon);
+            File backsave = new File("/sdcard/Pictures", BACK + ".jpg");
+            if (backsave.exists()) {
+                backimgIcon.setVisibility(View.VISIBLE);
+                backimgIcon.setBackgroundResource(0);
+            }
+
         }
     }
 
@@ -181,6 +199,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             editdate = (TextView) findViewById(R.id.edateofbirth);
             kenya = findViewById(R.id.ekenian);
             foreign = findViewById(R.id.eforien);
+            male = findViewById(R.id.emale);
+            female = findViewById(R.id.efemale);
             TextView editaltnumber = (TextView) findViewById(R.id.ealtirnativenumber);
             TextView editemail = (TextView) findViewById(R.id.email);
             TextView editphylocation = (TextView) findViewById(R.id.ephysicallocation);
@@ -206,7 +226,6 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             backid = findViewById(R.id.bback);
             activatesim = findViewById(R.id.activatesim);
             checkBox = findViewById(R.id.chterms);
-            Spinner s = (Spinner) findViewById(R.id.spinner);
             mTextViewCountDown = findViewById(R.id.txttimer);
 
 
@@ -246,7 +265,14 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 editpost.setText(Off10);
 
                 String Off11 = intent.getStringExtra("offline11");
-                s.setSelection(((ArrayAdapter<String>) s.getAdapter()).getPosition(Off11));
+                String ahmadd = "Male";
+                if (Off11 != null) {
+                    if (Off11.equals(ahmadd)) {
+                        male.setChecked(true);
+                    } else {
+                        female.setChecked(true);
+                    }
+                }
 
                 String Off12 = intent.getStringExtra("offline12");
                 String ahmad = "Kenyan";
@@ -369,10 +395,11 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             editphylocation.setText(rs1.getString("PHISICAL_LOCATION"));
                             editpost.setText(rs1.getString("POSTAL_ADDRESS"));
                             if (rs1.getString("GENDER").matches("Male")) {
-                                s.setSelection(0);
-                            }
-                            if (rs1.getString("GENDER").matches("Female")) {
-                                s.setSelection(1);
+                                male.setChecked(true);
+                                female.setChecked(false);
+                            } else {
+                                female.setChecked(true);
+                                male.setChecked(false);
                             }
                             if (rs1.getString("STATUS").matches("New")) {
                                 sp.setSelection(0);
@@ -423,6 +450,13 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         a.putExtra("sign", SIGN);
                         startActivity(a);
                         textS.setText(SIGN);
+
+                        signimgIcon = findViewById(R.id.signimgIcon);
+                        if (textS.getText().toString() != "") {
+                            signimgIcon.setVisibility(View.VISIBLE);
+                            signimgIcon.setBackgroundResource(0);
+                        }
+
                     }
                 }
             });
@@ -503,12 +537,10 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                 // The dialog is automatically dismissed when a dialog button is clicked.
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-                                        if (s.getSelectedItemPosition() == 0) {
-
+                                        if (male.isChecked()) {
                                             gender = "Male";
                                         }
-                                        if (s.getSelectedItemPosition() == 1) {
-
+                                        if (female.isChecked()) {
                                             gender = "Female";
                                         }
                                         if (kenya.isChecked()) {
@@ -575,8 +607,6 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                         try {
                                             stmtinsert1.executeUpdate();
                                             Toast.makeText(SimRegInfo.this, "Saving Completed", Toast.LENGTH_SHORT).show();
-                                            Intent a = new Intent(SimRegInfo.this, SimRegListViewActivity.class);
-                                            startActivity(a);
                                         } catch (SQLException throwables) {
                                             throwables.printStackTrace();
                                         }
@@ -588,6 +618,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                         } catch (SQLException throwables) {
                                             throwables.printStackTrace();
                                         }
+                                        OfflineFile.delete();
                                     }
                                 })
 
@@ -626,7 +657,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             activatesim.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    gender=s.getSelectedItem().toString();
+                    //gender=s.getSelectedItem().toString();
                     String fname=editfname.getText().toString();
                     String mname=editmname.getText().toString();
                     String lname=editlname.getText().toString();
@@ -743,7 +774,6 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     SignImageStatus();
                     FrontImageStatus();
                     BackImageStatus();
-                    OfflineFile.delete();
                 }
             });
 
@@ -777,6 +807,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             editdate = (TextView) findViewById(R.id.edateofbirth);
             kenya = findViewById(R.id.ekenian);
             foreign = findViewById(R.id.eforien);
+            male = findViewById(R.id.emale);
+            female = findViewById(R.id.efemale);
             TextView editaltnumber = (TextView) findViewById(R.id.ealtirnativenumber);
             TextView editemail = (TextView) findViewById(R.id.email);
             TextView editphylocation = (TextView) findViewById(R.id.ephysicallocation);
@@ -939,12 +971,10 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                 // The dialog is automatically dismissed when a dialog button is clicked.
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-                                        if (s.getSelectedItemPosition() == 0) {
-
+                                        if (male.isChecked()) {
                                             gender = "Male";
                                         }
-                                        if (s.getSelectedItemPosition() == 1) {
-
+                                        if (female.isChecked()) {
                                             gender = "Female";
                                         }
                                         if (kenya.isChecked()) {
