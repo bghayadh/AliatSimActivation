@@ -38,7 +38,7 @@
         android:layout_below="@id/btnsearchsimregreport"
         android:textAlignment="center">
     </TextView>
-    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
@@ -90,9 +90,10 @@
                 android:text="In Progress" />
         </TableRow>
         <TableRow android:background="#DAE8FC" android:padding="5dp">
+
             <TextView
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
+                android:layout_width="73dp"
+                android:layout_height="29dp"
                 android:layout_weight="1"
                 android:text="Today" />
             <TextView
@@ -159,9 +160,9 @@
         android:text="PREVIOUS"
         android:layout_marginStart="1dp"
         android:layout_marginTop="160dp"
-        android:visibility="visible"
         android:drawableLeft="@mipmap/ic_prev"
         android:backgroundTint="@color/red"
+        android:visibility="gone"
         />
 
     <Button

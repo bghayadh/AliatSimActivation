@@ -2,6 +2,7 @@ package com.example.aliatsimactivation;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.StrictMode;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
@@ -14,18 +15,20 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 
 public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
     String fname,  mname,  lname, msisdn, idType, idNumber, dob, gender,  email,  altnumber,  address1,  state,  agentmsisdn;
+    private String api_response_code,response_message,globalsimid,registration_status;
+    Connection conn;
 
-    private ActivationResponse activationResponse;
 
-    public SimRegistrationAPI(ActivationResponse activationResponse){
-        this.activationResponse=activationResponse;
-    }
-
-    public SimRegistrationAPI(String fname, String mname, String lname, String msisdn, String idType, String idNumber, String dob, String gender, String email, String altnumber, String address1, String state, String agentmsisdn) {
+    public SimRegistrationAPI(String globalsimid,String fname, String mname, String lname, String msisdn, String idType, String idNumber, String dob, String gender, String email, String altnumber, String address1, String state, String agentmsisdn) {
+        this.globalsimid=globalsimid;
         this.fname=fname;
         this.mname=mname;
         this.lname=lname;
@@ -44,7 +47,7 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... params) {
 
-
+        System.out.println(globalsimid);
         System.out.println(fname);
         System.out.println(mname);
         System.out.println(lname);
@@ -123,9 +126,41 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
                 //Log.i("data", line);
                 System.out.println("Get result "+line);
 
+                if (line.contains("responseCode")) {
+                    System.out.println("Found");
+                    int  m = 0;
+                    m = line.indexOf(";");
+                    String response_code=  line.substring(m+1,line.length());
+                    String[] test1=response_code.split("[:,]");
+                    System.out.println(test1[1].toString());
+                    String []splitterString=test1[1].split("\"");
 
+                    for (String s : splitterString) {
+
+                        api_response_code=s;
+                        System.out.println(api_response_code);
+                    }
+                }
+
+                if (line.contains("message")) {
+                    System.out.println("Found");
+
+                    int  n = 0;
+                    n = line.indexOf(";");
+                    String message= line.substring(n+1,line.length());
+                    String[] test1=message.split("[:,]");
+                    String []splitterString=test1[1].split("\"");
+                    for (String s : splitterString) {
+                        response_message=s;
+                        System.out.println(response_message);
+                    }
+
+
+                }
 
             }
+
+
 
 
         } catch (Exception e) {
@@ -136,17 +171,68 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
             }
         }
 
+        if(api_response_code=="0")
+        {
+            registration_status="Success";
+        }else{
+            registration_status="Failed";
+        }
+        System.out.println("status : "+registration_status);
+
+      connecttoDB();
+
+        PreparedStatement stmtinsert1 = null;
+
+        try{
+
+            stmtinsert1=conn.prepareStatement("UPDATE SIM_REGISTRATION"+
+                    " SET "+
+                    " RESPONSE_CODE='"+api_response_code+"',"+
+                    "RESPONSE_MESSAGE='"+response_message+"',"+
+                    "REGISTRATION_STATUS='"+registration_status+"'"+
+                    "WHERE SIM_REG_ID='"+globalsimid+"'");
+        }catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }  try {
+            stmtinsert1.executeUpdate();
+            //Toast.makeText(getApplicationContext(), "Saving Completed", Toast.LENGTH_SHORT).show();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        try {
+            stmtinsert1.close();
+            conn.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
 
         return null;
     }
 
-    @Override
-    protected void onPostExecute(String s) {
-        super.onPostExecute(s);
 
-        if(s!=null)
-        {
-            activationResponse.SuccessData(s);
+
+    public void connecttoDB() {
+        // connect to DB
+        OraDB oradb = new OraDB();
+        String url = oradb.getoraurl();
+        String userName = oradb.getorausername();
+        String password = oradb.getorapwd();
+        try {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+            conn = DriverManager.getConnection(url, userName, password);
+            //Toast.makeText (MainActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
+        } catch (IllegalArgumentException | ClassNotFoundException | SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
+            System.out.println("error is: " + e.toString());
+            //Toast.makeText(this, "" + e.toString(), Toast.LENGTH_SHORT).show();
+        } catch (IllegalAccessException e) {
+            System.out.println("error is: " + e.toString());
+            //Toast.makeText(this, "" + e.toString(), Toast.LENGTH_SHORT).show();
+        } catch (InstantiationException e) {
+            System.out.println("error is: " + e.toString());
+           // Toast.makeText(this, "" + e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
+
 }

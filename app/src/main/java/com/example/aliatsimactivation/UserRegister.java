@@ -51,10 +51,12 @@ public class UserRegister extends AppCompatActivity {
     private String secondfileContents,secondfileContents2,secondfileContents3,secondfileContents4,secondfileContents5,secondfileContents6,secondfileContent7,secondfileContent8,secondfileContent9;
     private String AgentImage,AgentFrontID,AgentBackID;
     Connection conn;
-    String server = "ftp.ipage.com";
-    int port = 21;
-    String user = "beid";
-    String pass = "10th@Loop";
+    FTP ftp = new FTP();
+
+    String server = ftp.getServer();//"ftp.ipage.com";
+    int port = ftp.getPort();//21;
+    String user = ftp.getUser();//"beid";
+    String pass = ftp.getPass();//"10th@Loop";
     FTPClient ftpClient = new FTPClient();
 
 

@@ -248,6 +248,8 @@ public class SimRegistrationReport extends AppCompatActivity implements DatePick
                                 simregreport.setVisibility(View.INVISIBLE);
                                 btndate.setVisibility(View.INVISIBLE);
                                 edtdate.setVisibility(View.INVISIBLE);
+                                btnprevious.setVisibility(View.INVISIBLE);
+                                btnnext.setVisibility(View.INVISIBLE);
 
                                 connecttoDB();
                                 Statement stmt1 = null;

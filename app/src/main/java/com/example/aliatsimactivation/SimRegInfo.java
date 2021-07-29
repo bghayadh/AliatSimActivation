@@ -90,10 +90,11 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     private Button Btnftp,BtnDelete;
     private ImageButton signimgIcon, frontimgIcon, backimgIcon;
     private String[] imagesource;
-    String server = "ftp.ipage.com";
-    int port = 21;
-    String user = "beid";
-    String pass = "10th@Loop";
+    FTP ftp = new FTP();
+    String server = ftp.getServer();//"ftp.ipage.com";
+    int port = ftp.getPort();//21;
+    String user = ftp.getUser();//"beid";
+    String pass =ftp.getPass();// "10th@Loop";
     FTPClient ftpClient = new FTPClient();
     private String PathSignFTP, PathFrontFTP, PathBackFTP;
 
@@ -676,6 +677,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
 
                     Intent a=new Intent(SimRegInfo.this,Activate_Sim.class);
+                    a.putExtra("globalsimid",globalsimid);
                     a.putExtra("fname",fname);
                     a.putExtra("mname",mname);
                     a.putExtra("lname",lname);

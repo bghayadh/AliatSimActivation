@@ -19,7 +19,7 @@ import androidx.core.app.NotificationManagerCompat;
 
 import java.util.concurrent.ExecutionException;
 
-public class Activate_Sim extends AppCompatActivity implements ActivationResponse {
+public class Activate_Sim extends AppCompatActivity {
     private Button btnip,btnsms,btnexit;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +39,8 @@ public class Activate_Sim extends AppCompatActivity implements ActivationRespons
                 @Override
                 public void onClick(View v) {
                     Intent get=getIntent();
+                    String globalsimid=get.getStringExtra("globalsimid");
+                    System.out.println("id : "+globalsimid);
                     String fname=get.getStringExtra("fname");
                     String mname=get.getStringExtra("mname");
                     String lname=get.getStringExtra("lname");
@@ -53,10 +55,15 @@ public class Activate_Sim extends AppCompatActivity implements ActivationRespons
                     String state=get.getStringExtra("state");
                     String agentmsisdn=get.getStringExtra("agentmsisdn");
                     System.out.println("test: "+fname+" "+mname+" "+lname+" "+msisdn+" "+idType+" "+idNumber+" "+dob+" "+gender+" "+email+" "+altnumber+" "+address1+" "+state+" "+agentmsisdn);
-                    new SimRegistrationAPI(fname,mname,lname,msisdn,idType,idNumber,dob,gender,email,altnumber,address1,state,agentmsisdn).execute();
+                    SimRegistrationAPI registrationAPI= new SimRegistrationAPI(globalsimid,fname,mname,lname,msisdn,idType,idNumber,dob,gender,email,altnumber,address1,state,agentmsisdn);
+                    registrationAPI.execute();
 
 
-                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+
+
+
+
+                    /*if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                     {
                         NotificationChannel channel = new NotificationChannel("My Notification","My Notification", NotificationManager.IMPORTANCE_HIGH);
                         NotificationManager manager = getSystemService(NotificationManager.class);
@@ -70,7 +77,11 @@ public class Activate_Sim extends AppCompatActivity implements ActivationRespons
                     builder.setAutoCancel(true);
 
                     NotificationManagerCompat managerCompat = NotificationManagerCompat.from(Activate_Sim.this);
-                    managerCompat.notify(1, builder.build());
+                    managerCompat.notify(1, builder.build());*/
+
+                    //SimRegistrationAPI registrationAPI= new SimRegistrationAPI(fname,mname,lname,msisdn,idType,idNumber,dob,gender,email,altnumber,address1,state,agentmsisdn);
+
+
                 }
             });
             btnsms.setOnClickListener(new View.OnClickListener() {
@@ -102,14 +113,5 @@ public class Activate_Sim extends AppCompatActivity implements ActivationRespons
         }
     }
 
-    @Override
-    public void SuccessData(String data) {
-        Toast.makeText(getApplicationContext(),"Response : "+data,Toast.LENGTH_LONG).show();
-    }
 
-    @Override
-    public void FailedData() {
-        Toast.makeText(getApplicationContext(),"Failed",Toast.LENGTH_LONG).show();
-
-    }
 }
