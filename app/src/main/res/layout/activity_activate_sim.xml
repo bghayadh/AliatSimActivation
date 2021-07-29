@@ -8,11 +8,11 @@
     android:background="#0A5EA8"
     tools:context=".Activate_Sim">
 
-  <!-- Button Sim Registration -->
+  <!-- Button Activate via USSD -->
   <Button
       android:id="@+id/Btnsms"
       android:layout_width="match_parent"
-      android:layout_height="70dp"
+      android:layout_height="80dp"
       android:layout_marginStart="1dp"
       android:text="Activate Via SMS"
       android:textStyle="bold"
@@ -25,21 +25,35 @@
 
 
 
-  <!-- Button Mobile Charge -->
+  <!-- Button Registration via ip -->
   <Button
       android:id="@+id/Btnip"
       android:layout_width="match_parent"
-      android:layout_height="70dp"
+      android:layout_height="80dp"
       android:layout_below="@+id/Btnsms"
       android:layout_marginStart="1dp"
-      android:text="Activate Via IP"
+      android:text="Register Via IP"
       android:textStyle="bold"
       android:textSize="15dp"
       android:drawableRight="@mipmap/ic_activate_via_ip"
       android:backgroundTint="@color/red"
       style="@style/Widget.MaterialComponents.Button"
       />
-
+  <!-- Button activation via ip -->
+  <Button
+      android:id="@+id/Btnactivate"
+      android:layout_width="match_parent"
+      android:layout_height="80dp"
+      android:layout_below="@+id/Btnip"
+      android:layout_marginStart="1dp"
+      android:text="Activate Via IP"
+      android:textStyle="bold"
+      android:textSize="15dp"
+      android:visibility="gone"
+      android:drawableRight="@drawable/ic_activate_switch"
+      android:backgroundTint="@color/red"
+      style="@style/Widget.MaterialComponents.Button"
+      />
 
 
 

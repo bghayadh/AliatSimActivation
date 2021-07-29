@@ -658,7 +658,12 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             activatesim.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //gender=s.getSelectedItem().toString();
+                    if(male.isChecked()){
+                        gender="Male";
+                    }
+                    if(female.isChecked()){
+                        gender="Female";
+                    }
                     String fname=editfname.getText().toString();
                     String mname=editmname.getText().toString();
                     String lname=editlname.getText().toString();

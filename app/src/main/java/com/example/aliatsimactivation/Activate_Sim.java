@@ -9,6 +9,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -17,10 +18,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.concurrent.ExecutionException;
 
 public class Activate_Sim extends AppCompatActivity {
-    private Button btnip,btnsms,btnexit;
+    private Button btnip,btnsms,btnexit,btnactivate;
+    private String registrationStatus;
+    Connection conn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +37,7 @@ public class Activate_Sim extends AppCompatActivity {
         btnexit=findViewById(R.id.BtnExit);
         btnip=findViewById(R.id.Btnip);
         btnsms=findViewById(R.id.Btnsms);
-
+        btnactivate=findViewById(R.id.Btnactivate);
         ConnectivityManager connMgr = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -59,6 +68,51 @@ public class Activate_Sim extends AppCompatActivity {
                     registrationAPI.execute();
 
 
+
+                    connecttoDB();
+
+                    Statement stmt1=null;
+                    try{
+                        stmt1=conn.createStatement();
+                    }catch (SQLException throwables){
+                        throwables.printStackTrace();
+                    }
+
+                    String sqlstmt = "SELECT REGISTRATION_STATUS FROM SIM_REGISTRATION WHERE SIM_REG_ID='"+globalsimid+"'";
+                    ResultSet rs1=null;
+                    try{
+                        rs1=stmt1.executeQuery(sqlstmt);
+                    }catch (SQLException throwables){
+                        throwables.printStackTrace();
+                    }
+                    while (true) {
+                        try {
+                            if (!rs1.next()) break;
+
+                            registrationStatus = rs1.getString("REGISTRATION_STATUS");
+                            System.out.println("status : " + registrationStatus.toString());
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                    }try {
+                        rs1.close ( );
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace ( );
+                    }
+                    try {
+                        stmt1.close ( );
+                        conn.close ( );
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace ( );
+                    }
+
+                    if(registrationStatus=="Failed")
+                    {
+                        btnactivate.setVisibility(View.INVISIBLE);
+                    }
+                    if(registrationStatus=="Success"){
+                        btnactivate.setVisibility(View.VISIBLE);
+                    }
 
 
 
@@ -113,5 +167,27 @@ public class Activate_Sim extends AppCompatActivity {
         }
     }
 
-
+    public void connecttoDB() {
+        // connect to DB
+        OraDB oradb = new OraDB();
+        String url = oradb.getoraurl();
+        String userName = oradb.getorausername();
+        String password = oradb.getorapwd();
+        try {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+            conn = DriverManager.getConnection(url, userName, password);
+            Toast.makeText (getApplicationContext(),"Connected to the database",Toast.LENGTH_SHORT).show ();
+        } catch (IllegalArgumentException | ClassNotFoundException | SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
+            System.out.println("error is: " + e.toString());
+            Toast.makeText(this, "" + e.toString(), Toast.LENGTH_SHORT).show();
+        } catch (IllegalAccessException e) {
+            System.out.println("error is: " + e.toString());
+            Toast.makeText(this, "" + e.toString(), Toast.LENGTH_SHORT).show();
+        } catch (InstantiationException e) {
+            System.out.println("error is: " + e.toString());
+             Toast.makeText(this, "" + e.toString(), Toast.LENGTH_SHORT).show();
+        }
+    }
 }
