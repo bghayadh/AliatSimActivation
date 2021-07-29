@@ -1197,13 +1197,6 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             e.printStackTrace();
         }
 
-        File signsave = new File("/sdcard/Pictures", SIGN + ".jpg");
-        File frontsave = new File("/sdcard/Pictures", FRONT + ".jpg");
-        File backsave = new File("/sdcard/Pictures", BACK + ".jpg");
-        signsave.delete();
-        frontsave.delete();
-        backsave.delete();
-
     }
 
 
@@ -1400,6 +1393,9 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             }
                         });
 
+                        File signsave = new File("/sdcard/Pictures", SIGN + ".jpg");
+                        signsave.delete();
+
                     } else {
                         signimgIcon.setVisibility(View.VISIBLE);
                         signimgIcon.setBackgroundResource(0);
@@ -1467,6 +1463,9 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             }
                         });
 
+                        File frontsave = new File("/sdcard/Pictures", FRONT + ".jpg");
+                        frontsave.delete();
+
                     } else {
                         frontimgIcon.setVisibility(View.VISIBLE);
                         frontimgIcon.setBackgroundResource(0);
@@ -1533,6 +1532,9 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                 builder.show();
                             }
                         });
+
+                        File backsave = new File("/sdcard/Pictures", BACK + ".jpg");
+                        backsave.delete();
 
                     } else {
                         backimgIcon.setVisibility(View.VISIBLE);
