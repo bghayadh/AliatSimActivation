@@ -50,7 +50,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         System.out.println("Current time=> "+c);
         SimpleDateFormat df=new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         datet.setText(df.format(c));
-        GetSimData(1,10);
+       // GetSimData(1,10);
         btnprevious.setOnClickListener (new View.OnClickListener ( ) {
             @Override
             public void onClick(View v) {
