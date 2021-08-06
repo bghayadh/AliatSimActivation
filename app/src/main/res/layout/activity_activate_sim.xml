@@ -10,15 +10,15 @@
 
   <!-- Button Activate via USSD -->
   <Button
-      android:id="@+id/Btnsms"
+      android:id="@+id/Btnip"
       android:layout_width="match_parent"
       android:layout_height="80dp"
       android:layout_marginStart="1dp"
-      android:text="Activate Via SMS"
+      android:text="Register Via IP"
       android:textStyle="bold"
       android:textSize="15dp"
       android:backgroundTint="@color/red"
-      android:drawableRight="@mipmap/ic_activate_via_sms"
+      android:drawableRight="@mipmap/ic_activate_via_ip"
       style="@style/Widget.MaterialComponents.Button"
       />
 
@@ -27,35 +27,75 @@
 
   <!-- Button Registration via ip -->
   <Button
-      android:id="@+id/Btnip"
+      android:id="@+id/Btnrechargeviaip"
       android:layout_width="match_parent"
       android:layout_height="80dp"
-      android:layout_below="@+id/Btnsms"
+      android:layout_below="@+id/Btnip"
       android:layout_marginStart="1dp"
-      android:text="Register Via IP"
+      android:text="Recharge Via IP"
       android:textStyle="bold"
       android:textSize="15dp"
-      android:drawableRight="@mipmap/ic_activate_via_ip"
+      android:drawableRight="@drawable/ic_sim_recharge"
       android:backgroundTint="@color/red"
       style="@style/Widget.MaterialComponents.Button"
       />
   <!-- Button activation via ip -->
   <Button
-      android:id="@+id/Btnactivate"
+      android:id="@+id/Btnsubscribeviaip"
       android:layout_width="match_parent"
       android:layout_height="80dp"
-      android:layout_below="@+id/Btnip"
+      android:layout_below="@+id/Btnrechargeviaip"
       android:layout_marginStart="1dp"
-      android:text="Activate Via IP"
+      android:text="Subscribe Via IP"
       android:textStyle="bold"
       android:textSize="15dp"
-      android:visibility="gone"
       android:drawableRight="@drawable/ic_activate_switch"
       android:backgroundTint="@color/red"
       style="@style/Widget.MaterialComponents.Button"
       />
 
+  <TextView
+      android:layout_width="170dp"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/Btnsubscribeviaip"
+      android:id="@+id/txtresponse"
+      android:textSize="20dp"
+      android:textStyle="bold"
+      android:textColor="@color/mixte"
+      android:text="Respone Code"
+      >
+  </TextView>
 
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/responsecode"
+      android:layout_below="@id/Btnsubscribeviaip"
+      android:textSize="20dp"
+      android:textColor="@color/yellowheader"
+      android:layout_toRightOf="@id/txtresponse">
+  </TextView>
+  <TextView
+      android:layout_width="170dp"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/txtresponse"
+      android:id="@+id/txtmessage"
+      android:textStyle="bold"
+      android:textSize="20dp"
+      android:textColor="@color/mixte"
+      android:text="Respone Message"
+      >
+  </TextView>
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/responsemessage"
+      android:layout_below="@id/txtresponse"
+      android:textSize="20dp"
+      android:textColor="@color/yellowheader"
+      android:layout_toRightOf="@id/txtmessage">
+  </TextView>
 
   <!-- display Exit button -->
   <Button

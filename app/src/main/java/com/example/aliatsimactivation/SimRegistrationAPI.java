@@ -1,9 +1,7 @@
 package com.example.aliatsimactivation;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.StrictMode;
-import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 
@@ -25,6 +23,8 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
     String fname,  mname,  lname, msisdn, idType, idNumber, dob, gender,  email,  altnumber,  address1,  state,  agentmsisdn;
     private String api_response_code,response_message,globalsimid,registration_status;
     Connection conn;
+    private String data=null;
+
 
 
     public SimRegistrationAPI(String globalsimid,String fname, String mname, String lname, String msisdn, String idType, String idNumber, String dob, String gender, String email, String altnumber, String address1, String state, String agentmsisdn) {
@@ -43,6 +43,8 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
         this.state=state;
         this.agentmsisdn=agentmsisdn;
     }
+
+
 
     @Override
     protected String doInBackground(String... params) {
@@ -138,7 +140,8 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
                     for (String s : splitterString) {
 
                         api_response_code=s;
-                        System.out.println(api_response_code);
+                        System.out.println("code : "+api_response_code);
+
                     }
                 }
 
@@ -152,13 +155,17 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
                     String []splitterString=test1[1].split("\"");
                     for (String s : splitterString) {
                         response_message=s;
-                        System.out.println(response_message);
+                        System.out.println("response message : "+response_message);
+
+
                     }
 
 
                 }
 
             }
+
+
 
 
 
@@ -178,6 +185,7 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
             registration_status="Failed";
         }
         System.out.println("status : "+registration_status);
+
 
       connecttoDB();
 
@@ -206,8 +214,16 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
             throwables.printStackTrace();
         }
 
-        return null;
+     
+        data=api_response_code+"!!"+response_message;
+        System.out.println("data: "+data);
+
+        return data;
     }
+
+
+
+
 
 
 
@@ -234,5 +250,8 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
            // Toast.makeText(this, "" + e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
+
+
+
 
 }
