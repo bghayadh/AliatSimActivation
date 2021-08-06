@@ -47,16 +47,17 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         Date c = Calendar.getInstance().getTime();
         datet=findViewById(R.id.textdate);
 
-        System.out.println("Current time=> "+c);
+
         SimpleDateFormat df=new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         datet.setText(df.format(c));
-        //GetSimData(1,10);
+
+
         btnprevious.setOnClickListener (new View.OnClickListener ( ) {
             @Override
             public void onClick(View v) {
                 pagination=pagination-2;
                 if (pagination <=0 ) {pagination=0;}
-                GetSimDatap((pagination *10)+1,(pagination*10)+10);
+                GetSimData((pagination *10)+1,(pagination*10)+10);
             }
 
         });
@@ -66,7 +67,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         btnnext.setOnClickListener (new View.OnClickListener ( ) {
             @Override
             public void onClick(View v) {
-                GetSimDatap((pagination*10)+1,(pagination*10)+10);
+                GetSimData((pagination*10)+1,(pagination*10)+10);
             }
         });
 
@@ -95,153 +96,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         });
 
     }
-    public void GetSimDatas(int vfrom, int vto) {
-        // connect to DB
-       connecttoDB();
 
-
-
-        // define recyclerview of sitelistview
-        simregrecview=findViewById(R.id.simRecView);
-        simA =new ArrayList<>();
-        simdb=new ArrayList<>();
-
-        //Add data for sitelistview recyclerview
-        Statement stmt1 = null;
-        int i=0;
-        try {
-            stmt1 = connsite.createStatement();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        String sqlStmt = "SELECT * FROM (select  ROW_NUMBER() OVER (ORDER BY CREATION_DATE DESC) row_num,SIM_REG_ID,FIRST_NAME ,LAST_NAME,MOBILE_NUMBER,STATUS from SIM_REGISTRATION) T";
-
-        ResultSet rs1 = null;
-
-        try {
-            rs1 = stmt1.executeQuery(sqlStmt);
-
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        while (true) {
-            try {
-                if (!rs1.next()) break;
-                arraysize=arraysize+1;
-                simdb.add(new SimRegListView (rs1.getString("SIM_REG_ID"),rs1.getString("FIRST_NAME")+" "+rs1.getString("LAST_NAME"),rs1.getString("MOBILE_NUMBER"),rs1.getString("STATUS")));
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        }
-        try {
-            rs1.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        try {
-            stmt1.close();
-            connsite.close ();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        arraysize=simdb.size ();
-
-        if (arraysize >0) {
-            //System.out.println("Array Size is : "+arraysize);
-            simA.clear ( );
-            varraysize = 0;
-
-
-                for (i = varraysize; i < 10; i++) {
-                    if(varraysize<arraysize)
-                    {
-                        simA.add(new SimRegListView(simdb.get(i).getSimRegListViewId(), simdb.get(i).getName(), simdb.get(i).getMobile(), simdb.get(i).getStatus()));
-                        varraysize=varraysize+1;
-                    }
-            pagination = pagination + 1;
-            //connect data to coveragelistadapter
-            SIMRegViewAdapter adapter = new SIMRegViewAdapter (SimRegListViewActivity.this);
-            adapter.setContacts (simA);
-            simregrecview.setAdapter (adapter);
-            simregrecview.setLayoutManager (new LinearLayoutManager(SimRegListViewActivity.this));
-        }
-    }}
-    public void GetSimDatap(int vfrom, int vto) {
-        // connect to DB
-       connecttoDB();
-
-
-        // define recyclerview of sitelistview
-        simregrecview=findViewById(R.id.simRecView);
-        simA =new ArrayList<>();
-        simdb=new ArrayList<>();
-
-        //Add data for sitelistview recyclerview
-        Statement stmt1 = null;
-        int i=0;
-        try {
-            stmt1 = connsite.createStatement();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        String  sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,SIM_REG_ID,FIRST_NAME ,LAST_NAME,MOBILE_NUMBER, STATUS from SIM_REGISTRATION where TO_DATE(TO_CHAR(CREATION_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('"+datet.getText()+"','DD-MM-YYYY')) T WHERE row_num >= '" + vfrom +"' AND row_num <='" + vto +"'";
-
-        ResultSet rs1 = null;
-
-        try {
-            rs1 = stmt1.executeQuery(sqlStmt);
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        while (true) {
-            try {
-                if (!rs1.next()) break;
-                arraysize=arraysize+1;
-                simdb.add(new SimRegListView (rs1.getString("SIM_REG_ID"),rs1.getString("FIRST_NAME")+" "+rs1.getString("LAST_NAME"),rs1.getString("MOBILE_NUMBER"),rs1.getString("STATUS")));
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        }
-        try {
-            rs1.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        try {
-            stmt1.close();
-            connsite.close ();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        arraysize=simdb.size ();
-
-        if (arraysize >0) {
-            //System.out.println("Array Size is : "+arraysize);
-            simA.clear ( );
-            varraysize = 0;
-
-            for (i = varraysize; i < 10; i++) {
-                if (varraysize < arraysize) {
-                    simA.add (new SimRegListView (simdb.get (i).getSimRegListViewId ( ), simdb.get (i).getName( ), simdb.get (i).getMobile ( ), simdb.get (i).getStatus ( )));
-                    varraysize = varraysize + 1;}
-            }
-
-
-            pagination = pagination + 1;
-            //connect data to coveragelistadapter
-            SIMRegViewAdapter adapter = new SIMRegViewAdapter (SimRegListViewActivity.this);
-            adapter.setContacts (simA);
-            simregrecview.setAdapter (adapter);
-            simregrecview.setLayoutManager (new LinearLayoutManager(SimRegListViewActivity.this));
-        }
-
-    }
     public void GetSimData(int vfrom, int vto) {
         connecttoDB();
 
@@ -313,9 +168,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
             simregrecview.setAdapter (adapter);
             simregrecview.setLayoutManager (new LinearLayoutManager(SimRegListViewActivity.this));
         }
-        else {
-            GetSimDatas(1,10);
-        }
+
     }
     private void showDatePickerDialog(){
         DatePickerDialog datePickerDialog= new DatePickerDialog(

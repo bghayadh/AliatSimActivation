@@ -70,10 +70,16 @@ public class Activate_Sim extends AppCompatActivity {
 
                     try {
                         String res=registrationAPI.execute().get();
+                        if(res != null)
+                        {
                         System.out.println("res : "+res);
                         String[] data=res.split("!!") ;
                         txtrescode.setText(data[0]);
                         txtresmessage.setText(data[1]);
+                        }
+                        else{
+                            Toast.makeText(getApplicationContext(),"Error Occured Please Try Again Later",Toast.LENGTH_LONG).show();
+                        }
 
                     } catch (ExecutionException e) {
                         e.printStackTrace();

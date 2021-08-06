@@ -38,6 +38,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.Session;
+
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 
@@ -60,6 +64,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.Properties;
 
 public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private String gender = null;
@@ -787,10 +792,11 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             Btnftp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    SendTOftp();
-                    SignImageStatus();
-                    FrontImageStatus();
-                    BackImageStatus();
+                    thread.start();
+                    //SendTOftp();
+                    //SignImageStatus();
+                    //FrontImageStatus();
+                    //BackImageStatus();
                 }
             });
 
@@ -1119,9 +1125,57 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     }
 
 
-    public void SendTOftp() {
 
-        File myFile = new File("/sdcard/Pictures", SIGN + ".jpg");
+        Thread thread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    String user="root";
+                    String pass="TKLdev#2021$";
+                    String host="10.22.28.38";
+
+                    Properties config=new Properties();
+                    config.put("StrictHostKeyChecking","no");
+
+                    JSch jSch = new JSch();
+                    Session session =jSch.getSession(user,host,22);
+                    session.setPassword(pass);
+                    session.setConfig(config);
+                    session.connect();
+                    ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
+                    System.out.println("session connection"+session.isConnected());
+                    channelSftp.connect();
+
+                    //  UPLOAD
+
+                    File FRONTID = new File("/sdcard/Pictures", FRONT + ".jpg");
+                    String frontID = String.valueOf(FRONTID);
+                    if (FRONTID.exists()) {
+                        System.out.println(file);
+                    }
+                    File BACKID = new File("/sdcard/Pictures", BACK + ".jpg");
+                    String backID = String.valueOf(BACKID);
+                    if (BACKID.exists()) {
+                        System.out.println(file);
+                    }
+                    File SIGNATURE = new File("/sdcard/Pictures", SIGN + ".jpg");
+                    String signature = String.valueOf(SIGNATURE);
+                    if (SIGNATURE.exists()) {
+                        System.out.println(file);
+                    }
+                    channelSftp.put(frontID, "ahmad");
+                    channelSftp.put(backID, "ahmad");
+                    channelSftp.put(signature, "ahmad");
+
+                    channelSftp.disconnect();
+                    session.disconnect();
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+       /* File myFile = new File("/sdcard/Pictures", SIGN + ".jpg");
         String signpath = String.valueOf(myFile);
         String signname = String.valueOf(textS.getText() + ".jpg");
 
@@ -1207,9 +1261,9 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         } catch (IOException e) {
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
-        }
+        }*/
 
-    }
+
 
 
 
