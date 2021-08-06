@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_CODE = 100;
 
     //define buttons
-    private Button BtnMobCharge, BtnResCharge,BtnExit,BtnSIMReg,BtnSimReport;
+    private Button BtnMobCharge,BtnExit,BtnSIMReg,BtnSimReport;
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
         //initialize objects on Load
         BtnSIMReg=findViewById(R.id.Btnsimreg);
         BtnMobCharge=findViewById(R.id.Btnmobcharge);
-        BtnResCharge=findViewById(R.id.Btnrescharge);
         BtnSimReport=findViewById(R.id.Btnsimreport);
         BtnExit=findViewById(R.id.BtnExit);
 
@@ -96,17 +95,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //click to move to Reseller Charge List
-        BtnResCharge.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                    Toast.makeText(MainActivity.this,  "Welcome to Reseller Charge page",Toast.LENGTH_SHORT).show();
-                    Intent intent =new Intent(MainActivity.this, ResellerChargeListViewActivity.class);
-                    startActivity(intent);
-
-            }
-        });
         
         //open sim registration reports
         BtnSimReport.setOnClickListener(new View.OnClickListener() {

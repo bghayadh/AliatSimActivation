@@ -30,7 +30,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
     private int arraysize=0;
     private int varraysize=0;
     private int pagination=0;
-    public Connection connsite;
+    private Connection connsite;
     public ArrayList<SimRegListView> simA,simdb,simA1,simdb1;
     private Button btnprevious,btnnext,btnnew,btnmain,btndelete,btnselectdate;
     private TextView datet;
@@ -50,7 +50,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         System.out.println("Current time=> "+c);
         SimpleDateFormat df=new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         datet.setText(df.format(c));
-       // GetSimData(1,10);
+        //GetSimData(1,10);
         btnprevious.setOnClickListener (new View.OnClickListener ( ) {
             @Override
             public void onClick(View v) {
@@ -97,27 +97,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
     }
     public void GetSimDatas(int vfrom, int vto) {
         // connect to DB
-        OraDB oradb= new OraDB();
-        String url = oradb.getoraurl ();
-        String userName = oradb.getorausername ();
-        String password = oradb.getorapwd ();
-
-        try {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-            Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
-            connsite = DriverManager.getConnection(url,userName,password);
-            // Toast.makeText (SpeedActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
-        } catch (IllegalArgumentException | ClassNotFoundException | SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
-            System.out.println("error is: " +e.toString());
-            Toast.makeText (SimRegListViewActivity.this,"" +e.toString(),Toast.LENGTH_SHORT).show ();
-        } catch (IllegalAccessException e) {
-            System.out.println("error is: " +e.toString());
-            Toast.makeText (SimRegListViewActivity.this,"" +e.toString(),Toast.LENGTH_SHORT).show ();
-        } catch (InstantiationException e) {
-            System.out.println("error is: " +e.toString());
-            Toast.makeText (SimRegListViewActivity.this,"" +e.toString(),Toast.LENGTH_SHORT).show ();
-        }
+       connecttoDB();
 
 
 
@@ -191,28 +171,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
     }}
     public void GetSimDatap(int vfrom, int vto) {
         // connect to DB
-        OraDB oradb= new OraDB();
-        String url = oradb.getoraurl ();
-        String userName = oradb.getorausername ();
-        String password = oradb.getorapwd ();
-
-        try {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-            Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
-            connsite = DriverManager.getConnection(url,userName,password);
-            // Toast.makeText (SpeedActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
-        } catch (IllegalArgumentException | ClassNotFoundException | SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
-            System.out.println("error is: " +e.toString());
-            Toast.makeText (SimRegListViewActivity.this,"" +e.toString(),Toast.LENGTH_SHORT).show ();
-        } catch (IllegalAccessException e) {
-            System.out.println("error is: " +e.toString());
-            Toast.makeText (SimRegListViewActivity.this,"" +e.toString(),Toast.LENGTH_SHORT).show ();
-        } catch (InstantiationException e) {
-            System.out.println("error is: " +e.toString());
-            Toast.makeText (SimRegListViewActivity.this,"" +e.toString(),Toast.LENGTH_SHORT).show ();
-        }
-
+       connecttoDB();
 
 
         // define recyclerview of sitelistview
@@ -284,28 +243,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
 
     }
     public void GetSimData(int vfrom, int vto) {
-        // connect to DB
-        OraDB oradb= new OraDB();
-        String url = oradb.getoraurl ();
-        String userName = oradb.getorausername ();
-        String password = oradb.getorapwd ();
-
-        try {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-            Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
-            connsite = DriverManager.getConnection(url,userName,password);
-            // Toast.makeText (SpeedActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
-        } catch (IllegalArgumentException | ClassNotFoundException | SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
-            System.out.println("error is: " +e.toString());
-            Toast.makeText (SimRegListViewActivity.this,"" +e.toString(),Toast.LENGTH_SHORT).show ();
-        } catch (IllegalAccessException e) {
-            System.out.println("error is: " +e.toString());
-            Toast.makeText (SimRegListViewActivity.this,"" +e.toString(),Toast.LENGTH_SHORT).show ();
-        } catch (InstantiationException e) {
-            System.out.println("error is: " +e.toString());
-            Toast.makeText (SimRegListViewActivity.this,"" +e.toString(),Toast.LENGTH_SHORT).show ();
-        }
+        connecttoDB();
 
 
 
@@ -398,7 +336,33 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         datet.setText(date);
 
         // connect to DB
+
         GetSimData(1,10);
 
+    }
+
+
+    public void connecttoDB() {
+        OraDB oradb = new OraDB();
+        String url = oradb.getoraurl();
+        String userName = oradb.getorausername();
+        String password = oradb.getorapwd();
+
+        try {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+            connsite = DriverManager.getConnection(url, userName, password);
+            // Toast.makeText (SpeedActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
+        } catch (IllegalArgumentException | ClassNotFoundException | SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
+            System.out.println("error is: " + e.toString());
+            Toast.makeText(SimRegListViewActivity.this, "" + e.toString(), Toast.LENGTH_SHORT).show();
+        } catch (IllegalAccessException e) {
+            System.out.println("error is: " + e.toString());
+            Toast.makeText(SimRegListViewActivity.this, "" + e.toString(), Toast.LENGTH_SHORT).show();
+        } catch (InstantiationException e) {
+            System.out.println("error is: " + e.toString());
+            Toast.makeText(SimRegListViewActivity.this, "" + e.toString(), Toast.LENGTH_SHORT).show();
+        }
     }
 }

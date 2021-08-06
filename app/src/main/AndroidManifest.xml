@@ -23,8 +23,6 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".ClientChargeInfoActivity" />
         <activity android:name=".ClientChargeListViewActivity" />
-        <activity android:name=".ResellerChargeInfoActivity" />
-        <activity android:name=".ResellerChargeListViewActivity" />
         <activity android:name=".SimRegInfo" />
         <activity android:name=".UserLoginActivity" />
         <activity android:name=".SimRegListViewActivity" />

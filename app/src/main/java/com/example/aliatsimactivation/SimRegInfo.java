@@ -620,7 +620,15 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                             throwables.printStackTrace();
                                         }
                                         OfflineFile.delete();
+
+
+
+                                        Intent i=new Intent(getApplicationContext(),SimRegListViewActivity.class);
+                                        startActivity(i);
+                                        Toast.makeText(getApplicationContext(),"Please Send To FTP",Toast.LENGTH_LONG).show();
                                     }
+
+
                                 })
 
                                 // A null listener allows the button to dismiss the dialog and take no further action.
@@ -629,6 +637,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                 .show();
 
                     }
+
+
                 }
             });
             frontid.setOnClickListener(new View.OnClickListener() {
@@ -1166,6 +1176,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     ftpClient.storeFile(backname, srcFileStream2);
 
                     srcFileStream.close();
+                    srcFileStream1.close();
+                    srcFileStream2.close();
 
                     Toast.makeText(getApplicationContext(), "upload Completed", Toast.LENGTH_SHORT).show();
 
@@ -1200,29 +1212,6 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     }
 
 
-    public void connecttoDB() {
-        // connect to DB
-        OraDB oradb = new OraDB();
-        String url = oradb.getoraurl();
-        String userName = oradb.getorausername();
-        String password = oradb.getorapwd();
-        try {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-            Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
-            conn = DriverManager.getConnection(url, userName, password);
-            //Toast.makeText (MainActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
-        } catch (IllegalArgumentException | ClassNotFoundException | SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
-            System.out.println("error is: " + e.toString());
-            Toast.makeText(this, "" + e.toString(), Toast.LENGTH_SHORT).show();
-        } catch (IllegalAccessException e) {
-            System.out.println("error is: " + e.toString());
-            Toast.makeText(this, "" + e.toString(), Toast.LENGTH_SHORT).show();
-        } catch (InstantiationException e) {
-            System.out.println("error is: " + e.toString());
-            Toast.makeText(this, "" + e.toString(), Toast.LENGTH_SHORT).show();
-        }
-    }
 
     private void showDatePickerDialog() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(
@@ -1638,4 +1627,29 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         }
     }
 */
+
+
+    public void connecttoDB() {
+        // connect to DB
+        OraDB oradb = new OraDB();
+        String url = oradb.getoraurl();
+        String userName = oradb.getorausername();
+        String password = oradb.getorapwd();
+        try {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+            conn = DriverManager.getConnection(url, userName, password);
+            //Toast.makeText (MainActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
+        } catch (IllegalArgumentException | ClassNotFoundException | SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
+            System.out.println("error is: " + e.toString());
+            Toast.makeText(this, "" + e.toString(), Toast.LENGTH_SHORT).show();
+        } catch (IllegalAccessException e) {
+            System.out.println("error is: " + e.toString());
+            Toast.makeText(this, "" + e.toString(), Toast.LENGTH_SHORT).show();
+        } catch (InstantiationException e) {
+            System.out.println("error is: " + e.toString());
+            Toast.makeText(this, "" + e.toString(), Toast.LENGTH_SHORT).show();
+        }
+    }
 }

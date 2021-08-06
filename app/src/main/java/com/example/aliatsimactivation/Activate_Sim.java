@@ -28,7 +28,8 @@ import java.util.concurrent.ExecutionException;
 
 public class Activate_Sim extends AppCompatActivity {
     private Button btnip,btnsms,btnexit,btnactivate;
-    private String registrationStatus;
+    private String registrationStatus,globalsimid;
+    private int clicks=0;
     Connection conn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,72 +48,82 @@ public class Activate_Sim extends AppCompatActivity {
             btnip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent get=getIntent();
-                    String globalsimid=get.getStringExtra("globalsimid");
-                    System.out.println("id : "+globalsimid);
-                    String fname=get.getStringExtra("fname");
-                    String mname=get.getStringExtra("mname");
-                    String lname=get.getStringExtra("lname");
-                    String msisdn=get.getStringExtra("msisdn");
-                    String idType=get.getStringExtra("idType");
-                    String idNumber=get.getStringExtra("idNumber");
-                    String dob=get.getStringExtra("dob");
-                    String gender=get.getStringExtra("gender");
-                    String email=get.getStringExtra("email");
-                    String altnumber=get.getStringExtra("altnumber");
-                    String address1=get.getStringExtra("address1");
-                    String state=get.getStringExtra("state");
-                    String agentmsisdn=get.getStringExtra("agentmsisdn");
-                    System.out.println("test: "+fname+" "+mname+" "+lname+" "+msisdn+" "+idType+" "+idNumber+" "+dob+" "+gender+" "+email+" "+altnumber+" "+address1+" "+state+" "+agentmsisdn);
-                    SimRegistrationAPI registrationAPI= new SimRegistrationAPI(globalsimid,fname,mname,lname,msisdn,idType,idNumber,dob,gender,email,altnumber,address1,state,agentmsisdn);
-                    registrationAPI.execute();
-
-
-
-                    connecttoDB();
-
-                    Statement stmt1=null;
-                    try{
-                        stmt1=conn.createStatement();
-                    }catch (SQLException throwables){
-                        throwables.printStackTrace();
-                    }
-
-                    String sqlstmt = "SELECT REGISTRATION_STATUS FROM SIM_REGISTRATION WHERE SIM_REG_ID='"+globalsimid+"'";
-                    ResultSet rs1=null;
-                    try{
-                        rs1=stmt1.executeQuery(sqlstmt);
-                    }catch (SQLException throwables){
-                        throwables.printStackTrace();
-                    }
-                    while (true) {
-                        try {
-                            if (!rs1.next()) break;
-
-                            registrationStatus = rs1.getString("REGISTRATION_STATUS");
-                            System.out.println("status : " + registrationStatus.toString());
-                        } catch (SQLException throwables) {
-                            throwables.printStackTrace();
+                        clicks=clicks+1;
+                        if(clicks==1) {
+                            Intent get = getIntent();
+                            globalsimid = get.getStringExtra("globalsimid");
+                            System.out.println("id : " + globalsimid);
+                            String fname = get.getStringExtra("fname");
+                            String mname = get.getStringExtra("mname");
+                            String lname = get.getStringExtra("lname");
+                            String msisdn = get.getStringExtra("msisdn");
+                            String idType = get.getStringExtra("idType");
+                            String idNumber = get.getStringExtra("idNumber");
+                            String dob = get.getStringExtra("dob");
+                            String gender = get.getStringExtra("gender");
+                            String email = get.getStringExtra("email");
+                            String altnumber = get.getStringExtra("altnumber");
+                            String address1 = get.getStringExtra("address1");
+                            String state = get.getStringExtra("state");
+                            String agentmsisdn = get.getStringExtra("agentmsisdn");
+                            System.out.println("test: " + fname + " " + mname + " " + lname + " " + msisdn + " " + idType + " " + idNumber + " " + dob + " " + gender + " " + email + " " + altnumber + " " + address1 + " " + state + " " + agentmsisdn);
+                            SimRegistrationAPI registrationAPI = new SimRegistrationAPI(globalsimid, fname, mname, lname, msisdn, idType, idNumber, dob, gender, email, altnumber, address1, state, agentmsisdn);
+                            registrationAPI.execute();
                         }
-                    }try {
-                        rs1.close ( );
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace ( );
-                    }
-                    try {
-                        stmt1.close ( );
-                        conn.close ( );
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace ( );
-                    }
 
-                    if(registrationStatus=="Failed")
-                    {
-                        btnactivate.setVisibility(View.INVISIBLE);
-                    }
-                    if(registrationStatus=="Success"){
-                        btnactivate.setVisibility(View.VISIBLE);
-                    }
+                        if(clicks==2){
+                            connecttoDB();
+
+                            Statement stmt1 = null;
+                            try {
+                                stmt1 = conn.createStatement();
+                            } catch (SQLException throwables) {
+                                throwables.printStackTrace();
+                            }
+
+                            String sqlstmt = "SELECT REGISTRATION_STATUS FROM SIM_REGISTRATION WHERE SIM_REG_ID='" + globalsimid + "'";
+                            ResultSet rs1 = null;
+                            try {
+                                rs1 = stmt1.executeQuery(sqlstmt);
+                            } catch (SQLException throwables) {
+                                throwables.printStackTrace();
+                            }
+                            while (true) {
+                                try {
+                                    if (!rs1.next()) break;
+
+                                    registrationStatus = rs1.getString("REGISTRATION_STATUS");
+                                    System.out.println("status : " + registrationStatus.toString());
+                                } catch (SQLException throwables) {
+                                    throwables.printStackTrace();
+                                }
+                            }
+                            try {
+                                rs1.close();
+                            } catch (SQLException throwables) {
+                                throwables.printStackTrace();
+                            }
+                            try {
+                                stmt1.close();
+                                conn.close();
+                            } catch (SQLException throwables) {
+                                throwables.printStackTrace();
+                            }
+
+                            if (registrationStatus == "Failed") {
+                                btnactivate.setVisibility(View.INVISIBLE);
+                            }
+                            if (registrationStatus == "Success") {
+                                btnactivate.setVisibility(View.VISIBLE);
+                            }
+
+                        }
+                        if(clicks>=2){
+                            btnip.setEnabled(false);
+                            clicks=0;
+                        }
+
+
 
 
 

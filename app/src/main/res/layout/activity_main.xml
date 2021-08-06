@@ -42,21 +42,6 @@
 
 
 
-    <!-- Button Reseller Charge -->
-    <Button
-        android:id="@+id/Btnrescharge"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:text="RESELLER CHARGE"
-        android:layout_marginStart="1dp"
-        android:textStyle="bold"
-        android:textSize="15dp"
-        android:drawableRight="@mipmap/ic_reseller_charge"
-        android:backgroundTint="@color/red"
-        android:layout_below="@+id/Btnmobcharge"
-        style="@style/Widget.MaterialComponents.Button"
-        />
-
     <Button
         android:layout_width="match_parent"
         android:layout_height="70dp"
@@ -65,7 +50,7 @@
         android:backgroundTint="@color/red"
         android:textStyle="bold"
         android:textSize="15dp"
-        android:layout_below="@id/Btnrescharge"
+        android:layout_below="@id/Btnmobcharge"
        android:drawableRight="@drawable/ic_sim_reports"
         style="@style/Widget.MaterialComponents.Button">
     </Button>
