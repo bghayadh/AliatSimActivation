@@ -53,6 +53,20 @@
       android:backgroundTint="@color/red"
       style="@style/Widget.MaterialComponents.Button"
       />
+<!--
+  <Button
+      android:id="@+id/Btnregisterviaussd"
+      android:layout_width="match_parent"
+      android:layout_height="80dp"
+      android:layout_below="@+id/Btnsubscribeviaip"
+      android:layout_marginStart="1dp"
+      android:text="Register Via ussd"
+      android:textStyle="bold"
+      android:textSize="15dp"
+      android:drawableRight="@drawable/ic_activate_via_sms_foreground"
+      android:backgroundTint="@color/red"
+      style="@style/Widget.MaterialComponents.Button"
+      />-->
 
   <TextView
       android:layout_width="170dp"

@@ -50,6 +50,7 @@ public class ClientChargeListViewActivity extends AppCompatActivity{
         editTextdate = findViewById (R.id.editTextdate);
 
 
+        GetMobileChargeData(1,10);
 
         // button new
         btnnew.setOnClickListener (new View.OnClickListener ( ) {

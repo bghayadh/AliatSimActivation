@@ -71,6 +71,16 @@
         android:layout_alignParentRight="true"
         />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:text="VERSION 1.1"
+        android:textColor="@color/yellowheader"
+        android:textStyle="italic"/>
+
+
 
 
 
