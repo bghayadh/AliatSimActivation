@@ -8,17 +8,17 @@
     tools:context=".UserLoginActivity">
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="200dp"
         android:src="@drawable/ic_spalsh"
-        android:layout_marginBottom="100dp">
+        android:layout_marginTop="150dp">
     </ImageView>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Agent MSISDN"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="70dp"
         android:id="@+id/phnbr"
+        android:layout_marginStart="5dp"
         android:textStyle="bold"
         android:textSize="25dp"
         android:textColor="@color/yellowheader">
@@ -35,7 +35,7 @@
         android:textAlignment="center"
         android:textColor="@color/white"
         android:layout_toRightOf="@id/phnbr"
-        android:layout_marginTop="110dp"
+        android:layout_marginTop="60dp"
         >
     </EditText>
 
@@ -44,9 +44,9 @@
         android:layout_height="wrap_content"
         android:text="PIN"
         android:textSize="25dp"
+        android:layout_marginStart="5dp"
         android:textStyle="bold"
         android:textAlignment="center"
-        android:layout_marginLeft="120dp"
         android:layout_marginTop="15dp"
         android:layout_below="@+id/phnbr"
         android:id="@+id/loginpin"
@@ -61,7 +61,7 @@
         android:textSize="20dp"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:layout_marginLeft="227dp"
+        android:layout_marginLeft="178dp"
         android:layout_below="@+id/edtphnbr"
         android:id="@+id/edtloginpin"
         android:inputType="numberPassword">
