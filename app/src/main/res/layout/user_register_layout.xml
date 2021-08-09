@@ -127,6 +127,7 @@
             android:textColor="@color/yellowheader"
             android:textAlignment="center"
             android:id="@+id/pin"
+            android:visibility="gone"
             android:layout_below="@id/phonenb"/>
         <EditText
             android:layout_width="200dp"
@@ -136,6 +137,8 @@
             android:textColor="@color/white"
             android:inputType="numberPassword"
             android:maxLength="6"
+            android:text="0"
+            android:visibility="gone"
             android:textColorHint="@color/silver"
             android:layout_below="@+id/edtphone"
             android:layout_marginLeft="200dp"/>

@@ -27,9 +27,9 @@ public class RegisterViaUSSD extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                String UssdCode=txtussd.getText().toString();
+                String UssdCode = txtussd.getText().toString();
                 if (UssdCode.startsWith("*") && UssdCode.endsWith("#")) {
-                    System.out.println("start with "+UssdCode);
+                    System.out.println("start with " + UssdCode);
                     //we want to remove the last # from the ussd code as we need to encode it. so *555# becomes *555
                     UssdCode = UssdCode.substring(0, UssdCode.length() - 1);
 
@@ -37,10 +37,10 @@ public class RegisterViaUSSD extends AppCompatActivity {
 
                     //request for permission
                     if (ActivityCompat.checkSelfPermission(RegisterViaUSSD.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(getApplicationContext(), new String[]{Manifest.permission.CALL_PHONE}, 1);
+                        ActivityCompat.requestPermissions(RegisterViaUSSD.this, new String[]{Manifest.permission.CALL_PHONE}, 1);
                         System.out.println("NO ACTION");
                     } else {
-                        System.out.println("start sending "+UssdCode);
+                        System.out.println("start sending " + UssdCode);
                         //dial Ussd code
                         startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + UssdCodeNew)));
 
@@ -49,10 +49,10 @@ public class RegisterViaUSSD extends AppCompatActivity {
 
                 } else {
                     System.out.println("Please enter a valid ussd code");
-                    Toast.makeText(getApplicationContext(), "Please enter a valid ussd code", Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegisterViaUSSD.this, "Please enter a valid ussd code", Toast.LENGTH_LONG).show();
                 }
             }
-        });
+        });*/
 
 
     }
@@ -75,6 +75,6 @@ public class RegisterViaUSSD extends AppCompatActivity {
 
         }else {
             Toast.makeText(getApplicationContext(), "No response comes from USSD the code returned is : "+ requestCode, Toast.LENGTH_LONG).show();
-        }*/
+        }
     }
 }

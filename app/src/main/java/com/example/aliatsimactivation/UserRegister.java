@@ -263,8 +263,8 @@ public class UserRegister extends AppCompatActivity {
 
                                     try {
 
-                                        stmtinsert1 = conn.prepareStatement("insert into SIM_REGISTER_LOGIN (VERIFICATION_CODE) values " +
-                                                "('" +Code.toString()+"')");
+                                        stmtinsert1 = conn.prepareStatement("insert into SIM_REGISTER_LOGIN (MSISDN,PIN_CODE,FIRST_NAME,LAST_NAME,ADDRESS,REGION,CREATION_DATE,AGENT_IMAGE,AGENT_FRONT_ID,AGENT_BACK_ID,VERIFICATION_CODE) values " +
+                                                "('"+edtphonenbr.getText().toString()+"','"+edtpin.getText().toString()+"','"+edtfname.getText().toString()+"','"+edtlname.getText().toString()+"','"+edtaddress.getText().toString()+"','"+edtregion.getText().toString()+"',sysdate,'"+AgentImage+"','"+AgentFrontID+"','"+AgentFrontID+"','"+Code.toString()+"'");
 
                                     } catch (SQLException throwables) {
                                         throwables.printStackTrace();
@@ -282,10 +282,93 @@ public class UserRegister extends AppCompatActivity {
                                         throwables.printStackTrace();
                                     }
 
+                                    createandSaveMSISDNandPIN();
+
                                 }catch (Exception e)
                                 {
                                     System.out.println("saving offline");
                                 }
+
+
+                                File myFile = new File("/sdcard/Pictures", AgentImage + ".jpg");
+                                String agentimagepath = String.valueOf(myFile);
+                                String agentimagename = AgentImage + ".jpg";
+
+
+                                File myFile1 = new File("/sdcard/Pictures", AgentFrontID + ".jpg");
+                                String agentfrontidpath = String.valueOf(myFile1);
+                                String agentfrontidname = AgentFrontID+ ".jpg";
+
+                                File myFile2 = new File("/sdcard/Pictures", AgentBackID + ".jpg");
+                                String agentbackidpath = String.valueOf(myFile2);
+                                String agentbackidname =AgentBackID+ ".jpg";
+
+                                try {
+                                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                                    StrictMode.setThreadPolicy(policy);
+                                    ftpClient.connect(server, port);
+                                    if (FTPReply.isPositiveCompletion(ftpClient.getReplyCode())) {
+                                        // login using username & password
+                                        boolean status = ftpClient.login(user, pass);
+                                        ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+                                        ftpClient.enterLocalPassiveMode();
+                                        String workingDir = ftpClient.printWorkingDirectory();
+                                        System.out.println("OUR PWD IS " + workingDir);
+                                        ftpClient.changeWorkingDirectory(workingDir + "AGENT");
+
+                                        //return true if the directory found
+                                        System.out.println(ftpClient.changeWorkingDirectory(workingDir + "AGENT"));
+                                        workingDir = ftpClient.printWorkingDirectory();
+                                        //  PathSignFTP = workingDir + "/" + SIGN + ".jpg";
+                                        // PathFrontFTP = workingDir + "/" + FRONT + ".jpg";
+                                        //  PathBackFTP = workingDir + "/" + BACK + ".jpg";
+                                        System.out.println("Directory: " + workingDir);
+                                        // upload file
+                                        try {
+
+                                            FileInputStream srcFileStream = new FileInputStream(agentimagepath);
+                                            ftpClient.storeFile(agentimagename, srcFileStream);
+
+                                            FileInputStream srcFileStream1 = new FileInputStream(agentfrontidpath);
+                                            ftpClient.storeFile(agentfrontidname, srcFileStream1);
+
+                                            FileInputStream srcFileStream2 = new FileInputStream(agentbackidpath);
+                                            ftpClient.storeFile(agentbackidname, srcFileStream2);
+
+                                            srcFileStream.close();
+
+                                            Toast.makeText(getApplicationContext(), "upload Completed", Toast.LENGTH_SHORT).show();
+
+
+                                        } catch (Exception e) {
+                                            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+
+
+                                } catch (IOException e) {
+                                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                                    e.printStackTrace();
+                                }
+                                try {
+                                    ftpClient.login(user, pass);
+                                } catch (IOException e) {
+                                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                                    e.printStackTrace();
+                                }
+                                ftpClient.enterLocalPassiveMode();
+
+                                try {
+                                    ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+                                } catch (IOException e) {
+                                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                                    e.printStackTrace();
+                                }
+
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(intent);
                             }
                             else {
                                 AlertDialog.Builder mydialog1 = new AlertDialog.Builder(UserRegister.this);
@@ -327,143 +410,6 @@ public class UserRegister extends AppCompatActivity {
 
 
         });
-
-        //register button
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //insert into database
-                connecttoDB();
-
-                try {
-
-
-                    PreparedStatement stmtinsert1 = null;
-
-                    try {
-
-                        stmtinsert1 = conn.prepareStatement("UPDATE SIM_REGISTER_LOGIN " +
-                                " set " +
-                                " MSISDN='" + edtphonenbr.getText().toString() +"'," +
-                                "PIN_CODE='" + edtpin.getText().toString() +"'," +
-                                "FIRST_NAME='" + edtfname.getText().toString() + "'," +
-                                "LAST_NAME='" + edtlname.getText().toString() + "'," +
-                                "REGION='" + edtregion.getText().toString() +"'," +
-                                "ADDRESS='" + edtaddress.getText().toString() +"',CREATION_DATE=sysdate," +
-                                "AGENT_IMAGE='"+AgentImage+"'," +
-                                "AGENT_FRONT_ID='"+AgentFrontID+"'," +
-                                "AGENT_BACK_ID='"+AgentBackID+"'" +
-                                "where VERIFICATION_CODE='"+Code+"'");
-
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
-                    try {
-                        stmtinsert1.executeUpdate();
-                        Toast.makeText(getApplicationContext(), "Saving Completed", Toast.LENGTH_SHORT).show();
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
-                    try {
-                        stmtinsert1.close();
-                        conn.close();
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
-
-                    createandSaveMSISDNandPIN();
-                }catch (Exception e)
-                {
-                    System.out.println("saving offline");
-                }
-
-
-                File myFile = new File("/sdcard/Pictures", AgentImage + ".jpg");
-                String agentimagepath = String.valueOf(myFile);
-                String agentimagename = AgentImage + ".jpg";
-
-
-                File myFile1 = new File("/sdcard/Pictures", AgentFrontID + ".jpg");
-                String agentfrontidpath = String.valueOf(myFile1);
-                String agentfrontidname = AgentFrontID+ ".jpg";
-
-                File myFile2 = new File("/sdcard/Pictures", AgentBackID + ".jpg");
-                String agentbackidpath = String.valueOf(myFile2);
-                String agentbackidname =AgentBackID+ ".jpg";
-
-                try {
-                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                    StrictMode.setThreadPolicy(policy);
-                    ftpClient.connect(server, port);
-                    if (FTPReply.isPositiveCompletion(ftpClient.getReplyCode())) {
-                        // login using username & password
-                        boolean status = ftpClient.login(user, pass);
-                        ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-                        ftpClient.enterLocalPassiveMode();
-                        String workingDir = ftpClient.printWorkingDirectory();
-                        System.out.println("OUR PWD IS " + workingDir);
-                        ftpClient.changeWorkingDirectory(workingDir + "AGENT");
-
-                        //return true if the directory found
-                        System.out.println(ftpClient.changeWorkingDirectory(workingDir + "AGENT"));
-                        workingDir = ftpClient.printWorkingDirectory();
-                      //  PathSignFTP = workingDir + "/" + SIGN + ".jpg";
-                       // PathFrontFTP = workingDir + "/" + FRONT + ".jpg";
-                      //  PathBackFTP = workingDir + "/" + BACK + ".jpg";
-                        System.out.println("Directory: " + workingDir);
-                        // upload file
-                        try {
-
-                            FileInputStream srcFileStream = new FileInputStream(agentimagepath);
-                            ftpClient.storeFile(agentimagename, srcFileStream);
-
-                            FileInputStream srcFileStream1 = new FileInputStream(agentfrontidpath);
-                            ftpClient.storeFile(agentfrontidname, srcFileStream1);
-
-                            FileInputStream srcFileStream2 = new FileInputStream(agentbackidpath);
-                            ftpClient.storeFile(agentbackidname, srcFileStream2);
-
-                            srcFileStream.close();
-
-                            Toast.makeText(getApplicationContext(), "upload Completed", Toast.LENGTH_SHORT).show();
-
-
-                        } catch (Exception e) {
-                            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
-                            e.printStackTrace();
-                        }
-
-                    }
-
-
-                } catch (IOException e) {
-                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                }
-                try {
-                    ftpClient.login(user, pass);
-                } catch (IOException e) {
-                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                }
-                ftpClient.enterLocalPassiveMode();
-
-                try {
-                    ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-                } catch (IOException e) {
-                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                }
-                //////////////////////////////////////////////////////////////////////
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-            }
-
-
-
-        });
-
-
 
     }
     //function to create and save the msisdn and pin
