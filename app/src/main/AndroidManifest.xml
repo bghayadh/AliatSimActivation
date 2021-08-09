@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AliatSimActivation"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SimRegistrationReport"></activity>
+        <activity android:name=".Testing"></activity>
+        <activity android:name=".SimRegistrationReport" />
         <activity android:name=".Activate_Sim" />
         <activity android:name=".ClientOfflineDataActivity" />
         <activity android:name=".UserRegister" />
