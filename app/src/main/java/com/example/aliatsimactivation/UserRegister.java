@@ -3,9 +3,12 @@ package com.example.aliatsimactivation;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -46,7 +49,7 @@ import java.util.Random;
 
 public class UserRegister extends AppCompatActivity {
     private static final String FILE_NAME="example.txt";
-    private Button verify,register,BtnData,BtnAgentImage,BtnFrontID,BtnBackID;
+    private Button verify,BtnData,BtnAgentImage,BtnFrontID,BtnBackID;
     private String myText,RegisterResult;
     private String Code;
     private EditText edtfname,edtlname,edtregion,edtaddress,edtphonenbr,edtpin;
@@ -226,6 +229,7 @@ public class UserRegister extends AppCompatActivity {
         verify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 //permit the user to verify if one edittext is empty
                 if (TextUtils.isEmpty(edtfname.getText()) || TextUtils.isEmpty(edtlname.getText()) || TextUtils.isEmpty(edtregion.getText()) || TextUtils.isEmpty(edtaddress.getText()) || TextUtils.isEmpty(edtphonenbr.getText()) || TextUtils.isEmpty(edtpin.getText()) || TextUtils.isEmpty(AgentImage) || TextUtils.isEmpty(AgentFrontID) || TextUtils.isEmpty(AgentBackID)) {
                     edtfname.setError("Enter First Name");
@@ -259,7 +263,7 @@ public class UserRegister extends AppCompatActivity {
 
                                 System.out.println("Succeed");
                                 verify.setVisibility(View.GONE);
-                                register.setVisibility(View.VISIBLE);
+
                                 connecttoDB();
 
                                 try {
@@ -418,7 +422,6 @@ public class UserRegister extends AppCompatActivity {
             StrictMode.setThreadPolicy (policy);
             Class.forName ("oracle.jdbc.driver.OracleDriver").newInstance ( );
             conn = DriverManager.getConnection (url, userName, password);
-
         }
         catch (IllegalArgumentException | ClassNotFoundException | SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
             System.out.println ("error1 is: " + e.toString ( ));
