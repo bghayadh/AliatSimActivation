@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.text.InputType;
@@ -24,6 +25,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.Session;
+
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 
@@ -36,6 +41,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.util.Random;
 
 public class UserRegister extends AppCompatActivity {
@@ -52,6 +58,7 @@ public class UserRegister extends AppCompatActivity {
     private String AgentImage,AgentFrontID,AgentBackID;
     Connection conn;
     FTP ftp = new FTP();
+    SFTP sftp=new SFTP();
 
     String server = ftp.getServer();//"ftp.ipage.com";
     int port = ftp.getPort();//21;
@@ -69,7 +76,7 @@ public class UserRegister extends AppCompatActivity {
 
             Bitmap bmp=(Bitmap)data.getExtras().get("data");
 
-           File agentimage = new File("/sdcard/Pictures", AgentImage+ ".jpg");
+           File agentimage = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), AgentImage+ ".jpg");
 
 
             FileOutputStream fileOutputStream =null;
@@ -96,7 +103,7 @@ public class UserRegister extends AppCompatActivity {
 
             Bitmap bmp=(Bitmap)data.getExtras().get("data");
 
-            File agentfrontid = new File("/sdcard/Pictures", AgentFrontID+ ".jpg");
+            File agentfrontid = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), AgentFrontID+ ".jpg");
 
             FileOutputStream fileOutputStream =null;
             try {
@@ -123,7 +130,7 @@ public class UserRegister extends AppCompatActivity {
 
             Bitmap bmp=(Bitmap)data.getExtras().get("data");
 
-            File agentfrontid = new File("/sdcard/Pictures", AgentBackID+ ".jpg");
+            File agentfrontid = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), AgentBackID+ ".jpg");
 
             FileOutputStream fileOutputStream =null;
             try {
@@ -264,7 +271,7 @@ public class UserRegister extends AppCompatActivity {
                                     try {
 
                                         stmtinsert1 = conn.prepareStatement("insert into SIM_REGISTER_LOGIN (MSISDN,PIN_CODE,FIRST_NAME,LAST_NAME,ADDRESS,REGION,CREATION_DATE,AGENT_IMAGE,AGENT_FRONT_ID,AGENT_BACK_ID,VERIFICATION_CODE) values " +
-                                                "('"+edtphonenbr.getText().toString()+"','"+edtpin.getText().toString()+"','"+edtfname.getText().toString()+"','"+edtlname.getText().toString()+"','"+edtaddress.getText().toString()+"','"+edtregion.getText().toString()+"',sysdate,'"+AgentImage+"','"+AgentFrontID+"','"+AgentFrontID+"','"+Code.toString()+"'");
+                                                "('"+edtphonenbr.getText().toString()+"','"+edtpin.getText().toString()+"','"+edtfname.getText().toString()+"','"+edtlname.getText().toString()+"','"+edtaddress.getText().toString()+"','"+edtregion.getText().toString()+"',sysdate,'"+AgentImage+"','"+AgentFrontID+"','"+AgentFrontID+"','"+Code+"')");
 
                                     } catch (SQLException throwables) {
                                         throwables.printStackTrace();
@@ -290,82 +297,7 @@ public class UserRegister extends AppCompatActivity {
                                 }
 
 
-                                File myFile = new File("/sdcard/Pictures", AgentImage + ".jpg");
-                                String agentimagepath = String.valueOf(myFile);
-                                String agentimagename = AgentImage + ".jpg";
-
-
-                                File myFile1 = new File("/sdcard/Pictures", AgentFrontID + ".jpg");
-                                String agentfrontidpath = String.valueOf(myFile1);
-                                String agentfrontidname = AgentFrontID+ ".jpg";
-
-                                File myFile2 = new File("/sdcard/Pictures", AgentBackID + ".jpg");
-                                String agentbackidpath = String.valueOf(myFile2);
-                                String agentbackidname =AgentBackID+ ".jpg";
-
-                                try {
-                                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                                    StrictMode.setThreadPolicy(policy);
-                                    ftpClient.connect(server, port);
-                                    if (FTPReply.isPositiveCompletion(ftpClient.getReplyCode())) {
-                                        // login using username & password
-                                        boolean status = ftpClient.login(user, pass);
-                                        ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-                                        ftpClient.enterLocalPassiveMode();
-                                        String workingDir = ftpClient.printWorkingDirectory();
-                                        System.out.println("OUR PWD IS " + workingDir);
-                                        ftpClient.changeWorkingDirectory(workingDir + "AGENT");
-
-                                        //return true if the directory found
-                                        System.out.println(ftpClient.changeWorkingDirectory(workingDir + "AGENT"));
-                                        workingDir = ftpClient.printWorkingDirectory();
-                                        //  PathSignFTP = workingDir + "/" + SIGN + ".jpg";
-                                        // PathFrontFTP = workingDir + "/" + FRONT + ".jpg";
-                                        //  PathBackFTP = workingDir + "/" + BACK + ".jpg";
-                                        System.out.println("Directory: " + workingDir);
-                                        // upload file
-                                        try {
-
-                                            FileInputStream srcFileStream = new FileInputStream(agentimagepath);
-                                            ftpClient.storeFile(agentimagename, srcFileStream);
-
-                                            FileInputStream srcFileStream1 = new FileInputStream(agentfrontidpath);
-                                            ftpClient.storeFile(agentfrontidname, srcFileStream1);
-
-                                            FileInputStream srcFileStream2 = new FileInputStream(agentbackidpath);
-                                            ftpClient.storeFile(agentbackidname, srcFileStream2);
-
-                                            srcFileStream.close();
-
-                                            Toast.makeText(getApplicationContext(), "upload Completed", Toast.LENGTH_SHORT).show();
-
-
-                                        } catch (Exception e) {
-                                            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
-                                            e.printStackTrace();
-                                        }
-
-                                    }
-
-
-                                } catch (IOException e) {
-                                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
-                                    e.printStackTrace();
-                                }
-                                try {
-                                    ftpClient.login(user, pass);
-                                } catch (IOException e) {
-                                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
-                                    e.printStackTrace();
-                                }
-                                ftpClient.enterLocalPassiveMode();
-
-                                try {
-                                    ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-                                } catch (IOException e) {
-                                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
-                                    e.printStackTrace();
-                                }
+                                thread1.start();
 
                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                 startActivity(intent);
@@ -518,5 +450,69 @@ public class UserRegister extends AppCompatActivity {
 
         return result;
     }
+
+    Thread thread1 = new Thread(new Runnable() {
+
+        @Override
+        public void run() {
+            try {
+
+                File myFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), AgentImage + ".jpg");
+                String agentimagepath = String.valueOf(myFile);
+                String agentimagename = AgentImage + ".jpg";
+
+                File myFile1 = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), AgentFrontID + ".jpg");
+                String agentfrontidpath = String.valueOf(myFile1);
+                String agentfrontidname = AgentFrontID+ ".jpg";
+
+                File myFile2 = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), AgentBackID + ".jpg");
+                String agentbackidpath = String.valueOf(myFile2);
+                String agentbackidname =AgentBackID+ ".jpg";
+                //Toast.makeText(SimTest.this,"Trying to connect..",Toast.LENGTH_LONG).show();
+
+                System.out.println("Start");
+
+                String user=sftp.getUser().toString();
+                String pass=sftp.getPass().toString();
+                String host=sftp.getServer().toString();
+                int e = sftp.getPort();
+
+                Properties config=new Properties();
+                config.put("StrictHostKeyChecking","no");
+
+                JSch jSch = new JSch();
+                Session session =jSch.getSession(user,host,e);
+                System.out.println("Step1");
+                session.setPassword(pass);
+                session.setConfig(config);
+                session.connect();
+                System.out.println("Step Connect");
+                ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
+                channelSftp.connect();
+                //  UPLOAD
+                File agentimage = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), AgentImage + ".jpg");
+                String file = String.valueOf(agentimage);
+
+                File agentfrontid = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), AgentFrontID + ".jpg");
+                String file1 = String.valueOf(agentfrontid);
+
+                File agentbackid = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), AgentBackID + ".jpg");
+                String file2 = String.valueOf(agentbackid);
+
+                if (myFile.exists()) {
+                    // Toast.makeText(SimTest.this,"Sending ...",Toast.LENGTH_LONG).show();
+                }
+                channelSftp.put(file, "SIMAGENTSFTP");
+                channelSftp.put(file1, "SIMAGENTSFTP");
+                channelSftp.put(file2, "SIMAGENTSFTP");
+                //   Toast.makeText(SimTest.this,"session connection"+session.isConnected(),Toast.LENGTH_LONG).show();
+                channelSftp.disconnect();
+                session.disconnect();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+    });
+
 }
 

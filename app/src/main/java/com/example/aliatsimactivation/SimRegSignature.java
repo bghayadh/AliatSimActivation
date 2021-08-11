@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -48,13 +49,16 @@ public class SimRegSignature extends AppCompatActivity {
         mPaint.setStrokeCap(Paint.Cap.ROUND);
         mPaint.setStrokeWidth(8);
         lay.addView(dv);
+
         Intent intent = SimRegSignature.this.getIntent();
         SIG = intent.getStringExtra("sign");
+
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 captureScreen();
                 finish();
+
             }
         });
         reset.setOnClickListener(new View.OnClickListener() {
@@ -185,10 +189,11 @@ public class SimRegSignature extends AppCompatActivity {
         v.setDrawingCacheEnabled(false);
         // File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
         // Get image file save path and name.
-        file = new File("/sdcard/Pictures", SIG+ ".jpg");
+        file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), SIG+ ".jpg");
 
 
         Log.d("path", file.toString());
+        System.out.println("file path : "+file.toString());
         FileOutputStream fileOutputStream =null;
         try {
             fileOutputStream = new FileOutputStream(file);

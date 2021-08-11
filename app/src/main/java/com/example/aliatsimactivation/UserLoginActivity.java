@@ -48,36 +48,11 @@ public class UserLoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_login_layout);
 
-        Button btnlogin = findViewById(R.id.login);
+
         Button btnregister = findViewById(R.id.signup);
         BtnExit=findViewById(R.id.BtnExit);
         BtnData=findViewById(R.id.BtnData);
-        //logging into main page
-        btnlogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-
-
-                //get the values of the msisdn and pin edittexts
-               EditText msisdn =(EditText) findViewById(R.id.edtphnbr);
-                EditText pin =(EditText) findViewById(R.id.edtloginpin);
-                String msisdn1=msisdn.getText().toString();
-                String pin1=pin.getText().toString();
-
-                //check if the values are equal to the actual values
-                if(msisdn1.equals(s0) && pin1.equals(s1))
-                {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                }
-                else
-                {
-                    Toast.makeText(getApplicationContext(),"Invalid MSISDN or PIN",Toast.LENGTH_LONG).show();
-                }
-
-            }
-        });
         //move to the register form
         btnregister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -312,11 +287,9 @@ public class UserLoginActivity extends AppCompatActivity {
         s1 = data[1];
 
 
-        EditText msisdn =(EditText) findViewById(R.id.edtphnbr);
-        EditText pin =(EditText) findViewById(R.id.edtloginpin);
 
-        msisdn.setText(s0);
-        pin.setText(s1);
+
+
 
     }
 

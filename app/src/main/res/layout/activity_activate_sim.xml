@@ -53,25 +53,35 @@
       android:backgroundTint="@color/red"
       style="@style/Widget.MaterialComponents.Button"
       />
-<!--
+
   <Button
       android:id="@+id/Btnregisterviaussd"
+      style="@style/Widget.MaterialComponents.Button"
       android:layout_width="match_parent"
       android:layout_height="80dp"
       android:layout_below="@+id/Btnsubscribeviaip"
       android:layout_marginStart="1dp"
-      android:text="Register Via ussd"
-      android:textStyle="bold"
-      android:textSize="15dp"
-      android:drawableRight="@drawable/ic_activate_via_sms_foreground"
       android:backgroundTint="@color/red"
-      style="@style/Widget.MaterialComponents.Button"
-      />-->
+      android:drawableRight="@drawable/ic_activate_via_sms_foreground"
+      android:text="Register Via ussd"
+      android:textSize="15dp"
+      android:textStyle="bold" />
+
+
+  <EditText
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/txtussd"
+      android:hint="Enter USSD CODE"
+      android:textColorHint="@color/yellowheader"
+      android:textColor="@color/yellowheader"
+      android:layout_below="@+id/Btnregisterviaussd"/>
 
   <TextView
       android:layout_width="170dp"
       android:layout_height="wrap_content"
-      android:layout_below="@id/Btnsubscribeviaip"
+      android:layout_below="@id/txtussd"
+      android:layout_marginTop="5dp"
       android:id="@+id/txtresponse"
       android:textSize="20dp"
       android:textStyle="bold"
@@ -84,7 +94,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:id="@+id/responsecode"
-      android:layout_below="@id/Btnsubscribeviaip"
+      android:layout_below="@id/txtussd"
       android:textSize="20dp"
       android:textColor="@color/yellowheader"
       android:layout_toRightOf="@id/txtresponse">

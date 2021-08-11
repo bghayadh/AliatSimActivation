@@ -41,7 +41,7 @@ public class SIMRegViewAdapter extends RecyclerView.Adapter<SIMRegViewAdapter.Vi
         holder.name_id.setText(list.get(position).getName());
         holder.mobile_id.setText(list.get(position).getMobile());
         holder.simstatus_id.setText(list.get (position).getStatus());
-        holder.parent.setOnClickListener(new View.OnClickListener() {
+        holder.name_id.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context,list.get(position).getSimRegListViewId() ,Toast.LENGTH_SHORT).show();
@@ -80,7 +80,7 @@ public class SIMRegViewAdapter extends RecyclerView.Adapter<SIMRegViewAdapter.Vi
             name_id=itemView.findViewById(R.id.name_id);
             mobile_id=itemView.findViewById(R.id.mobile_id);
             simstatus_id=itemView.findViewById(R.id.simstatus_id);
-            parent=itemView.findViewById(R.id.parent11);
+
         }
     }
 }

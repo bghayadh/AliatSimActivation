@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:allowBackup="true"
@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AliatSimActivation"
         android:usesCleartextTraffic="true">
-        <activity android:name=".RegisterViaUSSD"></activity>
+        <activity android:name=".SimRegInfo"></activity>
         <activity android:name=".SimRegistrationReport" />
         <activity android:name=".Activate_Sim" />
         <activity android:name=".ClientOfflineDataActivity" />
@@ -25,7 +25,6 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".ClientChargeInfoActivity" />
         <activity android:name=".ClientChargeListViewActivity" />
-        <activity android:name=".SimRegInfo" />
         <activity android:name=".UserLoginActivity" />
         <activity android:name=".SimRegListViewActivity" />
         <activity android:name=".SimRegSignature" />

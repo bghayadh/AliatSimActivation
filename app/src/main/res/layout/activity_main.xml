@@ -8,80 +8,268 @@
     android:background="#0A5EA8"
     tools:context="com.example.aliatsimactivation.MainActivity">
 
-    <!-- Button Sim Registration -->
+
+        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="30dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" >
+            <TableRow android:background ="@color/white" android:padding="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:text="REPORT" />
+            </TableRow>
+            <TableRow android:background="#DAE8FC" android:padding="5dp">
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="" />
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#FF018786"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:text="Total" />
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#F36BD842"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:text="Success" />
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#EC0D0D"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:text="Failed" />
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#EFD80A"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:text="In Progress" />
+            </TableRow>
+            <TableRow android:background="#DAE8FC" android:padding="5dp">
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Today" />
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/today_total"
+                    android:text=""
+                    android:textAlignment="center"/>
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/today_success"
+                    android:text=""
+                    android:textAlignment="center"/>
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/today_failed"
+                    android:text=""
+                    android:textAlignment="center"/>
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/today_progress"
+                    android:text=""
+                    android:textAlignment="center"/>
+            </TableRow>
+            <TableRow android:background="#DAE8FC" android:padding="5dp">
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Week" />
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/week_total"
+                    android:text=""
+                    android:textAlignment="center"/>
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/week_success"
+                    android:text=""
+                    android:textAlignment="center"/>
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/week_failed"
+                    android:text=""
+                    android:textAlignment="center"/>
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/week_progress"
+                    android:text=""
+                    android:textAlignment="center"/>
+            </TableRow>
+            <TableRow android:background="#DAE8FC" android:padding="5dp">
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Month" />
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/month_total"
+                    android:text=""
+                    android:textAlignment="center"/>
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/month_success"
+                    android:text=""
+                    android:textAlignment="center"/>
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/month_failed"
+                    android:text=""
+                    android:textAlignment="center"/>
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/month_progress"
+                    android:text=""
+                    android:textAlignment="center"/>
+            </TableRow>
+        </TableLayout>
+
+
     <Button
         android:id="@+id/Btnsimreg"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_marginStart="1dp"
+        android:layout_width="192dp"
+        android:layout_height="140dp"
+        android:layout_marginStart="8dp"
         android:text="SIM REGISTRATION"
         android:textStyle="bold"
-        android:textSize="15dp"
-        android:backgroundTint="@color/red"
+        android:textSize="11dp"
+        android:layout_marginTop="185dp"
         android:drawableRight="@mipmap/ic_sim_card"
+        android:backgroundTint="@color/red"
         style="@style/Widget.MaterialComponents.Button"
         />
 
 
-
-
-    <!-- Button Mobile Charge -->
     <Button
         android:id="@+id/Btnmobcharge"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_below="@+id/Btnsimreg"
-        android:layout_marginStart="1dp"
+        android:layout_width="190dp"
+        android:layout_height="140dp"
+        android:layout_marginStart="13dp"
+        android:layout_toRightOf="@+id/Btnsimreg"
         android:text="MOBILE CHARGE"
-        android:drawableRight="@mipmap/ic_mobile_charge"
         android:textStyle="bold"
-        android:textSize="15dp"
+        android:layout_marginTop="185dp"
+        android:drawableRight="@mipmap/ic_mobile_charge"
         android:backgroundTint="@color/red"
         style="@style/Widget.MaterialComponents.Button"
         />
 
 
-
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
         android:id="@+id/Btnsimreport"
-        android:text="Sim Registration Report"
-        android:backgroundTint="@color/red"
+        android:layout_width="192dp"
+        android:layout_height="140dp"
+        android:layout_marginStart="8dp"
+        android:layout_below="@+id/Btnsimreg"
+        android:text="Report"
         android:textStyle="bold"
-        android:textSize="15dp"
-        android:layout_below="@id/Btnmobcharge"
-       android:drawableRight="@drawable/ic_sim_reports"
-        style="@style/Widget.MaterialComponents.Button">
-    </Button>
-
-    <!-- display Exit button -->
-    <Button
-        android:id="@+id/BtnExit"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginVertical="20dp"
-        android:textColor="@color/white"
-        android:text="Login Page"
-        android:textStyle="bold"
-        android:textSize="15dp"
-        android:drawableRight="@mipmap/ic_login"
+        android:textSize="13dp"
+        android:drawableRight="@drawable/ic_sim_reports"
         android:backgroundTint="@color/red"
-        android:layout_alignParentRight="true"
+        style="@style/Widget.MaterialComponents.Button"
         />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+    <Button
+        android:id="@+id/Btnsimswap"
+        android:layout_width="190dp"
+        android:layout_height="140dp"
+        android:layout_marginStart="13dp"
+        android:layout_below="@+id/Btnmobcharge"
+        android:layout_toRightOf="@+id/Btnsimreport"
+        android:text="SIM SWAP"
+        android:textStyle="bold"
+        android:drawableRight="@drawable/ic_swap"
+        android:backgroundTint="@color/red"
+        style="@style/Widget.MaterialComponents.Button"
+        />
+
+
+    <Button
+        android:id="@+id/Btnsubscription"
+        android:layout_width="192dp"
+        android:layout_height="140dp"
+        android:layout_marginStart="8dp"
+        android:layout_below="@+id/Btnsimreport"
+        android:text="SUBSCRIPTION"
+        android:textStyle="bold"
+        android:textSize="12dp"
+        android:drawableRight="@drawable/ic_subscribe"
+        android:backgroundTint="@color/red"
+        style="@style/Widget.MaterialComponents.Button"
+        />
+
+    <Button
+        android:id="@+id/Btnsimstatus"
+        android:layout_width="190dp"
+        android:layout_height="140dp"
+        android:layout_marginStart="13dp"
+        android:layout_below="@+id/Btnsimswap"
+        android:layout_toRightOf="@+id/Btnsubscription"
+        android:text="CHECK SIM STATUS"
+        android:textStyle="bold"
+        android:drawableRight="@drawable/ic_status"
+        android:backgroundTint="@color/red"
+        style="@style/Widget.MaterialComponents.Button"
+        />
+
+    <Button
+        android:id="@+id/BtnExit"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="Login Page"
+        android:textStyle="bold"
         android:layout_alignParentBottom="true"
-        android:text="VERSION 1.1"
-        android:textColor="@color/yellowheader"
-        android:textStyle="italic"/>
-
-
-
-
+        android:drawableRight="@mipmap/ic_login"
+        android:backgroundTint="@color/red"
+        />
 
 </RelativeLayout>

@@ -192,6 +192,12 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
         PreparedStatement stmtinsert1 = null;
 
         try{
+            System.out.println("UPDATE SIM_REGISTRATION"+
+                    " SET "+
+                    " RESPONSE_CODE='"+api_response_code+"',"+
+                    "RESPONSE_MESSAGE='"+response_message+"',"+
+                    "REGISTRATION_STATUS='"+registration_status+"'"+
+                    "WHERE SIM_REG_ID='"+globalsimid+"'");
 
             stmtinsert1=conn.prepareStatement("UPDATE SIM_REGISTRATION"+
                     " SET "+
