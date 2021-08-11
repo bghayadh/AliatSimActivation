@@ -157,7 +157,6 @@ public class UserRegister extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_register_layout);
         verify=findViewById(R.id.verify);
-        register=findViewById(R.id.register);
         BtnData=findViewById(R.id.BtnData);
         edtfname=findViewById(R.id.edtfname);
         String Fname=edtfname.getText().toString();

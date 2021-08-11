@@ -124,7 +124,7 @@
 
         <EditText
             android:id="@+id/eagentid"
-            android:layout_width="match_parent"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:textColorHint="@color/yellowheader"
             android:layout_marginTop="15dp"
@@ -184,7 +184,7 @@
             android:textColor="@color/yellow"
             android:maxLines="1"
             android:maxLength="12"
-            android:inputType="date" />
+            android:inputType="textPersonName" />
 
         <TextView
             android:id="@+id/textView7"
