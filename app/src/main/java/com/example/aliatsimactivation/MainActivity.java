@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_CODE = 100;
 
     //define buttons
-    private Button BtnMobCharge,BtnExit,BtnSIMReg,BtnSimReport,BtnSimSwap,BtnSubscription,BtnSimStatus;
+    private Button BtnMobCharge,BtnLogin,BtnSIMReg,BtnSimReport,BtnSimSwap,BtnSubscription,BtnSimStatus,BtnExit;
     Connection conn;
 
     @RequiresApi(api = Build.VERSION_CODES.P)
@@ -46,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
         BtnSimSwap=findViewById(R.id.Btnsimswap);
         BtnSubscription=findViewById(R.id.Btnsubscription);
         BtnSimStatus=findViewById(R.id.Btnsimstatus);
+        BtnLogin=findViewById(R.id.BtnLogin);
         BtnExit=findViewById(R.id.BtnExit);
-
 
         TextView today_total = findViewById(R.id.today_total);
         TextView today_success = findViewById(R.id.today_success);
@@ -555,13 +555,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         // exit button
-        BtnExit.setOnClickListener (new View.OnClickListener ( ) {
+        BtnLogin.setOnClickListener (new View.OnClickListener ( ) {
             @Override
             public void onClick(View v) {
 
                 Intent intent =new Intent(MainActivity.this,UserLoginActivity.class);
                 intent.putExtra("key","Back");
                 startActivity(intent);
+            }
+        });
+
+
+        //// return to main page
+        BtnExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                finishAffinity();
             }
         });
 

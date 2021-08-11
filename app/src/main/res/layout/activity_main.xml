@@ -9,169 +9,153 @@
     tools:context="com.example.aliatsimactivation.MainActivity">
 
 
-        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="30dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp" >
-            <TableRow android:background ="@color/white" android:padding="5dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textAlignment="center"
-                    android:text="REPORT" />
-            </TableRow>
-            <TableRow android:background="#DAE8FC" android:padding="5dp">
-                <TextView
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="" />
-                <TextView
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="#FF018786"
-                    android:textAlignment="center"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:text="Total" />
-                <TextView
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="#F36BD842"
-                    android:textAlignment="center"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:text="Success" />
-                <TextView
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="#EC0D0D"
-                    android:textAlignment="center"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:text="Failed" />
-                <TextView
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="#EFD80A"
-                    android:textAlignment="center"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:text="In Progress" />
-            </TableRow>
-            <TableRow android:background="#DAE8FC" android:padding="5dp">
-                <TextView
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Today" />
-                <TextView
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:id="@+id/today_total"
-                    android:text=""
-                    android:textAlignment="center"/>
-                <TextView
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:id="@+id/today_success"
-                    android:text=""
-                    android:textAlignment="center"/>
-                <TextView
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:id="@+id/today_failed"
-                    android:text=""
-                    android:textAlignment="center"/>
-                <TextView
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:id="@+id/today_progress"
-                    android:text=""
-                    android:textAlignment="center"/>
-            </TableRow>
-            <TableRow android:background="#DAE8FC" android:padding="5dp">
-                <TextView
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Week" />
-                <TextView
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:id="@+id/week_total"
-                    android:text=""
-                    android:textAlignment="center"/>
-                <TextView
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:id="@+id/week_success"
-                    android:text=""
-                    android:textAlignment="center"/>
-                <TextView
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:id="@+id/week_failed"
-                    android:text=""
-                    android:textAlignment="center"/>
-                <TextView
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:id="@+id/week_progress"
-                    android:text=""
-                    android:textAlignment="center"/>
-            </TableRow>
-            <TableRow android:background="#DAE8FC" android:padding="5dp">
-                <TextView
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Month" />
-                <TextView
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:id="@+id/month_total"
-                    android:text=""
-                    android:textAlignment="center"/>
-                <TextView
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:id="@+id/month_success"
-                    android:text=""
-                    android:textAlignment="center"/>
-                <TextView
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:id="@+id/month_failed"
-                    android:text=""
-                    android:textAlignment="center"/>
-                <TextView
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:id="@+id/month_progress"
-                    android:text=""
-                    android:textAlignment="center"/>
-            </TableRow>
-        </TableLayout>
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" >
+        <TableRow android:background ="@color/white" android:padding="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:text="Statistical Summary" />
+        </TableRow>
+        <TableRow android:background="#DAE8FC" android:padding="5dp">
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="" />
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:background="#0A5EA8"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:text="Total" />
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:background="#046118"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:text="Success" />
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:background="#EC0D0D"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:text="Failed" />
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:background="#FFA500"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:text="In Progress" />
+        </TableRow>
+        <TableRow android:background="#DAE8FC" android:padding="5dp">
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Today" />
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/today_total"
+                android:text=""
+                android:textAlignment="center"/>
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/today_success"
+                android:text=""
+                android:textAlignment="center"/>
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/today_failed"
+                android:text=""
+                android:textAlignment="center"/>
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/today_progress"
+                android:text=""
+                android:textAlignment="center"/>
+        </TableRow>
+        <TableRow android:background="#DAE8FC" android:padding="5dp">
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Week" />
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/week_total"
+                android:text=""
+                android:textAlignment="center"/>
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/week_success"
+                android:text=""
+                android:textAlignment="center"/>
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/week_failed"
+                android:text=""
+                android:textAlignment="center"/>
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/week_progress"
+                android:text=""
+                android:textAlignment="center"/>
+        </TableRow>
+        <TableRow android:background="#DAE8FC" android:padding="5dp">
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Month" />
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/month_total"
+                android:text=""
+                android:textAlignment="center"/>
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/month_success"
+                android:text=""
+                android:textAlignment="center"/>
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/month_failed"
+                android:text=""
+                android:textAlignment="center"/>
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/month_progress"
+                android:text=""
+                android:textAlignment="center"/>
+        </TableRow>
+    </TableLayout>
 
 
     <Button
@@ -262,14 +246,28 @@
         />
 
     <Button
-        android:id="@+id/BtnExit"
-        android:layout_width="match_parent"
+        android:id="@+id/BtnLogin"
+        android:layout_width="191dp"
         android:layout_height="55dp"
-        android:text="Login Page"
+        android:text="Login"
         android:textStyle="bold"
         android:layout_alignParentBottom="true"
-        android:drawableRight="@mipmap/ic_login"
+        android:layout_marginLeft="8dp"
         android:backgroundTint="@color/red"
+        android:drawableRight="@mipmap/ic_login"
+        />
+
+
+    <Button
+        android:id="@+id/BtnExit"
+        android:layout_width="190dp"
+        android:layout_height="55dp"
+        android:text="Exit"
+        android:textStyle="bold"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="214dp"
+        android:backgroundTint="@color/red"
+        android:drawableRight="@drawable/ic_exit"
         />
 
 </RelativeLayout>
