@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -79,11 +80,14 @@ public class Activate_Sim extends AppCompatActivity {
 
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
+
         if (networkInfo != null && networkInfo.isConnected()) {
             Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_SHORT).show();
             btnip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+
 
                             Intent get = getIntent();
                             globalsimid = get.getStringExtra("globalsimid");

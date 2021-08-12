@@ -31,6 +31,7 @@ import java.util.GregorianCalendar;
 
 public class ClientOfflineDataRecViewAdapter extends RecyclerView.Adapter<ClientOfflineDataRecViewAdapter.ViewHolder>{
     FileInputStream fstream;
+    private boolean connectflag=false;
 
     private ArrayList<ClientOfflineDataListView> offlinedata = new ArrayList<>();
     private Context context;
@@ -202,27 +203,39 @@ public class ClientOfflineDataRecViewAdapter extends RecyclerView.Adapter<Client
 
 
 
-    public void connecttoDB() {
+    public boolean connecttoDB() {
         // connect to DB
-        OraDB oradb = new OraDB();
-        String url = oradb.getoraurl();
-        String userName = oradb.getorausername();
-        String password = oradb.getorapwd();
+        OraDB oradb= new OraDB();
+        String url = oradb.getoraurl ();
+        String userName = oradb.getorausername ();
+        String password = oradb.getorapwd ();
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         try {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-            Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
-            conn = DriverManager.getConnection(url, userName, password);
-        } catch (IllegalArgumentException | ClassNotFoundException | SQLException e) {
-            System.out.println("error is: " + e.toString());
-            Toast.makeText(context, "" + e.toString(), Toast.LENGTH_SHORT).show();
-        } catch (IllegalAccessException e) {
-            System.out.println("error is: " + e.toString());
-            Toast.makeText(context, "" + e.toString(), Toast.LENGTH_SHORT).show();
-        } catch (InstantiationException e) {
-            System.out.println("error is: " + e.toString());
+            //Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+            conn = DriverManager.getConnection(url,userName,password);
+            if(conn != null){
+                connectflag=true;
+            }
+            else{connectflag=false;}
+
+            //Toast.makeText (MainActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
+        } catch (SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
+            System.out.println("error is: " +e.toString());
+
+            connectflag=false;
+        } /*catch (IllegalAccessException e) {
+            System.out.println("error is: " +e.toString());
+            Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();
+            connectflag=false;
+        }*/ catch (Exception e) {
+            System.out.println("error is: " +e.toString());
+
+            connectflag=false;
         }
+        return connectflag;
     }
+
 }
 
 

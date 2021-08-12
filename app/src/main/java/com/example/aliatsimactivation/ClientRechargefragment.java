@@ -49,6 +49,7 @@ public class ClientRechargefragment extends Fragment {
     private String globalmobchargeid;
     private String file = "MSISDN.txt";
     private String s0,s1,Result;
+    private boolean connectflag=false;
 
 
 

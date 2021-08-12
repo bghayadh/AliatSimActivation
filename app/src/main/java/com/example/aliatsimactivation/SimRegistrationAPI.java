@@ -24,6 +24,7 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
     private String api_response_code,response_message,globalsimid,registration_status;
     Connection conn;
     private String data=null;
+    private boolean connectflag=false;
 
 
 
@@ -103,12 +104,16 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
             urlConnection.setDoInput(true);
             urlConnection.setChunkedStreamingMode(0);
             System.out.println("step3");
-            OutputStream out = new BufferedOutputStream (urlConnection.getOutputStream());
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter (
-                    out, "UTF-8"));
-            writer.write(postData.toString());
-            writer.flush();
+            try {
+                OutputStream out = new BufferedOutputStream(urlConnection.getOutputStream());
 
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+                        out, "UTF-8"));
+                writer.write(postData.toString());
+                writer.flush();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
             System.out.println("Sent successfully to server");
 
 
@@ -186,40 +191,43 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
         }
         System.out.println("status : "+registration_status);
 
-       try {
-           connecttoDB();
 
-           PreparedStatement stmtinsert1 = null;
+        boolean flg=false;
+        try {
+            if((flg=connecttoDB())==true) {
 
-           try {
-               System.out.println("UPDATE SIM_REGISTRATION" +
-                       " SET " +
-                       " RESPONSE_CODE='" + api_response_code + "'," +
-                       "RESPONSE_MESSAGE='" + response_message + "'," +
-                       "REGISTRATION_STATUS='" + registration_status + "'" +
-                       "WHERE SIM_REG_ID='" + globalsimid + "'");
+                PreparedStatement stmtinsert1 = null;
 
-               stmtinsert1 = conn.prepareStatement("UPDATE SIM_REGISTRATION" +
-                       " SET " +
-                       " RESPONSE_CODE='" + api_response_code + "'," +
-                       "RESPONSE_MESSAGE='" + response_message + "'," +
-                       "REGISTRATION_STATUS='" + registration_status + "'" +
-                       "WHERE SIM_REG_ID='" + globalsimid + "'");
-           } catch (SQLException throwables) {
-               throwables.printStackTrace();
-           }
-           try {
-               stmtinsert1.executeUpdate();
-               //Toast.makeText(getApplicationContext(), "Saving Completed", Toast.LENGTH_SHORT).show();
-           } catch (SQLException throwables) {
-               throwables.printStackTrace();
-           }
-           try {
-               stmtinsert1.close();
-               conn.close();
-           } catch (SQLException throwables) {
-               throwables.printStackTrace();
-           }
+                try {
+                    System.out.println("UPDATE SIM_REGISTRATION" +
+                            " SET " +
+                            " RESPONSE_CODE='" + api_response_code + "'," +
+                            "RESPONSE_MESSAGE='" + response_message + "'," +
+                            "REGISTRATION_STATUS='" + registration_status + "'" +
+                            "WHERE SIM_REG_ID='" + globalsimid + "'");
+
+                    stmtinsert1 = conn.prepareStatement("UPDATE SIM_REGISTRATION" +
+                            " SET " +
+                            " RESPONSE_CODE='" + api_response_code + "'," +
+                            "RESPONSE_MESSAGE='" + response_message + "'," +
+                            "REGISTRATION_STATUS='" + registration_status + "'" +
+                            "WHERE SIM_REG_ID='" + globalsimid + "'");
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                try {
+                    stmtinsert1.executeUpdate();
+                    //Toast.makeText(getApplicationContext(), "Saving Completed", Toast.LENGTH_SHORT).show();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                try {
+                    stmtinsert1.close();
+                    conn.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
        }catch (Exception e){
            e.printStackTrace();
        }
@@ -237,28 +245,37 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
 
 
 
-    public void connecttoDB() {
+    public boolean connecttoDB() {
         // connect to DB
         OraDB oradb = new OraDB();
         String url = oradb.getoraurl();
         String userName = oradb.getorausername();
         String password = oradb.getorapwd();
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         try {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-            Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
-            conn = DriverManager.getConnection(url, userName, password);
+            //Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+            conn = DriverManager.getConnection(url,userName,password);
+            if(conn != null){
+                connectflag=true;
+            }
+            else{connectflag=false;}
+
             //Toast.makeText (MainActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
-        } catch (IllegalArgumentException | ClassNotFoundException | SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
-            System.out.println("error is: " + e.toString());
-            //Toast.makeText(this, "" + e.toString(), Toast.LENGTH_SHORT).show();
-        } catch (IllegalAccessException e) {
-            System.out.println("error is: " + e.toString());
-            //Toast.makeText(this, "" + e.toString(), Toast.LENGTH_SHORT).show();
-        } catch (InstantiationException e) {
-            System.out.println("error is: " + e.toString());
-           // Toast.makeText(this, "" + e.toString(), Toast.LENGTH_SHORT).show();
+        } catch (SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
+            System.out.println("error is: " +e.toString());
+
+            connectflag=false;
+        } /*catch (IllegalAccessException e) {
+            System.out.println("error is: " +e.toString());
+            Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();
+            connectflag=false;
+        }*/ catch (Exception e) {
+            System.out.println("error is: " +e.toString());
+
+            connectflag=false;
         }
+        return connectflag;
     }
 
 

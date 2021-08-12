@@ -235,24 +235,28 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         String userName = oradb.getorausername();
         String password = oradb.getorapwd();
 
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         try {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-            Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
-            connsite = DriverManager.getConnection(url, userName, password);
-            connectflag=true;
-            // Toast.makeText (SpeedActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
-        } catch (IllegalArgumentException | ClassNotFoundException | SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
-            System.out.println("error is: " + e.toString());
-            Toast.makeText(SimRegListViewActivity.this, "" + e.toString(), Toast.LENGTH_SHORT).show();
+            //Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+            connsite = DriverManager.getConnection(url,userName,password);
+            if(connsite != null){
+                connectflag=true;
+            }
+            else{connectflag=false;}
+
+            //Toast.makeText (MainActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
+        } catch (SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
+            System.out.println("error is: " +e.toString());
+            Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();
             connectflag=false;
-        } catch (IllegalAccessException e) {
-            System.out.println("error is: " + e.toString());
-            Toast.makeText(SimRegListViewActivity.this, "" + e.toString(), Toast.LENGTH_SHORT).show();
+        } /*catch (IllegalAccessException e) {
+            System.out.println("error is: " +e.toString());
+            Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();
             connectflag=false;
-        } catch (InstantiationException e) {
-            System.out.println("error is: " + e.toString());
-            Toast.makeText(SimRegListViewActivity.this, "" + e.toString(), Toast.LENGTH_SHORT).show();
+        }*/ catch (Exception e) {
+            System.out.println("error is: " +e.toString());
+            Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();
             connectflag=false;
         }
         return connectflag;
