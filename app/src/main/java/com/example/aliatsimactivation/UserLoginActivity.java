@@ -1,6 +1,7 @@
 package com.example.aliatsimactivation;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
@@ -24,6 +25,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -34,7 +36,7 @@ public class UserLoginActivity extends AppCompatActivity {
     private TextView tv;
     private String RegisterResult,RegisterResult1;
     private String file = "MSISDN.txt";
-    private String s0,s1,s2,s3,s4,s5,s6,s7,s8;
+    private String s0,s1,s2,s3,s4,s5,s6,s7,s8,s9;
     private String fileContents,fileContents2;
     private Button BtnExit,BtnData;
     private String secondfile = "Offlinedata.txt";
@@ -43,7 +45,7 @@ public class UserLoginActivity extends AppCompatActivity {
     private TextView tv2;
     private String[] data;
     private boolean connectflag=false;
-
+    private String gimagestatus,gfrontstatus,gbackstatus;
 
     SFTP sftp=new SFTP();
 
@@ -59,6 +61,10 @@ public class UserLoginActivity extends AppCompatActivity {
         Button btnregister = findViewById(R.id.signup);
         BtnExit = findViewById(R.id.BtnExit);
         BtnData = findViewById(R.id.BtnData);
+
+        gimagestatus="0";
+        gfrontstatus="0";
+        gbackstatus="0";
 
         //move to the register form
         btnregister.setOnClickListener(new View.OnClickListener() {
@@ -142,6 +148,7 @@ public class UserLoginActivity extends AppCompatActivity {
                         s6 = data[6];
                         s7 = data[7];
                         s8 = data[8];
+                        s9 = data[9];
 
                         Statement stmt1 = null;
                         try {
@@ -149,19 +156,13 @@ public class UserLoginActivity extends AppCompatActivity {
                         } catch (SQLException throwables) {
                             throwables.printStackTrace();
                         }
-                        String sqlStmt = ("insert into SIM_REGISTER_LOGIN (MSISDN,PIN_CODE,FIRST_NAME,LAST_NAME,REGION,ADDRESS,CREATION_DATE,AGENT_IMAGE,AGENT_FRONT_ID,AGENT_BACK_ID) values " +
-                                "('" + s4.toString() + "','" + s5.toString() + "','" + s0.toString() + "','" + s1.toString() + "','" + s2.toString() + "','" + s3.toString() + "',sysdate,'" + s6.toString() + "','" + s7.toString() + "','" + s8.toString() + "')");
+                        String sqlStmt = ("insert into SIM_REGISTER_LOGIN (MSISDN,PIN_CODE,FIRST_NAME,LAST_NAME,REGION,ADDRESS,CREATION_DATE,AGENT_IMAGE,AGENT_FRONT_ID,AGENT_BACK_ID,VERIFICATION_CODE,AGENT_IMAGE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS) values " +
+                                "('" + s4.toString() + "','" + s5.toString() + "','" + s0.toString() + "','" + s1.toString() + "','" + s2.toString() + "','" + s3.toString() + "',sysdate,'" + s6.toString() + "','" + s7.toString() + "','" + s8.toString() + "',"+s9.toString()+"',0,0,0)");
                         ResultSet rs1 = null;
                         try {
                             rs1 = stmt1.executeQuery(sqlStmt);
                             //delete the file after sending data from file into database
-                            try {
-                                File fileDir1 = new File(getFilesDir(), "Offlinedata.txt");
-                                File file1 = new File(getApplicationContext().getFilesDir(), "Offlinedata.txt");
-                                file1.delete();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+
                         } catch (SQLException throwables) {
                             throwables.printStackTrace();
                         }
@@ -181,7 +182,18 @@ public class UserLoginActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                thread1.start();
+                try {
+                    File fileDir1 = new File(getFilesDir(), "Offlinedata.txt");
+                    File file1 = new File(getApplicationContext().getFilesDir(), "Offlinedata.txt");
+                    file1.delete();
+                    if(gimagestatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0") || gbackstatus.equalsIgnoreCase("0")) {
+                        Toast.makeText(UserLoginActivity.this, "Uploading Photos started", Toast.LENGTH_LONG).show();
+                        thread1.start();
+                    }
+                    Toast.makeText(UserLoginActivity.this, "Uploading Photos Completed", Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
 
 
@@ -300,17 +312,6 @@ public class UserLoginActivity extends AppCompatActivity {
         public void run() {
             try {
 
-                File myFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), s6.toString() + ".jpg");
-                String agentimagepath = String.valueOf(myFile);
-                String agentimagename = s6.toString() + ".jpg";
-
-                File myFile1 = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), s7.toString() + ".jpg");
-                String agentfrontidpath = String.valueOf(myFile1);
-                String agentfrontidname = s7.toString()+ ".jpg";
-
-                File myFile2 = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), s8.toString() + ".jpg");
-                String agentbackidpath = String.valueOf(myFile2);
-                String agentbackidname =s8.toString()+ ".jpg";
 
 
                 System.out.println("Start");
@@ -328,32 +329,98 @@ public class UserLoginActivity extends AppCompatActivity {
                 System.out.println("Step1");
                 session.setPassword(pass);
                 session.setConfig(config);
-                session.connect();
-                System.out.println("Step Connect");
-                ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
-                channelSftp.connect();
-                //  UPLOAD
-                File agentimage = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), s6.toString() + ".jpg");
-                String file = String.valueOf(agentimage);
+                try {
+                    session.connect();
 
-                File agentfrontid = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), s7.toString() + ".jpg");
-                String file1 = String.valueOf(agentfrontid);
+                    System.out.println("Step Connect");
+                    ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
+                    channelSftp.connect();
 
-                File agentbackid = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), s8.toString() + ".jpg");
-                String file2 = String.valueOf(agentbackid);
+                    //check if the global status if equals zero do it
+                    if(gimagestatus.equalsIgnoreCase("0")) {
 
-                if (myFile.exists()) {
-                    // Toast.makeText(SimTest.this,"Sending ...",Toast.LENGTH_LONG).show();
+                        File agentimg = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), s6.toString() + ".jpg");
+                        String imgagent = String.valueOf(agentimg);
+                        channelSftp.put(imgagent, "SIMAGENTSFTP");
+                        Boolean success1 = true;
+
+                        if (success1) {
+                            System.out.println("upload completed : " + imgagent);
+                            UpdateAgentPicStatus(s4.toString(),"AGENT_IMAGE_STATUS");
+
+                        }
+                    }
+
+                    if(gfrontstatus.equalsIgnoreCase("0")) {
+
+                        File agentfrontid = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), s7.toString() + ".jpg");
+                        String frontid = String.valueOf(agentfrontid);
+                        channelSftp.put(frontid, "SIMAGENTSFTP");
+                        Boolean success2 = true;
+
+                        if (success2) {
+                            System.out.println("upload completed : " + frontid);
+                            UpdateAgentPicStatus(s4.toString(),"FRONT_SIDE_ID_STATUS");
+
+                        }
+                    }
+
+                    if(gbackstatus.equalsIgnoreCase("0")) {
+
+                        File agenbackid = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), s8.toString() + ".jpg");
+                        String backid = String.valueOf(agenbackid);
+                        channelSftp.put(backid, "SIMAGENTSFTP");
+                        Boolean success2 = true;
+
+                        if (success2) {
+                            System.out.println("upload completed : " + backid);
+                            UpdateAgentPicStatus(s4.toString(),"BACK_SIDE_ID_STATUS");
+                        }
+                    }
+
+
+                    //   Toast.makeText(SimTest.this,"session connection"+session.isConnected(),Toast.LENGTH_LONG).show();
+                    channelSftp.disconnect();
+                    session.disconnect();
+                }catch (Exception e1){
+                    e1.printStackTrace();
                 }
-                channelSftp.put(file, "SIMAGENTSFTP");
-                channelSftp.put(file1, "SIMAGENTSFTP");
-                channelSftp.put(file2, "SIMAGENTSFTP");
-                //   Toast.makeText(SimTest.this,"session connection"+session.isConnected(),Toast.LENGTH_LONG).show();
-                channelSftp.disconnect();
-                session.disconnect();
             }catch(Exception e){
                 e.printStackTrace();
             }
         }
     });
+
+
+    public void UpdateAgentPicStatus(String vmsisdn,String vcolname)
+    {
+        boolean flg=false;
+        try {
+            if((flg=connecttoDB())==true) {
+                PreparedStatement stmtinsert1 = null;
+
+                try {
+                    stmtinsert1 = conn.prepareStatement("update SIM_REGISTER_LOGIN set " + vcolname + "=1  where MSISDN ='" + vmsisdn + "'");
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                try {
+                    stmtinsert1.executeUpdate();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+
+
+                try {
+                    stmtinsert1.close();
+                    conn.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 }

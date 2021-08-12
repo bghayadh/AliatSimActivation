@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -58,10 +59,11 @@ public class UserRegister extends AppCompatActivity {
     private String file = "MSISDN.txt";
     private String secondfile = "Offlinedata.txt";
     private String fileContents,fileContents2;
-    private String secondfileContents,secondfileContents2,secondfileContents3,secondfileContents4,secondfileContents5,secondfileContents6,secondfileContent7,secondfileContent8,secondfileContent9;
+    private String secondfileContents,secondfileContents2,secondfileContents3,secondfileContents4,secondfileContents5,secondfileContents6,secondfileContent7,secondfileContent8,secondfileContent9,secondfileContent10;
     private String AgentImage,AgentFrontID,AgentBackID;
     Connection conn;
     private boolean connectflag=false;
+    private String gimagestatus,gfrontstatus,gbackstatus;
 
     SFTP sftp=new SFTP();
 
@@ -96,6 +98,12 @@ public class UserRegister extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            File imgagent = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), AgentImage + ".jpg");
+            if (imgagent.exists()) {
+                BtnAgentImage.setBackgroundColor(Color.YELLOW);
+                gimagestatus="0";
+            }
         }
         if(requestCode==101)
         {
@@ -121,6 +129,12 @@ public class UserRegister extends AppCompatActivity {
 
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+
+            File front = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), AgentFrontID + ".jpg");
+            if (front.exists()) {
+                BtnFrontID.setBackgroundColor(Color.YELLOW);
+                gfrontstatus="0";
             }
 
         }
@@ -149,6 +163,12 @@ public class UserRegister extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            File back = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), AgentBackID + ".jpg");
+            if (back.exists()) {
+                BtnBackID.setBackgroundColor(Color.YELLOW);
+                gbackstatus="0";
+            }
         }
     }
 
@@ -174,6 +194,10 @@ public class UserRegister extends AppCompatActivity {
         BtnFrontID=findViewById(R.id.btnagentfrontid);
         BtnBackID=findViewById(R.id.btnagentbackid);
         tv=findViewById(R.id.text_view);
+
+        gfrontstatus="0";
+        gbackstatus="0";
+        gimagestatus="0";
 
         BtnAgentImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -278,8 +302,8 @@ public class UserRegister extends AppCompatActivity {
 
                                                     try {
 
-                                                        stmtinsert1 = conn.prepareStatement("insert into SIM_REGISTER_LOGIN (MSISDN,PIN_CODE,FIRST_NAME,LAST_NAME,ADDRESS,REGION,CREATION_DATE,AGENT_IMAGE,AGENT_FRONT_ID,AGENT_BACK_ID,VERIFICATION_CODE) values " +
-                                                                "('" + edtphonenbr.getText().toString() + "','" + edtpin.getText().toString() + "','" + edtfname.getText().toString() + "','" + edtlname.getText().toString() + "','" + edtaddress.getText().toString() + "','" + edtregion.getText().toString() + "',sysdate,'" + AgentImage + "','" + AgentFrontID + "','" + AgentFrontID + "','" + Code + "')");
+                                                        stmtinsert1 = conn.prepareStatement("insert into SIM_REGISTER_LOGIN (MSISDN,PIN_CODE,FIRST_NAME,LAST_NAME,ADDRESS,REGION,CREATION_DATE,AGENT_IMAGE,AGENT_FRONT_ID,AGENT_BACK_ID,VERIFICATION_CODE,AGENT_IMAGE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS) values " +
+                                                                "('" + edtphonenbr.getText().toString() + "','" + edtpin.getText().toString() + "','" + edtfname.getText().toString() + "','" + edtlname.getText().toString() + "','" + edtaddress.getText().toString() + "','" + edtregion.getText().toString() + "',sysdate,'" + AgentImage + "','" + AgentFrontID + "','" + AgentFrontID + "','" + Code + "',0,0,0)");
 
                                                     } catch (SQLException throwables) {
                                                         throwables.printStackTrace();
@@ -289,8 +313,11 @@ public class UserRegister extends AppCompatActivity {
                                                         createandSaveMSISDNandPIN();
                                                         Toast.makeText(getApplicationContext(), "Saving Completed", Toast.LENGTH_SHORT).show();
                                                         //thread to send images to sftp
-                                                        thread1.start();
-
+                                                        if(gimagestatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0") || gbackstatus.equalsIgnoreCase("0")) {
+                                                            Toast.makeText(UserRegister.this, "Uploading Photos started", Toast.LENGTH_LONG).show();
+                                                            thread1.start();
+                                                        }
+                                                        Toast.makeText(UserRegister.this, "Uploading Photos Completed", Toast.LENGTH_LONG).show();
                                                     } catch (SQLException throwables) {
                                                         throwables.printStackTrace();
                                                     }
@@ -405,6 +432,7 @@ public class UserRegister extends AppCompatActivity {
         secondfileContent7=AgentImage;
         secondfileContent8=AgentFrontID;
         secondfileContent9=AgentBackID;
+        secondfileContent10=Code;
 
             FileOutputStream fOut = openFileOutput(secondfile, MODE_PRIVATE);
             fOut.write(secondfileContents.getBytes());
@@ -424,7 +452,8 @@ public class UserRegister extends AppCompatActivity {
             fOut.write(secondfileContent8.getBytes());
             fOut.write(":".getBytes());
             fOut.write(secondfileContent9.getBytes());
-            fOut.close();
+            fOut.write(":".getBytes());
+            fOut.write(secondfileContent10.getBytes());
             File fileDir = new File(getFilesDir(), secondfile);
             Toast.makeText(getBaseContext(), "File saved at" + fileDir, Toast.LENGTH_LONG).show();
         } catch (FileNotFoundException e) {
@@ -491,18 +520,7 @@ public class UserRegister extends AppCompatActivity {
         public void run() {
             try {
 
-                File myFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), AgentImage + ".jpg");
-                String agentimagepath = String.valueOf(myFile);
-                String agentimagename = AgentImage + ".jpg";
 
-                File myFile1 = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), AgentFrontID + ".jpg");
-                String agentfrontidpath = String.valueOf(myFile1);
-                String agentfrontidname = AgentFrontID+ ".jpg";
-
-                File myFile2 = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), AgentBackID + ".jpg");
-                String agentbackidpath = String.valueOf(myFile2);
-                String agentbackidname =AgentBackID+ ".jpg";
-                //Toast.makeText(SimTest.this,"Trying to connect..",Toast.LENGTH_LONG).show();
 
                 System.out.println("Start");
 
@@ -525,19 +543,50 @@ public class UserRegister extends AppCompatActivity {
                     System.out.println("Step Connect");
                     ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
                     channelSftp.connect();
-                    //  UPLOAD
-                    File agentimage = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), AgentImage + ".jpg");
-                    String file = String.valueOf(agentimage);
 
-                    File agentfrontid = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), AgentFrontID + ".jpg");
-                    String file1 = String.valueOf(agentfrontid);
+                    //check if the global status if equals zero do it
+                    if(gimagestatus.equalsIgnoreCase("0")) {
 
-                    File agentbackid = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), AgentBackID + ".jpg");
-                    String file2 = String.valueOf(agentbackid);
+                        File agentimg = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), AgentImage + ".jpg");
+                        String imgagent = String.valueOf(agentimg);
+                        channelSftp.put(imgagent, "SIMAGENTSFTP");
+                        Boolean success1 = true;
 
-                    channelSftp.put(file, "SIMAGENTSFTP");
-                    channelSftp.put(file1, "SIMAGENTSFTP");
-                    channelSftp.put(file2, "SIMAGENTSFTP");
+                        if (success1) {
+                            System.out.println("upload completed : " + imgagent);
+                            UpdateAgentPicStatus(edtphonenbr.getText().toString(),"AGENT_IMAGE_STATUS");
+                            BtnAgentImage.setBackgroundColor(Color.GREEN);
+                        }
+                    }
+
+                    if(gfrontstatus.equalsIgnoreCase("0")) {
+
+                        File agentfrontid = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), AgentFrontID + ".jpg");
+                        String frontid = String.valueOf(agentfrontid);
+                        channelSftp.put(frontid, "SIMAGENTSFTP");
+                        Boolean success2 = true;
+
+                        if (success2) {
+                            System.out.println("upload completed : " + frontid);
+                            UpdateAgentPicStatus(edtphonenbr.getText().toString(),"FRONT_SIDE_ID_STATUS");
+                            BtnFrontID.setBackgroundColor(Color.GREEN);
+                        }
+                    }
+
+                    if(gbackstatus.equalsIgnoreCase("0")) {
+
+                        File agenbackid = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), AgentBackID + ".jpg");
+                        String backid = String.valueOf(agenbackid);
+                        channelSftp.put(backid, "SIMAGENTSFTP");
+                        Boolean success2 = true;
+
+                        if (success2) {
+                            System.out.println("upload completed : " + backid);
+                            UpdateAgentPicStatus(edtphonenbr.getText().toString(),"BACK_SIDE_ID_STATUS");
+                            BtnBackID.setBackgroundColor(Color.GREEN);
+                        }
+                    }
+
 
                     //   Toast.makeText(SimTest.this,"session connection"+session.isConnected(),Toast.LENGTH_LONG).show();
                     channelSftp.disconnect();
@@ -550,6 +599,38 @@ public class UserRegister extends AppCompatActivity {
             }
         }
     });
+
+
+    public void UpdateAgentPicStatus(String vmsisdn,String vcolname)
+    {
+        boolean flg=false;
+        try {
+            if((flg=connecttoDB())==true) {
+                PreparedStatement stmtinsert1 = null;
+
+                try {
+                    stmtinsert1 = conn.prepareStatement("update SIM_REGISTER_LOGIN set " + vcolname + "=1  where MSISDN ='" + vmsisdn + "'");
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                try {
+                    stmtinsert1.executeUpdate();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+
+
+                try {
+                    stmtinsert1.close();
+                    conn.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
 }
 
