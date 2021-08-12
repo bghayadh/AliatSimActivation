@@ -99,7 +99,8 @@
     <com.google.android.material.button.MaterialButton
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:layout_below="@id/signup"
+        android:layout_below="@+id/img"
+        android:layout_marginTop="15dp"
         android:text="1"
         android:id="@+id/BtnData"
         android:textColor="@color/white"

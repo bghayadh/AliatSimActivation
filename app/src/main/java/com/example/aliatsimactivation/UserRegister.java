@@ -1,5 +1,6 @@
 package com.example.aliatsimactivation;
 
+import android.accounts.NetworkErrorException;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -34,6 +35,7 @@ import com.jcraft.jsch.Session;
 
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
+import org.apache.commons.net.telnet.EchoOptionHandler;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -48,7 +50,6 @@ import java.util.Properties;
 import java.util.Random;
 
 public class UserRegister extends AppCompatActivity {
-    private static final String FILE_NAME="example.txt";
     private Button verify,BtnData,BtnAgentImage,BtnFrontID,BtnBackID;
     private String myText,RegisterResult;
     private String Code;
@@ -60,14 +61,10 @@ public class UserRegister extends AppCompatActivity {
     private String secondfileContents,secondfileContents2,secondfileContents3,secondfileContents4,secondfileContents5,secondfileContents6,secondfileContent7,secondfileContent8,secondfileContent9;
     private String AgentImage,AgentFrontID,AgentBackID;
     Connection conn;
-    FTP ftp = new FTP();
+    private boolean connectflag=false;
+
     SFTP sftp=new SFTP();
 
-    String server = ftp.getServer();//"ftp.ipage.com";
-    int port = ftp.getPort();//21;
-    String user = ftp.getUser();//"beid";
-    String pass = ftp.getPass();//"10th@Loop";
-    FTPClient ftpClient = new FTPClient();
 
 
     @Override
@@ -213,9 +210,8 @@ public class UserRegister extends AppCompatActivity {
 
 
 
-
+        //code for verification
         Code=generateSessionKey(6);
-        System.out.println("result: "+Code);
 
 
 
@@ -230,116 +226,145 @@ public class UserRegister extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                //permit the user to verify if one edittext is empty
-                if (TextUtils.isEmpty(edtfname.getText()) || TextUtils.isEmpty(edtlname.getText()) || TextUtils.isEmpty(edtregion.getText()) || TextUtils.isEmpty(edtaddress.getText()) || TextUtils.isEmpty(edtphonenbr.getText()) || TextUtils.isEmpty(edtpin.getText()) || TextUtils.isEmpty(AgentImage) || TextUtils.isEmpty(AgentFrontID) || TextUtils.isEmpty(AgentBackID)) {
-                    edtfname.setError("Enter First Name");
-                    edtlname.setError("Enter Last Name");
-                    edtregion.setError("Enter Region");
-                    edtaddress.setError("Enter Address");
-                    edtphonenbr.setError("Enter Phone Number");
-                    edtpin.setError("Enter PIN");
-                    BtnAgentImage.setError("Take a Photo");
-                    BtnFrontID.setError("Take a Photo");
-                    BtnBackID.setError("Take a Photo");
+                System.out.println("in process please wait");
 
-                } else {
+                ConnectivityManager connMgr = (ConnectivityManager) getApplicationContext()
+                        .getSystemService(Context.CONNECTIVITY_SERVICE);
 
-                    //open dialog
-                    AlertDialog.Builder mydialog = new AlertDialog.Builder(UserRegister.this);
-                    mydialog.setTitle("Enter The Code");
+                NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+                //validation for network connection on the wifi or mobile data
+                if (networkInfo != null && networkInfo.isConnected()) {
+                    System.out.println("you are connected");
+                    //here we have connection to the internet
+                    //permit the user to verify if one edittext is empty
+                    try {
+                        if (TextUtils.isEmpty(edtfname.getText()) || TextUtils.isEmpty(edtlname.getText()) || TextUtils.isEmpty(edtregion.getText()) || TextUtils.isEmpty(edtaddress.getText()) || TextUtils.isEmpty(edtphonenbr.getText()) || TextUtils.isEmpty(edtpin.getText()) || TextUtils.isEmpty(AgentImage) || TextUtils.isEmpty(AgentFrontID) || TextUtils.isEmpty(AgentBackID)) {
+                            edtfname.setError("Enter First Name");
+                            edtlname.setError("Enter Last Name");
+                            edtregion.setError("Enter Region");
+                            edtaddress.setError("Enter Address");
+                            edtphonenbr.setError("Enter Phone Number");
+                            edtpin.setError("Enter PIN");
+                            BtnAgentImage.setError("Take a Photo");
+                            BtnFrontID.setError("Take a Photo");
+                            BtnBackID.setError("Take a Photo");
 
-                    final EditText input = new EditText(UserRegister.this);
-                    input.setInputType(InputType.TYPE_CLASS_PHONE);
-                    mydialog.setView(input);
-                    //verify the given code and change from verify to register
-                    mydialog.setPositiveButton("Verify", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            myText = input.getText().toString();
-                            Toast.makeText(UserRegister.this, "Text is: " + myText, Toast.LENGTH_LONG).show();
+                        } else {
 
-                            if(Code.equalsIgnoreCase(myText))
-                            {
+                            //open dialog
+                            AlertDialog.Builder mydialog = new AlertDialog.Builder(UserRegister.this);
+                            mydialog.setTitle("Enter The Code");
 
-                                System.out.println("Succeed");
-                                verify.setVisibility(View.GONE);
+                            final EditText input = new EditText(UserRegister.this);
+                            input.setInputType(InputType.TYPE_CLASS_PHONE);
+                            mydialog.setView(input);
+                            //verify the given code and change from verify to register
+                            mydialog.setPositiveButton("Verify", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
 
-                                connecttoDB();
+                                    Toast.makeText(UserRegister.this,"In process please wait",Toast.LENGTH_SHORT).show();
+                                    myText = input.getText().toString();
 
-                                try {
+                                    if (Code.equalsIgnoreCase(myText)) {
+                                        boolean flg=false;
 
 
-                                    PreparedStatement stmtinsert1 = null;
+                                            if((flg=connecttoDB())==true) {
+                                                System.out.println("connect in dialog");
+                                                try {
 
-                                    try {
+                                                    PreparedStatement stmtinsert1 = null;
 
-                                        stmtinsert1 = conn.prepareStatement("insert into SIM_REGISTER_LOGIN (MSISDN,PIN_CODE,FIRST_NAME,LAST_NAME,ADDRESS,REGION,CREATION_DATE,AGENT_IMAGE,AGENT_FRONT_ID,AGENT_BACK_ID,VERIFICATION_CODE) values " +
-                                                "('"+edtphonenbr.getText().toString()+"','"+edtpin.getText().toString()+"','"+edtfname.getText().toString()+"','"+edtlname.getText().toString()+"','"+edtaddress.getText().toString()+"','"+edtregion.getText().toString()+"',sysdate,'"+AgentImage+"','"+AgentFrontID+"','"+AgentFrontID+"','"+Code+"')");
+                                                    try {
 
-                                    } catch (SQLException throwables) {
-                                        throwables.printStackTrace();
+                                                        stmtinsert1 = conn.prepareStatement("insert into SIM_REGISTER_LOGIN (MSISDN,PIN_CODE,FIRST_NAME,LAST_NAME,ADDRESS,REGION,CREATION_DATE,AGENT_IMAGE,AGENT_FRONT_ID,AGENT_BACK_ID,VERIFICATION_CODE) values " +
+                                                                "('" + edtphonenbr.getText().toString() + "','" + edtpin.getText().toString() + "','" + edtfname.getText().toString() + "','" + edtlname.getText().toString() + "','" + edtaddress.getText().toString() + "','" + edtregion.getText().toString() + "',sysdate,'" + AgentImage + "','" + AgentFrontID + "','" + AgentFrontID + "','" + Code + "')");
+
+                                                    } catch (SQLException throwables) {
+                                                        throwables.printStackTrace();
+                                                    }
+                                                    try {
+                                                        stmtinsert1.executeUpdate();
+                                                        createandSaveMSISDNandPIN();
+                                                        Toast.makeText(getApplicationContext(), "Saving Completed", Toast.LENGTH_SHORT).show();
+                                                        //thread to send images to sftp
+                                                        thread1.start();
+
+                                                    } catch (SQLException throwables) {
+                                                        throwables.printStackTrace();
+                                                    }
+                                                    try {
+                                                        stmtinsert1.close();
+                                                        conn.close();
+                                                    } catch (SQLException throwables) {
+                                                        throwables.printStackTrace();
+                                                    }
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+
+
+
+                                                // Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                                //startActivity(intent);
+                                            }else
+                                            {
+                                                System.out.println("offline in dialog");
+
+                                            }
+
+                                        Intent intent = new Intent(getApplicationContext(), UserLoginActivity.class);
+                                        startActivity(intent);
+
+
+
+                                    } else {
+                                        AlertDialog.Builder mydialog1 = new AlertDialog.Builder(UserRegister.this);
+                                        mydialog1.setTitle("Oopss");
+                                        mydialog1.setMessage("Invalid Code Entered Please Try Again Later !! ");
+                                        mydialog1.setPositiveButton("Verify", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                        mydialog1.show();
+
                                     }
-                                    try {
-                                        stmtinsert1.executeUpdate();
-                                        Toast.makeText(getApplicationContext(), "Saving Completed", Toast.LENGTH_SHORT).show();
-                                    } catch (SQLException throwables) {
-                                        throwables.printStackTrace();
-                                    }
-                                    try {
-                                        stmtinsert1.close();
-                                        conn.close();
-                                    } catch (SQLException throwables) {
-                                        throwables.printStackTrace();
-                                    }
 
-                                    createandSaveMSISDNandPIN();
-
-                                }catch (Exception e)
-                                {
-                                    System.out.println("saving offline");
                                 }
+                            });
 
+                            mydialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            mydialog.show();
 
-                                thread1.start();
+                            //sending notification with a verification code
+                            NotificationCompat.Builder builder = new NotificationCompat.Builder(UserRegister.this, "My Notification");
+                            builder.setContentTitle("Enter This Code to Verify your Registration");
+                            builder.setContentText(Code);
+                            builder.setSmallIcon(R.drawable.ic_baseline_message_24);
+                            builder.setAutoCancel(true);
 
-                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                startActivity(intent);
-                            }
-                            else {
-                                AlertDialog.Builder mydialog1 = new AlertDialog.Builder(UserRegister.this);
-                                mydialog1.setTitle("Oopss");
-                                mydialog1.setMessage("Invalid Code Entered Please Try Again Later !! ");
-                                mydialog1.setPositiveButton("Verify", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
-                                mydialog1.show();
+                            NotificationManagerCompat managerCompat = NotificationManagerCompat.from(UserRegister.this);
+                            managerCompat.notify(1, builder.build());
 
-                            }
-
+                            System.out.println("end of else for dialog");
                         }
-                    });
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    System.out.println("finish if for network");
+                }
+                //in case where no internet connection
+                else{
 
-                    mydialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
-                    mydialog.show();
-
-                    //sending notification with a verification code
-                    NotificationCompat.Builder builder = new NotificationCompat.Builder(UserRegister.this, "My Notification");
-                    builder.setContentTitle("Enter This Code to Verify your Registration");
-                    builder.setContentText(Code);
-                    builder.setSmallIcon(R.drawable.ic_baseline_message_24);
-                    builder.setAutoCancel(true);
-
-                    NotificationManagerCompat managerCompat = NotificationManagerCompat.from(UserRegister.this);
-                    managerCompat.notify(1, builder.build());
-
-
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
                 }
             }
 
@@ -370,7 +395,7 @@ public class UserRegister extends AppCompatActivity {
 
     //function to create and save the offlinedata
     private void createandSaveOfflinedata() {
-
+        try {
         secondfileContents = edtfname.getText().toString();
         secondfileContents2= edtlname.getText().toString();
         secondfileContents3= edtregion.getText().toString();
@@ -380,7 +405,7 @@ public class UserRegister extends AppCompatActivity {
         secondfileContent7=AgentImage;
         secondfileContent8=AgentFrontID;
         secondfileContent9=AgentBackID;
-        try {
+
             FileOutputStream fOut = openFileOutput(secondfile, MODE_PRIVATE);
             fOut.write(secondfileContents.getBytes());
             fOut.write(":".getBytes());
@@ -411,47 +436,54 @@ public class UserRegister extends AppCompatActivity {
     }
 
 
-    public void  connecttoDB() {
+    public boolean connecttoDB() {
         // connect to DB
         OraDB oradb= new OraDB();
         String url = oradb.getoraurl ();
         String userName = oradb.getorausername ();
         String password = oradb.getorapwd ();
         try {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder ( ).permitAll ( ).build ( );
-            StrictMode.setThreadPolicy (policy);
-            Class.forName ("oracle.jdbc.driver.OracleDriver").newInstance ( );
-            conn = DriverManager.getConnection (url, userName, password);
-        }
-        catch (IllegalArgumentException | ClassNotFoundException | SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
-            System.out.println ("error1 is: " + e.toString ( ));
-            Toast.makeText (UserRegister.this, "" + e.toString ( ), Toast.LENGTH_SHORT).show ( );
-            //if there is no connection to db save offline into the created text files
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+            conn = DriverManager.getConnection(url,userName,password);
+            connectflag=true;
+
+            //Toast.makeText (MainActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
+        } catch (IllegalArgumentException | ClassNotFoundException | SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
+            System.out.println("error is: " +e.toString());
+            Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();
+            connectflag=false;
             createandSaveMSISDNandPIN();
             createandSaveOfflinedata();
-        }   catch (IllegalAccessException e) {
-            System.out.println("error2 is: " +e.toString());
-            Toast.makeText (UserRegister.this,"" +e.toString(),Toast.LENGTH_SHORT).show ();
-        }   catch (InstantiationException e) {
-            System.out.println("error3 is: " +e.toString());
-            Toast.makeText (UserRegister.this,"" +e.toString(),Toast.LENGTH_SHORT).show ();
+        } catch (IllegalAccessException e) {
+            System.out.println("error is: " +e.toString());
+            Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();
+            connectflag=false;
+        } catch (java.lang.InstantiationException e) {
+            System.out.println("error is: " +e.toString());
+            Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();
+            connectflag=false;
         }
+        return connectflag;
     }
 
     public static String generateSessionKey(int length){
-        String alphabet =
-                new String("0123456789"); // 9
 
-        int n = alphabet.length(); // 10
+            String alphabet =
+                    new String("0123456789"); // 9
 
-        String result = new String();
-        Random r = new Random(); // 11
+            int n = alphabet.length(); // 10
 
-        for (int i=0; i<length; i++) // 12
-            result = result + alphabet.charAt(r.nextInt(n)); //13
+            String result = new String();
+            Random r = new Random(); // 11
 
-        return result;
-    }
+            for (int i = 0; i < length; i++) // 12
+                result = result + alphabet.charAt(r.nextInt(n)); //13
+
+            return result;
+        }
+
 
     Thread thread1 = new Thread(new Runnable() {
 
@@ -487,29 +519,32 @@ public class UserRegister extends AppCompatActivity {
                 System.out.println("Step1");
                 session.setPassword(pass);
                 session.setConfig(config);
-                session.connect();
-                System.out.println("Step Connect");
-                ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
-                channelSftp.connect();
-                //  UPLOAD
-                File agentimage = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), AgentImage + ".jpg");
-                String file = String.valueOf(agentimage);
+                try {
+                    session.connect();
 
-                File agentfrontid = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), AgentFrontID + ".jpg");
-                String file1 = String.valueOf(agentfrontid);
+                    System.out.println("Step Connect");
+                    ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
+                    channelSftp.connect();
+                    //  UPLOAD
+                    File agentimage = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), AgentImage + ".jpg");
+                    String file = String.valueOf(agentimage);
 
-                File agentbackid = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), AgentBackID + ".jpg");
-                String file2 = String.valueOf(agentbackid);
+                    File agentfrontid = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), AgentFrontID + ".jpg");
+                    String file1 = String.valueOf(agentfrontid);
 
-                if (myFile.exists()) {
-                    // Toast.makeText(SimTest.this,"Sending ...",Toast.LENGTH_LONG).show();
+                    File agentbackid = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), AgentBackID + ".jpg");
+                    String file2 = String.valueOf(agentbackid);
+
+                    channelSftp.put(file, "SIMAGENTSFTP");
+                    channelSftp.put(file1, "SIMAGENTSFTP");
+                    channelSftp.put(file2, "SIMAGENTSFTP");
+
+                    //   Toast.makeText(SimTest.this,"session connection"+session.isConnected(),Toast.LENGTH_LONG).show();
+                    channelSftp.disconnect();
+                    session.disconnect();
+                }catch (Exception e1){
+                    e1.printStackTrace();
                 }
-                channelSftp.put(file, "SIMAGENTSFTP");
-                channelSftp.put(file1, "SIMAGENTSFTP");
-                channelSftp.put(file2, "SIMAGENTSFTP");
-                //   Toast.makeText(SimTest.this,"session connection"+session.isConnected(),Toast.LENGTH_LONG).show();
-                channelSftp.disconnect();
-                session.disconnect();
             }catch(Exception e){
                 e.printStackTrace();
             }

@@ -186,39 +186,43 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
         }
         System.out.println("status : "+registration_status);
 
+       try {
+           connecttoDB();
 
-      connecttoDB();
+           PreparedStatement stmtinsert1 = null;
 
-        PreparedStatement stmtinsert1 = null;
+           try {
+               System.out.println("UPDATE SIM_REGISTRATION" +
+                       " SET " +
+                       " RESPONSE_CODE='" + api_response_code + "'," +
+                       "RESPONSE_MESSAGE='" + response_message + "'," +
+                       "REGISTRATION_STATUS='" + registration_status + "'" +
+                       "WHERE SIM_REG_ID='" + globalsimid + "'");
 
-        try{
-            System.out.println("UPDATE SIM_REGISTRATION"+
-                    " SET "+
-                    " RESPONSE_CODE='"+api_response_code+"',"+
-                    "RESPONSE_MESSAGE='"+response_message+"',"+
-                    "REGISTRATION_STATUS='"+registration_status+"'"+
-                    "WHERE SIM_REG_ID='"+globalsimid+"'");
-
-            stmtinsert1=conn.prepareStatement("UPDATE SIM_REGISTRATION"+
-                    " SET "+
-                    " RESPONSE_CODE='"+api_response_code+"',"+
-                    "RESPONSE_MESSAGE='"+response_message+"',"+
-                    "REGISTRATION_STATUS='"+registration_status+"'"+
-                    "WHERE SIM_REG_ID='"+globalsimid+"'");
-        }catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }  try {
-            stmtinsert1.executeUpdate();
-            //Toast.makeText(getApplicationContext(), "Saving Completed", Toast.LENGTH_SHORT).show();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        try {
-            stmtinsert1.close();
-            conn.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+               stmtinsert1 = conn.prepareStatement("UPDATE SIM_REGISTRATION" +
+                       " SET " +
+                       " RESPONSE_CODE='" + api_response_code + "'," +
+                       "RESPONSE_MESSAGE='" + response_message + "'," +
+                       "REGISTRATION_STATUS='" + registration_status + "'" +
+                       "WHERE SIM_REG_ID='" + globalsimid + "'");
+           } catch (SQLException throwables) {
+               throwables.printStackTrace();
+           }
+           try {
+               stmtinsert1.executeUpdate();
+               //Toast.makeText(getApplicationContext(), "Saving Completed", Toast.LENGTH_SHORT).show();
+           } catch (SQLException throwables) {
+               throwables.printStackTrace();
+           }
+           try {
+               stmtinsert1.close();
+               conn.close();
+           } catch (SQLException throwables) {
+               throwables.printStackTrace();
+           }
+       }catch (Exception e){
+           e.printStackTrace();
+       }
 
      
         data=api_response_code+"!!"+response_message;

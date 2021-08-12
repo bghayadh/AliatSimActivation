@@ -102,6 +102,7 @@ public class SimRegInfo extends AppCompatActivity {
     private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
     private long mEndTime;
     private Spinner sp;
+    private boolean connectflag=false;
 
 
     //capture images from cam and save it on the phone
@@ -236,8 +237,11 @@ public class SimRegInfo extends AppCompatActivity {
 
 
         if(globalsimid !="0"){
-
+            try {
                 getDataforSimfromDB();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
 
         }
 
@@ -248,36 +252,40 @@ public class SimRegInfo extends AppCompatActivity {
 
         //check the existence of the msisdn file to get the agent msisnd
         //after checking the existence fill it in the edittext and disable it
-        File file = new File(SimRegInfo.this.getFilesDir(), "MSISDN.txt");
-        if (file.exists()) {
+        try {
+            File file = new File(SimRegInfo.this.getFilesDir(), "MSISDN.txt");
+            if (file.exists()) {
 
-            StringBuilder text = new StringBuilder();
+                StringBuilder text = new StringBuilder();
 
-            try {
-                FileInputStream fIn = SimRegInfo.this.openFileInput("MSISDN.txt");
-                int c;
-                String temp = "";
+                try {
+                    FileInputStream fIn = SimRegInfo.this.openFileInput("MSISDN.txt");
+                    int c;
+                    String temp = "";
 
-                while ((c = fIn.read()) != -1) {
-                    temp = temp + Character.toString((char) c);
+                    while ((c = fIn.read()) != -1) {
+                        temp = temp + Character.toString((char) c);
+                    }
+                    text.append(temp);
+                    text.append('\n');
+
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                text.append(temp);
-                text.append('\n');
 
-            } catch (IOException e) {
-                e.printStackTrace();
+
+                Result = text.toString();
+                System.out.println("RESULT" + Result);
+                String[] data = Result.split(":");
+                String s0 = data[0];
+
+                editagent.setText(s0);
+                editagent.setEnabled(false);
+            } else {
+                System.out.println("login filevdon't exist");
             }
-
-
-            Result = text.toString();
-            System.out.println("RESULT" + Result);
-            String[] data = Result.split(":");
-            String s0 = data[0];
-
-            editagent.setText(s0);
-            editagent.setEnabled(false);
-        } else {
-            System.out.println("login filevdon't exist");
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
         //front id button to capture the id front side
@@ -347,29 +355,33 @@ public class SimRegInfo extends AppCompatActivity {
                 thread2.start();
                 Toast.makeText(SimRegInfo.this,"The Photos Deleted from SFTP",Toast.LENGTH_LONG).show();
 
-               try{
-                    connecttoDB();
-                    Toast.makeText(SimRegInfo.this,"Starting Deletion in DataBase",Toast.LENGTH_SHORT).show();
-                    PreparedStatement stmtinsert1 = null;
-
-                    try {
-                        stmtinsert1 = conn.prepareStatement("delete from SIM_REGISTRATION where SIM_REG_ID='"+globalsimid+"'");
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
-                    try {
-                        stmtinsert1.executeUpdate();
-                        Toast.makeText(SimRegInfo.this,"Deleted Completed from DataBase",Toast.LENGTH_LONG).show();
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
+                boolean flg=false;
+                try {
+                    if((flg=connecttoDB())==true) {
 
 
-                    try {
-                        stmtinsert1.close();
-                        conn.close();
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
+                        Toast.makeText(SimRegInfo.this, "Starting Deletion in DataBase", Toast.LENGTH_SHORT).show();
+                        PreparedStatement stmtinsert1 = null;
+
+                        try {
+                            stmtinsert1 = conn.prepareStatement("delete from SIM_REGISTRATION where SIM_REG_ID='" + globalsimid + "'");
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                        try {
+                            stmtinsert1.executeUpdate();
+                            Toast.makeText(SimRegInfo.this, "Deleted Completed from DataBase", Toast.LENGTH_LONG).show();
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+
+
+                        try {
+                            stmtinsert1.close();
+                            conn.close();
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
                     }
 
                 }catch (Exception e){
@@ -506,65 +518,73 @@ public class SimRegInfo extends AppCompatActivity {
                                         int year = calendar.get(Calendar.YEAR);
                                         String simID;
                                         simID = "REG_" + year + "_";
-                                        connecttoDB();
-                                        PreparedStatement stmtinsert1 = null;
 
+                                        boolean flg=false;
                                         try {
-                                            if (globalsimid.equalsIgnoreCase("0")) {
-                                                // if it is a new Warehouse we will use insert
+                                            if((flg=connecttoDB())==true) {
+                                                PreparedStatement stmtinsert1 = null;
 
-                                                Statement stmt1 = null;
-                                                stmt1 = conn.createStatement();
-                                                String sqlStmt = "select SIM_REGISTRATION_SEQ.nextval as nbr from dual";
-                                                ResultSet rs1 = null;
                                                 try {
-                                                    rs1 = stmt1.executeQuery(sqlStmt);
+                                                    if (globalsimid.equalsIgnoreCase("0")) {
+                                                        // if it is a new Warehouse we will use insert
+
+                                                        Statement stmt1 = null;
+                                                        stmt1 = conn.createStatement();
+                                                        String sqlStmt = "select SIM_REGISTRATION_SEQ.nextval as nbr from dual";
+                                                        ResultSet rs1 = null;
+                                                        try {
+                                                            rs1 = stmt1.executeQuery(sqlStmt);
+                                                        } catch (SQLException throwables) {
+                                                            throwables.printStackTrace();
+                                                        }
+
+                                                        while (true) {
+                                                            try {
+                                                                if (!rs1.next()) break;
+                                                                globalsimid = simID + rs1.getString("nbr");
+                                                                //System.out.println(rs1.getString("compteur"));
+
+                                                            } catch (SQLException throwables) {
+                                                                throwables.printStackTrace();
+                                                            }
+                                                        }
+                                                        rs1.close();
+                                                        stmt1.close();
+
+
+                                                        // send data from fragment to super activity
+
+
+                                                        stmtinsert1 = conn.prepareStatement("insert into SIM_REGISTRATION (SIM_REG_ID,STATUS,CREATION_DATE,LAST_MODIFIED_DATE,FIRST_NAME,MIDDLE_NAME,LAST_NAME,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHISICAL_LOCATION,POSTAL_ADDRESS,GENDER,AGENT_NUMBER,AGENT_ID,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,SIGNATURE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS) values " +
+                                                                "('" + globalsimid + "','" + b + "' ,sysdate, sysdate,'" + editfname.getText() + "','" + editmname.getText() + "', '" + editlname.getText() + "','" + editmobile.getText() + "',TO_DATE('" + editdate.getText() + "','DD-MM-YYYY'),'" + nationality + "','" + editaltnumber.getText() + "','" + editemail.getText() + "','" + editphylocation.getText() + "','" + editpost.getText() + "','" + gender + "','" + editagent.getText() + "','" + editidagent.getText() + "','" + SIGN + "','" + FRONT + "','" + BACK + "',0,0,0)");
+
+                                                        ///added for pass data in fragment
+
+                                                    } else {
+
+                                                        stmtinsert1 = conn.prepareStatement("update SIM_REGISTRATION set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + editfname.getText() + "',MIDDLE_NAME='" + editmname.getText() + "',LAST_NAME='" + editlname.getText() + "',STATUS='" + b + "',MOBILE_NUMBER='" + editmobile.getText() + "',NATIONALITY='" + nationality + "',ALTERNATIVE_NUMBER='" + editaltnumber.getText() + "',EMAIL_ADDRESS='" + editemail.getText() + "',PHISICAL_LOCATION='" + editphylocation.getText() + "',POSTAL_ADDRESS='" + editpost.getText() + "',GENDER='" + gender + "',AGENT_NUMBER='" + editagent.getText() + "',AGENT_ID='" + editidagent.getText() + "',SIGNATURE='" + SIGN + "',ID_FRONT_SIDE_PHOTO='" + FRONT + "',ID_BACK_SID_PHOTO='" + BACK + "' where SIM_REG_ID ='" + globalsimid + "'");
+                                                    }
+                                                } catch (SQLException throwables) {
+                                                    throwables.printStackTrace();
+                                                }
+                                                try {
+                                                    stmtinsert1.executeUpdate();
+                                                    Toast.makeText(SimRegInfo.this, "Saving Completed", Toast.LENGTH_SHORT).show();
                                                 } catch (SQLException throwables) {
                                                     throwables.printStackTrace();
                                                 }
 
-                                                while (true) {
-                                                    try {
-                                                        if (!rs1.next()) break;
-                                                        globalsimid = simID + rs1.getString("nbr");
-                                                        //System.out.println(rs1.getString("compteur"));
 
-                                                    } catch (SQLException throwables) {
-                                                        throwables.printStackTrace();
-                                                    }
+                                                try {
+                                                    stmtinsert1.close();
+                                                    conn.close();
+                                                } catch (SQLException throwables) {
+                                                    throwables.printStackTrace();
                                                 }
-                                                rs1.close();
-                                                stmt1.close();
-
-
-                                                // send data from fragment to super activity
-
-
-                                                stmtinsert1 = conn.prepareStatement("insert into SIM_REGISTRATION (SIM_REG_ID,STATUS,CREATION_DATE,LAST_MODIFIED_DATE,FIRST_NAME,MIDDLE_NAME,LAST_NAME,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHISICAL_LOCATION,POSTAL_ADDRESS,GENDER,AGENT_NUMBER,AGENT_ID,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,SIGNATURE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS) values " +
-                                                        "('" + globalsimid + "','" + b + "' ,sysdate, sysdate,'" + editfname.getText() + "','" + editmname.getText() + "', '" + editlname.getText() + "','" + editmobile.getText() + "',TO_DATE('" + editdate.getText() + "','DD-MM-YYYY'),'" + nationality + "','" + editaltnumber.getText() + "','" + editemail.getText() + "','" + editphylocation.getText() + "','" + editpost.getText() + "','" + gender + "','" + editagent.getText() + "','" + editidagent.getText() + "','" + SIGN + "','" + FRONT + "','" + BACK + "',0,0,0)");
-
-                                                ///added for pass data in fragment
-
-                                            } else {
-
-                                                stmtinsert1 = conn.prepareStatement("update SIM_REGISTRATION set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + editfname.getText() + "',MIDDLE_NAME='" + editmname.getText() + "',LAST_NAME='" + editlname.getText() + "',STATUS='" + b + "',MOBILE_NUMBER='" + editmobile.getText() + "',NATIONALITY='" + nationality + "',ALTERNATIVE_NUMBER='" + editaltnumber.getText() + "',EMAIL_ADDRESS='" + editemail.getText() + "',PHISICAL_LOCATION='" + editphylocation.getText() + "',POSTAL_ADDRESS='" + editpost.getText() + "',GENDER='" + gender + "',AGENT_NUMBER='" + editagent.getText() + "',AGENT_ID='" + editidagent.getText() + "',SIGNATURE='" + SIGN + "',ID_FRONT_SIDE_PHOTO='" + FRONT + "',ID_BACK_SID_PHOTO='" + BACK + "' where SIM_REG_ID ='" + globalsimid + "'");
                                             }
-                                        } catch (SQLException throwables) {
-                                            throwables.printStackTrace();
-                                        }
-                                        try {
-                                            stmtinsert1.executeUpdate();
-                                            Toast.makeText(SimRegInfo.this, "Saving Completed", Toast.LENGTH_SHORT).show();
-                                        } catch (SQLException throwables) {
-                                            throwables.printStackTrace();
-                                        }
-
-
-                                        try {
-                                            stmtinsert1.close();
-                                            conn.close();
-                                        } catch (SQLException throwables) {
-                                            throwables.printStackTrace();
+                                        }catch (Exception e){
+                                            e.printStackTrace();
+                                            Toast.makeText(SimRegInfo.this,"Saving Data Offline",Toast.LENGTH_SHORT).show();
                                         }
 
                                         //calling stfp
@@ -612,15 +632,6 @@ public class SimRegInfo extends AppCompatActivity {
 
 
 
-
-        try {
-            connecttoDB();
-            Toast.makeText(SimRegInfo.this,"Connected Successfully",Toast.LENGTH_LONG).show();
-        }catch (Exception e)
-        {
-            e.printStackTrace();
-            Toast.makeText(SimRegInfo.this,"Failed",Toast.LENGTH_LONG).show();
-        }
 
 
 
@@ -797,28 +808,33 @@ public class SimRegInfo extends AppCompatActivity {
 
     }
 
-    public void connecttoDB() {
+    public boolean connecttoDB() {
         // connect to DB
-        OraDB oradb = new OraDB();
-        String url = oradb.getoraurl();
-        String userName = oradb.getorausername();
-        String password = oradb.getorapwd();
+        OraDB oradb= new OraDB();
+        String url = oradb.getoraurl ();
+        String userName = oradb.getorausername ();
+        String password = oradb.getorapwd ();
         try {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
             Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
-            conn = DriverManager.getConnection(url, userName, password);
+            conn = DriverManager.getConnection(url,userName,password);
+            connectflag=true;
             //Toast.makeText (MainActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
         } catch (IllegalArgumentException | ClassNotFoundException | SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
-            System.out.println("error is: " + e.toString());
-            Toast.makeText(SimRegInfo.this, "" + e.toString(), Toast.LENGTH_SHORT).show();
+            System.out.println("error is: " +e.toString());
+            Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();
+            connectflag=false;
         } catch (IllegalAccessException e) {
-            System.out.println("error is: " + e.toString());
-            Toast.makeText(SimRegInfo.this, "" + e.toString(), Toast.LENGTH_SHORT).show();
-        } catch (InstantiationException e) {
-            System.out.println("error is: " + e.toString());
-            Toast.makeText(SimRegInfo.this, "" + e.toString(), Toast.LENGTH_SHORT).show();
+            System.out.println("error is: " +e.toString());
+            Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();
+            connectflag=false;
+        } catch (java.lang.InstantiationException e) {
+            System.out.println("error is: " +e.toString());
+            Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();
+            connectflag=false;
         }
+        return connectflag;
     }
 
 
@@ -902,52 +918,63 @@ public class SimRegInfo extends AppCompatActivity {
 
     public void UpdateSimRegistrationPicStatus(String vsimregid,String vcolname)
     {
-
-        connecttoDB();
-        PreparedStatement stmtinsert1 = null;
-
+        boolean flg=false;
         try {
-            stmtinsert1 = conn.prepareStatement("update SIM_REGISTRATION set "+vcolname+"=1  where SIM_REG_ID ='" + vsimregid + "'");
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        try {
-            stmtinsert1.executeUpdate();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+            if((flg=connecttoDB())==true) {
+                PreparedStatement stmtinsert1 = null;
+
+                try {
+                    stmtinsert1 = conn.prepareStatement("update SIM_REGISTRATION set " + vcolname + "=1  where SIM_REG_ID ='" + vsimregid + "'");
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                try {
+                    stmtinsert1.executeUpdate();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
 
 
-        try {
-            stmtinsert1.close();
-            conn.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+                try {
+                    stmtinsert1.close();
+                    conn.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
     public void DeleteSimRegistrationPicStatus(String vsimregid,String vcolname)
     {
-        connecttoDB();
-        PreparedStatement stmtinsert1 = null;
-
+        boolean flg=false;
         try {
-            stmtinsert1 = conn.prepareStatement("update SIM_REGISTRATION set "+vcolname+"=-1  where SIM_REG_ID ='" + vsimregid + "'");
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        try {
-            stmtinsert1.executeUpdate();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+            if((flg=connecttoDB())==true) {
+                PreparedStatement stmtinsert1 = null;
+
+                try {
+                    stmtinsert1 = conn.prepareStatement("update SIM_REGISTRATION set " + vcolname + "=-1  where SIM_REG_ID ='" + vsimregid + "'");
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                try {
+                    stmtinsert1.executeUpdate();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
 
 
-        try {
-            stmtinsert1.close();
-            conn.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+                try {
+                    stmtinsert1.close();
+                    conn.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -1080,124 +1107,127 @@ public class SimRegInfo extends AppCompatActivity {
 
     public void getDataforSimfromDB() {
 
-
-          connecttoDB();
-          PreparedStatement stmtinsert1 = null;
-
+        boolean flg=false;
         try {
-            // if it is a new Warehouse we will use insert
+            if((flg=connecttoDB())==true) {
+                PreparedStatement stmtinsert1 = null;
 
-            Statement stmt1 = null;
-            stmt1 = conn.createStatement();
-            String sqlStmt = "select FIRST_NAME,MIDDLE_NAME,LAST_NAME,STATUS,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHISICAL_LOCATION,POSTAL_ADDRESS,GENDER,AGENT_ID,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,SIGNATURE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS FROM SIM_REGISTRATION where SIM_REG_ID = '" + globalsimid + "'";
-            ResultSet rs1 = null;
-            try {
-                rs1 = stmt1.executeQuery(sqlStmt);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-
-            while (true) {
                 try {
-                    if (!rs1.next()) break;
-                    editfname.setText(rs1.getString("FIRST_NAME"));
-                    editmname.setText(rs1.getString("MIDDLE_NAME"));
-                    editlname.setText(rs1.getString("LAST_NAME"));
-                    editmobile.setText(rs1.getString("MOBILE_NUMBER"));
-                    editdate.setText(rs1.getString("DATE_OF_BIRTH").substring(8, 10) + "-" + rs1.getString("DATE_OF_BIRTH").substring(5, 7) + "-" + rs1.getString("DATE_OF_BIRTH").substring(0, 4));
-                    if (rs1.getString("NATIONALITY").matches("Foreign")) {
-                        foreign.setChecked(true);
-                        kenya.setChecked(false);
-                    } else {
-                        kenya.setChecked(true);
-                        foreign.setChecked(false);
-                    }
-                    editaltnumber.setText(rs1.getString("ALTERNATIVE_NUMBER"));
-                    editemail.setText(rs1.getString("EMAIL_ADDRESS"));
-                    editphylocation.setText(rs1.getString("PHISICAL_LOCATION"));
-                    editpost.setText(rs1.getString("POSTAL_ADDRESS"));
-                    if (rs1.getString("GENDER").matches("Male")) {
-                        male.setChecked(true);
-                        female.setChecked(false);
-                    } else {
-                        female.setChecked(true);
-                        male.setChecked(false);
-                    }
-                    if (rs1.getString("STATUS").matches("New")) {
-                        sp.setSelection(0);
-                    }
-                    if (rs1.getString("STATUS").matches("In Progress")) {
-                        sp.setSelection(1);
-                    }
-                    if (rs1.getString("STATUS").matches("Success")) {
-                        sp.setSelection(2);
-                    }
-                    if (rs1.getString("STATUS").matches("Not Success")) {
-                        sp.setSelection(3);
+                    // if it is a new Warehouse we will use insert
+
+                    Statement stmt1 = null;
+                    stmt1 = conn.createStatement();
+                    String sqlStmt = "select FIRST_NAME,MIDDLE_NAME,LAST_NAME,STATUS,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHISICAL_LOCATION,POSTAL_ADDRESS,GENDER,AGENT_ID,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,SIGNATURE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS FROM SIM_REGISTRATION where SIM_REG_ID = '" + globalsimid + "'";
+                    ResultSet rs1 = null;
+                    try {
+                        rs1 = stmt1.executeQuery(sqlStmt);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
                     }
 
+                    while (true) {
+                        try {
+                            if (!rs1.next()) break;
+                            editfname.setText(rs1.getString("FIRST_NAME"));
+                            editmname.setText(rs1.getString("MIDDLE_NAME"));
+                            editlname.setText(rs1.getString("LAST_NAME"));
+                            editmobile.setText(rs1.getString("MOBILE_NUMBER"));
+                            editdate.setText(rs1.getString("DATE_OF_BIRTH").substring(8, 10) + "-" + rs1.getString("DATE_OF_BIRTH").substring(5, 7) + "-" + rs1.getString("DATE_OF_BIRTH").substring(0, 4));
+                            if (rs1.getString("NATIONALITY").matches("Foreign")) {
+                                foreign.setChecked(true);
+                                kenya.setChecked(false);
+                            } else {
+                                kenya.setChecked(true);
+                                foreign.setChecked(false);
+                            }
+                            editaltnumber.setText(rs1.getString("ALTERNATIVE_NUMBER"));
+                            editemail.setText(rs1.getString("EMAIL_ADDRESS"));
+                            editphylocation.setText(rs1.getString("PHISICAL_LOCATION"));
+                            editpost.setText(rs1.getString("POSTAL_ADDRESS"));
+                            if (rs1.getString("GENDER").matches("Male")) {
+                                male.setChecked(true);
+                                female.setChecked(false);
+                            } else {
+                                female.setChecked(true);
+                                male.setChecked(false);
+                            }
+                            if (rs1.getString("STATUS").matches("New")) {
+                                sp.setSelection(0);
+                            }
+                            if (rs1.getString("STATUS").matches("In Progress")) {
+                                sp.setSelection(1);
+                            }
+                            if (rs1.getString("STATUS").matches("Success")) {
+                                sp.setSelection(2);
+                            }
+                            if (rs1.getString("STATUS").matches("Not Success")) {
+                                sp.setSelection(3);
+                            }
 
-                    editidagent.setText(rs1.getString("AGENT_ID"));
-                    textF.setText(rs1.getString("ID_FRONT_SIDE_PHOTO"));
-                    textB.setText(rs1.getString("ID_BACK_SID_PHOTO"));
-                    textS.setText(rs1.getString("SIGNATURE"));
-                    SIGN = rs1.getString("SIGNATURE");
-                    FRONT = rs1.getString("ID_FRONT_SIDE_PHOTO");
-                    BACK = rs1.getString("ID_BACK_SID_PHOTO");
-                    gsigstatus = rs1.getString("SIGNATURE_STATUS");
-                    gfrontstatus = rs1.getString("FRONT_SIDE_ID_STATUS");
-                    gbackstatus = rs1.getString("BACK_SIDE_ID_STATUS");
+
+                            editidagent.setText(rs1.getString("AGENT_ID"));
+                            textF.setText(rs1.getString("ID_FRONT_SIDE_PHOTO"));
+                            textB.setText(rs1.getString("ID_BACK_SID_PHOTO"));
+                            textS.setText(rs1.getString("SIGNATURE"));
+                            SIGN = rs1.getString("SIGNATURE");
+                            FRONT = rs1.getString("ID_FRONT_SIDE_PHOTO");
+                            BACK = rs1.getString("ID_BACK_SID_PHOTO");
+                            gsigstatus = rs1.getString("SIGNATURE_STATUS");
+                            gfrontstatus = rs1.getString("FRONT_SIDE_ID_STATUS");
+                            gbackstatus = rs1.getString("BACK_SIDE_ID_STATUS");
 
 
+                            if (gsigstatus.equalsIgnoreCase("1")) {
+                                signimgIcon.setVisibility(View.VISIBLE);
+                                signimgIcon.setColorFilter(Color.GREEN);
+                                signimgIcon.setBackgroundColor(0);
+                            } else {
+                                signimgIcon.setVisibility(View.VISIBLE);
+                                signimgIcon.setColorFilter(Color.YELLOW);
+                                signimgIcon.setBackgroundColor(0);
+                            }
 
-                    if(gsigstatus.equalsIgnoreCase("1")){
-                        signimgIcon.setVisibility(View.VISIBLE);
-                        signimgIcon.setColorFilter(Color.GREEN);
-                        signimgIcon.setBackgroundColor(0);
+                            if (gfrontstatus.equalsIgnoreCase("1")) {
+                                frontimgIcon.setVisibility(View.VISIBLE);
+                                frontimgIcon.setColorFilter(Color.GREEN);
+                                frontimgIcon.setBackgroundColor(0);
+                            } else {
+                                frontimgIcon.setVisibility(View.VISIBLE);
+                                frontimgIcon.setColorFilter(Color.YELLOW);
+                                frontimgIcon.setBackgroundColor(0);
+                            }
+
+                            if (gbackstatus.equalsIgnoreCase("1")) {
+                                backimgIcon.setVisibility(View.VISIBLE);
+                                backimgIcon.setColorFilter(Color.GREEN);
+                                backimgIcon.setBackgroundColor(0);
+                            } else {
+                                backimgIcon.setVisibility(View.VISIBLE);
+                                backimgIcon.setColorFilter(Color.YELLOW);
+                                backimgIcon.setBackgroundColor(0);
+                            }
+
+
+                            checkBox.setChecked(true);
+
+
+                            //System.out.println(rs1.getString("compteur"));
+
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
                     }
-                    else {
-                        signimgIcon.setVisibility(View.VISIBLE);
-                        signimgIcon.setColorFilter(Color.YELLOW);
-                        signimgIcon.setBackgroundColor(0);
-                    }
+                    rs1.close();
+                    stmt1.close();
 
-                    if(gfrontstatus.equalsIgnoreCase("1")){
-                        frontimgIcon.setVisibility(View.VISIBLE);
-                        frontimgIcon.setColorFilter(Color.GREEN);
-                        frontimgIcon.setBackgroundColor(0);
-                    }else {
-                        frontimgIcon.setVisibility(View.VISIBLE);
-                        frontimgIcon.setColorFilter(Color.YELLOW);
-                        frontimgIcon.setBackgroundColor(0);
-                    }
-
-                    if(gbackstatus.equalsIgnoreCase("1")){
-                        backimgIcon.setVisibility(View.VISIBLE);
-                        backimgIcon.setColorFilter(Color.GREEN);
-                        backimgIcon.setBackgroundColor(0);
-                    }else {
-                        backimgIcon.setVisibility(View.VISIBLE);
-                        backimgIcon.setColorFilter(Color.YELLOW);
-                        backimgIcon.setBackgroundColor(0);
-                    }
-
-
-                    checkBox.setChecked(true);
-
-
-                    //System.out.println(rs1.getString("compteur"));
 
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
             }
-            rs1.close();
-            stmt1.close();
-
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
     }
 
     //1-thread for deleting from sftp

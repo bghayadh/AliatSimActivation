@@ -36,6 +36,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
     public ArrayList<SimRegListView> simA,simdb,simA1,simdb1;
     private Button btnprevious,btnnext,btnnew,btnmain,btndelete,btnselectdate;
     private TextView datet;
+    private boolean connectflag=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,11 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         Date c = Calendar.getInstance().getTime();
         datet=findViewById(R.id.textdate);
 
-        GetDataInitial(1,10);
+        try {
+            GetDataInitial(1, 10);
+        }catch (Exception e){
+            e.printStackTrace();
+    }
 
 
         SimpleDateFormat df=new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
@@ -120,72 +125,82 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
     }
 
     public void GetSimData(int vfrom, int vto) {
-        connecttoDB();
-        // define recyclerview of sitelistview
-        simregrecview=findViewById(R.id.simRecView);
-        simA =new ArrayList<>();
-        simdb=new ArrayList<>();
-
-        //Add data for sitelistview recyclerview
-        Statement stmt1 = null;
-        int i=0;
+        boolean flg=false;
         try {
-            stmt1 = connsite.createStatement();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+            if((flg=connecttoDB())==true) {
 
-        String  sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,SIM_REG_ID,FIRST_NAME ,LAST_NAME,MOBILE_NUMBER, STATUS from SIM_REGISTRATION where TO_DATE(TO_CHAR(CREATION_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('"+datet.getText()+"','DD-MM-YYYY')) T WHERE row_num >= '" + vfrom +"' AND row_num <='" + vto +"'";
 
-        ResultSet rs1 = null;
+                // define recyclerview of sitelistview
+                simregrecview = findViewById(R.id.simRecView);
+                simA = new ArrayList<>();
+                simdb = new ArrayList<>();
 
-        try {
-            rs1 = stmt1.executeQuery(sqlStmt);
+                //Add data for sitelistview recyclerview
+                Statement stmt1 = null;
+                int i = 0;
+                try {
+                    stmt1 = connsite.createStatement();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        while (true) {
-            try {
-                if (!rs1.next()) break;
-                arraysize=arraysize+1;
-                simdb.add(new SimRegListView (rs1.getString("SIM_REG_ID"),rs1.getString("FIRST_NAME")+" "+rs1.getString("LAST_NAME"),rs1.getString("MOBILE_NUMBER"),rs1.getString("STATUS")));
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,SIM_REG_ID,FIRST_NAME ,LAST_NAME,MOBILE_NUMBER, STATUS from SIM_REGISTRATION where TO_DATE(TO_CHAR(CREATION_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + datet.getText() + "','DD-MM-YYYY')) T WHERE row_num >= '" + vfrom + "' AND row_num <='" + vto + "'";
+
+                ResultSet rs1 = null;
+
+                try {
+                    rs1 = stmt1.executeQuery(sqlStmt);
+
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                while (true) {
+                    try {
+                        if (!rs1.next()) break;
+                        arraysize = arraysize + 1;
+                        simdb.add(new SimRegListView(rs1.getString("SIM_REG_ID"), rs1.getString("FIRST_NAME") + " " + rs1.getString("LAST_NAME"), rs1.getString("MOBILE_NUMBER"), rs1.getString("STATUS")));
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+                try {
+                    rs1.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                try {
+                    stmt1.close();
+                    connsite.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+
+                arraysize = simdb.size();
+
+                if (arraysize > 0) {
+                    //System.out.println("Array Size is : "+arraysize);
+                    simA.clear();
+                    varraysize = 0;
+
+                    for (i = varraysize; i < 10; i++) {
+                        if (varraysize < arraysize) {
+                            simA.add(new SimRegListView(simdb.get(i).getSimRegListViewId(), simdb.get(i).getName(), simdb.get(i).getMobile(), simdb.get(i).getStatus()));
+                            varraysize = varraysize + 1;
+                        }
+                    }
+
+
+                    pagination = pagination + 1;
+                    //connect data to coveragelistadapter
+                    SIMRegViewAdapter adapter = new SIMRegViewAdapter(SimRegListViewActivity.this);
+                    adapter.setContacts(simA);
+                    simregrecview.setAdapter(adapter);
+                    simregrecview.setLayoutManager(new LinearLayoutManager(SimRegListViewActivity.this));
+                }
             }
-        }
-        try {
-            rs1.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        try {
-            stmt1.close();
-            connsite.close ();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
 
-        arraysize=simdb.size ();
-
-        if (arraysize >0) {
-            //System.out.println("Array Size is : "+arraysize);
-            simA.clear ( );
-            varraysize = 0;
-
-            for (i = varraysize; i < 10; i++) {
-                if (varraysize < arraysize) {
-                    simA.add (new SimRegListView (simdb.get (i).getSimRegListViewId ( ), simdb.get (i).getName( ), simdb.get (i).getMobile ( ), simdb.get (i).getStatus ( )));
-                    varraysize = varraysize + 1;}
-            }
-
-
-            pagination = pagination + 1;
-            //connect data to coveragelistadapter
-            SIMRegViewAdapter adapter = new SIMRegViewAdapter (SimRegListViewActivity.this);
-            adapter.setContacts (simA);
-            simregrecview.setAdapter (adapter);
-            simregrecview.setLayoutManager (new LinearLayoutManager(SimRegListViewActivity.this));
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
     }
@@ -214,7 +229,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
     }
 
 
-    public void connecttoDB() {
+    public boolean connecttoDB() {
         OraDB oradb = new OraDB();
         String url = oradb.getoraurl();
         String userName = oradb.getorausername();
@@ -225,88 +240,101 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
             StrictMode.setThreadPolicy(policy);
             Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
             connsite = DriverManager.getConnection(url, userName, password);
+            connectflag=true;
             // Toast.makeText (SpeedActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
         } catch (IllegalArgumentException | ClassNotFoundException | SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
             System.out.println("error is: " + e.toString());
             Toast.makeText(SimRegListViewActivity.this, "" + e.toString(), Toast.LENGTH_SHORT).show();
+            connectflag=false;
         } catch (IllegalAccessException e) {
             System.out.println("error is: " + e.toString());
             Toast.makeText(SimRegListViewActivity.this, "" + e.toString(), Toast.LENGTH_SHORT).show();
+            connectflag=false;
         } catch (InstantiationException e) {
             System.out.println("error is: " + e.toString());
             Toast.makeText(SimRegListViewActivity.this, "" + e.toString(), Toast.LENGTH_SHORT).show();
+            connectflag=false;
         }
+        return connectflag;
+
     }
 
 
     public void GetDataInitial(int vfrom,int vto)
     {
-        connecttoDB();
-        // define recyclerview of sitelistview
-        simregrecview=findViewById(R.id.simRecView);
-        simA =new ArrayList<>();
-        simdb=new ArrayList<>();
-
-        //Add data for sitelistview recyclerview
-        Statement stmt1 = null;
-        int i=0;
+        boolean flg=false;
         try {
-            stmt1 = connsite.createStatement();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+            if((flg=connecttoDB())==true) {
+                // define recyclerview of sitelistview
+                simregrecview = findViewById(R.id.simRecView);
+                simA = new ArrayList<>();
+                simdb = new ArrayList<>();
 
-        String  sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,SIM_REG_ID,FIRST_NAME ,LAST_NAME,MOBILE_NUMBER, STATUS from SIM_REGISTRATION ) T WHERE row_num >='"+vfrom+"' AND row_num <='"+vto+"'";
+                //Add data for sitelistview recyclerview
+                Statement stmt1 = null;
+                int i = 0;
+                try {
+                    stmt1 = connsite.createStatement();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
 
-        ResultSet rs1 = null;
+                String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,SIM_REG_ID,FIRST_NAME ,LAST_NAME,MOBILE_NUMBER, STATUS from SIM_REGISTRATION ) T WHERE row_num >='" + vfrom + "' AND row_num <='" + vto + "'";
 
-        try {
-            rs1 = stmt1.executeQuery(sqlStmt);
+                ResultSet rs1 = null;
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        while (true) {
-            try {
-                if (!rs1.next()) break;
-                arraysize=arraysize+1;
-                simdb.add(new SimRegListView (rs1.getString("SIM_REG_ID"),rs1.getString("FIRST_NAME")+" "+rs1.getString("LAST_NAME"),rs1.getString("MOBILE_NUMBER"),rs1.getString("STATUS")));
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                try {
+                    rs1 = stmt1.executeQuery(sqlStmt);
+
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                while (true) {
+                    try {
+                        if (!rs1.next()) break;
+                        arraysize = arraysize + 1;
+                        simdb.add(new SimRegListView(rs1.getString("SIM_REG_ID"), rs1.getString("FIRST_NAME") + " " + rs1.getString("LAST_NAME"), rs1.getString("MOBILE_NUMBER"), rs1.getString("STATUS")));
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+                try {
+                    rs1.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                try {
+                    stmt1.close();
+                    connsite.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+
+                arraysize = simdb.size();
+
+                if (arraysize > 0) {
+                    //System.out.println("Array Size is : "+arraysize);
+                    simA.clear();
+                    varraysize = 0;
+
+                    for (i = varraysize; i < 10; i++) {
+                        if (varraysize < arraysize) {
+                            simA.add(new SimRegListView(simdb.get(i).getSimRegListViewId(), simdb.get(i).getName(), simdb.get(i).getMobile(), simdb.get(i).getStatus()));
+                            varraysize = varraysize + 1;
+                        }
+                    }
+
+
+                    pagination = pagination + 1;
+                    //connect data to coveragelistadapter
+                    SIMRegViewAdapter adapter = new SIMRegViewAdapter(SimRegListViewActivity.this);
+                    adapter.setContacts(simA);
+                    simregrecview.setAdapter(adapter);
+                    simregrecview.setLayoutManager(new LinearLayoutManager(SimRegListViewActivity.this));
+                }
             }
-        }
-        try {
-            rs1.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        try {
-            stmt1.close();
-            connsite.close ();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        arraysize=simdb.size ();
-
-        if (arraysize >0) {
-            //System.out.println("Array Size is : "+arraysize);
-            simA.clear ( );
-            varraysize = 0;
-
-            for (i = varraysize; i < 10; i++) {
-                if (varraysize < arraysize) {
-                    simA.add (new SimRegListView (simdb.get (i).getSimRegListViewId ( ), simdb.get (i).getName( ), simdb.get (i).getMobile ( ), simdb.get (i).getStatus ( )));
-                    varraysize = varraysize + 1;}
-            }
-
-
-            pagination = pagination + 1;
-            //connect data to coveragelistadapter
-            SIMRegViewAdapter adapter = new SIMRegViewAdapter (SimRegListViewActivity.this);
-            adapter.setContacts (simA);
-            simregrecview.setAdapter (adapter);
-            simregrecview.setLayoutManager (new LinearLayoutManager(SimRegListViewActivity.this));
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
     }
