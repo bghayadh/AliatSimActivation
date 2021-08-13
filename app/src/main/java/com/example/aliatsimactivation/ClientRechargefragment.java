@@ -381,6 +381,7 @@ public class ClientRechargefragment extends Fragment {
                 public void onClick(View v) {
 
                     Intent intent = new Intent(getActivity(), MainActivity.class);
+                    intent.putExtra("db-offline-to-main", "0");
                     startActivity(intent);
                 }
             });

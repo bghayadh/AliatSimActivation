@@ -64,8 +64,25 @@ public class MainActivity extends AppCompatActivity {
         boolean flg=false;
         System.out.println("start openning");
 
-        System.out.println("flag : "+connecttoDB());
-            if((flg=connecttoDB())==true) {
+        Intent i1=MainActivity.this.getIntent();
+        String strdbcon=i1.getStringExtra("db-offline-to-main").toString();
+        System.out.println("string connection to db : "+strdbcon);
+
+
+
+        ConnectivityManager connMgr = (ConnectivityManager) getApplicationContext ( )
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+        if(strdbcon.equalsIgnoreCase("-100"))
+        {
+
+        }
+        else {
+            System.out.println("flag : "+connecttoDB());
+            if ((flg = connecttoDB()) == true) {
 
                 System.out.println("read from database");
                 Statement stmt1 = null;
@@ -487,9 +504,10 @@ public class MainActivity extends AppCompatActivity {
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
-            }else{
+            } else {
                 System.out.println("database not connected");
             }
+        }
 
 
 
@@ -583,6 +601,87 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }else{
+            // click to move to Sim Registration List
+            BtnSIMReg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ConnectivityManager connMgr = (ConnectivityManager) getApplicationContext ( )
+                            .getSystemService(Context.CONNECTIVITY_SERVICE);
+
+                    NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+                    if (networkInfo != null && networkInfo.isConnected()) {
+                        Toast.makeText(MainActivity.this,  "Welcome to Sim Registration page",Toast.LENGTH_SHORT).show();
+                        Intent intent =new Intent(MainActivity.this, SimRegListViewActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(MainActivity.this,  "Not Connected",Toast.LENGTH_SHORT).show();
+                        Intent i=new Intent(getApplicationContext(),SimRegInfo.class);
+                        i.putExtra("message_key","0");
+                        startActivity(i);
+                    }
+                }
+
+            });
+
+
+
+            // click to move to Mobile Charge List
+            BtnMobCharge.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //check network connection
+                    ConnectivityManager connMgr = (ConnectivityManager) getApplicationContext ( )
+                            .getSystemService(Context.CONNECTIVITY_SERVICE);
+
+                    NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+                    if (networkInfo != null && networkInfo.isConnected()) {
+                        //   Toast.makeText(MainActivity.this,  "Welcome to Mobile Charge page",Toast.LENGTH_SHORT).show();
+                        // Intent intent =new Intent(MainActivity.this, ClientChargeListViewActivity.class);
+                        //startActivity(intent);
+                    } else {
+                        // Toast.makeText(MainActivity.this,  "No Connection",Toast.LENGTH_SHORT).show();
+                        //Intent i=new Intent(getApplicationContext(),ClientChargeInfoActivity.class);
+                        //startActivity(i);
+                    }
+
+
+                }
+            });
+
+
+            //open sim registration reports
+            BtnSimReport.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(MainActivity.this,"Welcome To Sim Registration Reports",Toast.LENGTH_LONG).show();
+                    Intent intent=new Intent(MainActivity.this,SimRegistrationReport.class);
+                    startActivity(intent);
+                }
+            });
+            // exit button
+            BtnLogin.setOnClickListener (new View.OnClickListener ( ) {
+                @Override
+                public void onClick(View v) {
+
+                    Intent intent =new Intent(MainActivity.this,UserLoginActivity.class);
+                    intent.putExtra("key","Back");
+                    startActivity(intent);
+                }
+            });
+
+
+            //// return to main page
+            BtnExit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    finishAffinity();
+                }
+            });
+        }
     }
 
     public boolean connecttoDB() {
@@ -591,29 +690,37 @@ public class MainActivity extends AppCompatActivity {
         String url = oradb.getoraurl ();
         String userName = oradb.getorausername ();
         String password = oradb.getorapwd ();
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        try {
-            //Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
-            conn = DriverManager.getConnection(url,userName,password);
-            if(conn != null){
-                connectflag=true;
-            }
-            else{connectflag=false;}
 
-            //Toast.makeText (MainActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
-        } catch (SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
-            System.out.println("error is: " +e.toString());
-            Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();
-            connectflag=false;
-        } /*catch (IllegalAccessException e) {
+        try {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            try {
+                //Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+                conn = DriverManager.getConnection(url, userName, password);
+                if (conn != null) {
+                    connectflag = true;
+                } else {
+                    connectflag = false;
+                }
+
+                //Toast.makeText (MainActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
+            } catch (SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
+                System.out.println("error is: " + e.toString());
+                Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
+                connectflag = false;
+
+            } /*catch (IllegalAccessException e) {
             System.out.println("error is: " +e.toString());
             Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();
             connectflag=false;
         }*/ catch (Exception e) {
-            System.out.println("error is: " +e.toString());
-            Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();
-            connectflag=false;
+                System.out.println("error is: " + e.toString());
+                Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
+                connectflag = false;
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return connectflag;
     }

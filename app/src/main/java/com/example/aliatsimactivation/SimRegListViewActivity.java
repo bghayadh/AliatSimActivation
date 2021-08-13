@@ -86,6 +86,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
             public void onClick(View v) {
 
                 Intent intent =new Intent(getApplicationContext(),MainActivity.class);
+                intent.putExtra("db-offline-to-main", "0");
                 startActivity(intent);
             }
         });
@@ -234,30 +235,34 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         String url = oradb.getoraurl();
         String userName = oradb.getorausername();
         String password = oradb.getorapwd();
-
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
         try {
-            //Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
-            connsite = DriverManager.getConnection(url,userName,password);
-            if(connsite != null){
-                connectflag=true;
-            }
-            else{connectflag=false;}
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            try {
+                //Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+                connsite = DriverManager.getConnection(url, userName, password);
+                if (connsite != null) {
+                    connectflag = true;
+                } else {
+                    connectflag = false;
+                }
 
-            //Toast.makeText (MainActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
-        } catch (SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
-            System.out.println("error is: " +e.toString());
-            Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();
-            connectflag=false;
-        } /*catch (IllegalAccessException e) {
+                //Toast.makeText (MainActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
+            } catch (SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
+                System.out.println("error is: " + e.toString());
+                Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
+                connectflag = false;
+            } /*catch (IllegalAccessException e) {
             System.out.println("error is: " +e.toString());
             Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();
             connectflag=false;
         }*/ catch (Exception e) {
-            System.out.println("error is: " +e.toString());
-            Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();
-            connectflag=false;
+                System.out.println("error is: " + e.toString());
+                Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
+                connectflag = false;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return connectflag;
 

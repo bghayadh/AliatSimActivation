@@ -220,6 +220,7 @@ public class ClientChargeListViewActivity extends AppCompatActivity{
             public void onClick(View v) {
 
                 Intent intent = new Intent (getApplicationContext ( ), MainActivity.class);
+                intent.putExtra("db-offline-to-main", "0");
                 startActivity (intent);
             }
         });

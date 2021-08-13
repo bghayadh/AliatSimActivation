@@ -5,7 +5,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Editable;
@@ -82,150 +85,159 @@ public class SimRegistrationReport extends AppCompatActivity implements DatePick
         Date c = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         edtdate.setText(df.format(c));
-        boolean flg=false;
-        try {
-            if((flg=connecttoDB())==true) {
-                Statement stmt1 = null;
-                int i = 0;
-                try {
-                    stmt1 = conn.createStatement();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-                String sqlStmt1 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE from SIM_REGISTRATION order by SIM_REG_ID) T WHERE CREATION_DATE  >= cast(trunc(current_timestamp) as timestamp) ";
 
-                ResultSet rs1 = null;
-                try {
-                    rs1 = stmt1.executeQuery(sqlStmt1);
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-                while (true) {
+        ConnectivityManager connMgr = (ConnectivityManager) getApplicationContext()
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        //validation for network connection on the wifi or mobile data
+        if (networkInfo != null && networkInfo.isConnected()) {
+            System.out.println("you are connected");
+            boolean flg = false;
+            try {
+                if ((flg = connecttoDB()) == true) {
+                    Statement stmt1 = null;
+                    int i = 0;
                     try {
-                        if (!rs1.next()) break;
-                        today_total.setText(rs1.getString("COUNT(*)"));
+                        stmt1 = conn.createStatement();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    String sqlStmt1 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE from SIM_REGISTRATION order by SIM_REG_ID) T WHERE CREATION_DATE  >= cast(trunc(current_timestamp) as timestamp) ";
+
+                    ResultSet rs1 = null;
+                    try {
+                        rs1 = stmt1.executeQuery(sqlStmt1);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    while (true) {
+                        try {
+                            if (!rs1.next()) break;
+                            today_total.setText(rs1.getString("COUNT(*)"));
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                    }
+                    try {
+                        rs1.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    try {
+                        stmt1.close();
+                        //conn.close ( );
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+
+                    //Today success report
+                    Statement stmt2 = null;
+                    try {
+                        stmt2 = conn.createStatement();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    String sqlStmt2 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS from SIM_REGISTRATION order by SIM_REG_ID) T WHERE STATUS = 'Success' AND CREATION_DATE  >= cast(trunc(current_timestamp) as timestamp) ";
+
+                    ResultSet rs2 = null;
+                    try {
+                        rs2 = stmt2.executeQuery(sqlStmt2);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    while (true) {
+                        try {
+                            if (!rs2.next()) break;
+                            today_success.setText(rs2.getString("COUNT(*)"));
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                    }
+                    try {
+                        rs2.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    try {
+                        stmt2.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+
+
+                    //Today failed report
+                    Statement stmt3 = null;
+                    try {
+                        stmt3 = conn.createStatement();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    String sqlStmt3 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS from SIM_REGISTRATION order by SIM_REG_ID) T WHERE STATUS = 'Failed' AND CREATION_DATE  >= cast(trunc(current_timestamp) as timestamp) ";
+
+                    ResultSet rs3 = null;
+                    try {
+                        rs3 = stmt3.executeQuery(sqlStmt3);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    while (true) {
+                        try {
+                            if (!rs3.next()) break;
+                            today_failed.setText(rs3.getString("COUNT(*)"));
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                    }
+                    try {
+                        rs3.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    try {
+                        stmt3.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+
+
+                    //Today In Progress report
+                    Statement stmt4 = null;
+                    try {
+                        stmt4 = conn.createStatement();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    String sqlStmt4 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS from SIM_REGISTRATION order by SIM_REG_ID) T WHERE STATUS = 'In Progress' AND CREATION_DATE  >= cast(trunc(current_timestamp) as timestamp) ";
+
+                    ResultSet rs4 = null;
+                    try {
+                        rs4 = stmt4.executeQuery(sqlStmt4);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    while (true) {
+                        try {
+                            if (!rs4.next()) break;
+                            today_progress.setText(rs4.getString("COUNT(*)"));
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                    }
+                    try {
+                        rs4.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    try {
+                        stmt4.close();
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
                 }
-                try {
-                    rs1.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-                try {
-                    stmt1.close();
-                    //conn.close ( );
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-
-                //Today success report
-                Statement stmt2 = null;
-                try {
-                    stmt2 = conn.createStatement();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-                String sqlStmt2 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS from SIM_REGISTRATION order by SIM_REG_ID) T WHERE STATUS = 'Success' AND CREATION_DATE  >= cast(trunc(current_timestamp) as timestamp) ";
-
-                ResultSet rs2 = null;
-                try {
-                    rs2 = stmt2.executeQuery(sqlStmt2);
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-                while (true) {
-                    try {
-                        if (!rs2.next()) break;
-                        today_success.setText(rs2.getString("COUNT(*)"));
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
-                }
-                try {
-                    rs2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-                try {
-                    stmt2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-
-
-                //Today failed report
-                Statement stmt3 = null;
-                try {
-                    stmt3 = conn.createStatement();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-                String sqlStmt3 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS from SIM_REGISTRATION order by SIM_REG_ID) T WHERE STATUS = 'Failed' AND CREATION_DATE  >= cast(trunc(current_timestamp) as timestamp) ";
-
-                ResultSet rs3 = null;
-                try {
-                    rs3 = stmt3.executeQuery(sqlStmt3);
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-                while (true) {
-                    try {
-                        if (!rs3.next()) break;
-                        today_failed.setText(rs3.getString("COUNT(*)"));
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
-                }
-                try {
-                    rs3.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-                try {
-                    stmt3.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-
-
-                //Today In Progress report
-                Statement stmt4 = null;
-                try {
-                    stmt4 = conn.createStatement();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-                String sqlStmt4 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS from SIM_REGISTRATION order by SIM_REG_ID) T WHERE STATUS = 'In Progress' AND CREATION_DATE  >= cast(trunc(current_timestamp) as timestamp) ";
-
-                ResultSet rs4 = null;
-                try {
-                    rs4 = stmt4.executeQuery(sqlStmt4);
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-                while (true) {
-                    try {
-                        if (!rs4.next()) break;
-                        today_progress.setText(rs4.getString("COUNT(*)"));
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
-                }
-                try {
-                    rs4.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-                try {
-                    stmt4.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        }catch (Exception e){
-            e.printStackTrace();
         }
 
 
@@ -259,149 +271,157 @@ public class SimRegistrationReport extends AppCompatActivity implements DatePick
                                 btnprevious.setVisibility(View.INVISIBLE);
                                 btnnext.setVisibility(View.INVISIBLE);
                                 boolean flg=false;
-                                try {
-                                    if((flg=connecttoDB())==true) {
-                                        Statement stmt1 = null;
-                                        int i = 0;
-                                        try {
-                                            stmt1 = conn.createStatement();
-                                        } catch (SQLException throwables) {
-                                            throwables.printStackTrace();
-                                        }
-                                        String sqlStmt1 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE from SIM_REGISTRATION order by SIM_REG_ID) T WHERE CREATION_DATE  >= cast(trunc(current_timestamp) as timestamp) ";
+                                ConnectivityManager connMgr = (ConnectivityManager) getApplicationContext()
+                                        .getSystemService(Context.CONNECTIVITY_SERVICE);
 
-                                        ResultSet rs1 = null;
-                                        try {
-                                            rs1 = stmt1.executeQuery(sqlStmt1);
-                                        } catch (SQLException throwables) {
-                                            throwables.printStackTrace();
-                                        }
-                                        while (true) {
+                                NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+                                //validation for network connection on the wifi or mobile data
+                                if (networkInfo != null && networkInfo.isConnected()) {
+                                    System.out.println("you are connected");
+                                    try {
+                                        if ((flg = connecttoDB()) == true) {
+                                            Statement stmt1 = null;
+                                            int i = 0;
                                             try {
-                                                if (!rs1.next()) break;
-                                                today_total.setText(rs1.getString("COUNT(*)"));
+                                                stmt1 = conn.createStatement();
+                                            } catch (SQLException throwables) {
+                                                throwables.printStackTrace();
+                                            }
+                                            String sqlStmt1 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE from SIM_REGISTRATION order by SIM_REG_ID) T WHERE CREATION_DATE  >= cast(trunc(current_timestamp) as timestamp) ";
+
+                                            ResultSet rs1 = null;
+                                            try {
+                                                rs1 = stmt1.executeQuery(sqlStmt1);
+                                            } catch (SQLException throwables) {
+                                                throwables.printStackTrace();
+                                            }
+                                            while (true) {
+                                                try {
+                                                    if (!rs1.next()) break;
+                                                    today_total.setText(rs1.getString("COUNT(*)"));
+                                                } catch (SQLException throwables) {
+                                                    throwables.printStackTrace();
+                                                }
+                                            }
+                                            try {
+                                                rs1.close();
+                                            } catch (SQLException throwables) {
+                                                throwables.printStackTrace();
+                                            }
+                                            try {
+                                                stmt1.close();
+                                                //conn.close ( );
+                                            } catch (SQLException throwables) {
+                                                throwables.printStackTrace();
+                                            }
+
+                                            //Today success report
+                                            Statement stmt2 = null;
+                                            try {
+                                                stmt2 = conn.createStatement();
+                                            } catch (SQLException throwables) {
+                                                throwables.printStackTrace();
+                                            }
+                                            String sqlStmt2 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS from SIM_REGISTRATION order by SIM_REG_ID) T WHERE STATUS = 'Success' AND CREATION_DATE  >= cast(trunc(current_timestamp) as timestamp) ";
+
+                                            ResultSet rs2 = null;
+                                            try {
+                                                rs2 = stmt2.executeQuery(sqlStmt2);
+                                            } catch (SQLException throwables) {
+                                                throwables.printStackTrace();
+                                            }
+                                            while (true) {
+                                                try {
+                                                    if (!rs2.next()) break;
+                                                    today_success.setText(rs2.getString("COUNT(*)"));
+                                                } catch (SQLException throwables) {
+                                                    throwables.printStackTrace();
+                                                }
+                                            }
+                                            try {
+                                                rs2.close();
+                                            } catch (SQLException throwables) {
+                                                throwables.printStackTrace();
+                                            }
+                                            try {
+                                                stmt2.close();
+                                            } catch (SQLException throwables) {
+                                                throwables.printStackTrace();
+                                            }
+
+
+                                            //Today failed report
+                                            Statement stmt3 = null;
+                                            try {
+                                                stmt3 = conn.createStatement();
+                                            } catch (SQLException throwables) {
+                                                throwables.printStackTrace();
+                                            }
+                                            String sqlStmt3 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS from SIM_REGISTRATION order by SIM_REG_ID) T WHERE STATUS = 'Failed' AND CREATION_DATE  >= cast(trunc(current_timestamp) as timestamp) ";
+
+                                            ResultSet rs3 = null;
+                                            try {
+                                                rs3 = stmt3.executeQuery(sqlStmt3);
+                                            } catch (SQLException throwables) {
+                                                throwables.printStackTrace();
+                                            }
+                                            while (true) {
+                                                try {
+                                                    if (!rs3.next()) break;
+                                                    today_failed.setText(rs3.getString("COUNT(*)"));
+                                                } catch (SQLException throwables) {
+                                                    throwables.printStackTrace();
+                                                }
+                                            }
+                                            try {
+                                                rs3.close();
+                                            } catch (SQLException throwables) {
+                                                throwables.printStackTrace();
+                                            }
+                                            try {
+                                                stmt3.close();
+                                            } catch (SQLException throwables) {
+                                                throwables.printStackTrace();
+                                            }
+
+
+                                            //Today In Progress report
+                                            Statement stmt4 = null;
+                                            try {
+                                                stmt4 = conn.createStatement();
+                                            } catch (SQLException throwables) {
+                                                throwables.printStackTrace();
+                                            }
+                                            String sqlStmt4 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS from SIM_REGISTRATION order by SIM_REG_ID) T WHERE STATUS = 'In Progress' AND CREATION_DATE  >= cast(trunc(current_timestamp) as timestamp) ";
+
+                                            ResultSet rs4 = null;
+                                            try {
+                                                rs4 = stmt4.executeQuery(sqlStmt4);
+                                            } catch (SQLException throwables) {
+                                                throwables.printStackTrace();
+                                            }
+                                            while (true) {
+                                                try {
+                                                    if (!rs4.next()) break;
+                                                    today_progress.setText(rs4.getString("COUNT(*)"));
+                                                } catch (SQLException throwables) {
+                                                    throwables.printStackTrace();
+                                                }
+                                            }
+                                            try {
+                                                rs4.close();
+                                            } catch (SQLException throwables) {
+                                                throwables.printStackTrace();
+                                            }
+                                            try {
+                                                stmt4.close();
                                             } catch (SQLException throwables) {
                                                 throwables.printStackTrace();
                                             }
                                         }
-                                        try {
-                                            rs1.close();
-                                        } catch (SQLException throwables) {
-                                            throwables.printStackTrace();
-                                        }
-                                        try {
-                                            stmt1.close();
-                                            //conn.close ( );
-                                        } catch (SQLException throwables) {
-                                            throwables.printStackTrace();
-                                        }
-
-                                        //Today success report
-                                        Statement stmt2 = null;
-                                        try {
-                                            stmt2 = conn.createStatement();
-                                        } catch (SQLException throwables) {
-                                            throwables.printStackTrace();
-                                        }
-                                        String sqlStmt2 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS from SIM_REGISTRATION order by SIM_REG_ID) T WHERE STATUS = 'Success' AND CREATION_DATE  >= cast(trunc(current_timestamp) as timestamp) ";
-
-                                        ResultSet rs2 = null;
-                                        try {
-                                            rs2 = stmt2.executeQuery(sqlStmt2);
-                                        } catch (SQLException throwables) {
-                                            throwables.printStackTrace();
-                                        }
-                                        while (true) {
-                                            try {
-                                                if (!rs2.next()) break;
-                                                today_success.setText(rs2.getString("COUNT(*)"));
-                                            } catch (SQLException throwables) {
-                                                throwables.printStackTrace();
-                                            }
-                                        }
-                                        try {
-                                            rs2.close();
-                                        } catch (SQLException throwables) {
-                                            throwables.printStackTrace();
-                                        }
-                                        try {
-                                            stmt2.close();
-                                        } catch (SQLException throwables) {
-                                            throwables.printStackTrace();
-                                        }
-
-
-                                        //Today failed report
-                                        Statement stmt3 = null;
-                                        try {
-                                            stmt3 = conn.createStatement();
-                                        } catch (SQLException throwables) {
-                                            throwables.printStackTrace();
-                                        }
-                                        String sqlStmt3 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS from SIM_REGISTRATION order by SIM_REG_ID) T WHERE STATUS = 'Failed' AND CREATION_DATE  >= cast(trunc(current_timestamp) as timestamp) ";
-
-                                        ResultSet rs3 = null;
-                                        try {
-                                            rs3 = stmt3.executeQuery(sqlStmt3);
-                                        } catch (SQLException throwables) {
-                                            throwables.printStackTrace();
-                                        }
-                                        while (true) {
-                                            try {
-                                                if (!rs3.next()) break;
-                                                today_failed.setText(rs3.getString("COUNT(*)"));
-                                            } catch (SQLException throwables) {
-                                                throwables.printStackTrace();
-                                            }
-                                        }
-                                        try {
-                                            rs3.close();
-                                        } catch (SQLException throwables) {
-                                            throwables.printStackTrace();
-                                        }
-                                        try {
-                                            stmt3.close();
-                                        } catch (SQLException throwables) {
-                                            throwables.printStackTrace();
-                                        }
-
-
-                                        //Today In Progress report
-                                        Statement stmt4 = null;
-                                        try {
-                                            stmt4 = conn.createStatement();
-                                        } catch (SQLException throwables) {
-                                            throwables.printStackTrace();
-                                        }
-                                        String sqlStmt4 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS from SIM_REGISTRATION order by SIM_REG_ID) T WHERE STATUS = 'In Progress' AND CREATION_DATE  >= cast(trunc(current_timestamp) as timestamp) ";
-
-                                        ResultSet rs4 = null;
-                                        try {
-                                            rs4 = stmt4.executeQuery(sqlStmt4);
-                                        } catch (SQLException throwables) {
-                                            throwables.printStackTrace();
-                                        }
-                                        while (true) {
-                                            try {
-                                                if (!rs4.next()) break;
-                                                today_progress.setText(rs4.getString("COUNT(*)"));
-                                            } catch (SQLException throwables) {
-                                                throwables.printStackTrace();
-                                            }
-                                        }
-                                        try {
-                                            rs4.close();
-                                        } catch (SQLException throwables) {
-                                            throwables.printStackTrace();
-                                        }
-                                        try {
-                                            stmt4.close();
-                                        } catch (SQLException throwables) {
-                                            throwables.printStackTrace();
-                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
-                                }catch (Exception e){
-                                    e.printStackTrace();
                                 }
                                     return true;
 
@@ -421,6 +441,7 @@ public class SimRegistrationReport extends AppCompatActivity implements DatePick
             public void onClick(View v) {
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("db-offline-to-main", "0");
                 startActivity(intent);
             }
         });
@@ -434,29 +455,34 @@ public class SimRegistrationReport extends AppCompatActivity implements DatePick
         String url = oradb.getoraurl ();
         String userName = oradb.getorausername ();
         String password = oradb.getorapwd ();
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
         try {
-            //Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
-            conn = DriverManager.getConnection(url,userName,password);
-            if(conn != null){
-                connectflag=true;
-            }
-            else{connectflag=false;}
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            try {
+                //Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+                conn = DriverManager.getConnection(url, userName, password);
+                if (conn != null) {
+                    connectflag = true;
+                } else {
+                    connectflag = false;
+                }
 
-            //Toast.makeText (MainActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
-        } catch (SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
-            System.out.println("error is: " +e.toString());
-            Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();
-            connectflag=false;
-        } /*catch (IllegalAccessException e) {
+                //Toast.makeText (MainActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
+            } catch (SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
+                System.out.println("error is: " + e.toString());
+                Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
+                connectflag = false;
+            } /*catch (IllegalAccessException e) {
             System.out.println("error is: " +e.toString());
             Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();
             connectflag=false;
         }*/ catch (Exception e) {
-            System.out.println("error is: " +e.toString());
-            Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();
-            connectflag=false;
+                System.out.println("error is: " + e.toString());
+                Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
+                connectflag = false;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return connectflag;
     }

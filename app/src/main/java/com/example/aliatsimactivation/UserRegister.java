@@ -333,16 +333,19 @@ public class UserRegister extends AppCompatActivity {
 
 
 
-                                                // Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                                //startActivity(intent);
+                                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                                intent.putExtra("db-offline-to-main","1");
+                                                startActivity(intent);
                                             }else
                                             {
                                                 System.out.println("offline in dialog");
+                                                Intent intent = new Intent(getApplicationContext(), UserLoginActivity.class);
+                                                intent.putExtra("db-offline-to-main","-100");
+                                                startActivity(intent);
 
                                             }
 
-                                        Intent intent = new Intent(getApplicationContext(), UserLoginActivity.class);
-                                        startActivity(intent);
+
 
 
 
@@ -387,11 +390,83 @@ public class UserRegister extends AppCompatActivity {
                     }
                     System.out.println("finish if for network");
                 }
-                //in case where no internet connection
+                //in case where no wifi or mobile internet connection
                 else{
 
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
+                    if (TextUtils.isEmpty(edtfname.getText()) || TextUtils.isEmpty(edtlname.getText()) || TextUtils.isEmpty(edtregion.getText()) || TextUtils.isEmpty(edtaddress.getText()) || TextUtils.isEmpty(edtphonenbr.getText()) || TextUtils.isEmpty(edtpin.getText()) || TextUtils.isEmpty(AgentImage) || TextUtils.isEmpty(AgentFrontID) || TextUtils.isEmpty(AgentBackID)) {
+                        edtfname.setError("Enter First Name");
+                        edtlname.setError("Enter Last Name");
+                        edtregion.setError("Enter Region");
+                        edtaddress.setError("Enter Address");
+                        edtphonenbr.setError("Enter Phone Number");
+                        edtpin.setError("Enter PIN");
+                        BtnAgentImage.setError("Take a Photo");
+                        BtnFrontID.setError("Take a Photo");
+                        BtnBackID.setError("Take a Photo");
+
+                    } else {
+
+                        //open dialog
+                        AlertDialog.Builder mydialog = new AlertDialog.Builder(UserRegister.this);
+                        mydialog.setTitle("Enter The Code");
+
+                        final EditText input = new EditText(UserRegister.this);
+                        input.setInputType(InputType.TYPE_CLASS_PHONE);
+                        mydialog.setView(input);
+                        //verify the given code and change from verify to register
+                        mydialog.setPositiveButton("Verify", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                Toast.makeText(UserRegister.this,"In process please wait",Toast.LENGTH_SHORT).show();
+                                myText = input.getText().toString();
+
+                                if (Code.equalsIgnoreCase(myText)) {
+
+                                    createandSaveMSISDNandPIN();
+                                    createandSaveOfflinedata();
+                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    intent.putExtra("db-offline-to-main","-100");
+                                    startActivity(intent);
+
+                                } else {
+                                    AlertDialog.Builder mydialog1 = new AlertDialog.Builder(UserRegister.this);
+                                    mydialog1.setTitle("Oopss");
+                                    mydialog1.setMessage("Invalid Code Entered Please Try Again Later !! ");
+                                    mydialog1.setPositiveButton("Verify", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                    mydialog1.show();
+
+                                }
+
+
+                            }
+                        });
+
+                        mydialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        mydialog.show();
+
+                        //sending notification with a verification code
+                        NotificationCompat.Builder builder = new NotificationCompat.Builder(UserRegister.this, "My Notification");
+                        builder.setContentTitle("Enter This Code to Verify your Registration");
+                        builder.setContentText(Code);
+                        builder.setSmallIcon(R.drawable.ic_baseline_message_24);
+                        builder.setAutoCancel(true);
+
+                        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(UserRegister.this);
+                        managerCompat.notify(1, builder.build());
+
+                        System.out.println("end of else for dialog");
+                    }
+
                 }
             }
 
@@ -471,33 +546,37 @@ public class UserRegister extends AppCompatActivity {
         String url = oradb.getoraurl ();
         String userName = oradb.getorausername ();
         String password = oradb.getorapwd ();
+            try {
+                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                StrictMode.setThreadPolicy(policy);
+                try {
+                    //Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+                    conn = DriverManager.getConnection(url, userName, password);
+                    if (conn != null) {
+                        connectflag = true;
+                    } else {
+                        connectflag = false;
+                    }
 
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-        try {
-            //Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
-            conn = DriverManager.getConnection(url,userName,password);
-            if(conn != null){
-            connectflag=true;
-            }
-            else{connectflag=false;}
-
-            //Toast.makeText (MainActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
-        } catch (SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
-            System.out.println("error is: " +e.toString());
-            Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();
-            connectflag=false;
-            createandSaveMSISDNandPIN();
-            createandSaveOfflinedata();
-        } /*catch (IllegalAccessException e) {
+                    //Toast.makeText (MainActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
+                } catch (SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
+                    System.out.println("error is: " + e.toString());
+                    Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
+                    connectflag = false;
+                    createandSaveMSISDNandPIN();
+                    createandSaveOfflinedata();
+                } /*catch (IllegalAccessException e) {
             System.out.println("error is: " +e.toString());
             Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();
             connectflag=false;
         }*/ catch (Exception e) {
-            System.out.println("error is: " +e.toString());
-            Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();
-            connectflag=false;
-        }
+                    System.out.println("error is: " + e.toString());
+                    Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
+                    connectflag = false;
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         return connectflag;
     }
 
