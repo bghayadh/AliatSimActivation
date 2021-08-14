@@ -122,7 +122,6 @@ public class SimRegOfflineDataRecViewAdapter extends RecyclerView.Adapter<SimReg
             String p = details[14];
             String q = details[15];
             String r = details[16];
-
             String globalsimid = "";
             Intent intent = new Intent(context,SimRegInfo.class);
             intent.putExtra("message_key",globalsimid);

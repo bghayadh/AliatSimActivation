@@ -3,13 +3,18 @@ package com.example.aliatsimactivation;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -20,6 +25,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -37,9 +43,12 @@ import com.jcraft.jsch.Session;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -61,8 +70,8 @@ public class SimRegInfo extends AppCompatActivity {
     private String gender = null;
     private int count;
     public Connection conn;
-    private String globalsimid;
-    private Button submit, frontid, backid, activatesim;
+    private String globalsimid,simID;
+    private Button submit, frontid, backid;
     private Button sign;
     private File file,OfflineFile;
     private String nationality = "";
@@ -76,6 +85,7 @@ public class SimRegInfo extends AppCompatActivity {
     private long fb = 0;
     private String gsigstatus,gfrontstatus,gbackstatus;
     private String vsimid,vpic,vcol;
+    private String s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,s12,s13,s14,s15,s16,s17,b;
     private String emailpattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     private EditText editaltnumber,editemail,editphylocation,editpost;
     TextView editlname, editfname, textF, textB, textS;
@@ -95,12 +105,7 @@ public class SimRegInfo extends AppCompatActivity {
     FTPClient ftpClient = new FTPClient();
     private String PathSignFTP, PathFrontFTP, PathBackFTP;
     private TextView editmobile,txttest;
-    private static final long START_TIME_IN_MILLIS = 120000;
-    private CountDownTimer mCountDownTimer;
-    private boolean mTimerRunning;
-    private TextView mTextViewCountDown;
-    private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
-    private long mEndTime;
+
     private Spinner sp;
     private boolean connectflag=false;
 
@@ -208,458 +213,917 @@ public class SimRegInfo extends AppCompatActivity {
         editagent = (TextView) findViewById(R.id.eagentnum);
         editidagent = (TextView) findViewById(R.id.eagentid);
         signimgIcon = findViewById(R.id.signimgIcon);
-        Intent intent = SimRegInfo.this.getIntent();
-        String str = intent.getStringExtra("message_key");
-        globalsimid = str.toString();
         frontimgIcon = findViewById(R.id.frontimgIcon);
         backimgIcon = findViewById(R.id.backimgIcon);
         BtnDelete=findViewById(R.id.BtnDelete);
         BtnMain=findViewById(R.id.BtnMainn);
         BtnRegandActivate=findViewById(R.id.activatesim);
-
-        if(globalsimid.equalsIgnoreCase("0")){
-            gsigstatus="0";
-            gfrontstatus="0";
-            gbackstatus="0";
-        }
-
-
-
-
         sign = findViewById(R.id.bsigniture);
         submit = findViewById(R.id.submitbtn);
         frontid = findViewById(R.id.bfront);
         backid = findViewById(R.id.bback);
-        activatesim = findViewById(R.id.activatesim);
         checkBox = findViewById(R.id.chterms);
-        mTextViewCountDown = findViewById(R.id.txttimer);
+
+        Intent intent = SimRegInfo.this.getIntent();
+        String str = intent.getStringExtra("message_key");
+        globalsimid = str.toString();
 
 
+        ConnectivityManager connMgr = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        if(globalsimid !="0"){
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+
+            Toast.makeText(SimRegInfo.this, "Connected", Toast.LENGTH_SHORT).show();
+
+
+            if(globalsimid.equalsIgnoreCase("0")){
+                gsigstatus="0";
+                gfrontstatus="0";
+                gbackstatus="0";
+            }
+
+            if (globalsimid != "0") {
+                try {
+                    threadload.start();
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+
+            //check the existence of the msisdn file to get the agent msisnd
+            //after checking the existence fill it in the edittext and disable it
             try {
-                getDataforSimfromDB();
-            }catch (Exception e){
+                File file = new File(SimRegInfo.this.getFilesDir(), "MSISDN.txt");
+                if (file.exists()) {
+
+                    StringBuilder text = new StringBuilder();
+
+                    try {
+                        FileInputStream fIn = SimRegInfo.this.openFileInput("MSISDN.txt");
+                        int c;
+                        String temp = "";
+
+                        while ((c = fIn.read()) != -1) {
+                            temp = temp + Character.toString((char) c);
+                        }
+                        text.append(temp);
+                        text.append('\n');
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    Result = text.toString();
+                    System.out.println("RESULT" + Result);
+                    String[] data = Result.split(":");
+                    String s0 = data[0];
+
+                    editagent.setText(s0);
+                    editagent.setEnabled(false);
+                } else {
+                    System.out.println("login filevdon't exist");
+                }
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
-        }
+            String Off4 = intent.getStringExtra("offline4");
+            editidagent.setText(Off4);
+            String myFileName = "SIM_" + editidagent.getText().toString() + ".txt";
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+            OfflineFile = new File(directory,myFileName);
+            if (OfflineFile.exists())
+            {
+                String Off1 = intent.getStringExtra("offline1");
+                editfname.setText(Off1);
 
+                String Off2 = intent.getStringExtra("offline2");
+                editmname.setText(Off2);
 
+                String Off3 = intent.getStringExtra("offline3");
+                editlname.setText(Off3);
 
+                String Off5 = intent.getStringExtra("offline5");
+                editmobile.setText(Off5);
 
+                String Off6 = intent.getStringExtra("offline6");
+                editdate.setText(Off6);
 
+                String Off7 = intent.getStringExtra("offline7");
+                editaltnumber.setText(Off7);
 
-        //check the existence of the msisdn file to get the agent msisnd
-        //after checking the existence fill it in the edittext and disable it
-        try {
-            File file = new File(SimRegInfo.this.getFilesDir(), "MSISDN.txt");
-            if (file.exists()) {
+                String Off8 = intent.getStringExtra("offline8");
+                editemail.setText(Off8);
 
-                StringBuilder text = new StringBuilder();
+                String Off9 = intent.getStringExtra("offline9");
+                editphylocation.setText(Off9);
 
-                try {
-                    FileInputStream fIn = SimRegInfo.this.openFileInput("MSISDN.txt");
-                    int c;
-                    String temp = "";
+                String Off10 = intent.getStringExtra("offline10");
+                editpost.setText(Off10);
 
-                    while ((c = fIn.read()) != -1) {
-                        temp = temp + Character.toString((char) c);
-                    }
-                    text.append(temp);
-                    text.append('\n');
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
-                Result = text.toString();
-                System.out.println("RESULT" + Result);
-                String[] data = Result.split(":");
-                String s0 = data[0];
-
-                editagent.setText(s0);
-                editagent.setEnabled(false);
-            } else {
-                System.out.println("login filevdon't exist");
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-        //front id button to capture the id front side
-        frontid.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (editfname.getText().toString().matches("") || editlname.getText().toString().matches("") || editidagent.getText().toString().matches("")) {
-                    Toast.makeText(SimRegInfo.this, "INSERT YOUR NAME and  ID NUMBER", Toast.LENGTH_SHORT).show();
-                } else {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(intent, 100);
-                }
-            }
-        });
-
-        //back id button to capture the id back side
-        backid.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (editfname.getText().toString().matches("") || editlname.getText().toString().matches("") || editidagent.getText().toString().matches("")) {
-                    Toast.makeText(SimRegInfo.this, "INSERT YOUR NAME and  ID NUMBER", Toast.LENGTH_SHORT).show();
-                } else {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(intent, 101);
-                }
-            }
-        });
-
-
-        //signature button to capture the signature of the client
-        sign.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (editfname.getText().toString().matches("") || editlname.getText().toString().matches("") || editidagent.getText().toString().matches("")) {
-                    Toast.makeText(SimRegInfo.this, "INSERT YOUR NAME and  ID NUMBER", Toast.LENGTH_SHORT).show();
-                } else {
-                    Intent a = new Intent(getApplicationContext(), SimRegSignature.class);
-                    SIGN = editfname.getText().toString() + editlname.getText().toString() + "_SIGNATURE_" + editagent.getText().toString() + "_" + editidagent.getText().toString();
-                    a.putExtra("sign", SIGN);
-                    startActivity(a);
-
-
-                    textS.setText(SIGN);
-
-                    if (textS.getText().toString() != "") {
-                        signimgIcon.setVisibility(View.VISIBLE);
-                        signimgIcon.setBackgroundResource(0);
-                        gsigstatus="0";
-                    }
-
-                }
-            }
-        });
-
-        BtnMain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i=new Intent(SimRegInfo.this,MainActivity.class);
-                intent.putExtra("db-offline-to-main", "0");
-                startActivity(i);
-            }
-        });
-
-        BtnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(SimRegInfo.this,"Deleting Photos from SFTP",Toast.LENGTH_LONG).show();
-                thread2.start();
-                Toast.makeText(SimRegInfo.this,"The Photos Deleted from SFTP",Toast.LENGTH_LONG).show();
-
-                boolean flg=false;
-                try {
-                    if((flg=connecttoDB())==true) {
-
-
-                        Toast.makeText(SimRegInfo.this, "Starting Deletion in DataBase", Toast.LENGTH_SHORT).show();
-                        PreparedStatement stmtinsert1 = null;
-
-                        try {
-                            stmtinsert1 = conn.prepareStatement("delete from SIM_REGISTRATION where SIM_REG_ID='" + globalsimid + "'");
-                        } catch (SQLException throwables) {
-                            throwables.printStackTrace();
-                        }
-                        try {
-                            stmtinsert1.executeUpdate();
-                            Toast.makeText(SimRegInfo.this, "Deleted Completed from DataBase", Toast.LENGTH_LONG).show();
-                        } catch (SQLException throwables) {
-                            throwables.printStackTrace();
-                        }
-
-
-                        try {
-                            stmtinsert1.close();
-                            conn.close();
-                        } catch (SQLException throwables) {
-                            throwables.printStackTrace();
-                        }
-                    }
-
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-
-                Intent i = new Intent(SimRegInfo.this,SimRegListViewActivity.class);
-                startActivity(i);
-            }
-        });
-
-        BtnRegandActivate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(male.isChecked()){
-                    gender="Male";
-                }
-                if(female.isChecked()){
-                    gender="Female";
-                }
-                String fname=editfname.getText().toString();
-                String mname=editmname.getText().toString();
-                String lname=editlname.getText().toString();
-                String msisdn=editmobile.getText().toString();
-                String idType="IDCARD";
-                String idNumber = editidagent.getText().toString();
-                String dob=editdate.getText().toString();
-                String email=editemail.getText().toString();
-                String altnumber=editaltnumber.getText().toString();
-                String address1=editphylocation.getText().toString();
-                String state=editpost.getText().toString();
-                String agentmsisdn = editagent.getText().toString();
-
-
-                Intent a=new Intent(SimRegInfo.this,Activate_Sim.class);
-                a.putExtra("globalsimid",globalsimid);
-                a.putExtra("fname",fname);
-                a.putExtra("mname",mname);
-                a.putExtra("lname",lname);
-                a.putExtra("msisdn",msisdn);
-                a.putExtra("idType",idType);
-                a.putExtra("idNumber",idNumber);
-                a.putExtra("dob",dob);
-                a.putExtra("email",email);
-                a.putExtra("gender",gender);
-                a.putExtra("altnumber",altnumber);
-                a.putExtra("address1",address1);
-                a.putExtra("state",state);
-                a.putExtra("agentmsisdn",agentmsisdn);
-                startActivity(a);
-            }
-        });
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (TextUtils.isEmpty(SIGN) || TextUtils.isEmpty(FRONT) || TextUtils.isEmpty(BACK)) {
-                    Toast.makeText(SimRegInfo.this, "Must Have Signature and Photos", Toast.LENGTH_LONG).show();
-                } else {
-                    if (editfname.getText().toString().matches("") || editmname.getText().toString().matches("") || editlname.getText().toString().matches("") || editmobile.getText().toString().matches("") || editaltnumber.getText().toString().matches("") || editemail.getText().toString().matches("") || editphylocation.getText().toString().matches("") || editpost.getText().toString().matches("") || !editemail.getText().toString().matches(emailpattern) || fb < 18 || !checkBox.isChecked() || SIGN == null || FRONT == null || BACK == null || fb == 0 || editdate.getText().toString() == null) {
-
-                        if (editfname.getText().toString().matches("")) {
-                            editfname.setError("Empty Field");
-                        }
-                        if (editmname.getText().toString().matches("")) {
-                            editmname.setError("Empty Field");
-                        }
-                        if (editlname.getText().toString().matches("")) {
-                            editlname.setError("Empty Field");
-                        }
-                        if (editmobile.getText().toString().matches("")) {
-                            editmobile.setError("Empty Field");
-                        }
-                        if (editaltnumber.getText().toString().matches("")) {
-                            editaltnumber.setError("Empty Field");
-                        }
-                        if (editemail.getText().toString().matches("")) {
-                            editemail.setError("Empty Field");
-                        }
-                        if (editphylocation.getText().toString().matches("")) {
-                            editphylocation.setError("Empty Field");
-                        }
-                        if (editpost.getText().toString().matches("")) {
-                            editpost.setError("Empty Field");
-                        }
-                        if (!editemail.getText().toString().matches(emailpattern)) {
-                            editemail.setError("Invalid email address");
-                        }
-
-                        String datecheck=editdate.getText().toString();
-                        if (datecheck.matches("([0-9]{2})-([0-9]{2})-([0-9]{4})")) {
-                            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-M-yyyy");
-                            LocalDateTime now = LocalDateTime.now();
-                            fb = getAge(editdate.getText().toString(), dtf.format(now));
-                            System.out.println("age: " + fb);
-                            if (fb < 18 && fb >= 0) {
-                                editdate.setError("Under Age");
-                            } else if (fb >= 18) {
-                                editdate.setError(null);
-                            }
-                        }else {
-                            editdate.setError("Invalid Format");
-                            Toast.makeText(SimRegInfo.this,"Invalid Date Format \n Use DD-MM-YYYY",Toast.LENGTH_LONG).show();
-                        }
-                        if (!checkBox.isChecked()) {
-                            Toast.makeText(SimRegInfo.this, "Accept Terms And Conditions", Toast.LENGTH_SHORT).show();
-                        }
+                String Off11 = intent.getStringExtra("offline11");
+                String ahmadd = "Male";
+                if (Off11 != null) {
+                    if (Off11.equals(ahmadd)) {
+                        male.setChecked(true);
                     } else {
-                        //start saving
-                        new AlertDialog.Builder(SimRegInfo.this)
-                                .setTitle("Submit")
-                                .setMessage("Are you sure you want to Submit this form?")
+                        female.setChecked(true);
+                    }
+                }
 
-                                // Specifying a listener allows you to take an action before dismissing the dialog.
-                                // The dialog is automatically dismissed when a dialog button is clicked.
-                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        if (male.isChecked()) {
-                                            gender = "Male";
-                                        }
-                                        if (female.isChecked()) {
-                                            gender = "Female";
-                                        }
-                                        if (kenya.isChecked()) {
-                                            nationality = "Kenyan";
-                                        }
-                                        if (foreign.isChecked()) {
-                                            nationality = "Foreign";
-                                        }
-                                        String b = "In Progress";
+                String Off12 = intent.getStringExtra("offline12");
+                String ahmad = "Kenyan";
+                if (Off12 != null) {
+                    if (Off12.equals(ahmad)) {
+                        kenya.setChecked(true);
+                    } else {
+                        foreign.setChecked(true);
+                    }
+                }
 
-                                        Date date = new Date();
-                                        Calendar calendar = new GregorianCalendar();
-                                        calendar.setTime(date);
-                                        int year = calendar.get(Calendar.YEAR);
-                                        String simID;
-                                        simID = "REG_" + year + "_";
+                String Off13 = intent.getStringExtra("offline13");
+                sp.setSelection(((ArrayAdapter<String>) sp.getAdapter()).getPosition(Off13));
 
-                                        boolean flg=false;
-                                        try {
-                                            if((flg=connecttoDB())==true) {
-                                                PreparedStatement stmtinsert1 = null;
+                String Off14 = intent.getStringExtra("offline14");
+                textS.setText(Off14);
+                SIGN = Off14;
 
-                                                try {
-                                                    if (globalsimid.equalsIgnoreCase("0")) {
-                                                        // if it is a new Warehouse we will use insert
+                String Off15 = intent.getStringExtra("offline15");
+                textF.setText(Off15);
+                FRONT = Off15;
 
-                                                        Statement stmt1 = null;
-                                                        stmt1 = conn.createStatement();
-                                                        String sqlStmt = "select SIM_REGISTRATION_SEQ.nextval as nbr from dual";
-                                                        ResultSet rs1 = null;
-                                                        try {
-                                                            rs1 = stmt1.executeQuery(sqlStmt);
-                                                        } catch (SQLException throwables) {
-                                                            throwables.printStackTrace();
-                                                        }
+                String Off16 = intent.getStringExtra("offline16");
+                textB.setText(Off16);
+                BACK = Off16;
 
-                                                        while (true) {
-                                                            try {
-                                                                if (!rs1.next()) break;
-                                                                globalsimid = simID + rs1.getString("nbr");
-                                                                //System.out.println(rs1.getString("compteur"));
+                checkBox.setChecked(true);
 
-                                                            } catch (SQLException throwables) {
-                                                                throwables.printStackTrace();
-                                                            }
-                                                        }
-                                                        rs1.close();
-                                                        stmt1.close();
+            }
+
+            File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+            File[] files = dir.listFiles();
+            count = 0;
+            for (File f : files) {
+                String name = f.getName();
+                if (name.startsWith("SIM") && name.endsWith(".txt"))
+                    count++;
+                System.out.println("COUNT IS:" + count);
+            }
+            Button BtnData = (Button) findViewById(R.id.BtnData);
+            if (count != 0) {
+                BtnData.setVisibility(View.VISIBLE); //SHOW the button
+                BtnData.setText(String.valueOf(count));
+            }
 
 
-                                                        // send data from fragment to super activity
+            //BtnData appear in case offline files exist
+            BtnData.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(SimRegInfo.this, SimRegOfflineDataActivity.class);
+                    i.putExtra("message_key", globalsimid);
+                    startActivity(i);
+                }
+            });
 
 
-                                                        stmtinsert1 = conn.prepareStatement("insert into SIM_REGISTRATION (SIM_REG_ID,STATUS,CREATION_DATE,LAST_MODIFIED_DATE,FIRST_NAME,MIDDLE_NAME,LAST_NAME,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHISICAL_LOCATION,POSTAL_ADDRESS,GENDER,AGENT_NUMBER,AGENT_ID,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,SIGNATURE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS) values " +
-                                                                "('" + globalsimid + "','" + b + "' ,sysdate, sysdate,'" + editfname.getText() + "','" + editmname.getText() + "', '" + editlname.getText() + "','" + editmobile.getText() + "',TO_DATE('" + editdate.getText() + "','DD-MM-YYYY'),'" + nationality + "','" + editaltnumber.getText() + "','" + editemail.getText() + "','" + editphylocation.getText() + "','" + editpost.getText() + "','" + gender + "','" + editagent.getText() + "','" + editidagent.getText() + "','" + SIGN + "','" + FRONT + "','" + BACK + "',0,0,0)");
+            //front id button to capture the id front side
+            frontid.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (editfname.getText().toString().matches("") || editlname.getText().toString().matches("") || editidagent.getText().toString().matches("")) {
+                        Toast.makeText(SimRegInfo.this, "INSERT YOUR NAME and  ID NUMBER", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(intent, 100);
+                    }
+                }
+            });
 
-                                                        ///added for pass data in fragment
-
-                                                    } else {
-
-                                                        stmtinsert1 = conn.prepareStatement("update SIM_REGISTRATION set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + editfname.getText() + "',MIDDLE_NAME='" + editmname.getText() + "',LAST_NAME='" + editlname.getText() + "',STATUS='" + b + "',MOBILE_NUMBER='" + editmobile.getText() + "',NATIONALITY='" + nationality + "',ALTERNATIVE_NUMBER='" + editaltnumber.getText() + "',EMAIL_ADDRESS='" + editemail.getText() + "',PHISICAL_LOCATION='" + editphylocation.getText() + "',POSTAL_ADDRESS='" + editpost.getText() + "',GENDER='" + gender + "',AGENT_NUMBER='" + editagent.getText() + "',AGENT_ID='" + editidagent.getText() + "',SIGNATURE='" + SIGN + "',ID_FRONT_SIDE_PHOTO='" + FRONT + "',ID_BACK_SID_PHOTO='" + BACK + "' where SIM_REG_ID ='" + globalsimid + "'");
-                                                    }
-                                                } catch (SQLException throwables) {
-                                                    throwables.printStackTrace();
-                                                }
-                                                try {
-                                                    stmtinsert1.executeUpdate();
-                                                    Toast.makeText(SimRegInfo.this, "Saving Completed", Toast.LENGTH_SHORT).show();
-                                                } catch (SQLException throwables) {
-                                                    throwables.printStackTrace();
-                                                }
-
-
-                                                try {
-                                                    stmtinsert1.close();
-                                                    conn.close();
-                                                } catch (SQLException throwables) {
-                                                    throwables.printStackTrace();
-                                                }
-                                            }
-                                        }catch (Exception e){
-                                            e.printStackTrace();
-                                            Toast.makeText(SimRegInfo.this,"Saving Data Offline",Toast.LENGTH_SHORT).show();
-                                        }
-
-                                        //calling stfp
-                                        if (gsigstatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0")|| gbackstatus.equalsIgnoreCase("0")) {
-                                            Toast.makeText(SimRegInfo.this, "Uploading Photos started", Toast.LENGTH_LONG).show();
-                                            if(globalsimid.equalsIgnoreCase("0")){
-
-                                            }
-                                            else {
-                                                thread1.start();
-                                            }
-                                            Toast.makeText(SimRegInfo.this, "Upload Completed", Toast.LENGTH_LONG).show();
-                                        }
+            //back id button to capture the id back side
+            backid.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (editfname.getText().toString().matches("") || editlname.getText().toString().matches("") || editidagent.getText().toString().matches("")) {
+                        Toast.makeText(SimRegInfo.this, "INSERT YOUR NAME and  ID NUMBER", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(intent, 101);
+                    }
+                }
+            });
 
 
-                                        // Intent i=new Intent(getApplicationContext(),SimRegListViewActivity.class);
-                                        //startActivity(i);
+            //signature button to capture the signature of the client
+            sign.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (editfname.getText().toString().matches("") || editlname.getText().toString().matches("") || editidagent.getText().toString().matches("")) {
+                        Toast.makeText(SimRegInfo.this, "INSERT YOUR NAME and  ID NUMBER", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Intent a = new Intent(getApplicationContext(), SimRegSignature.class);
+                        SIGN = editfname.getText().toString() + editlname.getText().toString() + "_SIGNATURE_" + editagent.getText().toString() + "_" + editidagent.getText().toString();
+                        a.putExtra("sign", SIGN);
+                        startActivity(a);
 
-                                    }
 
+                        textS.setText(SIGN);
 
-                                })
-
-                                // A null listener allows the button to dismiss the dialog and take no further action.
-                                .setNegativeButton(android.R.string.no, null)
-                                .setIcon(android.R.drawable.ic_dialog_alert)
-                                .show();
+                        if (textS.getText().toString() != "") {
+                            signimgIcon.setVisibility(View.VISIBLE);
+                            signimgIcon.setBackgroundResource(0);
+                            gsigstatus = "0";
+                        }
 
                     }
+                }
+            });
+
+            BtnMain.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(SimRegInfo.this, MainActivity.class);
+                    i.putExtra("db-offline-to-main","0");
+                    startActivity(i);
+                }
+            });
+
+            BtnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(SimRegInfo.this, "Deleting Photos from SFTP", Toast.LENGTH_LONG).show();
+                    thread2.start();
+                    Toast.makeText(SimRegInfo.this, "The Photos Deleted from SFTP", Toast.LENGTH_LONG).show();
+
+                    boolean flg = false;
+                    try {
+                        if ((flg = connecttoDB()) == true) {
+
+
+                            Toast.makeText(SimRegInfo.this, "Starting Deletion in DataBase", Toast.LENGTH_SHORT).show();
+                            PreparedStatement stmtinsert1 = null;
+
+                            try {
+                                stmtinsert1 = conn.prepareStatement("delete from SIM_REGISTRATION where SIM_REG_ID='" + globalsimid + "'");
+                            } catch (SQLException throwables) {
+                                throwables.printStackTrace();
+                            }
+                            try {
+                                stmtinsert1.executeUpdate();
+                                Toast.makeText(SimRegInfo.this, "Deleted Completed from DataBase", Toast.LENGTH_LONG).show();
+                            } catch (SQLException throwables) {
+                                throwables.printStackTrace();
+                            }
+
+
+                            try {
+                                stmtinsert1.close();
+                                conn.close();
+                            } catch (SQLException throwables) {
+                                throwables.printStackTrace();
+                            }
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    Intent i = new Intent(SimRegInfo.this, SimRegListViewActivity.class);
+                    startActivity(i);
+                }
+            });
+
+            BtnRegandActivate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (male.isChecked()) {
+                        gender = "Male";
+                    }
+                    if (female.isChecked()) {
+                        gender = "Female";
+                    }
+                    String fname = editfname.getText().toString();
+                    String mname = editmname.getText().toString();
+                    String lname = editlname.getText().toString();
+                    String msisdn = editmobile.getText().toString();
+                    String idType = "IDCARD";
+                    String idNumber = editidagent.getText().toString();
+                    String dob = editdate.getText().toString();
+                    String email = editemail.getText().toString();
+                    String altnumber = editaltnumber.getText().toString();
+                    String address1 = editphylocation.getText().toString();
+                    String state = editpost.getText().toString();
+                    String agentmsisdn = editagent.getText().toString();
+
+
+                    Intent a = new Intent(SimRegInfo.this, Activate_Sim.class);
+                    a.putExtra("globalsimid", globalsimid);
+                    a.putExtra("fname", fname);
+                    a.putExtra("mname", mname);
+                    a.putExtra("lname", lname);
+                    a.putExtra("msisdn", msisdn);
+                    a.putExtra("idType", idType);
+                    a.putExtra("idNumber", idNumber);
+                    a.putExtra("dob", dob);
+                    a.putExtra("email", email);
+                    a.putExtra("gender", gender);
+                    a.putExtra("altnumber", altnumber);
+                    a.putExtra("address1", address1);
+                    a.putExtra("state", state);
+                    a.putExtra("agentmsisdn", agentmsisdn);
+                    startActivity(a);
+                }
+            });
+            submit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    gsigstatus="0";
+                    gfrontstatus="0";
+                    gbackstatus="0";
+                    if (TextUtils.isEmpty(SIGN) || TextUtils.isEmpty(FRONT) || TextUtils.isEmpty(BACK)) {
+                        Toast.makeText(SimRegInfo.this, "Must Have Signature and Photos", Toast.LENGTH_LONG).show();
+                    } else {
+                        if (editfname.getText().toString().matches("") || editmname.getText().toString().matches("") || editlname.getText().toString().matches("") || editmobile.getText().toString().matches("") || editaltnumber.getText().toString().matches("") || editemail.getText().toString().matches("") || editphylocation.getText().toString().matches("") || editpost.getText().toString().matches("") || !editemail.getText().toString().matches(emailpattern) || fb < 18 || !checkBox.isChecked() || SIGN == null || FRONT == null || BACK == null || fb == 0 || editdate.getText().toString() == null) {
+
+                            if (editfname.getText().toString().matches("")) {
+                                editfname.setError("Empty Field");
+                            }
+                            if (editmname.getText().toString().matches("")) {
+                                editmname.setError("Empty Field");
+                            }
+                            if (editlname.getText().toString().matches("")) {
+                                editlname.setError("Empty Field");
+                            }
+                            if (editmobile.getText().toString().matches("")) {
+                                editmobile.setError("Empty Field");
+                            }
+                            if (editaltnumber.getText().toString().matches("")) {
+                                editaltnumber.setError("Empty Field");
+                            }
+                            if (editemail.getText().toString().matches("")) {
+                                editemail.setError("Empty Field");
+                            }
+                            if (editphylocation.getText().toString().matches("")) {
+                                editphylocation.setError("Empty Field");
+                            }
+                            if (editpost.getText().toString().matches("")) {
+                                editpost.setError("Empty Field");
+                            }
+                            if (!editemail.getText().toString().matches(emailpattern)) {
+                                editemail.setError("Invalid email address");
+                            }
+
+                            String datecheck = editdate.getText().toString();
+                            if (datecheck.matches("([0-9]{2})-([0-9]{2})-([0-9]{4})")) {
+                                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-M-yyyy");
+                                LocalDateTime now = LocalDateTime.now();
+                                fb = getAge(editdate.getText().toString(), dtf.format(now));
+                                System.out.println("age: " + fb);
+                                if (fb < 18 && fb >= 0) {
+                                    editdate.setError("Under Age");
+                                } else if (fb >= 18) {
+                                    editdate.setError(null);
+                                }
+                            } else {
+                                editdate.setError("Invalid Format");
+                                Toast.makeText(SimRegInfo.this, "Invalid Date Format \n Use DD-MM-YYYY", Toast.LENGTH_LONG).show();
+                            }
+                            if (!checkBox.isChecked()) {
+                                Toast.makeText(SimRegInfo.this, "Accept Terms And Conditions", Toast.LENGTH_SHORT).show();
+                            }
+                            if (male.isChecked()) {
+                                gender = "Male";
+                            }
+                            if (female.isChecked()) {
+                                gender = "Female";
+                            }
+                            if (kenya.isChecked()) {
+                                nationality = "Kenyan";
+                            }
+                            if (foreign.isChecked()) {
+                                nationality = "Foreign";
+                            }
+                            b = "In Progress";
+                        } else {
+                            //start saving
+                            new AlertDialog.Builder(SimRegInfo.this)
+                                    .setTitle("Submit")
+                                    .setMessage("Are you sure you want to Submit this form?")
+                                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+
+
+                                            Date date = new Date();
+                                            Calendar calendar = new GregorianCalendar();
+                                            calendar.setTime(date);
+                                            int year = calendar.get(Calendar.YEAR);
+                                            simID = "REG_" + year + "_";
+
+
+
+                                            try {
+                                                threadload1.start();
+                                                Toast.makeText(SimRegInfo.this, "Saving Completed", Toast.LENGTH_SHORT).show();
+
+                                            } catch(Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                            //calling stfp
+                                            if (gsigstatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0") || gbackstatus.equalsIgnoreCase("0")) {
+                                                Toast.makeText(SimRegInfo.this, "Uploading Photos started", Toast.LENGTH_LONG).show();
+                                                if (globalsimid.equalsIgnoreCase("0")) {
+
+                                                } else {
+                                                    thread1.start();
+                                                }
+                                                Toast.makeText(SimRegInfo.this, "Upload Completed", Toast.LENGTH_LONG).show();
+                                            }
+
+
+                                            // Intent i=new Intent(getApplicationContext(),SimRegListViewActivity.class);
+                                            //startActivity(i);
+
+                                        }
+
+
+                                    })
+
+                                    // A null listener allows the button to dismiss the dialog and take no further action.
+                                    .setNegativeButton(android.R.string.no, null)
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
+
+                        }
+
+
+                    }
+                }
+            });
+
+
+            Btnftp = findViewById(R.id.Btnftp);
+            Btnftp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
 
                 }
+            });
+        }
+        else{
+            Toast.makeText(SimRegInfo.this,"Offline Mode",Toast.LENGTH_SHORT).show();
+
+            Intent intent1 = SimRegInfo.this.getIntent();
+            String str1 = intent.getStringExtra("message_key1");
+            globalsimid = str1.toString();
+
+            gsigstatus="0";
+            gfrontstatus="0";
+            gbackstatus="0";
+
+
+            frontid.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (editfname.getText().toString().matches("") || editlname.getText().toString().matches("") || editidagent.getText().toString().matches("")) {
+                        Toast.makeText(SimRegInfo.this, "INSERT YOUR NAME and  ID NUMBER", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(intent, 100);
+                    }
+                }
+            });
+
+            //back id button to capture the id back side
+            backid.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (editfname.getText().toString().matches("") || editlname.getText().toString().matches("") || editidagent.getText().toString().matches("")) {
+                        Toast.makeText(SimRegInfo.this, "INSERT YOUR NAME and  ID NUMBER", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(intent, 101);
+                    }
+                }
+            });
+
+
+            //signature button to capture the signature of the client
+            sign.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (editfname.getText().toString().matches("") || editlname.getText().toString().matches("") || editidagent.getText().toString().matches("")) {
+                        Toast.makeText(SimRegInfo.this, "INSERT YOUR NAME and  ID NUMBER", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Intent a = new Intent(getApplicationContext(), SimRegSignature.class);
+                        SIGN = editfname.getText().toString() + editlname.getText().toString() + "_SIGNATURE_" + editagent.getText().toString() + "_" + editidagent.getText().toString();
+                        a.putExtra("sign", SIGN);
+                        startActivity(a);
+
+
+                        textS.setText(SIGN);
+
+                        if (textS.getText().toString() != "") {
+                            signimgIcon.setVisibility(View.VISIBLE);
+                            signimgIcon.setBackgroundResource(0);
+                            gsigstatus = "0";
+                        }
+
+                    }
+                }
+            });
+
+
+
+
+
+            try {
+                File file = new File(SimRegInfo.this.getFilesDir(), "MSISDN.txt");
+                if (file.exists()) {
+
+                    StringBuilder text = new StringBuilder();
+
+                    try {
+                        FileInputStream fIn = SimRegInfo.this.openFileInput("MSISDN.txt");
+                        int c;
+                        String temp = "";
+
+                        while ((c = fIn.read()) != -1) {
+                            temp = temp + Character.toString((char) c);
+                        }
+                        text.append(temp);
+                        text.append('\n');
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    Result = text.toString();
+                    System.out.println("RESULT" + Result);
+                    String[] data = Result.split(":");
+                    String s0 = data[0];
+
+                    editagent.setText(s0);
+                    editagent.setEnabled(false);
+                } else {
+                    System.out.println("login filevdon't exist");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        });
 
+            File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+            File[] files = dir.listFiles();
+            count = 0;
+            for (File f : files) {
+                String name = f.getName();
+                if (name.startsWith("SIM") && name.endsWith(".txt"))
+                    count++;
+                System.out.println("COUNT IS:" + count);
+            }
 
+            String Off4 = intent.getStringExtra("offline4");
+            editidagent.setText(Off4);
+            String myFileName = "SIM_" + editidagent.getText().toString() + ".txt";
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+            OfflineFile = new File(directory,myFileName);
+            if (OfflineFile.exists())
+            {
+                String Off1 = intent.getStringExtra("offline1");
+                editfname.setText(Off1);
 
+                String Off2 = intent.getStringExtra("offline2");
+                editmname.setText(Off2);
 
+                String Off3 = intent.getStringExtra("offline3");
+                editlname.setText(Off3);
 
+                String Off5 = intent.getStringExtra("offline5");
+                editmobile.setText(Off5);
 
+                String Off6 = intent.getStringExtra("offline6");
+                editdate.setText(Off6);
 
+                String Off7 = intent.getStringExtra("offline7");
+                editaltnumber.setText(Off7);
 
+                String Off8 = intent.getStringExtra("offline8");
+                editemail.setText(Off8);
 
+                String Off9 = intent.getStringExtra("offline9");
+                editphylocation.setText(Off9);
 
+                String Off10 = intent.getStringExtra("offline10");
+                editpost.setText(Off10);
 
+                String Off11 = intent.getStringExtra("offline11");
+                String ahmadd = "Male";
+                if (Off11 != null) {
+                    if (Off11.equals(ahmadd)) {
+                        male.setChecked(true);
+                    } else {
+                        female.setChecked(true);
+                    }
+                }
 
+                String Off12 = intent.getStringExtra("offline12");
+                String ahmad = "Kenyan";
+                if (Off12 != null) {
+                    if (Off12.equals(ahmad)) {
+                        kenya.setChecked(true);
+                    } else {
+                        foreign.setChecked(true);
+                    }
+                }
 
+                String Off13 = intent.getStringExtra("offline13");
+                sp.setSelection(((ArrayAdapter<String>) sp.getAdapter()).getPosition(Off13));
 
+                String Off14 = intent.getStringExtra("offline14");
+                textS.setText(Off14);
+                SIGN = Off14;
 
+                String Off15 = intent.getStringExtra("offline15");
+                textF.setText(Off15);
+                FRONT = Off15;
 
-        Btnftp = findViewById(R.id.Btnftp);
-        Btnftp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                String Off16 = intent.getStringExtra("offline16");
+                textB.setText(Off16);
+                BACK = Off16;
 
-
+                checkBox.setChecked(true);
 
             }
-        });
+
+            BtnMain.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(SimRegInfo.this, MainActivity.class);
+                    i.putExtra("db-offline-to-main","0");
+                    startActivity(i);
+                }
+            });
+
+            BtnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(SimRegInfo.this, "Deleting Photos from SFTP", Toast.LENGTH_LONG).show();
+                    thread2.start();
+                    Toast.makeText(SimRegInfo.this, "The Photos Deleted from SFTP", Toast.LENGTH_LONG).show();
+
+                    boolean flg = false;
+                    try {
+                        if ((flg = connecttoDB()) == true) {
+
+
+                            Toast.makeText(SimRegInfo.this, "Starting Deletion in DataBase", Toast.LENGTH_SHORT).show();
+                            PreparedStatement stmtinsert1 = null;
+
+                            try {
+                                stmtinsert1 = conn.prepareStatement("delete from SIM_REGISTRATION where SIM_REG_ID='" + globalsimid + "'");
+                            } catch (SQLException throwables) {
+                                throwables.printStackTrace();
+                            }
+                            try {
+                                stmtinsert1.executeUpdate();
+                                Toast.makeText(SimRegInfo.this, "Deleted Completed from DataBase", Toast.LENGTH_LONG).show();
+                            } catch (SQLException throwables) {
+                                throwables.printStackTrace();
+                            }
+
+
+                            try {
+                                stmtinsert1.close();
+                                conn.close();
+                            } catch (SQLException throwables) {
+                                throwables.printStackTrace();
+                            }
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    Intent i = new Intent(SimRegInfo.this, SimRegListViewActivity.class);
+                    startActivity(i);
+                }
+            });
+
+
+            BtnRegandActivate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (male.isChecked()) {
+                        gender = "Male";
+                    }
+                    if (female.isChecked()) {
+                        gender = "Female";
+                    }
+                    String fname = editfname.getText().toString();
+                    String mname = editmname.getText().toString();
+                    String lname = editlname.getText().toString();
+                    String msisdn = editmobile.getText().toString();
+                    String idType = "IDCARD";
+                    String idNumber = editidagent.getText().toString();
+                    String dob = editdate.getText().toString();
+                    String email = editemail.getText().toString();
+                    String altnumber = editaltnumber.getText().toString();
+                    String address1 = editphylocation.getText().toString();
+                    String state = editpost.getText().toString();
+                    String agentmsisdn = editagent.getText().toString();
+
+
+                    Intent a = new Intent(SimRegInfo.this, Activate_Sim.class);
+                    a.putExtra("globalsimid", globalsimid);
+                    a.putExtra("fname", fname);
+                    a.putExtra("mname", mname);
+                    a.putExtra("lname", lname);
+                    a.putExtra("msisdn", msisdn);
+                    a.putExtra("idType", idType);
+                    a.putExtra("idNumber", idNumber);
+                    a.putExtra("dob", dob);
+                    a.putExtra("email", email);
+                    a.putExtra("gender", gender);
+                    a.putExtra("altnumber", altnumber);
+                    a.putExtra("address1", address1);
+                    a.putExtra("state", state);
+                    a.putExtra("agentmsisdn", agentmsisdn);
+                    startActivity(a);
+                }
+            });
+
+            submit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (TextUtils.isEmpty(SIGN) || TextUtils.isEmpty(FRONT) || TextUtils.isEmpty(BACK)) {
+                        Toast.makeText(SimRegInfo.this, "Must Have Signature and Photos", Toast.LENGTH_LONG).show();
+                    } else {
+                        if (editfname.getText().toString().matches("") || editmname.getText().toString().matches("") || editlname.getText().toString().matches("") || editmobile.getText().toString().matches("") || editaltnumber.getText().toString().matches("") || editemail.getText().toString().matches("") || editphylocation.getText().toString().matches("") || editpost.getText().toString().matches("") || !editemail.getText().toString().matches(emailpattern) || fb < 18 || !checkBox.isChecked() || SIGN == null || FRONT == null || BACK == null || fb == 0 || editdate.getText().toString() == null) {
+
+                            if (editfname.getText().toString().matches("")) {
+                                editfname.setError("Empty Field");
+                            }
+                            if (editmname.getText().toString().matches("")) {
+                                editmname.setError("Empty Field");
+                            }
+                            if (editlname.getText().toString().matches("")) {
+                                editlname.setError("Empty Field");
+                            }
+                            if (editmobile.getText().toString().matches("")) {
+                                editmobile.setError("Empty Field");
+                            }
+                            if (editaltnumber.getText().toString().matches("")) {
+                                editaltnumber.setError("Empty Field");
+                            }
+                            if (editemail.getText().toString().matches("")) {
+                                editemail.setError("Empty Field");
+                            }
+                            if (editphylocation.getText().toString().matches("")) {
+                                editphylocation.setError("Empty Field");
+                            }
+                            if (editpost.getText().toString().matches("")) {
+                                editpost.setError("Empty Field");
+                            }
+                            if (!editemail.getText().toString().matches(emailpattern)) {
+                                editemail.setError("Invalid email address");
+                            }
+
+                            String datecheck = editdate.getText().toString();
+                            if (datecheck.matches("([0-9]{2})-([0-9]{2})-([0-9]{4})")) {
+                                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-M-yyyy");
+                                LocalDateTime now = LocalDateTime.now();
+                                fb = getAge(editdate.getText().toString(), dtf.format(now));
+                                System.out.println("age: " + fb);
+                                if (fb < 18 && fb >= 0) {
+                                    editdate.setError("Under Age");
+                                } else if (fb >= 18) {
+                                    editdate.setError(null);
+                                }
+                            } else {
+                                editdate.setError("Invalid Format");
+                                Toast.makeText(SimRegInfo.this, "Invalid Date Format \n Use DD-MM-YYYY", Toast.LENGTH_LONG).show();
+                            }
+                            if (!checkBox.isChecked()) {
+                                Toast.makeText(SimRegInfo.this, "Accept Terms And Conditions", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            //start saving
+                            new AlertDialog.Builder(SimRegInfo.this)
+                                    .setTitle("Submit")
+                                    .setMessage("Are you sure you want to Submit this form?")
+
+                                    // Specifying a listener allows you to take an action before dismissing the dialog.
+                                    // The dialog is automatically dismissed when a dialog button is clicked.
+                                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if (male.isChecked()) {
+                                                gender = "Male";
+                                            }
+                                            if (female.isChecked()) {
+                                                gender = "Female";
+                                            }
+                                            if (kenya.isChecked()) {
+                                                nationality = "Kenyan";
+                                            }
+                                            if (foreign.isChecked()) {
+                                                nationality = "Foreign";
+                                            }
+                                            String b = "New";
+
+                                            try {
+                                                ActivityCompat.requestPermissions(SimRegInfo.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 23);
+                                                File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+                                                dir.mkdirs();
+                                                String fileName = "SIM_" + editidagent.getText().toString() + ".txt";
+                                                File file = new File(dir, fileName);
+                                                FileWriter fw = new FileWriter(file.getAbsoluteFile());
+                                                BufferedWriter bw = new BufferedWriter(fw);
+                                                bw.write(editfname.getText().toString() + "\n");
+                                                bw.write(editmname.getText().toString() + "\n");
+                                                bw.write(editfname.getText().toString() + "\n");
+                                                bw.write(editmobile.getText().toString() + "\n");
+                                                bw.write(editdate.getText().toString() + "\n");
+                                                bw.write(nationality.toString() + "\n");
+                                                bw.write(editaltnumber.getText().toString() + "\n");
+                                                bw.write(editemail.getText().toString() + "\n");
+                                                bw.write(editphylocation.getText().toString() + "\n");
+                                                bw.write(editpost.getText().toString() + "\n");
+                                                bw.write(gender.toString() + "\n");
+                                                bw.write(editagent.getText().toString() + "\n");
+                                                bw.write(editidagent.getText().toString() + "\n");
+                                                bw.write(SIGN.toString() + "\n");
+                                                bw.write(FRONT.toString() + "\n");
+                                                bw.write(BACK.toString() + "\n");
+                                                bw.write(b);
+                                                bw.close();
+                                                Toast.makeText(SimRegInfo.this, fileName + " is saved to\n" + dir, Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(SimRegInfo.this, SimRegOfflineDataActivity.class);
+                                                startActivity(intent);
+                                            } catch (FileNotFoundException e) {
+                                                e.printStackTrace();
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                            Toast.makeText(SimRegInfo.this,"Saving Offline",Toast.LENGTH_SHORT).show();
+
+                                        }
+
+
+                                    })
+
+                                    // A null listener allows the button to dismiss the dialog and take no further action.
+                                    .setNegativeButton(android.R.string.no, null)
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
+
+                        }
+
+
+                    }
+                }
+            });
+
+            //BtnData appear in case offline files exist
+            Button BtnData = (Button) findViewById(R.id.BtnData);
+            BtnData.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(SimRegInfo.this, SimRegOfflineDataActivity.class);
+                    startActivity(i);
+                }
+            });
+            if (count >= 5) {
+                submit.setEnabled(false);
+                Toast.makeText(SimRegInfo.this, "You Already Have 5 Unsubmitted Files", Toast.LENGTH_SHORT).show();
+            }
+            if (count != 0) {
+                BtnData.setVisibility(View.VISIBLE); //SHOW the button
+                BtnData.setText(String.valueOf(count));
+            }
+
+            Btnftp = findViewById(R.id.Btnftp);
+            Btnftp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                }
+            });
+
+        }
     }
-    public void SendTOftp() {
+   /* public void SendTOftp() {
 
         File myFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), SIGN + ".jpg");
         String signpath = String.valueOf(myFile);
         String signname = String.valueOf(textS.getText() + ".jpg");
-
-
-      /*  File myFile1 = new File("/sdcard/Pictures", FRONT + ".jpg");
-        String frontpath = String.valueOf(myFile1);
-        String frontname = String.valueOf(textF.getText() + ".jpg");
-
-        File myFile2 = new File("/sdcard/Pictures", BACK + ".jpg");
-        String backpath = String.valueOf(myFile2);
-        String backname = String.valueOf(textB.getText() + ".jpg");*/
 
 
         try {
@@ -698,12 +1162,6 @@ public class SimRegInfo extends AppCompatActivity {
                     FileInputStream srcFileStream = new FileInputStream(signpath);
                     ftpClient.storeFile(signname, srcFileStream);
 
-
-                  /*  FileInputStream srcFileStream1 = new FileInputStream(frontpath);
-                    ftpClient.storeFile(frontname, srcFileStream1);
-
-                    FileInputStream srcFileStream2 = new FileInputStream(backpath);
-                    ftpClient.storeFile(backname, srcFileStream2);*/
 
                     srcFileStream.close();
                     //srcFileStream1.close();
@@ -807,7 +1265,7 @@ public class SimRegInfo extends AppCompatActivity {
 
         }
 
-    }
+    }*/
 
     public boolean connecttoDB() {
         // connect to DB
@@ -894,16 +1352,16 @@ public class SimRegInfo extends AppCompatActivity {
 
                 if(gfrontstatus.equalsIgnoreCase("0")){
 
-                File frontpic=new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), FRONT + ".jpg");
-                String front=String.valueOf(frontpic);
-                channelSftp.put(front, "SIMPICSFTP");
-                Boolean success2 = true;
+                    File frontpic=new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), FRONT + ".jpg");
+                    String front=String.valueOf(frontpic);
+                    channelSftp.put(front, "SIMPICSFTP");
+                    Boolean success2 = true;
 
-                if(success2){
-                    System.out.println("upload completed : "+front);
-                    UpdateSimRegistrationPicStatus(globalsimid,"FRONT_SIDE_ID_STATUS");
-                    frontimgIcon.setColorFilter(Color.GREEN);
-                  }
+                    if(success2){
+                        System.out.println("upload completed : "+front);
+                        UpdateSimRegistrationPicStatus(globalsimid,"FRONT_SIDE_ID_STATUS");
+                        frontimgIcon.setColorFilter(Color.GREEN);
+                    }
                 }
                 if(gbackstatus.equalsIgnoreCase("0")) {
                     File backpic = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), BACK + ".jpg");
@@ -918,7 +1376,7 @@ public class SimRegInfo extends AppCompatActivity {
                     }
                 }
 
-             //   Toast.makeText(SimTest.this,"session connection"+session.isConnected(),Toast.LENGTH_LONG).show();
+                //   Toast.makeText(SimTest.this,"session connection"+session.isConnected(),Toast.LENGTH_LONG).show();
                 channelSftp.disconnect();
                 session.disconnect();
             }catch(Exception e){
@@ -1026,17 +1484,17 @@ public class SimRegInfo extends AppCompatActivity {
 
                     if (success1) {
 
-                       DeleteSimRegistrationPicStatus(globalsimid, "SIGNATURE_STATUS");
+                        DeleteSimRegistrationPicStatus(globalsimid, "SIGNATURE_STATUS");
                         signimgIcon.setVisibility(View.INVISIBLE);
                     }
                 }
 
                 if(gfrontstatus.equalsIgnoreCase("1")){
 
-                   channelSftp.rm(path+"/"+FRONT+".jpg");
+                    channelSftp.rm(path+"/"+FRONT+".jpg");
                     Boolean success2 = true;
                     if(success2){
-                       DeleteSimRegistrationPicStatus(globalsimid,"FRONT_SIDE_ID_STATUS");
+                        DeleteSimRegistrationPicStatus(globalsimid,"FRONT_SIDE_ID_STATUS");
                         frontimgIcon.setVisibility(View.INVISIBLE);
                     }
                 }
@@ -1236,10 +1694,98 @@ public class SimRegInfo extends AppCompatActivity {
                     throwables.printStackTrace();
                 }
             }
-            }catch (Exception e){
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    Thread threadload = new Thread(new Runnable() {
+
+        @Override
+        public void run() {
+            try {
+
+                getDataforSimfromDB();
+
+            }catch(Exception e) {
                 e.printStackTrace();
             }
-    }
+        }
+    });
+
+    Thread threadload1 = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            boolean flg = false;
+            try {
+                if ((flg = connecttoDB()) == true) {
+                    PreparedStatement stmtinsert1 = null;
+
+                    try {
+                        if (globalsimid.equalsIgnoreCase("0") || OfflineFile.exists() ) {
+                            // if it is a new Warehouse we will use insert
+
+                            Statement stmt1 = null;
+                            stmt1 = conn.createStatement();
+                            String sqlStmt = "select SIM_REGISTRATION_SEQ.nextval as nbr from dual";
+                            ResultSet rs1 = null;
+                            try {
+                                rs1 = stmt1.executeQuery(sqlStmt);
+                            } catch (SQLException throwables) {
+                                throwables.printStackTrace();
+                            }
+
+                            while (true) {
+                                try {
+                                    if (!rs1.next()) break;
+                                    globalsimid = simID + rs1.getString("nbr");
+                                    //System.out.println(rs1.getString("compteur"));
+
+                                } catch (SQLException throwables) {
+                                    throwables.printStackTrace();
+                                }
+                            }
+                            rs1.close();
+                            stmt1.close();
+
+
+                            // send data from fragment to super activity
+
+
+                            stmtinsert1 = conn.prepareStatement("insert into SIM_REGISTRATION (SIM_REG_ID,STATUS,CREATION_DATE,LAST_MODIFIED_DATE,FIRST_NAME,MIDDLE_NAME,LAST_NAME,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHISICAL_LOCATION,POSTAL_ADDRESS,GENDER,AGENT_NUMBER,AGENT_ID,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,SIGNATURE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS) values " +
+                                    "('" + globalsimid + "','" + b + "' ,sysdate, sysdate,'" + editfname.getText() + "','" + editmname.getText() + "', '" + editlname.getText() + "','" + editmobile.getText() + "',TO_DATE('" + editdate.getText() + "','DD-MM-YYYY'),'" + nationality + "','" + editaltnumber.getText() + "','" + editemail.getText() + "','" + editphylocation.getText() + "','" + editpost.getText() + "','" + gender + "','" + editagent.getText() + "','" + editidagent.getText() + "','" + SIGN + "','" + FRONT + "','" + BACK + "',0,0,0)");
+
+                            ///added for pass data in fragment
+
+                        } else {
+
+                            stmtinsert1 = conn.prepareStatement("update SIM_REGISTRATION set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + editfname.getText() + "',MIDDLE_NAME='" + editmname.getText() + "',LAST_NAME='" + editlname.getText() + "',STATUS='" + b + "',MOBILE_NUMBER='" + editmobile.getText() + "',NATIONALITY='" + nationality + "',ALTERNATIVE_NUMBER='" + editaltnumber.getText() + "',EMAIL_ADDRESS='" + editemail.getText() + "',PHISICAL_LOCATION='" + editphylocation.getText() + "',POSTAL_ADDRESS='" + editpost.getText() + "',GENDER='" + gender + "',AGENT_NUMBER='" + editagent.getText() + "',AGENT_ID='" + editidagent.getText() + "',SIGNATURE='" + SIGN + "',ID_FRONT_SIDE_PHOTO='" + FRONT + "',ID_BACK_SID_PHOTO='" + BACK + "' where SIM_REG_ID ='" + globalsimid + "'");
+                        }
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    try {
+                        stmtinsert1.executeUpdate();
+                        OfflineFile.delete();
+
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+
+
+                    try {
+                        stmtinsert1.close();
+                        conn.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    });
 
     //1-thread for deleting from sftp
     //if success update status to -1

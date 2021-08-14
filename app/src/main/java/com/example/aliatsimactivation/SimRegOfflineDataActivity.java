@@ -111,7 +111,7 @@ public class SimRegOfflineDataActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i=new Intent(getApplicationContext(),SimRegInfo.class);
-                i.putExtra("message_key",simid);
+                i.putExtra("message_key","0");
                 startActivity(i);
             }
         });

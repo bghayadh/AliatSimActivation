@@ -25,6 +25,7 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
     Connection conn;
     private String data=null;
     private boolean connectflag=false;
+    private int flag=0;
 
 
 
@@ -111,41 +112,46 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
                         out, "UTF-8"));
                 writer.write(postData.toString());
                 writer.flush();
-            }catch (Exception e){
+                flag = 1;
+            } catch (Exception e) {
                 e.printStackTrace();
+                flag = 0;
             }
-            System.out.println("Sent successfully to server");
+
+
+            if (flag == 1){
+                System.out.println("Sent successfully to server");
 
 
             int code = urlConnection.getResponseCode();
 
-            System.out.println("Get code "+code);
+            System.out.println("Get code " + code);
 
             //if (code !=  201) {
-           //     throw new IOException ("Invalid response from server: " + code);
-          //  }
+            //     throw new IOException ("Invalid response from server: " + code);
+            //  }
 
-            BufferedReader rd = new BufferedReader(new InputStreamReader (
+            BufferedReader rd = new BufferedReader(new InputStreamReader(
                     urlConnection.getInputStream()));
             System.out.println("Read result step4");
-            String line =null;
+            String line = null;
             while ((line = rd.readLine()) != null) {
                 //Log.i("data", line);
-                System.out.println("Get result "+line);
+                System.out.println("Get result " + line);
 
                 if (line.contains("responseCode")) {
                     System.out.println("Found");
-                    int  m = 0;
+                    int m = 0;
                     m = line.indexOf(";");
-                    String response_code=  line.substring(m+1,line.length());
-                    String[] test1=response_code.split("[:,]");
+                    String response_code = line.substring(m + 1, line.length());
+                    String[] test1 = response_code.split("[:,]");
                     System.out.println(test1[1].toString());
-                    String []splitterString=test1[1].split("\"");
+                    String[] splitterString = test1[1].split("\"");
 
                     for (String s : splitterString) {
 
-                        api_response_code=s;
-                        System.out.println("code : "+api_response_code);
+                        api_response_code = s;
+                        System.out.println("code : " + api_response_code);
 
                     }
                 }
@@ -153,14 +159,14 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
                 if (line.contains("message")) {
                     System.out.println("Found");
 
-                    int  n = 0;
+                    int n = 0;
                     n = line.indexOf(";");
-                    String message= line.substring(n+1,line.length());
-                    String[] test1=message.split("[:,]");
-                    String []splitterString=test1[1].split("\"");
+                    String message = line.substring(n + 1, line.length());
+                    String[] test1 = message.split("[:,]");
+                    String[] splitterString = test1[1].split("\"");
                     for (String s : splitterString) {
-                        response_message=s;
-                        System.out.println("response message : "+response_message);
+                        response_message = s;
+                        System.out.println("response message : " + response_message);
 
 
                     }
@@ -171,9 +177,7 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
             }
 
 
-
-
-
+        }
 
         } catch (Exception e) {
             e.printStackTrace();

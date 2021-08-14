@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
@@ -24,11 +25,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.Manifest;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
@@ -237,7 +241,14 @@ public class UserRegister extends AppCompatActivity {
         //code for verification
         Code=generateSessionKey(6);
 
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
 
+            ActivityCompat.requestPermissions(UserRegister.this, new String[]{
+                    Manifest.permission.CAMERA}, 100);
+            ActivityCompat.requestPermissions(UserRegister.this, new String[]{
+                    Manifest.permission.CAMERA}, 101);
+
+        }
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
