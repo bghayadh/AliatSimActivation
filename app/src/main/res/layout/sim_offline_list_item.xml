@@ -13,7 +13,7 @@
         android:background="#F50CFA03" />
 
     <TextView
-        android:layout_width="349dp"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:id="@+id/txttitle"
         android:textStyle="bold"

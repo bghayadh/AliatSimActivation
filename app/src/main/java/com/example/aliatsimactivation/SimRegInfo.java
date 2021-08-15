@@ -267,6 +267,7 @@ public class SimRegInfo extends AppCompatActivity {
                         sb.append(text).append("\n");
                         Toast.makeText(this, text, Toast.LENGTH_LONG).show();
                         editagent.setText(text.toString());
+                        editagent.setEnabled(false);
                     }
 
 
@@ -280,7 +281,8 @@ public class SimRegInfo extends AppCompatActivity {
             String Off4 = intent.getStringExtra("offline4");
             editidagent.setText(Off4);
             String myFileName = "SIM_" + editidagent.getText().toString() + ".txt";
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+
+            File directory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
             OfflineFile = new File(directory,myFileName);
             if (OfflineFile.exists())
             {
@@ -775,6 +777,7 @@ public class SimRegInfo extends AppCompatActivity {
                         sb.append(text).append("\n");
                         Toast.makeText(this, text, Toast.LENGTH_LONG).show();
                         editagent.setText(text.toString());
+                        editagent.setEnabled(false);
                     }
 
 
@@ -798,10 +801,12 @@ public class SimRegInfo extends AppCompatActivity {
             String Off4 = intent.getStringExtra("offline4");
             editidagent.setText(Off4);
             String myFileName = "SIM_" + editidagent.getText().toString() + ".txt";
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+            File directory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+            System.out.println(directory);
             OfflineFile = new File(directory,myFileName);
             if (OfflineFile.exists())
             {
+                System.out.println("exists");
                 String Off1 = intent.getStringExtra("offline1");
                 editfname.setText(Off1);
 
@@ -1045,7 +1050,7 @@ public class SimRegInfo extends AppCompatActivity {
 
                                             try {
                                                 ActivityCompat.requestPermissions(SimRegInfo.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 23);
-                                                File dir =new File(String.valueOf((getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS))));
+                                                File dir = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
                                                 dir.mkdirs();
                                                 String fileName = "SIM_" + editidagent.getText().toString() + ".txt";
                                                 File file = new File(dir, fileName);

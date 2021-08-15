@@ -1,5 +1,7 @@
 package com.example.aliatsimactivation;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
@@ -82,73 +85,76 @@ public class SimRegOfflineDataRecViewAdapter extends RecyclerView.Adapter<SimReg
             sendImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-            Toast.makeText(context,"Loading..." ,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context,"Loading..." ,Toast.LENGTH_SHORT).show();
 
-            // reading the file from directory
-            String name = txttitle.getText().toString();
-            StringBuffer sbuffer = new StringBuffer();
-            try {
-                File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-                File myFile = new File(dir,name);
-                fstream = new FileInputStream(myFile);
+                    // reading the file from directory
+                    String name = txttitle.getText().toString();
+                    StringBuffer sbuffer = new StringBuffer();
+                    try {
+                        ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 23);
 
-                int i;
-                while ((i = fstream.read())!= -1){
-                    sbuffer.append((char)i);
+                        File dir =new File("/storage/emulated/0/Android/data/com.example.aliatsimactivation/files/Documents",name);
+                        System.out.println(dir);
+                        fstream = new FileInputStream(dir);
+
+                        int i;
+                        while ((i = fstream.read())!= -1){
+                            sbuffer.append((char)i);
+                        }
+                        fstream.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    // spliting the data
+                    String details[] = sbuffer.toString().split("\n");
+                    String a = details[0];
+                    String b = details[1];
+                    String c = details[2];
+                    String d = details[3];
+                    String e = details[4];
+                    String f = details[5];
+                    String g = details[6];
+                    String h = details[7];
+                    String j = details[8];
+                    String k = details[9];
+                    String l = details[10];
+                    String m = details[11];
+                    String n = details[12];
+                    String o = details[13];
+                    String p = details[14];
+                    String q = details[15];
+                    String r = details[16];
+
+                    String globalsimid = "";
+                    Intent intent = new Intent(context,SimRegInfo.class);
+                    intent.putExtra("message_key",globalsimid);
+                    intent.putExtra("offline1",a);
+                    intent.putExtra("offline2",b);
+                    intent.putExtra("offline3",c);
+                    intent.putExtra("offline4",n);
+                    intent.putExtra("offline5",d);
+                    intent.putExtra("offline6",e);
+                    intent.putExtra("offline7",g);
+                    intent.putExtra("offline8",h);
+                    intent.putExtra("offline9",j);
+                    intent.putExtra("offline10",k);
+                    intent.putExtra("offline11",l);
+                    intent.putExtra("offline12",f);
+                    intent.putExtra("offline13",r);
+                    intent.putExtra("offline14",o);
+                    intent.putExtra("offline15",p);
+                    intent.putExtra("offline16",q);
+                    context.startActivity(intent);
+
                 }
-                fstream.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            });
 
-            // spliting the data
-            String details[] = sbuffer.toString().split("\n");
-            String a = details[0];
-            String b = details[1];
-            String c = details[2];
-            String d = details[3];
-            String e = details[4];
-            String f = details[5];
-            String g = details[6];
-            String h = details[7];
-            String j = details[8];
-            String k = details[9];
-            String l = details[10];
-            String m = details[11];
-            String n = details[12];
-            String o = details[13];
-            String p = details[14];
-            String q = details[15];
-            String r = details[16];
-            String globalsimid = "0";
-            Intent intent = new Intent(context,SimRegInfo.class);
-            intent.putExtra("message_key",globalsimid);
-            intent.putExtra("offline1",a);
-            intent.putExtra("offline2",b);
-            intent.putExtra("offline3",c);
-            intent.putExtra("offline4",n);
-            intent.putExtra("offline5",d);
-            intent.putExtra("offline6",e);
-            intent.putExtra("offline7",g);
-            intent.putExtra("offline8",h);
-            intent.putExtra("offline9",j);
-            intent.putExtra("offline10",k);
-            intent.putExtra("offline11",l);
-            intent.putExtra("offline12",f);
-            intent.putExtra("offline13",r);
-            intent.putExtra("offline14",o);
-            intent.putExtra("offline15",p);
-            intent.putExtra("offline16",q);
-            context.startActivity(intent);
-
-          }
-      });
+        }
 
     }
-
-   }
 
 
     public void connecttoDB() {
