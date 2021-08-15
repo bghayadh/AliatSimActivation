@@ -5,154 +5,201 @@
     android:id="@+id/Aliatnetwork"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0A5EA8"
+    android:background="#ffffff"
     tools:context="com.example.aliatsimactivation.MainActivity">
 
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background ="#00aaca">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:layout_marginStart="142dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:text="Statistical Summary" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="370dp"
+            android:id="@+id/menubutton"
+            android:background="@null"
+            android:src="@drawable/ic_baseline_menu_24"/>
+
+    </RelativeLayout>
 
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="30dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp" >
-        <TableRow android:background ="@color/white" android:padding="5dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:text="Statistical Summary" />
-        </TableRow>
-        <TableRow android:background="#DAE8FC" android:padding="5dp">
+        android:layout_marginTop="40dp">
+        <TableRow android:background="#00aaca">
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:padding="5dp"
                 android:text="" />
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:background="#0A5EA8"
                 android:textAlignment="center"
-                android:textStyle="bold"
                 android:textColor="@color/white"
+                android:padding="5dp"
                 android:text="Total" />
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:background="#046118"
                 android:textAlignment="center"
-                android:textStyle="bold"
                 android:textColor="@color/white"
+                android:padding="5dp"
                 android:text="Success" />
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:background="#EC0D0D"
                 android:textAlignment="center"
-                android:textStyle="bold"
                 android:textColor="@color/white"
+                android:padding="5dp"
                 android:text="Failed" />
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:background="#FFA500"
                 android:textAlignment="center"
-                android:textStyle="bold"
                 android:textColor="@color/white"
-                android:text="In Progress" />
+                android:padding="5dp"
+                android:text="Pending" />
         </TableRow>
-        <TableRow android:background="#DAE8FC" android:padding="5dp">
+        <TableRow android:background="#00aaca">
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:padding="5dp"
                 android:text="Today" />
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/today_total"
                 android:text=""
+                android:textColor="@color/white"
+                android:padding="5dp"
                 android:textAlignment="center"/>
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/today_success"
                 android:text=""
+                android:textColor="@color/white"
+                android:padding="5dp"
                 android:textAlignment="center"/>
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/today_failed"
                 android:text=""
+                android:textColor="@color/white"
+                android:padding="5dp"
                 android:textAlignment="center"/>
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/today_progress"
                 android:text=""
+                android:textColor="@color/white"
+                android:padding="5dp"
                 android:textAlignment="center"/>
         </TableRow>
-        <TableRow android:background="#DAE8FC" android:padding="5dp">
+        <TableRow android:background="#00aaca">
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:padding="5dp"
                 android:text="Week" />
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/week_total"
                 android:text=""
+                android:textColor="@color/white"
+                android:padding="5dp"
                 android:textAlignment="center"/>
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/week_success"
                 android:text=""
+                android:textColor="@color/white"
+                android:padding="5dp"
                 android:textAlignment="center"/>
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/week_failed"
                 android:text=""
+                android:textColor="@color/white"
+                android:padding="5dp"
                 android:textAlignment="center"/>
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/week_progress"
                 android:text=""
+                android:textColor="@color/white"
+                android:padding="5dp"
                 android:textAlignment="center"/>
         </TableRow>
-        <TableRow android:background="#DAE8FC" android:padding="5dp">
+        <TableRow android:background="#00aaca">
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:padding="5dp"
                 android:text="Month" />
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/month_total"
                 android:text=""
+                android:textColor="@color/white"
+                android:padding="5dp"
                 android:textAlignment="center"/>
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/month_success"
                 android:text=""
+                android:textColor="@color/white"
+                android:padding="5dp"
                 android:textAlignment="center"/>
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/month_failed"
                 android:text=""
+                android:textColor="@color/white"
+                android:padding="5dp"
                 android:textAlignment="center"/>
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/month_progress"
                 android:text=""
+                android:textColor="@color/white"
+                android:padding="5dp"
                 android:textAlignment="center"/>
         </TableRow>
     </TableLayout>
@@ -164,11 +211,13 @@
         android:layout_height="140dp"
         android:layout_marginStart="8dp"
         android:text="SIM REGISTRATION"
-        android:textStyle="bold"
-        android:textSize="11dp"
-        android:layout_marginTop="185dp"
-        android:drawableRight="@mipmap/ic_sim_card"
-        android:backgroundTint="@color/red"
+        android:textAlignment="center"
+        android:textSize="15dp"
+        android:layout_marginTop="162dp"
+        android:paddingTop="15dp"
+        android:drawableTop="@drawable/ic_sim1"
+        android:backgroundTint="@color/menusgrey"
+        android:textColor="@color/black"
         style="@style/Widget.MaterialComponents.Button"
         />
 
@@ -180,10 +229,13 @@
         android:layout_marginStart="13dp"
         android:layout_toRightOf="@+id/Btnsimreg"
         android:text="MOBILE CHARGE"
-        android:textStyle="bold"
-        android:layout_marginTop="185dp"
-        android:drawableRight="@mipmap/ic_mobile_charge"
-        android:backgroundTint="@color/red"
+        android:textSize="15dp"
+        android:layout_marginTop="162dp"
+        android:textAlignment="center"
+        android:paddingTop="15dp"
+        android:drawableTop="@drawable/ic_dollar1"
+        android:backgroundTint="@color/menusgrey"
+        android:textColor="@color/black"
         style="@style/Widget.MaterialComponents.Button"
         />
 
@@ -195,10 +247,12 @@
         android:layout_marginStart="8dp"
         android:layout_below="@+id/Btnsimreg"
         android:text="Report"
-        android:textStyle="bold"
-        android:textSize="13dp"
-        android:drawableRight="@drawable/ic_sim_reports"
-        android:backgroundTint="@color/red"
+        android:textSize="15dp"
+        android:textAlignment="center"
+        android:paddingTop="15dp"
+        android:drawableTop="@drawable/ic_report1"
+        android:backgroundTint="@color/menusgrey"
+        android:textColor="@color/black"
         style="@style/Widget.MaterialComponents.Button"
         />
 
@@ -210,9 +264,12 @@
         android:layout_below="@+id/Btnmobcharge"
         android:layout_toRightOf="@+id/Btnsimreport"
         android:text="SIM SWAP"
-        android:textStyle="bold"
-        android:drawableRight="@drawable/ic_swap"
-        android:backgroundTint="@color/red"
+        android:textSize="15dp"
+        android:textAlignment="center"
+        android:paddingTop="15dp"
+        android:drawableTop="@drawable/ic_swap1"
+        android:backgroundTint="@color/menusgrey"
+        android:textColor="@color/black"
         style="@style/Widget.MaterialComponents.Button"
         />
 
@@ -224,10 +281,12 @@
         android:layout_marginStart="8dp"
         android:layout_below="@+id/Btnsimreport"
         android:text="SUBSCRIPTION"
-        android:textStyle="bold"
-        android:textSize="12dp"
-        android:drawableRight="@drawable/ic_subscribe"
-        android:backgroundTint="@color/red"
+        android:textSize="15dp"
+        android:textAlignment="center"
+        android:paddingTop="15dp"
+        android:drawableTop="@drawable/ic_sub1"
+        android:backgroundTint="@color/menusgrey"
+        android:textColor="@color/black"
         style="@style/Widget.MaterialComponents.Button"
         />
 
@@ -239,9 +298,12 @@
         android:layout_below="@+id/Btnsimswap"
         android:layout_toRightOf="@+id/Btnsubscription"
         android:text="CHECK SIM STATUS"
-        android:textStyle="bold"
-        android:drawableRight="@drawable/ic_status"
-        android:backgroundTint="@color/red"
+        android:textSize="15dp"
+        android:textAlignment="center"
+        android:paddingTop="15dp"
+        android:drawableTop="@drawable/ic_status1"
+        android:backgroundTint="@color/menusgrey"
+        android:textColor="@color/black"
         style="@style/Widget.MaterialComponents.Button"
         />
 
@@ -250,11 +312,12 @@
         android:layout_width="191dp"
         android:layout_height="55dp"
         android:text="Login"
-        android:textStyle="bold"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="8dp"
-        android:backgroundTint="@color/red"
-        android:drawableRight="@mipmap/ic_login"
+        android:backgroundTint="@color/menusgrey"
+        android:textColor="@color/black"
+        android:layout_marginBottom="22dp"
+        android:drawableRight="@drawable/ic_key1"
         />
 
 
@@ -263,11 +326,12 @@
         android:layout_width="190dp"
         android:layout_height="55dp"
         android:text="Exit"
-        android:textStyle="bold"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="214dp"
-        android:backgroundTint="@color/red"
-        android:drawableRight="@drawable/ic_exit"
+        android:backgroundTint="@color/menusgrey"
+        android:textColor="@color/black"
+        android:layout_marginBottom="22dp"
+        android:drawableRight="@drawable/ic_door1"
         />
 
 </RelativeLayout>

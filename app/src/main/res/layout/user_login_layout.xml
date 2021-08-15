@@ -4,86 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0A5EA8"
+    android:background="@drawable/telekom"
     tools:context=".UserLoginActivity">
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:id="@+id/img"
-        android:src="@drawable/ic_spalsh"
-        android:layout_marginTop="150dp">
-    </ImageView>
 
-    <!--
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Agent MSISDN"
-        android:layout_marginTop="70dp"
-        android:id="@+id/phnbr"
-        android:layout_marginStart="5dp"
-        android:textStyle="bold"
-        android:textSize="25dp"
-        android:textColor="@color/yellowheader">
-    </TextView>
-
-
-    <EditText
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:hint="Phone Number"
-        android:id="@+id/edtphnbr"
-        android:textSize="20dp"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:layout_toRightOf="@id/phnbr"
-        android:layout_marginTop="60dp"
-        >
-    </EditText>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="PIN"
-        android:textSize="25dp"
-        android:layout_marginStart="5dp"
-        android:textStyle="bold"
-        android:textAlignment="center"
-        android:layout_marginTop="15dp"
-        android:layout_below="@+id/phnbr"
-        android:id="@+id/loginpin"
-        android:textColor="@color/yellowheader">
-    </TextView>
-
-
-    <EditText
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:hint="PIN"
-        android:textSize="20dp"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:layout_marginLeft="178dp"
-        android:layout_below="@+id/edtphnbr"
-        android:id="@+id/edtloginpin"
-        android:inputType="numberPassword">
-    </EditText>
-    -->
-
-    <!--
-    <Button
-        android:layout_width="200dp"
-        android:layout_height="60dp"
-        android:text="LOGIN"
-        android:layout_marginTop="350dp"
-        android:layout_marginStart="107dp"
-        android:id="@+id/login"
-        android:textSize="25dp"
-        android:visibility="invisible"
-        android:backgroundTint="@color/red">
-    </Button>
-    -->
     <Button
         android:layout_width="200dp"
         android:layout_height="60dp"
@@ -91,25 +14,24 @@
         android:id="@+id/signup"
         android:textSize="25dp"
         android:layout_marginStart="107dp"
-        android:layout_below="@+id/img"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="@color/red">
+        android:layout_marginTop="420dp"
+        android:textColor="@color/teal_700"
+        android:backgroundTint="@color/yellow">
     </Button>
 
     <com.google.android.material.button.MaterialButton
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:layout_below="@+id/img"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="430dp"
         android:text="1"
         android:id="@+id/BtnData"
         android:textColor="@color/white"
         android:nextFocusRight="@id/signup"
         app:cornerRadius="50dp"
-        android:visibility="gone"
         style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
         android:backgroundTint="@color/red"
-        android:layout_marginStart="320dp">
+        android:layout_marginStart="320dp"
+        android:visibility="gone">
     </com.google.android.material.button.MaterialButton>
 
     <TextView
@@ -125,11 +47,10 @@
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:layout_marginVertical="20dp"
-        android:textColor="@color/white"
+        android:textColor="@color/teal_700"
         android:text="EXIT"
-        android:textStyle="bold"
-        android:textSize="15dp"
-        android:backgroundTint="@color/red"
+        android:textSize="25dp"
+        android:backgroundTint="@color/yellow"
         />
     <TextView
         android:layout_width="wrap_content"
