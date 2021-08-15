@@ -28,7 +28,7 @@ public class SimRegOfflineDataActivity extends AppCompatActivity {
         String simid=intent.getStringExtra("message_key");
 
         //counting the number of files
-        File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+        File dir = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
         File[] files = dir.listFiles();
         int count =0;
         for (File f: files)

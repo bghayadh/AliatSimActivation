@@ -11,26 +11,22 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -41,8 +37,8 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 
 import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPReply;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -50,7 +46,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -257,34 +253,23 @@ public class SimRegInfo extends AppCompatActivity {
             //check the existence of the msisdn file to get the agent msisnd
             //after checking the existence fill it in the edittext and disable it
             try {
-                File file = new File(SimRegInfo.this.getFilesDir(), "MSISDN.txt");
+                FileInputStream fis = null;
+
+                File file = new File(getFilesDir(), "MSISDN.txt");
                 if (file.exists()) {
-
-                    StringBuilder text = new StringBuilder();
-
-                    try {
-                        FileInputStream fIn = SimRegInfo.this.openFileInput("MSISDN.txt");
-                        int c;
-                        String temp = "";
-
-                        while ((c = fIn.read()) != -1) {
-                            temp = temp + Character.toString((char) c);
-                        }
-                        text.append(temp);
-                        text.append('\n');
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    System.out.println("file Exists");
+                    fis = openFileInput("MSISDN.txt");
+                    InputStreamReader isr = new InputStreamReader(fis);
+                    BufferedReader br = new BufferedReader(isr);
+                    StringBuilder sb = new StringBuilder();
+                    String text;
+                    while ((text = br.readLine()) != null) {
+                        sb.append(text).append("\n");
+                        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+                        editagent.setText(text.toString());
                     }
 
 
-                    Result = text.toString();
-                    System.out.println("RESULT" + Result);
-                    String[] data = Result.split(":");
-                    String s0 = data[0];
-
-                    editagent.setText(s0);
-                    editagent.setEnabled(false);
                 } else {
                     System.out.println("login filevdon't exist");
                 }
@@ -365,7 +350,7 @@ public class SimRegInfo extends AppCompatActivity {
 
             }
 
-            File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+            File dir = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
             File[] files = dir.listFiles();
             count = 0;
             for (File f : files) {
@@ -679,8 +664,40 @@ public class SimRegInfo extends AppCompatActivity {
         else{
             Toast.makeText(SimRegInfo.this,"Offline Mode",Toast.LENGTH_SHORT).show();
 
+            editfname = (TextView) findViewById(R.id.efirstname);
+            editmname = (TextView) findViewById(R.id.emiddlename);
+            editlname = (TextView) findViewById(R.id.elastname);
+            editmobile = (TextView) findViewById(R.id.emobilenumber);
+            editdate = (TextView) findViewById(R.id.edateofbirth);
+            kenya = findViewById(R.id.ekenian);
+            foreign = findViewById(R.id.eforien);
+            male = findViewById(R.id.emale);
+            female = findViewById(R.id.efemale);
+            editaltnumber = (EditText) findViewById(R.id.ealtirnativenumber);
+            editemail = (EditText) findViewById(R.id.email);
+            editphylocation = (EditText) findViewById(R.id.ephysicallocation);
+            editpost = (EditText) findViewById(R.id.epostaladdress);
+            sp = (Spinner) findViewById(R.id.statusSpinner);
+            textB = findViewById(R.id.backpath);
+            textF = findViewById(R.id.frontpath);
+            textS = findViewById(R.id.sigpath);
+            editagent = (TextView) findViewById(R.id.eagentnum);
+            editidagent = (TextView) findViewById(R.id.eagentid);
+            signimgIcon = findViewById(R.id.signimgIcon);
+            frontimgIcon = findViewById(R.id.frontimgIcon);
+            backimgIcon = findViewById(R.id.backimgIcon);
+            BtnDelete=findViewById(R.id.BtnDelete);
+            BtnMain=findViewById(R.id.BtnMainn);
+            BtnRegandActivate=findViewById(R.id.activatesim);
+            sign = findViewById(R.id.bsigniture);
+            submit = findViewById(R.id.submitbtn);
+            frontid = findViewById(R.id.bfront);
+            backid = findViewById(R.id.bback);
+            checkBox = findViewById(R.id.chterms);
+
             Intent intent1 = SimRegInfo.this.getIntent();
-            String str1 = intent.getStringExtra("message_key1");
+            String str1 = intent.getStringExtra("message_key");
+            System.out.println("str1 : "+str1);
             globalsimid = str1.toString();
 
             gsigstatus="0";
@@ -744,34 +761,23 @@ public class SimRegInfo extends AppCompatActivity {
 
 
             try {
-                File file = new File(SimRegInfo.this.getFilesDir(), "MSISDN.txt");
+                FileInputStream fis = null;
+
+                File file = new File(getFilesDir(), "MSISDN.txt");
                 if (file.exists()) {
-
-                    StringBuilder text = new StringBuilder();
-
-                    try {
-                        FileInputStream fIn = SimRegInfo.this.openFileInput("MSISDN.txt");
-                        int c;
-                        String temp = "";
-
-                        while ((c = fIn.read()) != -1) {
-                            temp = temp + Character.toString((char) c);
-                        }
-                        text.append(temp);
-                        text.append('\n');
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    System.out.println("file Exists");
+                    fis = openFileInput("MSISDN.txt");
+                    InputStreamReader isr = new InputStreamReader(fis);
+                    BufferedReader br = new BufferedReader(isr);
+                    StringBuilder sb = new StringBuilder();
+                    String text;
+                    while ((text = br.readLine()) != null) {
+                        sb.append(text).append("\n");
+                        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+                        editagent.setText(text.toString());
                     }
 
 
-                    Result = text.toString();
-                    System.out.println("RESULT" + Result);
-                    String[] data = Result.split(":");
-                    String s0 = data[0];
-
-                    editagent.setText(s0);
-                    editagent.setEnabled(false);
                 } else {
                     System.out.println("login filevdon't exist");
                 }
@@ -779,7 +785,7 @@ public class SimRegInfo extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+            File dir = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
             File[] files = dir.listFiles();
             count = 0;
             for (File f : files) {
@@ -1039,7 +1045,7 @@ public class SimRegInfo extends AppCompatActivity {
 
                                             try {
                                                 ActivityCompat.requestPermissions(SimRegInfo.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 23);
-                                                File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+                                                File dir =new File(String.valueOf((getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS))));
                                                 dir.mkdirs();
                                                 String fileName = "SIM_" + editidagent.getText().toString() + ".txt";
                                                 File file = new File(dir, fileName);

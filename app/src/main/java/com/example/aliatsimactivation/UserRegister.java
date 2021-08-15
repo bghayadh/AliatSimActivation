@@ -199,6 +199,10 @@ public class UserRegister extends AppCompatActivity {
         BtnBackID=findViewById(R.id.btnagentbackid);
         tv=findViewById(R.id.text_view);
 
+
+
+
+
         gfrontstatus="0";
         gbackstatus="0";
         gimagestatus="0";
@@ -489,19 +493,24 @@ public class UserRegister extends AppCompatActivity {
     private void createandSaveMSISDNandPIN(){
 
         fileContents = edtphonenbr.getText().toString();
-        fileContents2= edtpin.getText().toString();
+        FileOutputStream fos = null;
         try {
-            FileOutputStream fOut = openFileOutput(file, MODE_PRIVATE);
-            fOut.write(fileContents.getBytes());
-            fOut.write(":".getBytes());
-            fOut.write(fileContents2.getBytes());
-            fOut.close();
-            File fileDir = new File(getFilesDir(), file);
-          //  Toast.makeText(getBaseContext(), "File saved at" + fileDir, Toast.LENGTH_LONG).show();
+            fos = openFileOutput(file, MODE_PRIVATE);
+            fos.write(fileContents.getBytes());
+            Toast.makeText(this, "Data is saved "+ getFilesDir(), Toast.LENGTH_SHORT).show();
+            System.out.println(getFilesDir());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            if (fos!= null){
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -540,7 +549,8 @@ public class UserRegister extends AppCompatActivity {
             fOut.write(secondfileContent9.getBytes());
             fOut.write(":".getBytes());
             fOut.write(secondfileContent10.getBytes());
-            File fileDir = new File(getFilesDir(), secondfile);
+            File fileDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), secondfile);
+            System.out.println("Saved @ :"+fileDir);
             Toast.makeText(getBaseContext(), "File saved at" + fileDir, Toast.LENGTH_LONG).show();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -549,6 +559,9 @@ public class UserRegister extends AppCompatActivity {
         }
 
     }
+
+
+
 
 
     public boolean connecttoDB() {
@@ -576,6 +589,7 @@ public class UserRegister extends AppCompatActivity {
                     connectflag = false;
                     createandSaveMSISDNandPIN();
                     createandSaveOfflinedata();
+
                 } /*catch (IllegalAccessException e) {
             System.out.println("error is: " +e.toString());
             Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();

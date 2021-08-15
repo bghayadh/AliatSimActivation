@@ -23,9 +23,13 @@ import com.jcraft.jsch.Session;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -37,22 +41,20 @@ import java.util.Random;
 
 public class UserLoginActivity extends AppCompatActivity {
     private TextView tv;
-    private String RegisterResult,RegisterResult1;
+    private String RegisterResult, RegisterResult1;
     private String file = "MSISDN.txt";
-    private String s0,s1,s2,s3,s4,s5,s6,s7,s8,s9;
-    private String fileContents,fileContents2;
-    private Button BtnExit,BtnData;
+    private String s0, s1, s2, s3, s4, s5, s6, s7, s8, s9;
+    private String fileContents, fileContents2;
+    private Button BtnExit, BtnData;
     private String secondfile = "Offlinedata.txt";
-    private String secondfileContents,secondfileContents2,secondfileContents3,secondfileContents4,secondfileContents5,secondfileContents6;
+    private String secondfileContents, secondfileContents2, secondfileContents3, secondfileContents4, secondfileContents5, secondfileContents6;
     private Connection conn;
     private TextView tv2;
     private String[] data;
-    private boolean connectflag=false;
-    private String gimagestatus,gfrontstatus,gbackstatus;
+    private boolean connectflag = false;
+    private String gimagestatus, gfrontstatus, gbackstatus;
 
-    SFTP sftp=new SFTP();
-
-
+    SFTP sftp = new SFTP();
 
 
     @Override
@@ -65,9 +67,10 @@ public class UserLoginActivity extends AppCompatActivity {
         BtnExit = findViewById(R.id.BtnExit);
         BtnData = findViewById(R.id.BtnData);
 
-        gimagestatus="0";
-        gfrontstatus="0";
-        gbackstatus="0";
+        gimagestatus = "0";
+        gfrontstatus = "0";
+        gbackstatus = "0";
+
 
 
         Intent intent1 = UserLoginActivity.this.getIntent();
@@ -85,7 +88,7 @@ public class UserLoginActivity extends AppCompatActivity {
 
         //check if the file is found in the given directory and call the load function
         try {
-            File fileDir = new File(getFilesDir(), "MSISDN.txt");
+            File fileDir = new File(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "MSISDN.txt");
             File file = new File(getApplicationContext().getFilesDir(), "MSISDN.txt");
             String sessionId = getIntent().getStringExtra("key");
             System.out.println(sessionId);
@@ -97,13 +100,12 @@ public class UserLoginActivity extends AppCompatActivity {
                     //LoadData();
                     btnregister.setEnabled(false);
                 } else {
-                    if(str1==null) {
-                        str1="1";
+                    if (str1 == null) {
+                        str1 = "1";
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.putExtra("db-offline-to-main", str1);
                         startActivity(intent);
-                    }
-                    else{
+                    } else {
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.putExtra("db-offline-to-main", str1);
                         startActivity(intent);
@@ -208,7 +210,7 @@ public class UserLoginActivity extends AppCompatActivity {
                     }
 
                     try {
-                        File fileDir1 = new File(getFilesDir(), "Offlinedata.txt");
+                        File fileDir1 = new File(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "Offlinedata.txt");
                         File file1 = new File(getApplicationContext().getFilesDir(), "Offlinedata.txt");
                         file1.delete();
                         if (gimagestatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0") || gbackstatus.equalsIgnoreCase("0")) {
@@ -233,16 +235,15 @@ public class UserLoginActivity extends AppCompatActivity {
         try {
 
 
-            File fileDir1 = new File(getFilesDir(), "Offlinedata.txt");
+            File fileDir1 = new File(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "Offlinedata.txt");
             File file1 = new File(getApplicationContext().getFilesDir(), "Offlinedata.txt");
             if (file1.exists()) {
                 BtnData.setVisibility(View.VISIBLE); //SHOW the button
 
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
 
 
     }
@@ -290,10 +291,10 @@ public class UserLoginActivity extends AppCompatActivity {
 
     public boolean connecttoDB() {
         // connect to DB
-        OraDB oradb= new OraDB();
-        String url = oradb.getoraurl ();
-        String userName = oradb.getorausername ();
-        String password = oradb.getorapwd ();
+        OraDB oradb = new OraDB();
+        String url = oradb.getoraurl();
+        String userName = oradb.getorausername();
+        String password = oradb.getorapwd();
 
         try {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -321,13 +322,13 @@ public class UserLoginActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
                 connectflag = false;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return connectflag;
     }
 
-    public static String generateSessionKey(int length){
+    public static String generateSessionKey(int length) {
         String alphabet =
                 new String("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"); // 9
 
@@ -336,7 +337,7 @@ public class UserLoginActivity extends AppCompatActivity {
         String result = new String();
         Random r = new Random(); // 11
 
-        for (int i=0; i<length; i++) // 12
+        for (int i = 0; i < length; i++) // 12
             result = result + alphabet.charAt(r.nextInt(n)); //13
 
         return result;
@@ -349,19 +350,18 @@ public class UserLoginActivity extends AppCompatActivity {
             try {
 
 
-
                 System.out.println("Start");
 
-                String user=sftp.getUser().toString();
-                String pass=sftp.getPass().toString();
-                String host=sftp.getServer().toString();
+                String user = sftp.getUser().toString();
+                String pass = sftp.getPass().toString();
+                String host = sftp.getServer().toString();
                 int e = sftp.getPort();
 
-                Properties config=new Properties();
-                config.put("StrictHostKeyChecking","no");
+                Properties config = new Properties();
+                config.put("StrictHostKeyChecking", "no");
 
                 JSch jSch = new JSch();
-                Session session =jSch.getSession(user,host,e);
+                Session session = jSch.getSession(user, host, e);
                 System.out.println("Step1");
                 session.setPassword(pass);
                 session.setConfig(config);
@@ -373,7 +373,7 @@ public class UserLoginActivity extends AppCompatActivity {
                     channelSftp.connect();
 
                     //check if the global status if equals zero do it
-                    if(gimagestatus.equalsIgnoreCase("0")) {
+                    if (gimagestatus.equalsIgnoreCase("0")) {
 
                         File agentimg = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), s6.toString() + ".jpg");
                         String imgagent = String.valueOf(agentimg);
@@ -382,12 +382,12 @@ public class UserLoginActivity extends AppCompatActivity {
 
                         if (success1) {
                             System.out.println("upload completed : " + imgagent);
-                            UpdateAgentPicStatus(s4.toString(),"AGENT_IMAGE_STATUS");
+                            UpdateAgentPicStatus(s4.toString(), "AGENT_IMAGE_STATUS");
 
                         }
                     }
 
-                    if(gfrontstatus.equalsIgnoreCase("0")) {
+                    if (gfrontstatus.equalsIgnoreCase("0")) {
 
                         File agentfrontid = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), s7.toString() + ".jpg");
                         String frontid = String.valueOf(agentfrontid);
@@ -396,12 +396,12 @@ public class UserLoginActivity extends AppCompatActivity {
 
                         if (success2) {
                             System.out.println("upload completed : " + frontid);
-                            UpdateAgentPicStatus(s4.toString(),"FRONT_SIDE_ID_STATUS");
+                            UpdateAgentPicStatus(s4.toString(), "FRONT_SIDE_ID_STATUS");
 
                         }
                     }
 
-                    if(gbackstatus.equalsIgnoreCase("0")) {
+                    if (gbackstatus.equalsIgnoreCase("0")) {
 
                         File agenbackid = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), s8.toString() + ".jpg");
                         String backid = String.valueOf(agenbackid);
@@ -410,7 +410,7 @@ public class UserLoginActivity extends AppCompatActivity {
 
                         if (success2) {
                             System.out.println("upload completed : " + backid);
-                            UpdateAgentPicStatus(s4.toString(),"BACK_SIDE_ID_STATUS");
+                            UpdateAgentPicStatus(s4.toString(), "BACK_SIDE_ID_STATUS");
                         }
                     }
 
@@ -418,21 +418,20 @@ public class UserLoginActivity extends AppCompatActivity {
                     //   Toast.makeText(SimTest.this,"session connection"+session.isConnected(),Toast.LENGTH_LONG).show();
                     channelSftp.disconnect();
                     session.disconnect();
-                }catch (Exception e1){
+                } catch (Exception e1) {
                     e1.printStackTrace();
                 }
-            }catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     });
 
 
-    public void UpdateAgentPicStatus(String vmsisdn,String vcolname)
-    {
-        boolean flg=false;
+    public void UpdateAgentPicStatus(String vmsisdn, String vcolname) {
+        boolean flg = false;
         try {
-            if((flg=connecttoDB())==true) {
+            if ((flg = connecttoDB()) == true) {
                 PreparedStatement stmtinsert1 = null;
 
                 try {
@@ -454,9 +453,10 @@ public class UserLoginActivity extends AppCompatActivity {
                     throwables.printStackTrace();
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
 }
