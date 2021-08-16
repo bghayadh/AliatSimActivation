@@ -566,9 +566,9 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 @Override
                 public void onClick(View v) {
 
-                    gsigstatus="0";
-                    gfrontstatus="0";
-                    gbackstatus="0";
+                    //gsigstatus="0";
+                    //gfrontstatus="0";
+                    //gbackstatus="0";
                     System.out.println("START HERE NEW");
                     if (sp.getSelectedItem().toString().matches("New")) {
                         System.out.println("START HERE NEW 222");
@@ -685,16 +685,22 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                                 e.printStackTrace();
                                             }
                                             //calling stfp
-                                            if (gsigstatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0") || gbackstatus.equalsIgnoreCase("0")) {
+                                            if (globalsimid.equalsIgnoreCase("0")) {
                                                 Toast.makeText(SimRegInfo.this, "Uploading Photos started", Toast.LENGTH_LONG).show();
-                                                if (globalsimid.equalsIgnoreCase("0")) {
-                                                    thread1.start();
-
-                                                } else {
-
-                                                }
+                                                thread1.start();
                                                 Toast.makeText(SimRegInfo.this, "Upload Completed", Toast.LENGTH_LONG).show();
                                             }
+                                            else {
+                                                if (gsigstatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0") || gbackstatus.equalsIgnoreCase("0")) {
+                                                    Toast.makeText(SimRegInfo.this, "Uploading Photos started", Toast.LENGTH_LONG).show();
+                                                   System.out.println("UPDATE HERE");
+                                                    thread1.start();
+                                                    Toast.makeText(SimRegInfo.this, "Upload Completed", Toast.LENGTH_LONG).show();
+                                                    }
+
+                                            }
+
+
 
 
 
@@ -1415,7 +1421,9 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 System.out.println("Step Connect");
                 ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
                 channelSftp.connect();
-
+                System.out.println("gsigstatus "+ gsigstatus);
+                System.out.println("gfrontstatus "+ gfrontstatus);
+                System.out.println("gbackstatus "+ gbackstatus);
                 //check if the global status if equals zero do it
                 if(gsigstatus.equalsIgnoreCase("0")) {
 
@@ -1474,6 +1482,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 PreparedStatement stmtinsert1 = null;
 
                 try {
+                    System.out.println("update SIM_REGISTRATION set " + vcolname + "=1  where SIM_REG_ID ='" + vsimregid + "'");
                     stmtinsert1 = conn.prepareStatement("update SIM_REGISTRATION set " + vcolname + "=1  where SIM_REG_ID ='" + vsimregid + "'");
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
