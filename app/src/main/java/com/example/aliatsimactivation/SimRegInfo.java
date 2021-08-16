@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,6 +26,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
@@ -60,14 +62,15 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.Properties;
 
-public class SimRegInfo extends AppCompatActivity {
+public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private String gender = null;
     private int count;
     public Connection conn;
     private String globalsimid,simID;
-    private Button submit, frontid, backid;
+    private Button submit, frontid, backid,btndob;
     private Button sign;
     private File file,OfflineFile;
     private String nationality = "";
@@ -219,6 +222,14 @@ public class SimRegInfo extends AppCompatActivity {
         frontid = findViewById(R.id.bfront);
         backid = findViewById(R.id.bback);
         checkBox = findViewById(R.id.chterms);
+        btndob=findViewById(R.id.btncalender);
+        Date c = Calendar.getInstance().getTime();
+
+
+        SimpleDateFormat df=new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        editdate.setText(df.format(c));
+
+
 
         Intent intent = SimRegInfo.this.getIntent();
         String str = intent.getStringExtra("message_key");
@@ -380,6 +391,13 @@ public class SimRegInfo extends AppCompatActivity {
                 }
             });
 
+            btndob.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showDatePickerDialog();
+                }
+            });
+
 
             //front id button to capture the id front side
             frontid.setOnClickListener(new View.OnClickListener() {
@@ -412,6 +430,8 @@ public class SimRegInfo extends AppCompatActivity {
             sign.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+
                     if (editfname.getText().toString().matches("") || editlname.getText().toString().matches("") || editidagent.getText().toString().matches("")) {
                         Toast.makeText(SimRegInfo.this, "INSERT YOUR NAME and  ID NUMBER", Toast.LENGTH_SHORT).show();
                     } else {
@@ -535,6 +555,9 @@ public class SimRegInfo extends AppCompatActivity {
                     gsigstatus="0";
                     gfrontstatus="0";
                     gbackstatus="0";
+
+                    String dY[] = editdate.getText().toString().split("-");
+                    fb = getAge(Integer.parseInt(dY[2]), Integer.parseInt(dY[1]), Integer.parseInt(dY[0]));
                     if (TextUtils.isEmpty(SIGN) || TextUtils.isEmpty(FRONT) || TextUtils.isEmpty(BACK)) {
                         Toast.makeText(SimRegInfo.this, "Must Have Signature and Photos", Toast.LENGTH_LONG).show();
                     } else {
@@ -568,20 +591,10 @@ public class SimRegInfo extends AppCompatActivity {
                                 editemail.setError("Invalid email address");
                             }
 
-                            String datecheck = editdate.getText().toString();
-                            if (datecheck.matches("([0-9]{2})-([0-9]{2})-([0-9]{4})")) {
-                                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-M-yyyy");
-                                LocalDateTime now = LocalDateTime.now();
-                                fb = getAge(editdate.getText().toString(), dtf.format(now));
-                                System.out.println("age: " + fb);
-                                if (fb < 18 && fb >= 0) {
-                                    editdate.setError("Under Age");
-                                } else if (fb >= 18) {
-                                    editdate.setError(null);
-                                }
-                            } else {
-                                editdate.setError("Invalid Format");
-                                Toast.makeText(SimRegInfo.this, "Invalid Date Format \n Use DD-MM-YYYY", Toast.LENGTH_LONG).show();
+                            if (fb < 18 && fb >= 0) {
+                                editdate.setError("Under Age");
+                            } else if (fb >= 18) {
+                                editdate.setError(null);
                             }
                             if (!checkBox.isChecked()) {
                                 Toast.makeText(SimRegInfo.this, "Accept Terms And Conditions", Toast.LENGTH_SHORT).show();
@@ -701,6 +714,12 @@ public class SimRegInfo extends AppCompatActivity {
             frontid = findViewById(R.id.bfront);
             backid = findViewById(R.id.bback);
             checkBox = findViewById(R.id.chterms);
+            btndob=findViewById(R.id.btncalender);
+            Date c1 = Calendar.getInstance().getTime();
+            SimpleDateFormat df1=new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+            editdate.setText((df.format(c1)).toString());
+
+
 
             Intent intent1 = SimRegInfo.this.getIntent();
             String str1 = intent.getStringExtra("message_key");
@@ -712,6 +731,12 @@ public class SimRegInfo extends AppCompatActivity {
             gbackstatus="0";
 
 
+            btndob.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showDatePickerDialog();
+                }
+            });
             frontid.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -981,6 +1006,8 @@ public class SimRegInfo extends AppCompatActivity {
                     if (TextUtils.isEmpty(SIGN) || TextUtils.isEmpty(FRONT) || TextUtils.isEmpty(BACK)) {
                         Toast.makeText(SimRegInfo.this, "Must Have Signature and Photos", Toast.LENGTH_LONG).show();
                     } else {
+                        String dY[] = editdate.getText().toString().split("-");
+                        fb = getAge(Integer.parseInt(dY[2]), Integer.parseInt(dY[1]), Integer.parseInt(dY[0]));
                         if (editfname.getText().toString().matches("") || editmname.getText().toString().matches("") || editlname.getText().toString().matches("") || editmobile.getText().toString().matches("") || editaltnumber.getText().toString().matches("") || editemail.getText().toString().matches("") || editphylocation.getText().toString().matches("") || editpost.getText().toString().matches("") || !editemail.getText().toString().matches(emailpattern) || fb < 18 || !checkBox.isChecked() || SIGN == null || FRONT == null || BACK == null || fb == 0 || editdate.getText().toString() == null) {
 
                             if (editfname.getText().toString().matches("")) {
@@ -1011,20 +1038,10 @@ public class SimRegInfo extends AppCompatActivity {
                                 editemail.setError("Invalid email address");
                             }
 
-                            String datecheck = editdate.getText().toString();
-                            if (datecheck.matches("([0-9]{2})-([0-9]{2})-([0-9]{4})")) {
-                                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-M-yyyy");
-                                LocalDateTime now = LocalDateTime.now();
-                                fb = getAge(editdate.getText().toString(), dtf.format(now));
-                                System.out.println("age: " + fb);
-                                if (fb < 18 && fb >= 0) {
-                                    editdate.setError("Under Age");
-                                } else if (fb >= 18) {
-                                    editdate.setError(null);
-                                }
-                            } else {
-                                editdate.setError("Invalid Format");
-                                Toast.makeText(SimRegInfo.this, "Invalid Date Format \n Use DD-MM-YYYY", Toast.LENGTH_LONG).show();
+                            if (fb < 18 && fb >= 0) {
+                                editdate.setError("Under Age");
+                            } else if (fb >= 18) {
+                                editdate.setError(null);
                             }
                             if (!checkBox.isChecked()) {
                                 Toast.makeText(SimRegInfo.this, "Accept Terms And Conditions", Toast.LENGTH_SHORT).show();
@@ -1535,59 +1552,25 @@ public class SimRegInfo extends AppCompatActivity {
     });
 
 
-    private long getAge(String startdate,String enddate) {
-        SimpleDateFormat sdf1
-                = new SimpleDateFormat(
-                "dd-MM-yyyy");
-
-        SimpleDateFormat sdf2
-                = new SimpleDateFormat(
-                "dd-MM-yyyy");
-
-        // Try Block
-        long difference_In_Years = 0;
-        try {
-
-            // parse method is used to parse
-            // the text from a string to
-            // produce the date
-            Date d1 = sdf1.parse(startdate);
-            Date d2 = sdf2.parse(enddate);
-
-            // Calucalte time difference
-            // in milliseconds
-            long difference_In_Time
-                    = d2.getTime() - d1.getTime();
-
-            // Calucalte time difference in
-            // seconds, minutes, hours, years,
-            // and days
-
-            difference_In_Years = (difference_In_Time
-                    / (1000l * 60 * 60 * 24 * 365));
+    private Integer getAge(int year, int month, int day) {
+        Calendar dob = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
 
 
-            // Print the date difference in
-            // years, in days, in hours, in
-            // minutes, and in seconds
+        dob.set(year, month, day);
 
-            System.out.print(
-                    "Difference "
-                            + "between two dates is: ");
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
 
-            System.out.println(
-                    difference_In_Years
-                            + " years");
+        if ((today.get(Calendar.DAY_OF_YEAR) + 30) < dob.get(Calendar.DAY_OF_YEAR)) {
+            age--;
         }
 
-        // Catch the Exception
-        catch (ParseException e) {
-            e.printStackTrace();
-        }
 
-        return difference_In_Years;
+        Integer ageInt = new Integer(age);
+
+
+        return ageInt;
     }
-
 
 
     public void getDataforSimfromDB() {
@@ -1807,6 +1790,28 @@ public class SimRegInfo extends AppCompatActivity {
             }
         }
     });
+
+
+    public void showDatePickerDialog(){
+        DatePickerDialog datePickerDialog= new DatePickerDialog(
+                this,
+                (DatePickerDialog.OnDateSetListener) this,
+                Calendar.getInstance().get(Calendar.YEAR),
+                Calendar.getInstance().get(Calendar.MONTH),
+                Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+
+        );
+        datePickerDialog.show();
+
+    }
+
+
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        String date= dayOfMonth+"-"+(month+1)+"-"+year;
+        editdate.setText(date);
+
+    }
+
 
 
 

@@ -174,7 +174,7 @@
 
         <EditText
             android:id="@+id/edateofbirth"
-            android:layout_width="match_parent"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/emobilenumber"
             android:layout_marginTop="8dp"
@@ -185,6 +185,14 @@
             android:maxLines="1"
             android:maxLength="12"
             android:inputType="textPersonName" />
+        <Button
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/btncalender"
+            android:backgroundTint="@color/red"
+            android:drawableTop="@drawable/ic_calander"
+            android:layout_toRightOf="@+id/edateofbirth"
+            android:layout_below="@+id/emobilenumber"/>
 
         <TextView
             android:id="@+id/textView7"
