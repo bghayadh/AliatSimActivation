@@ -520,6 +520,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(MainActivity.this, "Not Connected", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(getApplicationContext(), SimRegInfo.class);
+                    i.putExtra("message_key","0");
                     startActivity(i);
                 }
             }

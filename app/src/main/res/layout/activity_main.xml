@@ -213,7 +213,7 @@
         android:text="SIM REGISTRATION"
         android:textAlignment="center"
         android:textSize="15dp"
-        android:layout_marginTop="162dp"
+        android:layout_marginTop="180dp"
         android:paddingTop="15dp"
         android:drawableTop="@drawable/ic_sim1"
         android:backgroundTint="@color/menusgrey"
@@ -230,7 +230,7 @@
         android:layout_toRightOf="@+id/Btnsimreg"
         android:text="MOBILE CHARGE"
         android:textSize="15dp"
-        android:layout_marginTop="162dp"
+        android:layout_marginTop="180dp"
         android:textAlignment="center"
         android:paddingTop="15dp"
         android:drawableTop="@drawable/ic_dollar1"
@@ -316,7 +316,6 @@
         android:layout_marginLeft="8dp"
         android:backgroundTint="@color/menusgrey"
         android:textColor="@color/black"
-        android:layout_marginBottom="22dp"
         android:drawableRight="@drawable/ic_key1"
         />
 
@@ -330,7 +329,6 @@
         android:layout_marginLeft="214dp"
         android:backgroundTint="@color/menusgrey"
         android:textColor="@color/black"
-        android:layout_marginBottom="22dp"
         android:drawableRight="@drawable/ic_door1"
         />
 

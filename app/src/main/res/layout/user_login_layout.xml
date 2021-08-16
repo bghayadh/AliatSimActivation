@@ -14,7 +14,7 @@
         android:id="@+id/signup"
         android:textSize="25dp"
         android:layout_marginStart="107dp"
-        android:layout_marginTop="420dp"
+        android:layout_marginTop="520dp"
         android:textColor="@color/teal_700"
         android:backgroundTint="@color/yellow">
     </Button>

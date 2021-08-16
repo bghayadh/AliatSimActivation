@@ -242,7 +242,9 @@ public class SimRegInfo extends AppCompatActivity {
 
             if (globalsimid != "0") {
                 try {
-                    threadload.start();
+
+
+                    getDataforSimfromDB();
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
@@ -625,9 +627,10 @@ public class SimRegInfo extends AppCompatActivity {
                                             if (gsigstatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0") || gbackstatus.equalsIgnoreCase("0")) {
                                                 Toast.makeText(SimRegInfo.this, "Uploading Photos started", Toast.LENGTH_LONG).show();
                                                 if (globalsimid.equalsIgnoreCase("0")) {
+                                                    thread1.start();
 
                                                 } else {
-                                                    thread1.start();
+
                                                 }
                                                 Toast.makeText(SimRegInfo.this, "Upload Completed", Toast.LENGTH_LONG).show();
                                             }
@@ -1608,6 +1611,8 @@ public class SimRegInfo extends AppCompatActivity {
                     while (true) {
                         try {
                             if (!rs1.next()) break;
+
+                            checkBox.setChecked(true);
                             editfname.setText(rs1.getString("FIRST_NAME"));
                             editmname.setText(rs1.getString("MIDDLE_NAME"));
                             editlname.setText(rs1.getString("LAST_NAME"));
@@ -1631,16 +1636,17 @@ public class SimRegInfo extends AppCompatActivity {
                                 female.setChecked(true);
                                 male.setChecked(false);
                             }
-                            if (rs1.getString("STATUS").matches("New")) {
-                                sp.setSelection(0);
-                            }
+
                             if (rs1.getString("STATUS").matches("In Progress")) {
                                 sp.setSelection(1);
                             }
+
+                            String status=rs1.getString("STATUS");
+                            System.out.println("status : "+status);
                             if (rs1.getString("STATUS").matches("Success")) {
                                 sp.setSelection(2);
                             }
-                            if (rs1.getString("STATUS").matches("Not Success")) {
+                            if (rs1.getString("STATUS").matches("Failed")) {
                                 sp.setSelection(3);
                             }
 
@@ -1655,6 +1661,8 @@ public class SimRegInfo extends AppCompatActivity {
                             gsigstatus = rs1.getString("SIGNATURE_STATUS");
                             gfrontstatus = rs1.getString("FRONT_SIDE_ID_STATUS");
                             gbackstatus = rs1.getString("BACK_SIDE_ID_STATUS");
+
+                            System.out.println(gbackstatus+" "+gfrontstatus+" "+gsigstatus);
 
 
                             if (gsigstatus.equalsIgnoreCase("1")) {
@@ -1688,7 +1696,7 @@ public class SimRegInfo extends AppCompatActivity {
                             }
 
 
-                            checkBox.setChecked(true);
+
 
 
                             //System.out.println(rs1.getString("compteur"));
