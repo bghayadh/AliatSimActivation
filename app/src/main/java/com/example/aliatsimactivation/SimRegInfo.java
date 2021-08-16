@@ -70,7 +70,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     private int count;
     public Connection conn;
     private String globalsimid,simID;
-    private Button submit, frontid, backid,btndob;
+    private Button submit, frontid, backid,btndob,btnlvsimreg;
     private Button sign;
     private File file,OfflineFile;
     private String nationality = "";
@@ -224,6 +224,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         checkBox = findViewById(R.id.chterms);
         btndob=findViewById(R.id.btncalender);
         Date c = Calendar.getInstance().getTime();
+        btnlvsimreg=findViewById(R.id.simreglistview);
 
 
         SimpleDateFormat df=new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
@@ -390,6 +391,15 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     startActivity(i);
                 }
             });
+            //BtnData appear in case offline files exist
+            btnlvsimreg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(SimRegInfo.this, SimRegListViewActivity.class);
+                    startActivity(i);
+                }
+            });
+
 
             btndob.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -555,6 +565,13 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     gsigstatus="0";
                     gfrontstatus="0";
                     gbackstatus="0";
+                    System.out.println("START HERE NEW");
+                    if (sp.getSelectedItem().toString().matches("New")) {
+                        System.out.println("START HERE NEW 222");
+                        b = "In Progress";
+                        sp.setSelection(1);
+                    }
+
 
                     String dY[] = editdate.getText().toString().split("-");
                     fb = getAge(Integer.parseInt(dY[2]), Integer.parseInt(dY[1]), Integer.parseInt(dY[0]));
@@ -611,8 +628,30 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             if (foreign.isChecked()) {
                                 nationality = "Foreign";
                             }
-                            b = "In Progress";
+                            b = sp.getSelectedItem().toString();
+                            if (sp.getSelectedItem().toString().matches("New")){
+                                b = "In Progress";
+                                sp.setSelection(1);
+                            }
                         } else {
+
+                            if (male.isChecked()) {
+                                gender = "Male";
+                            }
+                            if (female.isChecked()) {
+                                gender = "Female";
+                            }
+                            if (kenya.isChecked()) {
+                                nationality = "Kenyan";
+                            }
+                            if (foreign.isChecked()) {
+                                nationality = "Foreign";
+                            }
+
+
+                            b = sp.getSelectedItem().toString();
+                            if (sp.getSelectedItem().toString().matches("New")){
+                                b = "In Progress";sp.setSelection(1);}
                             //start saving
                             new AlertDialog.Builder(SimRegInfo.this)
                                     .setTitle("Submit")
@@ -630,9 +669,14 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
 
                                             try {
+                                                b = sp.getSelectedItem().toString();
+                                                if (sp.getSelectedItem().toString().matches("New")){
+                                                    b = "In Progress";sp.setSelection(1);};
+
                                                 threadload1.start();
                                                 Toast.makeText(SimRegInfo.this, "Saving Completed", Toast.LENGTH_SHORT).show();
-                                                sp.setSelection(1);
+
+
                                             } catch(Exception e) {
                                                 e.printStackTrace();
                                             }
@@ -1626,8 +1670,6 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                 sp.setSelection(1);
                             }
 
-                            String status=rs1.getString("STATUS");
-                            System.out.println("status : "+status);
                             if (rs1.getString("STATUS").matches("Success")) {
                                 sp.setSelection(2);
                             }
@@ -1729,6 +1771,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         if (globalsimid.equalsIgnoreCase("0") || OfflineFile.exists() ) {
                             // if it is a new Warehouse we will use insert
 
+
                             Statement stmt1 = null;
                             stmt1 = conn.createStatement();
                             String sqlStmt = "select SIM_REGISTRATION_SEQ.nextval as nbr from dual";
@@ -1823,3 +1866,4 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
 
 }
+

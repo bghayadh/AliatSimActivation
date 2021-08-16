@@ -307,6 +307,15 @@
         style="@style/Widget.MaterialComponents.Button"
         />
 
+    <TextView
+        android:layout_width="192dp"
+        android:layout_height="140dp"
+        android:layout_marginStart="1dp"
+        android:id="@+id/versionid"
+        android:text="Ver:1.0.1"
+        android:textColor="@color/white"
+        />
+
     <Button
         android:id="@+id/BtnLogin"
         android:layout_width="191dp"
@@ -333,3 +342,4 @@
         />
 
 </RelativeLayout>
+

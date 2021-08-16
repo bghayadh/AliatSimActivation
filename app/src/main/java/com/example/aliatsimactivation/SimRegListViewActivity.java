@@ -50,15 +50,16 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         Date c = Calendar.getInstance().getTime();
         datet=findViewById(R.id.textdate);
 
-        try {
-            GetDataInitial(1, 10);
-        }catch (Exception e){
-            e.printStackTrace();
-    }
-
 
         SimpleDateFormat df=new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         datet.setText(df.format(c));
+        try {
+            //GetDataInitial(1, 10);
+            GetSimData(1,10);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 
 
         btnprevious.setOnClickListener (new View.OnClickListener ( ) {
@@ -66,7 +67,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
             public void onClick(View v) {
                 pagination=pagination-2;
                 if (pagination <=0 ) {pagination=0;}
-                GetDataInitial((pagination *10)+1,(pagination*10)+10);
+                //GetDataInitial((pagination *10)+1,(pagination*10)+10);
                 GetSimData((pagination *10)+1,(pagination*10)+10);
             }
 
@@ -77,7 +78,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         btnnext.setOnClickListener (new View.OnClickListener ( ) {
             @Override
             public void onClick(View v) {
-                GetDataInitial((pagination*10)+1,(pagination*10)+10);
+                //GetDataInitial((pagination*10)+1,(pagination*10)+10);
                 GetSimData((pagination*10)+1,(pagination*10)+10);
             }
         });
@@ -147,6 +148,8 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
                     throwables.printStackTrace();
                 }
 
+                System.out.println("SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,SIM_REG_ID,FIRST_NAME ,LAST_NAME,MOBILE_NUMBER, STATUS from SIM_REGISTRATION where TO_DATE(TO_CHAR(CREATION_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + datet.getText() + "','DD-MM-YYYY')) T WHERE row_num >= '" + vfrom + "' AND row_num <='" + vto + "' " +
+                        " ORDER BY CREATION_DATE DESC");
                 String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,SIM_REG_ID,FIRST_NAME ,LAST_NAME,MOBILE_NUMBER, STATUS from SIM_REGISTRATION where TO_DATE(TO_CHAR(CREATION_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + datet.getText() + "','DD-MM-YYYY')) T WHERE row_num >= '" + vfrom + "' AND row_num <='" + vto + "' " +
                         " ORDER BY CREATION_DATE DESC";
 
@@ -355,3 +358,4 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
 
 
 }
+

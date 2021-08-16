@@ -633,7 +633,7 @@
 
         <Button
             android:id="@+id/BtnMainn"
-            android:layout_width="match_parent"
+            android:layout_width="170dp"
             android:layout_height="60dp"
             android:layout_below="@id/Btnftp"
             android:layout_alignParentBottom="true"
@@ -641,6 +641,18 @@
             android:backgroundTint="@color/red"
             android:drawableRight="@mipmap/ic_main_page"
             android:text="Main Page" />
+
+        <Button
+            android:layout_width="160dp"
+            android:layout_height="60dp"
+            android:layout_below="@id/Btnftp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="1dp"
+            android:layout_marginStart="10dp"
+            android:backgroundTint="@color/red"
+            android:id="@+id/simreglistview"
+            android:text="Sim Reg Listview" />
     </RelativeLayout>
 
 </ScrollView>
