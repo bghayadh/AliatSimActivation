@@ -87,11 +87,11 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     private String s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,s12,s13,s14,s15,s16,s17,b;
     private String emailpattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     private EditText editaltnumber,editemail,editphylocation,editpost;
-    TextView editlname, editfname, textF, textB, textS;
+    private TextView editlname, editfname, textF, textB, textS;
     private String file1 = "MSISDN.txt";
     private String s0, s1, Result;
     private String FRONT, BACK, SIGN = null;
-    TextView editidagent, editagent;
+    private TextView editidagent, editagent;
     SFTP sftp = new SFTP();
     private Button Btnftp,BtnDelete,BtnMain,BtnRegandActivate;
     private ImageButton signimgIcon, frontimgIcon, backimgIcon;
@@ -209,8 +209,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         textB = findViewById(R.id.backpath);
         textF = findViewById(R.id.frontpath);
         textS = findViewById(R.id.sigpath);
-        editagent = (TextView) findViewById(R.id.eagentnum);
-        editidagent = (TextView) findViewById(R.id.eagentid);
+        editagent = findViewById(R.id.eagentnum);
+        editidagent =  findViewById(R.id.eagentid);
         signimgIcon = findViewById(R.id.signimgIcon);
         frontimgIcon = findViewById(R.id.frontimgIcon);
         backimgIcon = findViewById(R.id.backimgIcon);
@@ -292,14 +292,15 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 e.printStackTrace();
             }
 
-            String Off4 = intent.getStringExtra("offline4");
-            editidagent.setText(Off4);
+
             String myFileName = "SIM_" + editidagent.getText().toString() + ".txt";
 
             File directory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
             OfflineFile = new File(directory,myFileName);
             if (OfflineFile.exists())
             {
+
+
                 String Off1 = intent.getStringExtra("offline1");
                 editfname.setText(Off1);
 
@@ -308,6 +309,9 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
                 String Off3 = intent.getStringExtra("offline3");
                 editlname.setText(Off3);
+
+                String Off4 = intent.getStringExtra("offline4");
+                editidagent.setText(Off4);
 
                 String Off5 = intent.getStringExtra("offline5");
                 editmobile.setText(Off5);
@@ -1676,7 +1680,6 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             if (rs1.getString("STATUS").matches("Failed")) {
                                 sp.setSelection(3);
                             }
-
 
                             editidagent.setText(rs1.getString("AGENT_ID"));
                             textF.setText(rs1.getString("ID_FRONT_SIDE_PHOTO"));
