@@ -619,7 +619,7 @@ public class SimRegInfo extends AppCompatActivity {
                                             try {
                                                 threadload1.start();
                                                 Toast.makeText(SimRegInfo.this, "Saving Completed", Toast.LENGTH_SHORT).show();
-
+                                                sp.setSelection(1);
                                             } catch(Exception e) {
                                                 e.printStackTrace();
                                             }
@@ -634,6 +634,8 @@ public class SimRegInfo extends AppCompatActivity {
                                                 }
                                                 Toast.makeText(SimRegInfo.this, "Upload Completed", Toast.LENGTH_LONG).show();
                                             }
+
+
 
 
                                             // Intent i=new Intent(getApplicationContext(),SimRegListViewActivity.class);
@@ -1806,10 +1808,13 @@ public class SimRegInfo extends AppCompatActivity {
         }
     });
 
+
+
     //1-thread for deleting from sftp
     //if success update status to -1
     //hide icons
     //delete from db
     //return to listview
+
 
 }

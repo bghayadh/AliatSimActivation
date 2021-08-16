@@ -66,6 +66,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
             public void onClick(View v) {
                 pagination=pagination-2;
                 if (pagination <=0 ) {pagination=0;}
+                GetDataInitial((pagination *10)+1,(pagination*10)+10);
                 GetSimData((pagination *10)+1,(pagination*10)+10);
             }
 
@@ -76,6 +77,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         btnnext.setOnClickListener (new View.OnClickListener ( ) {
             @Override
             public void onClick(View v) {
+                GetDataInitial((pagination*10)+1,(pagination*10)+10);
                 GetSimData((pagination*10)+1,(pagination*10)+10);
             }
         });
@@ -145,7 +147,8 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
                     throwables.printStackTrace();
                 }
 
-                String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,SIM_REG_ID,FIRST_NAME ,LAST_NAME,MOBILE_NUMBER, STATUS from SIM_REGISTRATION where TO_DATE(TO_CHAR(CREATION_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + datet.getText() + "','DD-MM-YYYY')) T WHERE row_num >= '" + vfrom + "' AND row_num <='" + vto + "'";
+                String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,SIM_REG_ID,FIRST_NAME ,LAST_NAME,MOBILE_NUMBER, STATUS from SIM_REGISTRATION where TO_DATE(TO_CHAR(CREATION_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + datet.getText() + "','DD-MM-YYYY')) T WHERE row_num >= '" + vfrom + "' AND row_num <='" + vto + "' " +
+                        " ORDER BY CREATION_DATE DESC";
 
                 ResultSet rs1 = null;
 
@@ -288,7 +291,8 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
                     throwables.printStackTrace();
                 }
 
-                String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,SIM_REG_ID,FIRST_NAME ,LAST_NAME,MOBILE_NUMBER, STATUS from SIM_REGISTRATION ) T WHERE row_num >='" + vfrom + "' AND row_num <='" + vto + "'";
+                String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,SIM_REG_ID,FIRST_NAME,CREATION_DATE,LAST_NAME,MOBILE_NUMBER, STATUS from SIM_REGISTRATION ) T WHERE row_num >='" + vfrom + "' AND row_num <='" + vto + "'" +
+                        " ORDER BY CREATION_DATE DESC";
 
                 ResultSet rs1 = null;
 
@@ -347,4 +351,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         }
 
     }
+
+
+
 }
