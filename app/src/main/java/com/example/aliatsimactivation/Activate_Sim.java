@@ -147,7 +147,11 @@ public class Activate_Sim extends AppCompatActivity {
             btnexit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    finish();
+
+                    //finish();
+                    Intent intent= new Intent(getApplicationContext(), SimRegInfo.class);
+                    intent.putExtra("message_key",globalsimid);
+                    startActivity(intent);
                 }
             });
         }else {
