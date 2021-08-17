@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     //define buttons
     private Button BtnMobCharge,BtnLogin,BtnSIMReg,BtnSimReport,BtnSimSwap,BtnSubscription,BtnSimStatus,BtnExit;
-    private TextView textstatus;
+
     Connection conn;
     private boolean connectflag=false;
 
@@ -1244,10 +1244,11 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
     Thread thread1 = new Thread(new Runnable() {
+
         @Override
         public void run() {
+
             try {
 
                 TextView today_total = findViewById(R.id.today_total);
@@ -1262,6 +1263,7 @@ public class MainActivity extends AppCompatActivity {
                 TextView month_success = findViewById(R.id.month_success);
                 TextView month_failed = findViewById(R.id.month_failed);
                 TextView month_progress = findViewById(R.id.month_progress);
+                TextView textstatus = findViewById(R.id.textstatus);
                 boolean flg=false;
                 System.out.println("start openning");
 
@@ -1281,7 +1283,7 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         System.out.println("flag : " + connecttoDB());
                         if ((flg = connecttoDB()) == true) {
-
+                            textstatus.setText("Please wait ...");
                             System.out.println("read from database");
                             Statement stmt1 = null;
                             int i = 0;
@@ -1701,18 +1703,24 @@ public class MainActivity extends AppCompatActivity {
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
                             }
-
+                             textstatus.setText("");
                         } else {
+                            textstatus.setText("");
                             System.out.println("database not connected");
 
                         }
                     }
 
+                }else {
+                    textstatus.setText("");
                 }
+
             } catch (Exception e) {
                 System.out.println(e.toString());
             }
+
         }
+
 
     });
 
