@@ -63,7 +63,11 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         handler.post(new Runnable() {
             @Override
             public void run() {
-                thread1.start();
+                try {
+                    thread1.start();
+                }catch (Exception e) {
+                    System.out.println(e.toString());
+                }
             }
         });
 
@@ -268,7 +272,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
                 System.out.println("error 1 is: " + e.toString());
                 //Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
                 connectflag = false;
-                //finishActivity(1);
+                finishActivity(0);
             } /*catch (IllegalAccessException e) {
             System.out.println("error is: " +e.toString());
             Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();
@@ -371,11 +375,23 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
             runOnUiThread(new Runnable(){
                 @Override
                 public void run() {
-                    GetSimData(1, 10);
-                    if (connectflag==true) {
-                        adapter.notifyDataSetChanged();
+                    try {
+                        GetSimData(1, 10);
+                    }catch(Exception e) {
+                        System.out.println(e.toString());
                     }
+                    if (connectflag==true) {
+                        try  {
+                        adapter.notifyDataSetChanged();
+                    }catch(Exception e) {
+                        System.out.println(e.toString());
+                    }
+                    }
+                    try  {
                     textstatus.setVisibility(View.GONE);
+                    }catch(Exception e) {
+                        System.out.println(e.toString());
+                    }
                 }
             });
         }
