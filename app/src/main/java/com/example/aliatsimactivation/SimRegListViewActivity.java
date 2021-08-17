@@ -3,6 +3,7 @@ package com.example.aliatsimactivation;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -56,14 +57,16 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
 
         SimpleDateFormat df=new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         datet.setText(df.format(c));
-        try {
-            //GetDataInitial(1, 10);
-            GetSimData(1,10);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
 
-
+        //Toast.makeText (SimRegListViewActivity.this,"Please wait to connect and load ...",Toast.LENGTH_SHORT).show ();
+        Handler handler = new Handler();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                thread1.start();
+            }
+        });
+        //Toast.makeText (SimRegListViewActivity.this,"Ready to resume",Toast.LENGTH_SHORT).show ();
 
         btnprevious.setOnClickListener (new View.OnClickListener ( ) {
             @Override
@@ -209,6 +212,9 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
                     simregrecview.setAdapter(adapter);
                     simregrecview.setLayoutManager(new LinearLayoutManager(SimRegListViewActivity.this));
                 }
+            }else {
+                adapter=null;
+                simregrecview.setAdapter(adapter);
             }
 
         }catch (Exception e){
@@ -259,15 +265,16 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
 
                 //Toast.makeText (MainActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
             } catch (SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
-                System.out.println("error is: " + e.toString());
+                System.out.println("error 1 is: " + e.toString());
                 //Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
                 connectflag = false;
+                finishActivity(1);
             } /*catch (IllegalAccessException e) {
             System.out.println("error is: " +e.toString());
             Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();
             connectflag=false;
         }*/ catch (Exception e) {
-                System.out.println("error is: " + e.toString());
+                System.out.println("error 2 is: " + e.toString());
                 //Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
                 connectflag = false;
             }
@@ -358,6 +365,20 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
 
     }
 
+    Thread thread1 = new Thread() {
+        @Override
+        public void run() {
+            runOnUiThread(new Runnable(){
+                @Override
+                public void run() {
+                    GetSimData(1, 10);
+                    if (connectflag==true) {
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+            });
+        }
+    };
 
 
 }
