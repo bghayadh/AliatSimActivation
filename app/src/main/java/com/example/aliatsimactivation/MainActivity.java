@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     //define buttons
     private Button BtnMobCharge,BtnLogin,BtnSIMReg,BtnSimReport,BtnSimSwap,BtnSubscription,BtnSimStatus,BtnExit;
+    private TextView textstatus;
     Connection conn;
     private boolean connectflag=false;
 
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         BtnSimStatus=findViewById(R.id.Btnsimstatus);
         BtnLogin=findViewById(R.id.BtnLogin);
         BtnExit=findViewById(R.id.BtnExit);
+
 
         Handler handler = new Handler();
         handler.post(new Runnable() {
@@ -1238,6 +1240,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+
+
+
+
     Thread thread1 = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -1694,20 +1701,19 @@ public class MainActivity extends AppCompatActivity {
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
                             }
+
                         } else {
                             System.out.println("database not connected");
+
                         }
                     }
 
                 }
-
-
-
-
             } catch (Exception e) {
                 System.out.println(e.toString());
             }
         }
+
     });
 
 

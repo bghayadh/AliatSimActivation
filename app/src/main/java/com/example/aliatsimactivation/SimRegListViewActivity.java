@@ -36,7 +36,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
     private Connection connsite;
     public ArrayList<SimRegListView> simA,simdb,simA1,simdb1;
     private Button btnprevious,btnnext,btnnew,btnmain,btndelete,btnselectdate;
-    private TextView datet;
+    private TextView datet,textstatus;
     private boolean connectflag=false;
     private SIMRegViewAdapter adapter;
 
@@ -53,12 +53,12 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
 
         Date c = Calendar.getInstance().getTime();
         datet=findViewById(R.id.textdate);
-
-
+        textstatus=findViewById(R.id.textstatus);
+        textstatus.setVisibility(View.VISIBLE);
         SimpleDateFormat df=new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         datet.setText(df.format(c));
 
-        //Toast.makeText (SimRegListViewActivity.this,"Please wait to connect and load ...",Toast.LENGTH_SHORT).show ();
+
         Handler handler = new Handler();
         handler.post(new Runnable() {
             @Override
@@ -66,7 +66,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
                 thread1.start();
             }
         });
-        //Toast.makeText (SimRegListViewActivity.this,"Ready to resume",Toast.LENGTH_SHORT).show ();
+
 
         btnprevious.setOnClickListener (new View.OnClickListener ( ) {
             @Override
@@ -268,7 +268,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
                 System.out.println("error 1 is: " + e.toString());
                 //Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
                 connectflag = false;
-                finishActivity(1);
+                //finishActivity(1);
             } /*catch (IllegalAccessException e) {
             System.out.println("error is: " +e.toString());
             Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();
@@ -375,6 +375,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
                     if (connectflag==true) {
                         adapter.notifyDataSetChanged();
                     }
+                    textstatus.setVisibility(View.GONE);
                 }
             });
         }
