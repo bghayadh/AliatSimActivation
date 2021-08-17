@@ -63,7 +63,6 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
         System.out.println(email);
         System.out.println(altnumber);
         System.out.println(address1);
-        System.out.println(state);
         System.out.println(agentmsisdn);
 
 

@@ -88,42 +88,49 @@ public class Activate_Sim extends AppCompatActivity {
                 public void onClick(View v) {
 
 
-
                     Intent get = getIntent();
-                    globalsimid = get.getStringExtra("globalsimid");
-                    System.out.println("id : " + globalsimid);
-                    String fname = get.getStringExtra("fname");
-                    String mname = get.getStringExtra("mname");
-                    String lname = get.getStringExtra("lname");
-                    String msisdn = get.getStringExtra("msisdn");
-                    String idType = get.getStringExtra("idType");
-                    String idNumber = get.getStringExtra("idNumber");
-                    String dob = get.getStringExtra("dob");
-                    String gender = get.getStringExtra("gender");
-                    String email = get.getStringExtra("email");
-                    String altnumber = get.getStringExtra("altnumber");
-                    String address1 = get.getStringExtra("address1");
-                    String state = get.getStringExtra("state");
-                    String agentmsisdn = get.getStringExtra("agentmsisdn");
-                    SimRegistrationAPI registrationAPI = new SimRegistrationAPI(globalsimid, fname, mname, lname, msisdn, idType, idNumber, dob, gender, email, altnumber, address1, state, agentmsisdn);
+                    String mainstatus = get.getStringExtra("mainstatus");
+                    System.out.println("STATUS IS HERE NOW "+ mainstatus);
+                    if (mainstatus.toString().matches("Success")) {
+                        Toast.makeText(getApplicationContext(), "Already Success cannot resend command", Toast.LENGTH_SHORT).show();
+                    } else {
+                        globalsimid = get.getStringExtra("globalsimid");
+                        System.out.println("id : " + globalsimid);
+                        String fname = get.getStringExtra("fname");
+                        String mname = get.getStringExtra("mname");
+                        String lname = get.getStringExtra("lname");
+                        String msisdn = get.getStringExtra("msisdn");
+                        String idType = get.getStringExtra("idType");
+                        String idNumber = get.getStringExtra("idNumber");
+                        String dob = get.getStringExtra("dob");
+                        String gender = get.getStringExtra("gender");
+                        String email = get.getStringExtra("email");
+                        String altnumber = get.getStringExtra("altnumber");
+                        String address1 = get.getStringExtra("address1");
+                        String state = get.getStringExtra("state");
+                        String agentmsisdn = get.getStringExtra("agentmsisdn");
 
-                    try {
-                        String res=registrationAPI.execute().get();
-                        if(res != null)
-                        {
+                        SimRegistrationAPI registrationAPI = new SimRegistrationAPI(globalsimid, fname, mname, lname, msisdn, idType, idNumber, dob, gender, email, altnumber, address1, state, agentmsisdn);
 
-                            String[] data=res.split("!!") ;
-                            txtrescode.setText(data[0]);
-                            txtresmessage.setText(data[1]);
+                        try {
+                            String res=registrationAPI.execute().get();
+                            if(res != null)
+                            {
+
+                                String[] data=res.split("!!") ;
+                                txtrescode.setText(data[0]);
+                                txtresmessage.setText(data[1]);
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(),"Error Occured Please Try Again Later",Toast.LENGTH_LONG).show();
+                            }
+
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
-                        else{
-                            Toast.makeText(getApplicationContext(),"Error Occured Please Try Again Later",Toast.LENGTH_LONG).show();
-                        }
 
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
                     }
 
 

@@ -543,7 +543,6 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     String state = editpost.getText().toString();
                     String agentmsisdn = editagent.getText().toString();
 
-
                     Intent a = new Intent(SimRegInfo.this, Activate_Sim.class);
                     a.putExtra("globalsimid", globalsimid);
                     a.putExtra("fname", fname);
@@ -559,6 +558,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     a.putExtra("address1", address1);
                     a.putExtra("state", state);
                     a.putExtra("agentmsisdn", agentmsisdn);
+                    a.putExtra("mainstatus", sp.getSelectedItem().toString().toString());
+
                     startActivity(a);
                 }
             });
@@ -1374,7 +1375,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 //Toast.makeText (MainActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
             } catch (SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
                 System.out.println("error is: " + e.toString());
-                Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
                 connectflag = false;
             } /*catch (IllegalAccessException e) {
             System.out.println("error is: " +e.toString());
@@ -1382,7 +1383,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             connectflag=false;
         }*/ catch (Exception e) {
                 System.out.println("error is: " + e.toString());
-                Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
                 connectflag = false;
             }
         }catch (Exception e){

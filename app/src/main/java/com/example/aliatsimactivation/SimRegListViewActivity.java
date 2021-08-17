@@ -149,8 +149,8 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
                 }
 
                 //SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY CREATION_DATE DESC) row_num,CREATION_DATE,SIM_REG_ID,FIRST_NAME ,LAST_NAME,MOBILE_NUMBER, STATUS from SIM_REGISTRATION where TO_DATE(TO_CHAR(CREATION_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + datet.getText() + "','DD-MM-YYYY')) T WHERE row_num >= '" + vfrom + "' AND row_num <='" + vto + "';
-               // String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,SIM_REG_ID,FIRST_NAME ,LAST_NAME,MOBILE_NUMBER, STATUS from SIM_REGISTRATION where TO_DATE(TO_CHAR(CREATION_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + datet.getText() + "','DD-MM-YYYY')) T WHERE row_num >= '" + vfrom + "' AND row_num <='" + vto + "' " +
-                 //       " ORDER BY CREATION_DATE DESC";
+                // String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,SIM_REG_ID,FIRST_NAME ,LAST_NAME,MOBILE_NUMBER, STATUS from SIM_REGISTRATION where TO_DATE(TO_CHAR(CREATION_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + datet.getText() + "','DD-MM-YYYY')) T WHERE row_num >= '" + vfrom + "' AND row_num <='" + vto + "' " +
+                //       " ORDER BY CREATION_DATE DESC";
 
                 String sqlStmt ="SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY CREATION_DATE DESC) row_num,CREATION_DATE,SIM_REG_ID,FIRST_NAME ,LAST_NAME,MOBILE_NUMBER, STATUS from SIM_REGISTRATION where TO_DATE(TO_CHAR(CREATION_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + datet.getText() + "','DD-MM-YYYY')) T WHERE row_num >= '" + vfrom + "' AND row_num <='" + vto + "'";
                 ResultSet rs1 = null;

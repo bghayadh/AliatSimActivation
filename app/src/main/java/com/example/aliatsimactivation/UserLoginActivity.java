@@ -311,7 +311,7 @@ public class UserLoginActivity extends AppCompatActivity {
                 //Toast.makeText (MainActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
             } catch (SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
                 System.out.println("error is: " + e.toString());
-                Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
                 connectflag = false;
             } /*catch (IllegalAccessException e) {
             System.out.println("error is: " +e.toString());
@@ -319,7 +319,7 @@ public class UserLoginActivity extends AppCompatActivity {
             connectflag=false;
         }*/ catch (Exception e) {
                 System.out.println("error is: " + e.toString());
-                Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
                 connectflag = false;
             }
         } catch (Exception e) {

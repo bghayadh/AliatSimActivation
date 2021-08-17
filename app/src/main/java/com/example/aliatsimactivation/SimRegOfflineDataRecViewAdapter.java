@@ -170,10 +170,10 @@ public class SimRegOfflineDataRecViewAdapter extends RecyclerView.Adapter<SimReg
             conn = DriverManager.getConnection(url, userName, password);
         } catch (IllegalArgumentException | ClassNotFoundException | SQLException e) {
             System.out.println("error is: " + e.toString());
-            Toast.makeText(context, "" + e.toString(), Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(context, "" + e.toString(), Toast.LENGTH_SHORT).show();
         } catch (IllegalAccessException e) {
             System.out.println("error is: " + e.toString());
-            Toast.makeText(context, "" + e.toString(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "" + e.toString(), Toast.LENGTH_SHORT).show();
         } catch (InstantiationException e) {
             System.out.println("error is: " + e.toString());
         }
