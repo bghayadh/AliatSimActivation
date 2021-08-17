@@ -37,6 +37,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
     private Button btnprevious,btnnext,btnnew,btnmain,btndelete,btnselectdate;
     private TextView datet;
     private boolean connectflag=false;
+    private SIMRegViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,8 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         btnnew= findViewById (R.id.btnnew);
         btnmain=findViewById (R.id.btnmain);
         btnselectdate=findViewById(R.id.Btnselectdate);
+        simregrecview = findViewById(R.id.simRecView);
+
         Date c = Calendar.getInstance().getTime();
         datet=findViewById(R.id.textdate);
 
@@ -131,11 +134,13 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
     public void GetSimData(int vfrom, int vto) {
         boolean flg=false;
         try {
+            adapter=null;
+            simregrecview.setAdapter(adapter);
             if((flg=connecttoDB())==true) {
 
 
                 // define recyclerview of sitelistview
-                simregrecview = findViewById(R.id.simRecView);
+
                 simA = new ArrayList<>();
                 simdb = new ArrayList<>();
 
@@ -199,7 +204,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
 
                     pagination = pagination + 1;
                     //connect data to coveragelistadapter
-                    SIMRegViewAdapter adapter = new SIMRegViewAdapter(SimRegListViewActivity.this);
+                    adapter = new SIMRegViewAdapter(SimRegListViewActivity.this);
                     adapter.setContacts(simA);
                     simregrecview.setAdapter(adapter);
                     simregrecview.setLayoutManager(new LinearLayoutManager(SimRegListViewActivity.this));
@@ -230,7 +235,6 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         datet.setText(date);
 
         // connect to DB
-
         GetSimData(1,10);
 
     }
@@ -256,7 +260,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
                 //Toast.makeText (MainActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
             } catch (SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
                 System.out.println("error is: " + e.toString());
-                Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
                 connectflag = false;
             } /*catch (IllegalAccessException e) {
             System.out.println("error is: " +e.toString());
@@ -264,7 +268,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
             connectflag=false;
         }*/ catch (Exception e) {
                 System.out.println("error is: " + e.toString());
-                Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
                 connectflag = false;
             }
         }catch (Exception e){
@@ -281,7 +285,6 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         try {
             if((flg=connecttoDB())==true) {
                 // define recyclerview of sitelistview
-                simregrecview = findViewById(R.id.simRecView);
                 simA = new ArrayList<>();
                 simdb = new ArrayList<>();
 
@@ -294,7 +297,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
                     throwables.printStackTrace();
                 }
 
-                String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,SIM_REG_ID,FIRST_NAME,CREATION_DATE,LAST_NAME,MOBILE_NUMBER, STATUS from SIM_REGISTRATION ) T WHERE row_num >='" + vfrom + "' AND row_num <='" + vto + "'" +
+                String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY CREATION_DATE) row_num,SIM_REG_ID,FIRST_NAME,CREATION_DATE,LAST_NAME,MOBILE_NUMBER, STATUS from SIM_REGISTRATION ) T WHERE row_num >='" + vfrom + "' AND row_num <='" + vto + "'" +
                         " ORDER BY CREATION_DATE DESC";
 
                 ResultSet rs1 = null;
@@ -343,7 +346,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
 
                     pagination = pagination + 1;
                     //connect data to coveragelistadapter
-                    SIMRegViewAdapter adapter = new SIMRegViewAdapter(SimRegListViewActivity.this);
+                    adapter = new SIMRegViewAdapter(SimRegListViewActivity.this);
                     adapter.setContacts(simA);
                     simregrecview.setAdapter(adapter);
                     simregrecview.setLayoutManager(new LinearLayoutManager(SimRegListViewActivity.this));
