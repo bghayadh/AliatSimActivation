@@ -208,6 +208,7 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
                             " RESPONSE_CODE='" + api_response_code + "'," +
                             "RESPONSE_MESSAGE='" + response_message + "'," +
                             "REGISTRATION_STATUS='" + registration_status + "'" +
+                            "STATUS='" + registration_status + "'" +
                             "WHERE SIM_REG_ID='" + globalsimid + "'");
 
                     stmtinsert1 = conn.prepareStatement("UPDATE SIM_REGISTRATION" +
@@ -215,6 +216,7 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
                             " RESPONSE_CODE='" + api_response_code + "'," +
                             "RESPONSE_MESSAGE='" + response_message + "'," +
                             "REGISTRATION_STATUS='" + registration_status + "'" +
+                            "STATUS='" + registration_status + "'" +
                             "WHERE SIM_REG_ID='" + globalsimid + "'");
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();

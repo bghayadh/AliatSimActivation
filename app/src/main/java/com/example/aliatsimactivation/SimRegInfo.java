@@ -571,7 +571,6 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     //gbackstatus="0";
                     System.out.println("START HERE NEW");
                     if (sp.getSelectedItem().toString().matches("New")) {
-                        System.out.println("START HERE NEW 222");
                         b = "In Progress";
                         sp.setSelection(1);
                     }
@@ -693,7 +692,6 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                             else {
                                                 if (gsigstatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0") || gbackstatus.equalsIgnoreCase("0")) {
                                                     Toast.makeText(SimRegInfo.this, "Uploading Photos started", Toast.LENGTH_LONG).show();
-                                                   System.out.println("UPDATE HERE");
                                                     thread1.start();
                                                     Toast.makeText(SimRegInfo.this, "Upload Completed", Toast.LENGTH_LONG).show();
                                                     }
@@ -1421,9 +1419,6 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 System.out.println("Step Connect");
                 ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
                 channelSftp.connect();
-                System.out.println("gsigstatus "+ gsigstatus);
-                System.out.println("gfrontstatus "+ gfrontstatus);
-                System.out.println("gbackstatus "+ gbackstatus);
                 //check if the global status if equals zero do it
                 if(gsigstatus.equalsIgnoreCase("0")) {
 
@@ -1817,8 +1812,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             ///added for pass data in fragment
 
                         } else {
-
-                            stmtinsert1 = conn.prepareStatement("update SIM_REGISTRATION set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + editfname.getText() + "',MIDDLE_NAME='" + editmname.getText() + "',LAST_NAME='" + editlname.getText() + "',STATUS='" + b + "',MOBILE_NUMBER='" + editmobile.getText() + "',NATIONALITY='" + nationality + "',ALTERNATIVE_NUMBER='" + editaltnumber.getText() + "',EMAIL_ADDRESS='" + editemail.getText() + "',PHISICAL_LOCATION='" + editphylocation.getText() + "',POSTAL_ADDRESS='" + editpost.getText() + "',GENDER='" + gender + "',AGENT_NUMBER='" + editagent.getText() + "',AGENT_ID='" + editidagent.getText() + "',SIGNATURE='" + SIGN + "',ID_FRONT_SIDE_PHOTO='" + FRONT + "',ID_BACK_SID_PHOTO='" + BACK + "' where SIM_REG_ID ='" + globalsimid + "'");
+                             stmtinsert1 = conn.prepareStatement("update SIM_REGISTRATION set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + editfname.getText() + "',MIDDLE_NAME='" + editmname.getText() + "',LAST_NAME='" + editlname.getText() + "',STATUS='" + b + "',MOBILE_NUMBER='" + editmobile.getText() + "',NATIONALITY='" + nationality + "',ALTERNATIVE_NUMBER='" + editaltnumber.getText() + "',EMAIL_ADDRESS='" + editemail.getText() + "',PHISICAL_LOCATION='" + editphylocation.getText() + "',POSTAL_ADDRESS='" + editpost.getText() + "',GENDER='" + gender + "',AGENT_NUMBER='" + editagent.getText() + "',AGENT_ID='" + editidagent.getText() + "',SIGNATURE='" + SIGN + "',ID_FRONT_SIDE_PHOTO='" + FRONT + "',ID_BACK_SID_PHOTO='" + BACK + "' where SIM_REG_ID ='" + globalsimid + "'");
                         }
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
