@@ -19,6 +19,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -259,13 +260,21 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             }
 
             if (globalsimid != "0") {
-                try {
+                //try {
 
 
-                    getDataforSimfromDB();
-                } catch(Exception e) {
-                    e.printStackTrace();
-                }
+                 //   getDataforSimfromDB();
+               // } catch(Exception e) {
+               //     e.printStackTrace();
+              //  }
+
+                Handler handler = new Handler();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        threadload.start();
+                    }
+                });
 
             }
 
