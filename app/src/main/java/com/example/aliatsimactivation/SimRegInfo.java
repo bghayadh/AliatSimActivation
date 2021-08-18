@@ -19,7 +19,6 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -109,7 +108,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     FTPClient ftpClient = new FTPClient();
     private String PathSignFTP, PathFrontFTP, PathBackFTP;
     private TextView editmobile,txttest;
-
+    private String stroffile;
     private Spinner sp;
     private boolean connectflag=false;
     private Drawable ddd;
@@ -242,7 +241,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         Intent intent = SimRegInfo.this.getIntent();
         String str = intent.getStringExtra("message_key");
         globalsimid = str.toString();
-
+        stroffile= intent.getStringExtra("db-offline");
 
         ConnectivityManager connMgr = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -260,21 +259,13 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             }
 
             if (globalsimid != "0") {
-                //try {
+                try {
 
 
-                 //   getDataforSimfromDB();
-               // } catch(Exception e) {
-               //     e.printStackTrace();
-              //  }
-
-                Handler handler = new Handler();
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        threadload.start();
-                    }
-                });
+                    getDataforSimfromDB();
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
 
             }
 
@@ -414,7 +405,9 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             btnlvsimreg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    System.out.println("message_key " + stroffile.toString());
                     Intent i = new Intent(SimRegInfo.this, SimRegListViewActivity.class);
+                    i.putExtra("message_key", stroffile.toString());
                     startActivity(i);
                 }
             });
@@ -710,7 +703,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                                     Toast.makeText(SimRegInfo.this, "Uploading Photos started", Toast.LENGTH_LONG).show();
                                                     thread1.start();
                                                     Toast.makeText(SimRegInfo.this, "Upload Completed", Toast.LENGTH_LONG).show();
-                                                    }
+                                                }
 
                                             }
 
@@ -2014,7 +2007,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             ///added for pass data in fragment
 
                         } else {
-                             stmtinsert1 = conn.prepareStatement("update SIM_REGISTRATION set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + editfname.getText() + "',MIDDLE_NAME='" + editmname.getText() + "',LAST_NAME='" + editlname.getText() + "',STATUS='" + b + "',MOBILE_NUMBER='" + editmobile.getText() + "',NATIONALITY='" + nationality + "',ALTERNATIVE_NUMBER='" + editaltnumber.getText() + "',EMAIL_ADDRESS='" + editemail.getText() + "',PHISICAL_LOCATION='" + editphylocation.getText() + "',POSTAL_ADDRESS='" + editpost.getText() + "',GENDER='" + gender + "',AGENT_NUMBER='" + editagent.getText() + "',AGENT_ID='" + editidagent.getText() + "',SIGNATURE='" + SIGN + "',ID_FRONT_SIDE_PHOTO='" + FRONT + "',ID_BACK_SID_PHOTO='" + BACK + "' where SIM_REG_ID ='" + globalsimid + "'");
+                            stmtinsert1 = conn.prepareStatement("update SIM_REGISTRATION set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + editfname.getText() + "',MIDDLE_NAME='" + editmname.getText() + "',LAST_NAME='" + editlname.getText() + "',STATUS='" + b + "',MOBILE_NUMBER='" + editmobile.getText() + "',NATIONALITY='" + nationality + "',ALTERNATIVE_NUMBER='" + editaltnumber.getText() + "',EMAIL_ADDRESS='" + editemail.getText() + "',PHISICAL_LOCATION='" + editphylocation.getText() + "',POSTAL_ADDRESS='" + editpost.getText() + "',GENDER='" + gender + "',AGENT_NUMBER='" + editagent.getText() + "',AGENT_ID='" + editidagent.getText() + "',SIGNATURE='" + SIGN + "',ID_FRONT_SIDE_PHOTO='" + FRONT + "',ID_BACK_SID_PHOTO='" + BACK + "' where SIM_REG_ID ='" + globalsimid + "'");
                         }
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();

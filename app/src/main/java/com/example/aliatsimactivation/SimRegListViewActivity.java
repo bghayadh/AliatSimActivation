@@ -122,7 +122,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
             @Override
             public void onClick(View v) {
 
-                    showDatePickerDialog();
+                showDatePickerDialog();
 
             }
         });
@@ -154,6 +154,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
             public void onClick(View v) {
                 Intent intent= new Intent(getApplicationContext(), SimRegInfo.class);
                 intent.putExtra("message_key","0");
+                intent.putExtra("db-offline", str);
                 startActivity(intent);
             }
         });
@@ -408,13 +409,13 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
                     }
                     if (connectflag==true) {
                         try  {
-                        adapter.notifyDataSetChanged();
-                    }catch(Exception e) {
-                        System.out.println(e.toString());
-                    }
+                            adapter.notifyDataSetChanged();
+                        }catch(Exception e) {
+                            System.out.println(e.toString());
+                        }
                     }
                     try  {
-                    textstatus.setVisibility(View.GONE);
+                        textstatus.setVisibility(View.GONE);
                     }catch(Exception e) {
                         System.out.println(e.toString());
                     }

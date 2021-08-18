@@ -50,6 +50,7 @@ public class SIMRegViewAdapter extends RecyclerView.Adapter<SIMRegViewAdapter.Vi
                 // pass on click wareid value to new activity Sitinforactivity
                 Intent intent =  new Intent(context, SimRegInfo.class);
                 intent.putExtra("message_key", list.get(position).getSimRegListViewId());
+                intent.putExtra("db-offline", "1");
                 context.startActivity(intent);
 
             }
