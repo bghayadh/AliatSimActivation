@@ -160,12 +160,13 @@ public class UserLoginActivity extends AppCompatActivity {
                     tv2.setText(text.toString());
                     tv2.setVisibility(View.INVISIBLE);
                     RegisterResult1 = String.valueOf(tv2.getText());
-
+                    System.out.println(RegisterResult1);
                     boolean flg = false;
                     try {
                         if ((flg = connecttoDB()) == true) {
                             //split the line in the text file according to :
                             data = RegisterResult1.split(":");
+                            System.out.println(data);
                             s0 = data[0];
                             s1 = data[1];
                             s2 = data[2];
@@ -184,7 +185,8 @@ public class UserLoginActivity extends AppCompatActivity {
                                 throwables.printStackTrace();
                             }
                             String sqlStmt = ("insert into SIM_REGISTER_LOGIN (MSISDN,PIN_CODE,FIRST_NAME,LAST_NAME,REGION,ADDRESS,CREATION_DATE,AGENT_IMAGE,AGENT_FRONT_ID,AGENT_BACK_ID,VERIFICATION_CODE,AGENT_IMAGE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS) values " +
-                                    "('" + s4.toString() + "','" + s5.toString() + "','" + s0.toString() + "','" + s1.toString() + "','" + s2.toString() + "','" + s3.toString() + "',sysdate,'" + s6.toString() + "','" + s7.toString() + "','" + s8.toString() + "'," + s9.toString() + "',0,0,0)");
+                                    "('" + s4.toString() + "','" + s5.toString() + "','" + s0.toString() + "','" + s1.toString() + "','" + s2.toString() + "','" + s3.toString() + "',sysdate,'" + s6.toString() + "','" + s7.toString() + "','" + s8.toString() + "','" + s9.toString() + "',0,0,0)");
+                            System.out.println(sqlStmt);
                             ResultSet rs1 = null;
                             try {
                                 rs1 = stmt1.executeQuery(sqlStmt);
@@ -212,12 +214,12 @@ public class UserLoginActivity extends AppCompatActivity {
                     try {
                         File fileDir1 = new File(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "Offlinedata.txt");
                         File file1 = new File(getApplicationContext().getFilesDir(), "Offlinedata.txt");
-                        file1.delete();
+                        // file1.delete();
                         if (gimagestatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0") || gbackstatus.equalsIgnoreCase("0")) {
                             Toast.makeText(UserLoginActivity.this, "Uploading Photos started", Toast.LENGTH_LONG).show();
                             thread1.start();
+                            Toast.makeText(UserLoginActivity.this, "Uploading Photos Completed", Toast.LENGTH_LONG).show();
                         }
-                        Toast.makeText(UserLoginActivity.this, "Uploading Photos Completed", Toast.LENGTH_LONG).show();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -311,7 +313,7 @@ public class UserLoginActivity extends AppCompatActivity {
                 //Toast.makeText (MainActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
             } catch (SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
                 System.out.println("error is: " + e.toString());
-                //Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
                 connectflag = false;
             } /*catch (IllegalAccessException e) {
             System.out.println("error is: " +e.toString());
@@ -319,7 +321,7 @@ public class UserLoginActivity extends AppCompatActivity {
             connectflag=false;
         }*/ catch (Exception e) {
                 System.out.println("error is: " + e.toString());
-                //Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
                 connectflag = false;
             }
         } catch (Exception e) {
@@ -460,3 +462,4 @@ public class UserLoginActivity extends AppCompatActivity {
 
 
 }
+
