@@ -82,10 +82,14 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         btnprevious.setOnClickListener (new View.OnClickListener ( ) {
             @Override
             public void onClick(View v) {
-                pagination=pagination-2;
-                if (pagination <=0 ) {pagination=0;}
-                //GetDataInitial((pagination *10)+1,(pagination*10)+10);
-                GetSimData((pagination *10)+1,(pagination*10)+10);
+                if (str.toString().matches("-100")) {
+
+                }else {
+                    pagination=pagination-2;
+                    if (pagination <=0 ) {pagination=0;}
+                    //GetDataInitial((pagination *10)+1,(pagination*10)+10);
+                    GetSimData((pagination *10)+1,(pagination*10)+10);
+                }
             }
 
         });
@@ -95,8 +99,12 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         btnnext.setOnClickListener (new View.OnClickListener ( ) {
             @Override
             public void onClick(View v) {
-                //GetDataInitial((pagination*10)+1,(pagination*10)+10);
-                GetSimData((pagination*10)+1,(pagination*10)+10);
+                if (str.toString().matches("-100")) {
+
+                }else {
+                    //GetDataInitial((pagination*10)+1,(pagination*10)+10);
+                    GetSimData((pagination*10)+1,(pagination*10)+10);
+                }
             }
         });
 
