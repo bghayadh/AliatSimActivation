@@ -1288,11 +1288,11 @@ public class MainActivity extends AppCompatActivity {
                     if (strdbcon.equalsIgnoreCase("-100")) {
 
                     } else {
+                        //textstatus.setText("Please wait ...");
                         System.out.println("flag : " + connecttoDB());
                         if ((flg = connecttoDB()) == true) {
                             textstatus.setText("Please wait ...");
-                            System.out.println("read from database");
-                            Statement stmt1 = null;
+                             Statement stmt1 = null;
                             int i = 0;
                             try {
                                 stmt1 = conn.createStatement();
@@ -1311,7 +1311,6 @@ public class MainActivity extends AppCompatActivity {
                                     if (!rs1.next()) break;
                                     today_total.setText(rs1.getString("COUNT(*)"));
                                     globaltotal=today_total.getText().toString().trim();
-                                    System.out.println("VALEUR: "+ globaltotal);
                                 } catch (SQLException throwables) {
                                     throwables.printStackTrace();
                                 }

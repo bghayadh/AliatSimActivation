@@ -260,13 +260,15 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             }
 
             if (globalsimid != "0") {
-                Handler handler = new Handler();
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        threadload.start();
-                    }
-                });
+               // Handler handler = new Handler();
+              //  handler.post(new Runnable() {
+               //     @Override
+              //      public void run() {
+                  //      threadload.start();
+                    //}
+              //  });
+
+            getDataforSimfromDB();
 
             }
 
