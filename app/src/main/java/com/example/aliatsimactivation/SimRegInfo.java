@@ -13,6 +13,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -22,6 +23,7 @@ import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -29,6 +31,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -40,6 +43,7 @@ import com.jcraft.jsch.Session;
 
 import org.apache.commons.net.ftp.FTPClient;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -107,6 +111,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
     private Spinner sp;
     private boolean connectflag=false;
+    private Drawable ddd;
+
 
 
     //capture images from cam and save it on the phone
@@ -723,6 +729,192 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     }
                 }
             });
+
+
+            //calling picture from SFTP server
+            if(gsigstatus.equalsIgnoreCase("1")) {
+                signimgIcon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+
+                            SFTP sftp = new SFTP();
+                            System.out.println("Start");
+
+                            String user = sftp.getUser();
+                            String pass = sftp.getPass();
+                            String host = sftp.getServer();
+                            int e = sftp.getPort();
+
+                            Properties config = new Properties();
+                            config.put("StrictHostKeyChecking", "no");
+
+                            JSch jSch = new JSch();
+                            Session session = jSch.getSession(user, host, e);
+                            System.out.println("Step1");
+                            session.setPassword(pass);
+                            session.setConfig(config);
+                            session.connect();
+                            System.out.println("Step Connect");
+                            ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
+                            channelSftp.connect();
+                            System.out.println("connected");
+                            channelSftp.cd("SIMPICSFTP");
+                            System.out.println(channelSftp.pwd());
+                            String path=channelSftp.pwd()+"/";
+                            System.out.println("u are here");
+                            if(channelSftp.lstat(path+SIGN+".jpg")!=null){
+                                System.out.println("Existed");
+                            }
+                            byte[] buffer = new byte[1024];
+                            System.out.println(buffer);
+                            BufferedInputStream bis = new BufferedInputStream(channelSftp.get(path+SIGN+".jpg"));
+                            System.out.println(bis);
+                            ddd = Drawable.createFromStream(bis,"ddd");
+                            System.out.println(ddd);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(SimRegInfo.this);
+                            LayoutInflater inflater = getLayoutInflater();
+                            View dialogLayout = inflater.inflate(R.layout.alert_dialog_with_imageview, null);
+                            builder.setPositiveButton("BACK", null);
+                            ImageView imageView = dialogLayout.findViewById(R.id.imageView);
+                            imageView.setImageDrawable(ddd);
+                            builder.setView(dialogLayout);
+                            builder.show();
+                            bis.close();
+                            System.out.println("you are here now !!!!!!");
+                            channelSftp.disconnect();
+                            session.disconnect();
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+            if(gfrontstatus.equalsIgnoreCase("1")) {
+                frontimgIcon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+
+                            SFTP sftp = new SFTP();
+                            System.out.println("Start");
+
+                            String user = sftp.getUser();
+                            String pass = sftp.getPass();
+                            String host = sftp.getServer();
+                            int e = sftp.getPort();
+
+                            Properties config = new Properties();
+                            config.put("StrictHostKeyChecking", "no");
+
+                            JSch jSch = new JSch();
+                            Session session = jSch.getSession(user, host, e);
+                            System.out.println("Step1");
+                            session.setPassword(pass);
+                            session.setConfig(config);
+                            session.connect();
+                            System.out.println("Step Connect");
+                            ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
+                            channelSftp.connect();
+                            System.out.println("connected");
+                            channelSftp.cd("SIMPICSFTP");
+                            System.out.println(channelSftp.pwd());
+                            String path=channelSftp.pwd()+"/";
+                            System.out.println("u are here");
+                            if(channelSftp.lstat(path+FRONT+".jpg")!=null){
+                                System.out.println("Existed");
+                            }
+                            byte[] buffer = new byte[1024];
+                            System.out.println(buffer);
+                            BufferedInputStream bis = new BufferedInputStream(channelSftp.get(path+FRONT+".jpg"));
+                            System.out.println(bis);
+                            ddd = Drawable.createFromStream(bis,"ddd");
+                            System.out.println(ddd);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(SimRegInfo.this);
+                            LayoutInflater inflater = getLayoutInflater();
+                            View dialogLayout = inflater.inflate(R.layout.alert_dialog_with_imageview, null);
+                            builder.setPositiveButton("BACK", null);
+                            ImageView imageView = dialogLayout.findViewById(R.id.imageView);
+                            imageView.setImageDrawable(ddd);
+                            builder.setView(dialogLayout);
+                            builder.show();
+                            bis.close();
+                            System.out.println("you are here now !!!!!!");
+                            channelSftp.disconnect();
+                            session.disconnect();
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+
+            if(gbackstatus.equalsIgnoreCase("1")) {
+                backimgIcon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+
+                            SFTP sftp = new SFTP();
+                            System.out.println("Start");
+
+                            String user = sftp.getUser();
+                            String pass = sftp.getPass();
+                            String host = sftp.getServer();
+                            int e = sftp.getPort();
+
+                            Properties config = new Properties();
+                            config.put("StrictHostKeyChecking", "no");
+
+                            JSch jSch = new JSch();
+                            Session session = jSch.getSession(user, host, e);
+                            System.out.println("Step1");
+                            session.setPassword(pass);
+                            session.setConfig(config);
+                            session.connect();
+                            System.out.println("Step Connect");
+                            ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
+                            channelSftp.connect();
+                            System.out.println("connected");
+                            channelSftp.cd("SIMPICSFTP");
+                            System.out.println(channelSftp.pwd());
+                            String path=channelSftp.pwd()+"/";
+                            System.out.println("u are here");
+                            if(channelSftp.lstat(path+BACK+".jpg")!=null){
+                                System.out.println("Existed");
+                            }
+                            byte[] buffer = new byte[1024];
+                            System.out.println(buffer);
+                            BufferedInputStream bis = new BufferedInputStream(channelSftp.get(path+BACK+".jpg"));
+                            System.out.println(bis);
+                            ddd = Drawable.createFromStream(bis,"ddd");
+                            System.out.println(ddd);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(SimRegInfo.this);
+                            LayoutInflater inflater = getLayoutInflater();
+                            View dialogLayout = inflater.inflate(R.layout.alert_dialog_with_imageview, null);
+                            builder.setPositiveButton("BACK", null);
+                            ImageView imageView = dialogLayout.findViewById(R.id.imageView);
+                            imageView.setImageDrawable(ddd);
+                            builder.setView(dialogLayout);
+                            builder.show();
+                            bis.close();
+                            System.out.println("you are here now !!!!!!");
+                            channelSftp.disconnect();
+                            session.disconnect();
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+
+            ////////end load picture from sftp
+
+
+
 
 
             Btnftp = findViewById(R.id.Btnftp);
