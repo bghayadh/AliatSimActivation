@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     Connection conn;
     private boolean connectflag=false;
-
+    private String globaltotal=null;
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
@@ -182,6 +182,13 @@ public class MainActivity extends AppCompatActivity {
                 if (networkInfo != null && networkInfo.isConnected()) {
                     Toast.makeText(MainActivity.this,  "Welcome to Sim Registration page",Toast.LENGTH_SHORT).show();
                     Intent intent =new Intent(MainActivity.this, SimRegListViewActivity.class);
+                    System.out.println("SEND TO "+ globaltotal);
+                    if (globaltotal== null) {
+                        intent.putExtra("message_key", "-100");
+                    } else {
+                        intent.putExtra("message_key", "1");
+                    }
+
                     startActivity(intent);
                 } else {
                     Toast.makeText(MainActivity.this,  "Not Connected",Toast.LENGTH_SHORT).show();
@@ -1303,6 +1310,8 @@ public class MainActivity extends AppCompatActivity {
                                 try {
                                     if (!rs1.next()) break;
                                     today_total.setText(rs1.getString("COUNT(*)"));
+                                    globaltotal=today_total.getText().toString().trim();
+                                    System.out.println("VALEUR: "+ globaltotal);
                                 } catch (SQLException throwables) {
                                     throwables.printStackTrace();
                                 }

@@ -39,7 +39,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
     private TextView datet,textstatus;
     private boolean connectflag=false;
     private SIMRegViewAdapter adapter;
-
+    private String datestr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,19 +58,26 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         SimpleDateFormat df=new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         datet.setText(df.format(c));
 
+        Intent intent = SimRegListViewActivity.this.getIntent();
+        String str = intent.getStringExtra("message_key");
+        datestr=str;
+        System.out.println("str "+ str);
 
-        Handler handler = new Handler();
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    thread1.start();
-                }catch (Exception e) {
-                    System.out.println(e.toString());
+        if (str.toString().matches("-100")) {
+            textstatus.setVisibility(View.GONE);
+        }else {
+            Handler handler = new Handler();
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        thread1.start();
+                    } catch (Exception e) {
+                        System.out.println(e.toString());
+                    }
                 }
-            }
-        });
-
+            });
+        }
 
         btnprevious.setOnClickListener (new View.OnClickListener ( ) {
             @Override
@@ -106,7 +113,9 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         btnselectdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDatePickerDialog();
+
+                    showDatePickerDialog();
+
             }
         });
 
@@ -118,7 +127,12 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                GetSimData(1,10);
+                if (str.toString().matches("-100")) {
+
+                }else {
+                    GetSimData(1,10);
+                }
+
             }
 
             @Override
@@ -235,6 +249,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
 
         );
+
         datePickerDialog.show();
 
     }
@@ -245,8 +260,11 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         datet.setText(date);
 
         // connect to DB
-        GetSimData(1,10);
+        if (datestr.toString().matches("-100")) {
 
+        } else {
+            GetSimData(1, 10);
+        }
     }
 
 
