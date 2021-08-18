@@ -734,7 +734,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
 
             //calling picture from SFTP server
-            if(gsigstatus.equalsIgnoreCase("1")) {
+            if(gsigstatus != "0") {
                 signimgIcon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -793,7 +793,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     }
                 });
             }
-            if(gfrontstatus.equalsIgnoreCase("1")) {
+            if(gfrontstatus != "0") {
                 frontimgIcon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -853,7 +853,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 });
             }
 
-            if(gbackstatus.equalsIgnoreCase("1")) {
+            if(gbackstatus != "0") {
                 backimgIcon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
