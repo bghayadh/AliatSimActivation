@@ -260,16 +260,30 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             }
 
             if (globalsimid != "0") {
-               // Handler handler = new Handler();
-              //  handler.post(new Runnable() {
-               //     @Override
-              //      public void run() {
-                  //      threadload.start();
-                    //}
-              //  });
+                // Handler handler = new Handler();
+                //  handler.post(new Runnable() {
+                //     @Override
+                //      public void run() {
+                //      threadload.start();
+                //}
+                //  });
 
-            getDataforSimfromDB();
+                //getDataforSimfromDB();
 
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //getDataforSimfromDB();
+
+                        // ExampleRunnable runnable =new ExampleRunnable();
+                        // runnable.run();
+
+                        // run in offline very good
+                        threadload.start();
+
+
+                    }
+                });
             }
 
 
@@ -1846,90 +1860,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     while (true) {
                         try {
                             if (!rs1.next()) break;
-
-                            checkBox.setChecked(true);
-                            editfname.setText(rs1.getString("FIRST_NAME"));
-                            editmname.setText(rs1.getString("MIDDLE_NAME"));
-                            editlname.setText(rs1.getString("LAST_NAME"));
-                            editmobile.setText(rs1.getString("MOBILE_NUMBER"));
-                            editdate.setText(rs1.getString("DATE_OF_BIRTH").substring(8, 10) + "-" + rs1.getString("DATE_OF_BIRTH").substring(5, 7) + "-" + rs1.getString("DATE_OF_BIRTH").substring(0, 4));
-                            if (rs1.getString("NATIONALITY").matches("Foreign")) {
-                                foreign.setChecked(true);
-                                kenya.setChecked(false);
-                            } else {
-                                kenya.setChecked(true);
-                                foreign.setChecked(false);
-                            }
-                            editaltnumber.setText(rs1.getString("ALTERNATIVE_NUMBER"));
-                            editemail.setText(rs1.getString("EMAIL_ADDRESS"));
-                            editphylocation.setText(rs1.getString("PHISICAL_LOCATION"));
-                            editpost.setText(rs1.getString("POSTAL_ADDRESS"));
-                            if (rs1.getString("GENDER").matches("Male")) {
-                                male.setChecked(true);
-                                female.setChecked(false);
-                            } else {
-                                female.setChecked(true);
-                                male.setChecked(false);
-                            }
-
-                            if (rs1.getString("STATUS").matches("In Progress")) {
-                                sp.setSelection(1);
-                            }
-
-                            if (rs1.getString("STATUS").matches("Success")) {
-                                sp.setSelection(2);
-                            }
-                            if (rs1.getString("STATUS").matches("Failed")) {
-                                sp.setSelection(3);
-                            }
-
-                            editidagent.setText(rs1.getString("AGENT_ID"));
-                            textF.setText(rs1.getString("ID_FRONT_SIDE_PHOTO"));
-                            textB.setText(rs1.getString("ID_BACK_SID_PHOTO"));
-                            textS.setText(rs1.getString("SIGNATURE"));
-                            SIGN = rs1.getString("SIGNATURE");
-                            FRONT = rs1.getString("ID_FRONT_SIDE_PHOTO");
-                            BACK = rs1.getString("ID_BACK_SID_PHOTO");
-                            gsigstatus = rs1.getString("SIGNATURE_STATUS");
-                            gfrontstatus = rs1.getString("FRONT_SIDE_ID_STATUS");
-                            gbackstatus = rs1.getString("BACK_SIDE_ID_STATUS");
-
-                            System.out.println(gbackstatus+" "+gfrontstatus+" "+gsigstatus);
-
-
-                            if (gsigstatus.equalsIgnoreCase("1")) {
-                                signimgIcon.setVisibility(View.VISIBLE);
-                                signimgIcon.setColorFilter(Color.GREEN);
-                                signimgIcon.setBackgroundColor(0);
-                            } else {
-                                signimgIcon.setVisibility(View.VISIBLE);
-                                signimgIcon.setColorFilter(Color.YELLOW);
-                                signimgIcon.setBackgroundColor(0);
-                            }
-
-                            if (gfrontstatus.equalsIgnoreCase("1")) {
-                                frontimgIcon.setVisibility(View.VISIBLE);
-                                frontimgIcon.setColorFilter(Color.GREEN);
-                                frontimgIcon.setBackgroundColor(0);
-                            } else {
-                                frontimgIcon.setVisibility(View.VISIBLE);
-                                frontimgIcon.setColorFilter(Color.YELLOW);
-                                frontimgIcon.setBackgroundColor(0);
-                            }
-
-                            if (gbackstatus.equalsIgnoreCase("1")) {
-                                backimgIcon.setVisibility(View.VISIBLE);
-                                backimgIcon.setColorFilter(Color.GREEN);
-                                backimgIcon.setBackgroundColor(0);
-                            } else {
-                                backimgIcon.setVisibility(View.VISIBLE);
-                                backimgIcon.setColorFilter(Color.YELLOW);
-                                backimgIcon.setBackgroundColor(0);
-                            }
-
-
-
-
+                            FilldatafromDataBase(true,rs1.getString("FIRST_NAME"),rs1.getString("MIDDLE_NAME"),rs1.getString("LAST_NAME"),rs1.getString("MOBILE_NUMBER"),rs1.getString("DATE_OF_BIRTH").substring(8, 10) + "-" + rs1.getString("DATE_OF_BIRTH").substring(5, 7) + "-" + rs1.getString("DATE_OF_BIRTH").substring(0, 4),rs1.getString("NATIONALITY"),rs1.getString("ALTERNATIVE_NUMBER"),rs1.getString("EMAIL_ADDRESS"),rs1.getString("PHISICAL_LOCATION"),rs1.getString("POSTAL_ADDRESS"),rs1.getString("GENDER"),rs1.getString("STATUS"),rs1.getString("AGENT_ID"),rs1.getString("ID_FRONT_SIDE_PHOTO"),rs1.getString("ID_BACK_SID_PHOTO"),rs1.getString("SIGNATURE"),rs1.getString("SIGNATURE_STATUS"),rs1.getString("FRONT_SIDE_ID_STATUS"),rs1.getString("BACK_SIDE_ID_STATUS"));
 
                             //System.out.println(rs1.getString("compteur"));
 
@@ -1955,133 +1886,9 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         @Override
         public void run() {
             try {
-
-                boolean flg=false;
-                try {
-                    if((flg=connecttoDB())==true) {
-                        PreparedStatement stmtinsert1 = null;
-
-                        try {
-                            // if it is a new Warehouse we will use insert
-
-                            Statement stmt1 = null;
-                            stmt1 = conn.createStatement();
-                            String sqlStmt = "select FIRST_NAME,MIDDLE_NAME,LAST_NAME,STATUS,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHISICAL_LOCATION,POSTAL_ADDRESS,GENDER,AGENT_ID,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,SIGNATURE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS FROM SIM_REGISTRATION where SIM_REG_ID = '" + globalsimid + "'";
-                            ResultSet rs1 = null;
-                            try {
-                                rs1 = stmt1.executeQuery(sqlStmt);
-                            } catch (SQLException throwables) {
-                                throwables.printStackTrace();
-                            }
-
-                            while (true) {
-                                try {
-                                    if (!rs1.next()) break;
-
-                                    checkBox.setChecked(true);
-                                    editfname.setText(rs1.getString("FIRST_NAME"));
-                                    editmname.setText(rs1.getString("MIDDLE_NAME"));
-                                    editlname.setText(rs1.getString("LAST_NAME"));
-                                    editmobile.setText(rs1.getString("MOBILE_NUMBER"));
-                                    editdate.setText(rs1.getString("DATE_OF_BIRTH").substring(8, 10) + "-" + rs1.getString("DATE_OF_BIRTH").substring(5, 7) + "-" + rs1.getString("DATE_OF_BIRTH").substring(0, 4));
-                                    if (rs1.getString("NATIONALITY").matches("Foreign")) {
-                                        foreign.setChecked(true);
-                                        kenya.setChecked(false);
-                                    } else {
-                                        kenya.setChecked(true);
-                                        foreign.setChecked(false);
-                                    }
-                                    editaltnumber.setText(rs1.getString("ALTERNATIVE_NUMBER"));
-                                    editemail.setText(rs1.getString("EMAIL_ADDRESS"));
-                                    editphylocation.setText(rs1.getString("PHISICAL_LOCATION"));
-                                    editpost.setText(rs1.getString("POSTAL_ADDRESS"));
-                                    if (rs1.getString("GENDER").matches("Male")) {
-                                        male.setChecked(true);
-                                        female.setChecked(false);
-                                    } else {
-                                        female.setChecked(true);
-                                        male.setChecked(false);
-                                    }
-
-                                    if (rs1.getString("STATUS").matches("In Progress")) {
-                                        sp.setSelection(1);
-                                    }
-
-                                    if (rs1.getString("STATUS").matches("Success")) {
-                                        sp.setSelection(2);
-                                    }
-                                    if (rs1.getString("STATUS").matches("Failed")) {
-                                        sp.setSelection(3);
-                                    }
-
-                                    editidagent.setText(rs1.getString("AGENT_ID"));
-                                    textF.setText(rs1.getString("ID_FRONT_SIDE_PHOTO"));
-                                    textB.setText(rs1.getString("ID_BACK_SID_PHOTO"));
-                                    textS.setText(rs1.getString("SIGNATURE"));
-                                    SIGN = rs1.getString("SIGNATURE");
-                                    FRONT = rs1.getString("ID_FRONT_SIDE_PHOTO");
-                                    BACK = rs1.getString("ID_BACK_SID_PHOTO");
-                                    gsigstatus = rs1.getString("SIGNATURE_STATUS");
-                                    gfrontstatus = rs1.getString("FRONT_SIDE_ID_STATUS");
-                                    gbackstatus = rs1.getString("BACK_SIDE_ID_STATUS");
-
-                                    System.out.println(gbackstatus+" "+gfrontstatus+" "+gsigstatus);
-
-
-                                    if (gsigstatus.equalsIgnoreCase("1")) {
-                                        signimgIcon.setVisibility(View.VISIBLE);
-                                        signimgIcon.setColorFilter(Color.GREEN);
-                                        signimgIcon.setBackgroundColor(0);
-                                    } else {
-                                        signimgIcon.setVisibility(View.VISIBLE);
-                                        signimgIcon.setColorFilter(Color.YELLOW);
-                                        signimgIcon.setBackgroundColor(0);
-                                    }
-
-                                    if (gfrontstatus.equalsIgnoreCase("1")) {
-                                        frontimgIcon.setVisibility(View.VISIBLE);
-                                        frontimgIcon.setColorFilter(Color.GREEN);
-                                        frontimgIcon.setBackgroundColor(0);
-                                    } else {
-                                        frontimgIcon.setVisibility(View.VISIBLE);
-                                        frontimgIcon.setColorFilter(Color.YELLOW);
-                                        frontimgIcon.setBackgroundColor(0);
-                                    }
-
-                                    if (gbackstatus.equalsIgnoreCase("1")) {
-                                        backimgIcon.setVisibility(View.VISIBLE);
-                                        backimgIcon.setColorFilter(Color.GREEN);
-                                        backimgIcon.setBackgroundColor(0);
-                                    } else {
-                                        backimgIcon.setVisibility(View.VISIBLE);
-                                        backimgIcon.setColorFilter(Color.YELLOW);
-                                        backimgIcon.setBackgroundColor(0);
-                                    }
-
-
-
-
-
-                                    //System.out.println(rs1.getString("compteur"));
-
-                                } catch (SQLException throwables) {
-                                    throwables.printStackTrace();
-                                }
-                            }
-                            rs1.close();
-                            stmt1.close();
-
-
-                        } catch (SQLException throwables) {
-                            throwables.printStackTrace();
-                        }
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-
-            }catch(Exception e) {
-                e.printStackTrace();
+                getDataforSimfromDB();
+            }catch (Exception e) {
+                System.out.println(e.toString());
             }
         }
     });
@@ -2180,15 +1987,108 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         editdate.setText(date);
 
     }
+    //not in use
+    class ExampleRunnable implements Runnable {
+        @Override
+        public void run() {
+            try {
+                getDataforSimfromDB();
+            } catch(Exception e) {
+                System.out.println(e.toString());
+            }
+        }
+    }
+
+    public void FilldatafromDataBase(Boolean valeur,String firstname,String middlename,String lastname,String mobilenuber,String dob,String nation,String altnumber,String emailadrs,String phylocation,String postaladr,String vgender,String stat, String agentid,String txtf, String txtb, String txts,String gsigstat,String gfrontstat,String gbackstat  ) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                checkBox.setChecked(valeur);
+                editfname.setText(firstname);
+                editmname.setText(middlename);
+                editlname.setText(lastname);
+                editmobile.setText(mobilenuber);
+                editdate.setText(dob);
+                if (nation.matches("Foreign")) {
+                    foreign.setChecked(true);
+                    kenya.setChecked(false);
+                } else {
+                    kenya.setChecked(true);
+                    foreign.setChecked(false);
+                }
+
+                editaltnumber.setText(altnumber);
+                editemail.setText(emailadrs);
+                editphylocation.setText(phylocation);
+                editpost.setText(postaladr);
+                if (vgender.matches("Male")) {
+                    male.setChecked(true);
+                    female.setChecked(false);
+                } else {
+                    female.setChecked(true);
+                    male.setChecked(false);
+                }
+
+                if (stat.matches("In Progress")) {
+                    sp.setSelection(1);
+                }
+
+                if (stat.matches("Success")) {
+                    sp.setSelection(2);
+                }
+                if (stat.matches("Failed")) {
+                    sp.setSelection(3);
+                }
+
+                editidagent.setText(agentid);
+                textF.setText(txtf);
+                textB.setText(txtb);
+                textS.setText(txts);
+                SIGN = txts;
+                FRONT = txtf;
+                BACK = txtb;
+                gsigstatus = gsigstat;
+                gfrontstatus = gfrontstat;
+                gbackstatus = gbackstat;
+
+                System.out.println(gbackstatus+" "+gfrontstatus+" "+gsigstatus);
 
 
+                if (gsigstatus.equalsIgnoreCase("1")) {
+                    signimgIcon.setVisibility(View.VISIBLE);
+                    signimgIcon.setColorFilter(Color.GREEN);
+                    signimgIcon.setBackgroundColor(0);
+                } else {
+                    signimgIcon.setVisibility(View.VISIBLE);
+                    signimgIcon.setColorFilter(Color.YELLOW);
+                    signimgIcon.setBackgroundColor(0);
+                }
 
+                if (gfrontstatus.equalsIgnoreCase("1")) {
+                    frontimgIcon.setVisibility(View.VISIBLE);
+                    frontimgIcon.setColorFilter(Color.GREEN);
+                    frontimgIcon.setBackgroundColor(0);
+                } else {
+                    frontimgIcon.setVisibility(View.VISIBLE);
+                    frontimgIcon.setColorFilter(Color.YELLOW);
+                    frontimgIcon.setBackgroundColor(0);
+                }
 
-    //1-thread for deleting from sftp
-    //if success update status to -1
-    //hide icons
-    //delete from db
-    //return to listview
+                if (gbackstatus.equalsIgnoreCase("1")) {
+                    backimgIcon.setVisibility(View.VISIBLE);
+                    backimgIcon.setColorFilter(Color.GREEN);
+                    backimgIcon.setBackgroundColor(0);
+                } else {
+                    backimgIcon.setVisibility(View.VISIBLE);
+                    backimgIcon.setColorFilter(Color.YELLOW);
+                    backimgIcon.setBackgroundColor(0);
+                }
+
+            }
+
+        });
+    }
+
 
 
 }
