@@ -92,6 +92,7 @@ public class Activate_Sim extends AppCompatActivity {
                     String mainstatus = get.getStringExtra("mainstatus");
                     System.out.println("STATUS IS HERE NOW "+ mainstatus);
                     if (mainstatus.toString().matches("Success")) {
+                        globalsimid = get.getStringExtra("globalsimid");
                         Toast.makeText(getApplicationContext(), "Already Success cannot resend command", Toast.LENGTH_SHORT).show();
                     } else {
                         globalsimid = get.getStringExtra("globalsimid");
