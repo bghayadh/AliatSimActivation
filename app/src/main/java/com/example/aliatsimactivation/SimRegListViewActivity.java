@@ -60,7 +60,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
 
         Intent intent = SimRegListViewActivity.this.getIntent();
         String str = intent.getStringExtra("message_key");
-        datestr=str;
+        //datestr=str;
         System.out.println("str "+ str);
 
        // if (str.toString().matches("-100")) {
@@ -82,7 +82,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         btnprevious.setOnClickListener (new View.OnClickListener ( ) {
             @Override
             public void onClick(View v) {
-                if (str.toString().matches("-100")) {
+                if (datestr.toString().matches("-100")) {
 
                 }else {
                     pagination=pagination-2;
@@ -99,7 +99,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         btnnext.setOnClickListener (new View.OnClickListener ( ) {
             @Override
             public void onClick(View v) {
-                if (str.toString().matches("-100")) {
+                if (datestr.toString().matches("-100")) {
 
                 }else {
                     //GetDataInitial((pagination*10)+1,(pagination*10)+10);
@@ -135,7 +135,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (str.toString().matches("-100")) {
+                if (datestr.toString().matches("-100")) {
 
                 }else {
                     GetSimData(1,10);
@@ -292,7 +292,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
 
         // connect to DB
         if (datestr.toString().matches("-100")) {
-            System.out.println("SHOW BASED ON DATE");
+
         } else {
 
 
@@ -446,12 +446,17 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
                     if (connectflag==true) {
                         try  {
                             adapter.notifyDataSetChanged();
+                            datestr="0";
                         }catch(Exception e) {
                             System.out.println(e.toString());
                         }
+                    } else {
+                        datestr="-100";
+                        System.out.println(datestr);
                     }
                     try  {
                         textstatus.setVisibility(View.GONE);
+
                     }catch(Exception e) {
                         System.out.println(e.toString());
                     }
