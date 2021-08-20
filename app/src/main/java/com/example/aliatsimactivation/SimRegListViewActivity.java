@@ -63,9 +63,9 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         datestr=str;
         System.out.println("str "+ str);
 
-        if (str.toString().matches("-100")) {
-            textstatus.setVisibility(View.GONE);
-        }else {
+       // if (str.toString().matches("-100")) {
+        //    textstatus.setVisibility(View.GONE);
+       // } else {
             Handler handler = new Handler();
             handler.post(new Runnable() {
                 @Override
@@ -77,7 +77,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
                     }
                 }
             });
-        }
+        //}
 
         btnprevious.setOnClickListener (new View.OnClickListener ( ) {
             @Override
@@ -292,9 +292,23 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
 
         // connect to DB
         if (datestr.toString().matches("-100")) {
-
+            System.out.println("SHOW BASED ON DATE");
         } else {
-            GetSimData(1, 10);
+
+
+
+            Handler handler = new Handler();
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        thread1.start();
+                    } catch (Exception e) {
+                        System.out.println(e.toString());
+                    }
+                }
+            });
+
         }
     }
 
