@@ -196,13 +196,9 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
         System.out.println("status : "+registration_status);
 
 
+         // to call update in database (SIM status
+         thread1.start();
 
-
-                thread1.start();
-
-
-
-     
         data=api_response_code+"!!"+response_message;
         System.out.println("data: "+data);
 

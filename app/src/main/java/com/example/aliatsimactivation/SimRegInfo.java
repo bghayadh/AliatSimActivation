@@ -750,7 +750,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     startActivity(i);
                 }
             });
-
+            //delete on line
             BtnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -785,14 +785,23 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
                             }
+                            Intent i = new Intent(SimRegInfo.this, SimRegListViewActivity.class);
+                            startActivity(i);
+                        } else {
+                            String myFileName = "SIM_" + editmobile.getText().toString() + ".txt";
+                            File directory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+                            OfflineFile = new File(directory,myFileName);
+                            OfflineFile.delete();
+                            Toast.makeText(SimRegInfo.this,"Offline File Deleted Successfully",Toast.LENGTH_LONG).show();
+                            finish();
+                            startActivity(getIntent());
                         }
 
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
-                    Intent i = new Intent(SimRegInfo.this, SimRegListViewActivity.class);
-                    startActivity(i);
+
                 }
             });
 
@@ -1468,49 +1477,17 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     startActivity(i);
                 }
             });
-
+            // delete in offline mode
             BtnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(SimRegInfo.this, "Deleting Photos from SFTP", Toast.LENGTH_LONG).show();
-                    thread2.start();
-                    Toast.makeText(SimRegInfo.this, "The Photos Deleted from SFTP", Toast.LENGTH_LONG).show();
-
-                    boolean flg = false;
-                    try {
-                        if ((flg = connecttoDB()) == true) {
-
-
-                            Toast.makeText(SimRegInfo.this, "Starting Deletion in DataBase", Toast.LENGTH_SHORT).show();
-                            PreparedStatement stmtinsert1 = null;
-
-                            try {
-                                stmtinsert1 = conn.prepareStatement("delete from SIM_REGISTRATION where SIM_REG_ID='" + globalsimid + "'");
-                            } catch (SQLException throwables) {
-                                throwables.printStackTrace();
-                            }
-                            try {
-                                stmtinsert1.executeUpdate();
-                                Toast.makeText(SimRegInfo.this, "Deleted Completed from DataBase", Toast.LENGTH_LONG).show();
-                            } catch (SQLException throwables) {
-                                throwables.printStackTrace();
-                            }
-
-
-                            try {
-                                stmtinsert1.close();
-                                conn.close();
-                            } catch (SQLException throwables) {
-                                throwables.printStackTrace();
-                            }
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    Intent i = new Intent(SimRegInfo.this, SimRegListViewActivity.class);
-                    startActivity(i);
+                    String myFileName = "SIM_" + editmobile.getText().toString() + ".txt";
+                    File directory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+                    OfflineFile = new File(directory,myFileName);
+                    OfflineFile.delete();
+                    Toast.makeText(SimRegInfo.this,"Offline File Deleted Successfully",Toast.LENGTH_LONG).show();
+                    finish();
+                    startActivity(getIntent());
                 }
             });
 
@@ -2281,6 +2258,45 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 else {
                     //Saving OFFLINE when no connection to DB  TURKIEH
                     System.out.println ("SAVE WHEN DB not reachable");
+
+                    try {
+                        ActivityCompat.requestPermissions(SimRegInfo.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 23);
+                        File dir = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+                        dir.mkdirs();
+                        String fileName = "SIM_" + editmobile.getText().toString() + ".txt";
+                        File file = new File(dir, fileName);
+                        FileWriter fw = new FileWriter(file.getAbsoluteFile());
+                        BufferedWriter bw = new BufferedWriter(fw);
+                        bw.write(editfname.getText().toString() + "\n");
+                        bw.write(editmname.getText().toString() + "\n");
+                        bw.write(editlname.getText().toString() + "\n");
+                        bw.write(editmobile.getText().toString() + "\n");
+                        bw.write(editdate.getText().toString() + "\n");
+                        bw.write(nationality.toString() + "\n");
+                        bw.write(editaltnumber.getText().toString() + "\n");
+                        bw.write(editemail.getText().toString() + "\n");
+                        bw.write(editphylocation.getText().toString() + "\n");
+                        bw.write(editpost.getText().toString() + "\n");
+                        bw.write(gender.toString() + "\n");
+                        bw.write(editagent.getText().toString() + "\n");
+                        bw.write(editidagent.getText().toString() + "\n");
+                        bw.write(SIGN.toString() + "\n");
+                        bw.write(FRONT.toString() + "\n");
+                        bw.write(BACK.toString() + "\n");
+                        bw.write(b);
+                        bw.close();
+                        //Toast.makeText(SimRegInfo.this, fileName + " is saved to\n" + dir, Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(SimRegInfo.this, SimRegOfflineDataActivity.class);
+                        startActivity(intent);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println ("SAVE COMPLETED  WHEN DB not reachable");
+
+
+
                 }
             } catch (Exception e) {
                 e.printStackTrace();
