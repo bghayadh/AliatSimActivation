@@ -66,13 +66,13 @@ public class UserLoginActivity extends AppCompatActivity {
         Button btnregister = findViewById(R.id.signup);
         BtnExit = findViewById(R.id.BtnExit);
         BtnData = findViewById(R.id.BtnData);
-
+        //initialize picture sftp status
         gimagestatus = "0";
         gfrontstatus = "0";
         gbackstatus = "0";
 
 
-
+        //read value coming from user agent if 1 means conect = true if -100 means np DB connection
         Intent intent1 = UserLoginActivity.this.getIntent();
         String str1 = intent1.getStringExtra("db-offline-to-main");
 

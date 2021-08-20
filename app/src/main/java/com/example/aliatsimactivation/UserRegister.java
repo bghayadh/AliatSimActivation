@@ -69,6 +69,7 @@ public class UserRegister extends AppCompatActivity {
     private boolean connectflag=false;
     private String gimagestatus,gfrontstatus,gbackstatus;
 
+    // to call sftp class
     SFTP sftp=new SFTP();
 
 
@@ -76,6 +77,7 @@ public class UserRegister extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        //sftp AgentImage to server
         if(requestCode==100)
         {
             AgentImage=edtfname.getText().toString()+"_"+edtlname.getText().toString()+"_AGENT_"+edtphonenbr.getText().toString();
@@ -109,6 +111,7 @@ public class UserRegister extends AppCompatActivity {
                 gimagestatus="0";
             }
         }
+        //sftp AgentFrontID to server
         if(requestCode==101)
         {
             AgentFrontID=edtfname.getText().toString()+"_"+edtlname.getText().toString()+"_FRONT_"+edtphonenbr.getText().toString();
@@ -142,6 +145,7 @@ public class UserRegister extends AppCompatActivity {
             }
 
         }
+        //sftp AgentBackID to server
         if (requestCode==102)
         {
             AgentBackID=edtfname.getText().toString()+"_"+edtlname.getText().toString()+"_Back_"+edtphonenbr.getText().toString();
@@ -202,7 +206,7 @@ public class UserRegister extends AppCompatActivity {
 
 
 
-
+        // initialize status of sftp to 0
         gfrontstatus="0";
         gbackstatus="0";
         gimagestatus="0";
@@ -210,6 +214,7 @@ public class UserRegister extends AppCompatActivity {
         BtnAgentImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // validate that all pictures should be taken no missing foto to save
                 if(edtfname.getText().toString().matches("")||edtlname.getText().toString().matches("") || edtphonenbr.getText().toString().matches("")) {
                     Toast.makeText(UserRegister.this, "INSERT YOUR NAME and MSISDN", Toast.LENGTH_SHORT).show();
                 }
@@ -221,6 +226,7 @@ public class UserRegister extends AppCompatActivity {
         BtnFrontID.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // validate hat all pictures shoudl be taken no missing foto to save
                 if(edtfname.getText().toString().matches("")||edtlname.getText().toString().matches("") || edtphonenbr.getText().toString().matches("")) {
                     Toast.makeText(UserRegister.this, "INSERT YOUR NAME and MSISDN", Toast.LENGTH_SHORT).show();
                 }
@@ -232,6 +238,7 @@ public class UserRegister extends AppCompatActivity {
         BtnBackID.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // validate hat all pictures shoudl be taken no missing foto to save
                 if(edtfname.getText().toString().matches("")||edtlname.getText().toString().matches("") || edtphonenbr.getText().toString().matches("")) {
                     Toast.makeText(UserRegister.this, "INSERT YOUR NAME and MSISDN", Toast.LENGTH_SHORT).show();
                 }
@@ -242,7 +249,7 @@ public class UserRegister extends AppCompatActivity {
 
 
 
-        //code for verification
+        // Send code for verification
         Code=generateSessionKey(6);
 
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -264,7 +271,7 @@ public class UserRegister extends AppCompatActivity {
         verify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // click button in red Verify
                 System.out.println("in process please wait");
 
                 ConnectivityManager connMgr = (ConnectivityManager) getApplicationContext()
@@ -277,6 +284,7 @@ public class UserRegister extends AppCompatActivity {
                     //here we have connection to the internet
                     //permit the user to verify if one edittext is empty
                     try {
+                        //validat that all fiedls not to be empty
                         if (TextUtils.isEmpty(edtfname.getText()) || TextUtils.isEmpty(edtlname.getText()) || TextUtils.isEmpty(edtregion.getText()) || TextUtils.isEmpty(edtaddress.getText()) || TextUtils.isEmpty(edtphonenbr.getText()) || TextUtils.isEmpty(edtpin.getText()) || TextUtils.isEmpty(AgentImage) || TextUtils.isEmpty(AgentFrontID) || TextUtils.isEmpty(AgentBackID)) {
                             edtfname.setError("Enter First Name");
                             edtlname.setError("Enter Last Name");
@@ -290,7 +298,7 @@ public class UserRegister extends AppCompatActivity {
 
                         } else {
 
-                            //open dialog
+                            //open dialog to enter code generated
                             AlertDialog.Builder mydialog = new AlertDialog.Builder(UserRegister.this);
                             mydialog.setTitle("Enter The Code");
 
@@ -316,7 +324,7 @@ public class UserRegister extends AppCompatActivity {
                                                     PreparedStatement stmtinsert1 = null;
 
                                                     try {
-
+                                                        //save agentlogin in Database
                                                         stmtinsert1 = conn.prepareStatement("insert into SIM_REGISTER_LOGIN (MSISDN,PIN_CODE,FIRST_NAME,LAST_NAME,ADDRESS,REGION,CREATION_DATE,AGENT_IMAGE,AGENT_FRONT_ID,AGENT_BACK_ID,VERIFICATION_CODE,AGENT_IMAGE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS) values " +
                                                                 "('" + edtphonenbr.getText().toString() + "','" + edtpin.getText().toString() + "','" + edtfname.getText().toString() + "','" + edtlname.getText().toString() + "','" + edtaddress.getText().toString() + "','" + edtregion.getText().toString() + "',sysdate,'" + AgentImage + "','" + AgentFrontID + "','" + AgentFrontID + "','" + Code + "',0,0,0)");
 
@@ -347,12 +355,13 @@ public class UserRegister extends AppCompatActivity {
                                                 }
 
 
-
+                                                //if we have cnnection the value sent is 1
                                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                                 intent.putExtra("db-offline-to-main","1");
                                                 startActivity(intent);
                                             }else
                                             {
+                                                //in case no database connection we are sending flag value -100
                                                 System.out.println("offline in dialog");
                                                 Intent intent = new Intent(getApplicationContext(), UserLoginActivity.class);
                                                 intent.putExtra("db-offline-to-main","-100");
@@ -587,6 +596,7 @@ public class UserRegister extends AppCompatActivity {
                     System.out.println("error is: " + e.toString());
                     //Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
                     connectflag = false;
+                    //save offline in case no connection
                     createandSaveMSISDNandPIN();
                     createandSaveOfflinedata();
 
@@ -629,8 +639,7 @@ public class UserRegister extends AppCompatActivity {
             try {
 
 
-
-                System.out.println("Start");
+                //sftp send pictures
 
                 String user=sftp.getUser().toString();
                 String pass=sftp.getPass().toString();

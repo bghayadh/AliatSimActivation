@@ -429,6 +429,22 @@
             android:visibility="gone"/>
 
         <TextView
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/signstatus"
+            android:layout_below="@+id/textView12"
+            android:text="DISCARD"
+            android:textColor="@color/grey"
+            android:visibility="gone"/>
+        <View
+            android:layout_width="60dp"
+            android:layout_height="0.7dp"
+            android:id="@+id/line"
+            android:layout_below="@+id/signstatus"
+            android:background="@color/grey"
+            android:visibility="gone"/>
+
+        <TextView
             android:id="@+id/sigpath"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -449,7 +465,21 @@
             android:textColor="@color/mixte"
             android:text="ID Front Side"
             />
-
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/frontstatus"
+            android:layout_below="@+id/textView13"
+            android:text="DISCARD"
+            android:textColor="@color/grey"
+            android:visibility="gone"/>
+        <View
+            android:layout_width="60dp"
+            android:layout_height="0.7dp"
+            android:id="@+id/line1"
+            android:layout_below="@+id/frontstatus"
+            android:background="@color/grey"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/bfront"
@@ -494,6 +524,21 @@
             android:textSize="16dp"
             android:textColor="@color/mixte"
             />
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/backstatus"
+            android:layout_below="@+id/textView14"
+            android:text="DISCARD"
+            android:textColor="@color/grey"
+            android:visibility="gone"/>
+        <View
+            android:layout_width="60dp"
+            android:layout_height="0.7dp"
+            android:id="@+id/line2"
+            android:layout_below="@+id/backstatus"
+            android:background="@color/grey"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/bback"
@@ -615,7 +660,7 @@
             android:backgroundTint="@color/red"
             android:layout_marginStart="5dp"
             android:layout_marginTop="1dp"
-            android:text="SFTP PENDING" />
+            android:text="Upload Images" />
 
 
         <Button
