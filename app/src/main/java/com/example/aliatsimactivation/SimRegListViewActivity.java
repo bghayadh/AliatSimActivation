@@ -173,7 +173,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
 
                 simA = new ArrayList<>();
                 simdb = new ArrayList<>();
-
+                datestr="0";
                 //Add data for sitelistview recyclerview
                 Statement stmt1 = null;
                 int i = 0;
@@ -361,7 +361,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
                 // define recyclerview of sitelistview
                 simA = new ArrayList<>();
                 simdb = new ArrayList<>();
-
+                datestr="0";
                 //Add data for sitelistview recyclerview
                 Statement stmt1 = null;
                 int i = 0;
