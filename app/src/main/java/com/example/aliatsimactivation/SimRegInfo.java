@@ -951,15 +951,14 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                                 b = sp.getSelectedItem().toString();
                                                 if (sp.getSelectedItem().toString().matches("New")){
                                                     b = "In Progress";sp.setSelection(1);};
+
+                                                System.out.println("Start to save now");
                                                 //save on line
-                                                //threadload1.start();
+                                                threadload1.start();
 
-                                                System.out.println("globalsimid chk 1"+ globalsimid);
-                                                System.out.println("gsigstatus chk 1 " +gsigstatus);
-                                                System.out.println("gfrontstatus chk 1"+gfrontstatus);
-                                                System.out.println("gbackstatus chk 1"+gbackstatus);
 
-                                                SavedataSIM();
+                                                //not in use now
+                                                //SavedataSIM();
                                                 Toast.makeText(SimRegInfo.this, "Saving Completed", Toast.LENGTH_SHORT).show();
 
 
@@ -967,11 +966,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                                 e.printStackTrace();
                                             }
 
-                                            System.out.println("globalsimid chk 2 "+ globalsimid);
-                                            System.out.println("gsigstatus chk 2"+gsigstatus);
-                                            System.out.println("gfrontstatus chk 2"+gfrontstatus);
-                                            System.out.println("gbackstatus chk 2"+gbackstatus);
-
+                                            /*
                                             //calling to upload pictures  using stfp
                                             if (globalsimid.equalsIgnoreCase("0")) {
                                                 Toast.makeText(SimRegInfo.this, "New SIM Uploading Photos started", Toast.LENGTH_LONG).show();
@@ -985,7 +980,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                                     Toast.makeText(SimRegInfo.this, "Exist SIM Upload Completed", Toast.LENGTH_LONG).show();
                                                 }
 
-                                            }
+                                            } */
 
 
 
@@ -2237,12 +2232,35 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         } else {
                             stmtinsert1 = conn.prepareStatement("update SIM_REGISTRATION set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + editfname.getText() + "',MIDDLE_NAME='" + editmname.getText() + "',LAST_NAME='" + editlname.getText() + "',STATUS='" + b + "',MOBILE_NUMBER='" + editmobile.getText() + "',NATIONALITY='" + nationality + "',ALTERNATIVE_NUMBER='" + editaltnumber.getText() + "',EMAIL_ADDRESS='" + editemail.getText() + "',PHISICAL_LOCATION='" + editphylocation.getText() + "',POSTAL_ADDRESS='" + editpost.getText() + "',GENDER='" + gender + "',AGENT_NUMBER='" + editagent.getText() + "',AGENT_ID='" + editidagent.getText() + "',SIGNATURE='" + SIGN + "',ID_FRONT_SIDE_PHOTO='" + FRONT + "',ID_BACK_SID_PHOTO='" + BACK + "' where SIM_REG_ID ='" + globalsimid + "'");
                         }
+
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
                     try {
                         stmtinsert1.executeUpdate();
                         OfflineFile.delete();
+
+
+                        //calling to upload pictures  using stfp
+                        if (globalsimid.equalsIgnoreCase("0")) {
+                            //Toast.makeText(SimRegInfo.this, "New SIM Uploading Photos started", Toast.LENGTH_LONG).show();
+                            thread1.start();
+                            // Toast.makeText(SimRegInfo.this, "New SIM Upload Completed", Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            if (gsigstatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0") || gbackstatus.equalsIgnoreCase("0")) {
+                                //Toast.makeText(SimRegInfo.this, "Exist SIM Uploading Photos started", Toast.LENGTH_LONG).show();
+                                thread1.start();
+                                // Toast.makeText(SimRegInfo.this, "Exist SIM Upload Completed", Toast.LENGTH_LONG).show();
+                            }
+
+                        }
+
+
+
+
+
+
 
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
@@ -2255,6 +2273,9 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
+
+
+
 
                 }
                 else {

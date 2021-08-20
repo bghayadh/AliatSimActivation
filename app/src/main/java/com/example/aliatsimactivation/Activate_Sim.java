@@ -158,6 +158,8 @@ public class Activate_Sim extends AppCompatActivity {
                     //finish();
                     Intent intent= new Intent(getApplicationContext(), SimRegInfo.class);
                     intent.putExtra("message_key",globalsimid);
+                    intent.putExtra("db-offline","1");
+
                     startActivity(intent);
                 }
             });
