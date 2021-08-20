@@ -952,7 +952,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                                 if (sp.getSelectedItem().toString().matches("New")){
                                                     b = "In Progress";sp.setSelection(1);};
 
-                                                System.out.println("Start to save now");
+
                                                 //save on line
                                                 threadload1.start();
 
@@ -2280,6 +2280,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 }
                 else {
                     //Saving OFFLINE when no connection to DB  TURKIEH
+                    System.out.println ("SAVE WHEN DB not reachable");
                 }
             } catch (Exception e) {
                 e.printStackTrace();

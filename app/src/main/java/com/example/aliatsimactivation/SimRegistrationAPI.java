@@ -1,6 +1,7 @@
 package com.example.aliatsimactivation;
 
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.os.StrictMode;
 
 import com.google.gson.JsonObject;
@@ -195,9 +196,23 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
         System.out.println("status : "+registration_status);
 
 
-        boolean flg=false;
+
+
+                thread1.start();
+
+
+
+     
+        data=api_response_code+"!!"+response_message;
+        System.out.println("data: "+data);
+
+        return data;
+    }
+
+    public void SaveUpdatedSimStatus() {
+
         try {
-            if((flg=connecttoDB())==true) {
+
 
                 PreparedStatement stmtinsert1 = null;
 
@@ -224,22 +239,27 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
-            }
-       }catch (Exception e){
-           e.printStackTrace();
-       }
 
-     
-        data=api_response_code+"!!"+response_message;
-        System.out.println("data: "+data);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
-        return data;
     }
 
+    Thread thread1 = new Thread(new Runnable() {
 
-
-
-
+        @Override
+        public void run() {
+            boolean flg=false;
+            try {
+                if ((flg = connecttoDB()) == true) {
+                    SaveUpdatedSimStatus();
+                }
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    });
 
 
     public boolean connecttoDB() {
