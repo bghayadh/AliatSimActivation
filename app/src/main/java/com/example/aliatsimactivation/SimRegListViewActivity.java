@@ -164,8 +164,8 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
     public void GetSimData(int vfrom, int vto) {
         boolean flg=false;
         try {
-            adapter=null;
-            simregrecview.setAdapter(adapter);
+            //adapter=null;
+            //simregrecview.setAdapter(adapter);
             if((flg=connecttoDB())==true) {
 
 
@@ -187,7 +187,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
                 // String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,SIM_REG_ID,FIRST_NAME ,LAST_NAME,MOBILE_NUMBER, STATUS from SIM_REGISTRATION where TO_DATE(TO_CHAR(CREATION_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + datet.getText() + "','DD-MM-YYYY')) T WHERE row_num >= '" + vfrom + "' AND row_num <='" + vto + "' " +
                 //       " ORDER BY CREATION_DATE DESC";
 
-                String sqlStmt ="SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY CREATION_DATE DESC) row_num,CREATION_DATE,SIM_REG_ID,FIRST_NAME ,LAST_NAME,MOBILE_NUMBER, STATUS from SIM_REGISTRATION where TO_DATE(TO_CHAR(CREATION_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + datet.getText() + "','DD-MM-YYYY')) T WHERE row_num >= '" + vfrom + "' AND row_num <='" + vto + "'";
+                String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY CREATION_DATE DESC) row_num,CREATION_DATE,SIM_REG_ID,FIRST_NAME ,LAST_NAME,MOBILE_NUMBER, STATUS from SIM_REGISTRATION where TO_DATE(TO_CHAR(CREATION_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + datet.getText() + "','DD-MM-YYYY')) T WHERE row_num >= '" + vfrom + "' AND row_num <='" + vto + "'";
                 ResultSet rs1 = null;
 
                 try {
@@ -217,31 +217,9 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
                     throwables.printStackTrace();
                 }
 
-                arraysize = simdb.size();
+                //Fill Listview
+                FilllistView();
 
-                if (arraysize > 0) {
-                    //System.out.println("Array Size is : "+arraysize);
-                    simA.clear();
-                    varraysize = 0;
-
-                    for (i = varraysize; i < 10; i++) {
-                        if (varraysize < arraysize) {
-                            simA.add(new SimRegListView(simdb.get(i).getSimRegListViewId(), simdb.get(i).getName(), simdb.get(i).getMobile(), simdb.get(i).getStatus()));
-                            varraysize = varraysize + 1;
-                        }
-                    }
-
-
-                    pagination = pagination + 1;
-                    //connect data to coveragelistadapter
-                    adapter = new SIMRegViewAdapter(SimRegListViewActivity.this);
-                    adapter.setContacts(simA);
-                    simregrecview.setAdapter(adapter);
-                    simregrecview.setLayoutManager(new LinearLayoutManager(SimRegListViewActivity.this));
-                }
-            }else {
-                adapter=null;
-                simregrecview.setAdapter(adapter);
             }
 
         }catch (Exception e){
@@ -249,6 +227,50 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         }
 
     }
+    private void FilllistView() {
+
+        int i=0;
+        arraysize = simdb.size();
+        if (arraysize > 0) {
+            //System.out.println("Array Size is : "+arraysize);
+            simA.clear();
+            varraysize = 0;
+
+            for (i = varraysize; i < 10; i++) {
+                if (varraysize < arraysize) {
+                    simA.add(new SimRegListView(simdb.get(i).getSimRegListViewId(), simdb.get(i).getName(), simdb.get(i).getMobile(), simdb.get(i).getStatus()));
+                    varraysize = varraysize + 1;
+                }
+            }
+
+
+            pagination = pagination + 1;
+            //connect data to coveragelistadapter
+            adapter = new SIMRegViewAdapter(SimRegListViewActivity.this);
+            adapter.setContacts(simA);
+            simregrecview.setAdapter(adapter);
+            simregrecview.setLayoutManager(new LinearLayoutManager(SimRegListViewActivity.this));
+        }
+        else {
+            adapter=null;
+            simregrecview.setAdapter(adapter);
+        }
+
+        //update data in Listview
+        try  {
+            adapter.notifyDataSetChanged();
+        }catch(Exception e) {
+            System.out.println(e.toString());
+        }
+
+        try  {
+            textstatus.setVisibility(View.GONE);
+        }catch(Exception e) {
+            System.out.println(e.toString());
+        }
+    }
+
+
     private void showDatePickerDialog(){
         DatePickerDialog datePickerDialog= new DatePickerDialog(
                 this,
