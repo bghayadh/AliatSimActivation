@@ -676,12 +676,12 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             gsigstatusnew="0";
 
                         }
-                        textS.setText(SIGNnew);
+                        textS.setText(SIGN);
 
                         if (textS.getText().toString() != "") {
                             signimgIcon.setVisibility(View.VISIBLE);
                             signimgIcon.setBackgroundResource(0);
-                            gsigstatus = gsigstatusnew;
+                            gsigstatus = "0";
                             discardsign.setVisibility(View.VISIBLE);
                             linesign.setVisibility(View.VISIBLE);
                         }else{
@@ -952,24 +952,37 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                                 if (sp.getSelectedItem().toString().matches("New")){
                                                     b = "In Progress";sp.setSelection(1);};
                                                 //save on line
-                                                threadload1.start();
+                                                //threadload1.start();
+
+                                                System.out.println("globalsimid chk 1"+ globalsimid);
+                                                System.out.println("gsigstatus chk 1 " +gsigstatus);
+                                                System.out.println("gfrontstatus chk 1"+gfrontstatus);
+                                                System.out.println("gbackstatus chk 1"+gbackstatus);
+
+                                                SavedataSIM();
                                                 Toast.makeText(SimRegInfo.this, "Saving Completed", Toast.LENGTH_SHORT).show();
 
 
                                             } catch(Exception e) {
                                                 e.printStackTrace();
                                             }
+
+                                            System.out.println("globalsimid chk 2 "+ globalsimid);
+                                            System.out.println("gsigstatus chk 2"+gsigstatus);
+                                            System.out.println("gfrontstatus chk 2"+gfrontstatus);
+                                            System.out.println("gbackstatus chk 2"+gbackstatus);
+
                                             //calling to upload pictures  using stfp
                                             if (globalsimid.equalsIgnoreCase("0")) {
-                                                Toast.makeText(SimRegInfo.this, "Uploading Photos started", Toast.LENGTH_LONG).show();
+                                                Toast.makeText(SimRegInfo.this, "New SIM Uploading Photos started", Toast.LENGTH_LONG).show();
                                                 thread1.start();
-                                                Toast.makeText(SimRegInfo.this, "Upload Completed", Toast.LENGTH_LONG).show();
+                                                Toast.makeText(SimRegInfo.this, "New SIM Upload Completed", Toast.LENGTH_LONG).show();
                                             }
                                             else {
                                                 if (gsigstatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0") || gbackstatus.equalsIgnoreCase("0")) {
-                                                    Toast.makeText(SimRegInfo.this, "Uploading Photos started", Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(SimRegInfo.this, "Exist SIM Uploading Photos started", Toast.LENGTH_LONG).show();
                                                     thread1.start();
-                                                    Toast.makeText(SimRegInfo.this, "Upload Completed", Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(SimRegInfo.this, "Exist SIM Upload Completed", Toast.LENGTH_LONG).show();
                                                 }
 
                                             }
@@ -1894,11 +1907,9 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         @Override
         public void run() {
             try {
-
-
-                //Toast.makeText(SimTest.this,"Trying to connect..",Toast.LENGTH_LONG).show();
+                 //Toast.makeText(SimTest.this,"Trying to connect..",Toast.LENGTH_LONG).show();
                 System.out.println("Start");
-
+                System.out.println("globalsimid = "+globalsimid);
                 String user=sftp.getUser().toString();
                 String pass=sftp.getPass().toString();
                 String host=sftp.getServer().toString();
@@ -2332,12 +2343,12 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 textF.setText(txtf);
                 textB.setText(txtb);
                 textS.setText(txts);
-                SIGNorigin = txts;
-                FRONTorigin = txtf;
-                BACKorigin = txtb;
-                gsigstatusorigin = gsigstat;
-                gfrontstatusorigin = gfrontstat;
-                gbackstatusorigin = gbackstat;
+                SIGNorigin =SIGN= txts;
+                FRONTorigin =FRONT= txtf;
+                BACKorigin =BACK= txtb;
+                gsigstatusorigin =gsigstatus= gsigstat;
+                gfrontstatusorigin =gfrontstatus= gfrontstat;
+                gbackstatusorigin =gbackstatus = gbackstat;
 
                 System.out.println(gbackstatus+" "+gfrontstatus+" "+gsigstatus);
 
@@ -2377,6 +2388,79 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         });
     }
 
+    public void SavedataSIM() {
+        boolean flg = false;
+        try {
+            if ((flg = connecttoDB()) == true) {
+                PreparedStatement stmtinsert1 = null;
+
+                try {
+                    if (globalsimid.equalsIgnoreCase("0") || OfflineFile.exists() ) {
+                        // if it is a new Warehouse we will use insert
+
+
+                        Statement stmt1 = null;
+                        stmt1 = conn.createStatement();
+                        String sqlStmt = "select SIM_REGISTRATION_SEQ.nextval as nbr from dual";
+                        ResultSet rs1 = null;
+                        try {
+                            rs1 = stmt1.executeQuery(sqlStmt);
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+
+                        while (true) {
+                            try {
+                                if (!rs1.next()) break;
+                                globalsimid = simID + rs1.getString("nbr");
+                                //System.out.println(rs1.getString("compteur"));
+
+                            } catch (SQLException throwables) {
+                                throwables.printStackTrace();
+                            }
+                        }
+                        rs1.close();
+                        stmt1.close();
+
+
+                        // send data from fragment to super activity
+
+
+                        stmtinsert1 = conn.prepareStatement("insert into SIM_REGISTRATION (SIM_REG_ID,STATUS,CREATION_DATE,LAST_MODIFIED_DATE,FIRST_NAME,MIDDLE_NAME,LAST_NAME,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHISICAL_LOCATION,POSTAL_ADDRESS,GENDER,AGENT_NUMBER,AGENT_ID,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,SIGNATURE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS) values " +
+                                "('" + globalsimid + "','" + b + "' ,sysdate, sysdate,'" + editfname.getText() + "','" + editmname.getText() + "', '" + editlname.getText() + "','" + editmobile.getText() + "',TO_DATE('" + editdate.getText() + "','DD-MM-YYYY'),'" + nationality + "','" + editaltnumber.getText() + "','" + editemail.getText() + "','" + editphylocation.getText() + "','" + editpost.getText() + "','" + gender + "','" + editagent.getText() + "','" + editidagent.getText() + "','" + SIGN + "','" + FRONT + "','" + BACK + "',0,0,0)");
+
+                        ///added for pass data in fragment
+
+                    } else {
+                        stmtinsert1 = conn.prepareStatement("update SIM_REGISTRATION set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + editfname.getText() + "',MIDDLE_NAME='" + editmname.getText() + "',LAST_NAME='" + editlname.getText() + "',STATUS='" + b + "',MOBILE_NUMBER='" + editmobile.getText() + "',NATIONALITY='" + nationality + "',ALTERNATIVE_NUMBER='" + editaltnumber.getText() + "',EMAIL_ADDRESS='" + editemail.getText() + "',PHISICAL_LOCATION='" + editphylocation.getText() + "',POSTAL_ADDRESS='" + editpost.getText() + "',GENDER='" + gender + "',AGENT_NUMBER='" + editagent.getText() + "',AGENT_ID='" + editidagent.getText() + "',SIGNATURE='" + SIGN + "',ID_FRONT_SIDE_PHOTO='" + FRONT + "',ID_BACK_SID_PHOTO='" + BACK + "' where SIM_REG_ID ='" + globalsimid + "'");
+                    }
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                try {
+                    stmtinsert1.executeUpdate();
+                    OfflineFile.delete();
+
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+
+
+                try {
+                    stmtinsert1.close();
+                    conn.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+
+            }
+            else {
+                //Saving OFFLINE when no connection to DB  TURKIEH
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }
