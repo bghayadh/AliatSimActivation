@@ -1535,7 +1535,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     startActivity(a);
                 }
             });
-
+           //submit OOF LINE no internet
             submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -1632,6 +1632,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                                 bw.write(BACK.toString() + "\n");
                                                 bw.write(b);
                                                 bw.close();
+
                                                 Toast.makeText(SimRegInfo.this, fileName + " is saved to\n" + dir, Toast.LENGTH_SHORT).show();
                                                 Intent intent = new Intent(SimRegInfo.this, SimRegOfflineDataActivity.class);
                                                 startActivity(intent);
@@ -1910,6 +1911,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     Boolean success1 = true;
 
                     if (success1) {
+                        txtmsg.setText("upload completed : " + sign);
                         System.out.println("upload completed : " + sign);
                         UpdateSimRegistrationPicStatus(globalsimid, "SIGNATURE_STATUS");
                         signimgIcon.setColorFilter(Color.GREEN);
@@ -1924,6 +1926,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     Boolean success2 = true;
 
                     if(success2){
+                        txtmsg.setText("upload completed : " + front);
                         System.out.println("upload completed : "+front);
                         UpdateSimRegistrationPicStatus(globalsimid,"FRONT_SIDE_ID_STATUS");
                         frontimgIcon.setColorFilter(Color.GREEN);
@@ -1936,6 +1939,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     Boolean success3 = true;
 
                     if (success3) {
+                        txtmsg.setText("upload completed : " + back);
                         System.out.println("upload completed : " + back);
                         UpdateSimRegistrationPicStatus(globalsimid, "BACK_SIDE_ID_STATUS");
                         backimgIcon.setColorFilter(Color.GREEN);
@@ -1945,6 +1949,9 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 //   Toast.makeText(SimTest.this,"session connection"+session.isConnected(),Toast.LENGTH_LONG).show();
                 channelSftp.disconnect();
                 session.disconnect();
+                txtmsg.setText("Transaction completed");
+                Thread.sleep(500);
+                txtmsg.setText("");
             }catch(Exception e){
                 e.printStackTrace();
             }
@@ -2168,6 +2175,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         public void run() {
             boolean flg = false;
             try {
+                txtmsg.setText("Please wait ...");
                 if ((flg = connecttoDB()) == true) {
                     PreparedStatement stmtinsert1 = null;
 
@@ -2211,7 +2219,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         } else {
                             stmtinsert1 = conn.prepareStatement("update SIM_REGISTRATION set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + editfname.getText() + "',MIDDLE_NAME='" + editmname.getText() + "',LAST_NAME='" + editlname.getText() + "',STATUS='" + b + "',MOBILE_NUMBER='" + editmobile.getText() + "',NATIONALITY='" + nationality + "',ALTERNATIVE_NUMBER='" + editaltnumber.getText() + "',EMAIL_ADDRESS='" + editemail.getText() + "',PHISICAL_LOCATION='" + editphylocation.getText() + "',POSTAL_ADDRESS='" + editpost.getText() + "',GENDER='" + gender + "',AGENT_NUMBER='" + editagent.getText() + "',AGENT_ID='" + editidagent.getText() + "',SIGNATURE='" + SIGN + "',ID_FRONT_SIDE_PHOTO='" + FRONT + "',ID_BACK_SID_PHOTO='" + BACK + "' where SIM_REG_ID ='" + globalsimid + "'");
                         }
-
+                        txtmsg.setText("Saving Completed,now start load pictures");
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
@@ -2249,6 +2257,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     try {
                         stmtinsert1.close();
                         conn.close();
+                        txtmsg.setText("Transaction completed");
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
@@ -2262,6 +2271,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     System.out.println ("SAVE WHEN DB not reachable");
 
                     try {
+                        txtmsg.setText("DB not reachable start saving offmode");
                         ActivityCompat.requestPermissions(SimRegInfo.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 23);
                         File dir = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
                         dir.mkdirs();
@@ -2287,9 +2297,12 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         bw.write(BACK.toString() + "\n");
                         bw.write(b);
                         bw.close();
+                        txtmsg.setText("Saving offmode completed");
+                        Thread.sleep(500);
+                        txtmsg.setText("");
                         //Toast.makeText(SimRegInfo.this, fileName + " is saved to\n" + dir, Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(SimRegInfo.this, SimRegOfflineDataActivity.class);
-                        startActivity(intent);
+                        //Intent intent = new Intent(SimRegInfo.this, SimRegOfflineDataActivity.class);
+                       // startActivity(intent);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {

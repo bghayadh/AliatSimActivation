@@ -706,8 +706,8 @@
             android:layout_height="40dp"
             android:textAlignment="center"
             android:layout_below="@+id/chterms"
-            android:text="Messages"
-            android:textSize="22dp"
+            android:text=""
+            android:textSize="13dp"
             android:textColor="@color/white"
             android:id="@+id/txtmsg"/>
     </RelativeLayout>
