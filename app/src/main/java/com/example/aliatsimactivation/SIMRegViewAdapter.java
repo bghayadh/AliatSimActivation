@@ -1,6 +1,7 @@
 package com.example.aliatsimactivation;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,11 +42,18 @@ public class SIMRegViewAdapter extends RecyclerView.Adapter<SIMRegViewAdapter.Vi
         holder.name_id.setText(list.get(position).getName());
         holder.mobile_id.setText(list.get(position).getMobile());
         holder.simstatus_id.setText(list.get (position).getStatus());
+
+
         holder.name_id.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context,list.get(position).getSimRegListViewId() ,Toast.LENGTH_SHORT).show();
                 System.out.println(list.get(position).getSimRegListViewId());
+
+                // show line in green when select row
+                holder.name_id.setBackgroundColor(Color.GREEN);
+                holder.mobile_id.setBackgroundColor(Color.GREEN);
+                holder.simstatus_id.setBackgroundColor(Color.GREEN);
 
                 // pass on click wareid value to new activity Sitinforactivity
                 Intent intent =  new Intent(context, SimRegInfo.class);

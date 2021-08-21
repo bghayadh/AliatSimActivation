@@ -434,6 +434,7 @@
             android:id="@+id/signstatus"
             android:layout_below="@+id/textView12"
             android:text="DISCARD"
+            android:textSize="14dp"
             android:textColor="@color/grey"
             android:visibility="gone"/>
         <View
@@ -471,6 +472,7 @@
             android:id="@+id/frontstatus"
             android:layout_below="@+id/textView13"
             android:text="DISCARD"
+            android:textSize="14dp"
             android:textColor="@color/grey"
             android:visibility="gone"/>
         <View
@@ -530,6 +532,7 @@
             android:id="@+id/backstatus"
             android:layout_below="@+id/textView14"
             android:text="DISCARD"
+            android:textSize="14dp"
             android:textColor="@color/grey"
             android:visibility="gone"/>
         <View
@@ -698,6 +701,15 @@
             android:backgroundTint="@color/red"
             android:id="@+id/simreglistview"
             android:text="Sim Reg Listview" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textAlignment="center"
+            android:layout_below="@+id/chterms"
+            android:text="Messages"
+            android:textSize="22dp"
+            android:textColor="@color/white"
+            android:id="@+id/txtmsg"/>
     </RelativeLayout>
 
 </ScrollView>

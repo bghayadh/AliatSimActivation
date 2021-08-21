@@ -20,18 +20,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AliatSimActivation"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SimRegInfo"></activity>
-        <activity android:name=".SimRegistrationReport" />
-        <activity android:name=".Activate_Sim" />
-        <activity android:name=".ClientOfflineDataActivity" />
-        <activity android:name=".UserRegister" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".ClientChargeInfoActivity" />
-        <activity android:name=".ClientChargeListViewActivity" />
-        <activity android:name=".UserLoginActivity" />
-        <activity android:name=".SimRegListViewActivity" />
-        <activity android:name=".SimRegSignature" />
-        <activity android:name=".SimRegOfflineDataActivity" />
+        <activity android:name=".SimRegInfo" android:configChanges="orientation|screenSize"></activity>
+        <activity android:name=".SimRegistrationReport" android:configChanges="orientation|screenSize" />
+        <activity android:name=".Activate_Sim" android:configChanges="orientation|screenSize"/>
+        <activity android:name=".ClientOfflineDataActivity" android:configChanges="orientation|screenSize"/>
+        <activity android:name=".UserRegister" android:configChanges="orientation|screenSize"/>
+        <activity android:name=".MainActivity" android:configChanges="orientation|screenSize"/>
+        <activity android:name=".ClientChargeInfoActivity" android:configChanges="orientation|screenSize"/>
+        <activity android:name=".ClientChargeListViewActivity" android:configChanges="orientation|screenSize"/>
+        <activity android:name=".UserLoginActivity" android:configChanges="orientation|screenSize"/>
+        <activity android:name=".SimRegListViewActivity" android:configChanges="orientation|screenSize"/>
+        <activity android:name=".SimRegSignature" android:configChanges="orientation|screenSize"/>
+        <activity android:name=".SimRegOfflineDataActivity" android:configChanges="orientation|screenSize"/>
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -108,7 +108,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     String pass =ftp.getPass();// "10th@Loop";
     FTPClient ftpClient = new FTPClient();
     private String PathSignFTP, PathFrontFTP, PathBackFTP;
-    private TextView editmobile,txttest;
+    private TextView editmobile,txttest,txtmsg;
     private String stroffile;
     private Spinner sp;
     private boolean connectflag=false;
@@ -239,6 +239,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         discardback=findViewById(R.id.backstatus);
         lineback=findViewById(R.id.line2);
         btnlvsimreg=findViewById(R.id.simreglistview);
+        txtmsg=findViewById(R.id.txtmsg);
 
         Date c = Calendar.getInstance().getTime();
         SimpleDateFormat df=new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
@@ -847,6 +848,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     startActivity(a);
                 }
             });
+            //submit ON LINE
             submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -854,7 +856,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     //gsigstatus="0";
                     //gfrontstatus="0";
                     //gbackstatus="0";
-                    System.out.println("START HERE NEW");
+
                     if (sp.getSelectedItem().toString().matches("New")) {
                         b = "In Progress";
                         sp.setSelection(1);
@@ -968,7 +970,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
                                                 //not in use now
                                                 //SavedataSIM();
-                                                Toast.makeText(SimRegInfo.this, "Saving Completed", Toast.LENGTH_SHORT).show();
+                                                //Toast.makeText(SimRegInfo.this, "Saving Completed", Toast.LENGTH_SHORT).show();
 
 
                                             } catch(Exception e) {
