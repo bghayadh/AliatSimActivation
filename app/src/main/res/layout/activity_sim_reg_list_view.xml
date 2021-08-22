@@ -3,46 +3,60 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0A5EA8">
+    android:backgroundTint="@color/white">
 
     <Button
         android:id="@+id/btnprevious"
-        android:layout_width="133dp"
+        android:layout_width="110dp"
         android:layout_height="50dp"
         android:layout_marginStart="1.5dp"
-        android:backgroundTint="@color/red"
-        android:drawableLeft="@mipmap/ic_prev"
+        android:textSize="12dp"
+        android:backgroundTint="@color/menusgrey"
+        android:drawableLeft="@drawable/ic_left1"
+        android:textColor="@color/black"
         android:text="PREV" />
 
     <Button
         android:id="@+id/btnnext"
-        android:layout_width="133dp"
+        android:layout_width="120dp"
         android:layout_height="50dp"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="3dp"
+        android:textSize="12dp"
         android:layout_toRightOf="@+id/btnprevious"
-        android:backgroundTint="@color/red"
-        android:drawableRight="@mipmap/ic_next"
+        android:backgroundTint="@color/menusgrey"
+        android:drawableRight="@drawable/ic_right1"
+        android:textColor="@color/black"
         android:text="NEXT" />
 
     <Button
         android:id="@+id/btnnew"
-        android:layout_width="133dp"
+        android:layout_width="134dp"
         android:layout_height="50dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginStart="3dp"
+        android:textSize="12dp"
         android:layout_toRightOf="@+id/btnnext"
-        android:backgroundTint="@color/red"
-        android:drawableLeft="@mipmap/ic_new"
+        android:backgroundTint="@color/menusgrey"
+        android:drawableLeft="@drawable/ic_new1"
+        android:textColor="@color/black"
         android:text="NEW" />
 
 
 
-
+    <TextView
+        android:id="@+id/textstatus"
+        android:layout_marginStart="120dp"
+        android:layout_width="220dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="200dp"
+        android:textColor="@color/black"
+        android:textSize="22dp"
+        android:text="Please wait ..."
+        />
 
     <TextView
         android:id="@+id/textdate"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_below="@id/btnnew"
         android:layout_marginTop="13dp"
         android:layout_toRightOf="@id/Btnselectdate"
@@ -50,7 +64,7 @@
         android:textAlignment="center"
         android:textSize="20dp"
         android:hint="SELECTED DATE"
-        android:textColor="@color/white" />
+        android:textColor="@color/black" />
 
     <TableLayout
         android:id="@+id/tableid"
@@ -61,17 +75,6 @@
 
 
     </TableLayout>
-
-    <TextView
-        android:id="@+id/textstatus"
-        android:layout_marginStart="120dp"
-        android:layout_width="220dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="200dp"
-        android:textColor="@color/white"
-        android:textSize="22dp"
-        android:text="Please wait ..."
-     />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/simRecView"
@@ -86,30 +89,29 @@
     <!-- display Main Page button -->
     <Button
         android:id="@+id/btnmain"
-        android:layout_width="match_parent"
+        android:layout_width="360dp"
         android:layout_height="60dp"
-        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:backgroundTint="@color/red"
-        android:text="Main Page"
-        android:textColor="@color/white"
+        android:backgroundTint="@color/menusgrey"
+        android:text="Home"
+        android:textColor="@color/black"
         android:textSize="15dp"
         android:textStyle="bold"
-        android:drawableRight="@mipmap/ic_main_page"/>
+        android:drawableRight="@drawable/ic_home1"/>
 
     <Button
         android:id="@+id/Btnselectdate"
         android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:drawableRight="@drawable/ic_calander"
+        android:layout_height="50dp"
+        android:drawableRight="@drawable/ic_calender1"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="0dp"
-        android:backgroundTint="@color/red"
+        android:backgroundTint="@color/menusgrey"
         android:text="Select Date"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:layout_below="@id/btnprevious"
-        android:textSize="15dp"
-        android:textStyle="bold" />
+        android:textSize="15dp" />
 
 
 </RelativeLayout>
+

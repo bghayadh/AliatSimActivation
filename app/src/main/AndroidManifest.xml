@@ -12,11 +12,12 @@
 
     <!-- android:hardwareAccelerated="true" -->
     <application
+        android:hardwareAccelerated="true"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/registericon"
         android:requestLegacyExternalStorage="true"
         android:label="Telkom SIM Registration"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/registericon"
         android:supportsRtl="true"
         android:theme="@style/Theme.AliatSimActivation"
         android:usesCleartextTraffic="true">

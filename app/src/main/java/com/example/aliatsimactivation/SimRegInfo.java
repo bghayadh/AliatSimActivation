@@ -75,7 +75,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     private int count;
     public Connection conn;
     private String globalsimid,simID;
-    private Button submit, frontid, backid,btndob,btnlvsimreg;
+    private Button submit, frontid, backid,btnlvsimreg;
     private Button sign;
     private File file,OfflineFile;
     private String nationality = "";
@@ -99,7 +99,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     private TextView editidagent, editagent;
     SFTP sftp = new SFTP();
     private Button Btnftp,BtnDelete,BtnMain,BtnRegandActivate;
-    private ImageButton signimgIcon, frontimgIcon, backimgIcon;
+    private ImageButton signimgIcon, frontimgIcon, backimgIcon,btndob;
     private String[] imagesource;
     FTP ftp = new FTP();
     String server = ftp.getServer();//"ftp.ipage.com";
@@ -347,7 +347,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 String Off3 = intent.getStringExtra("offline3");
                 editlname.setText(Off3);
 
-                String Off4 = intent.getStringExtra("offline3");
+                String Off4 = intent.getStringExtra("offline4");
                 editidagent.setText(Off4);
 
                 Off5 = intent.getStringExtra("offline5");
@@ -496,6 +496,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             frontimgIcon.setColorFilter(Color.YELLOW);
                             frontimgIcon.setVisibility(View.VISIBLE);
                             frontimgIcon.setVisibility(View.VISIBLE);
+                            discardfront.setVisibility(View.VISIBLE);
+                            linefront.setVisibility(View.VISIBLE);
 
                         }else{
                             frontimgIcon.setColorFilter(Color.parseColor("#ffa500"));
@@ -1610,7 +1612,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                                 ActivityCompat.requestPermissions(SimRegInfo.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 23);
                                                 File dir = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
                                                 dir.mkdirs();
-                                                String fileName = "SIM_" + editidagent.getText().toString() + ".txt";
+                                                String fileName = "SIM_" + editmobile.getText().toString() + ".txt";
                                                 File file = new File(dir, fileName);
                                                 FileWriter fw = new FileWriter(file.getAbsoluteFile());
                                                 BufferedWriter bw = new BufferedWriter(fw);

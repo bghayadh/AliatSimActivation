@@ -1,222 +1,280 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="360dp"
     android:layout_height="match_parent"
-    android:background="#0A5EA8"
-    tools:context=".UserRegister">
+    android:background="#FFFFFF"
+    tools:context=".UserRegister"
+    android:orientation="vertical">
+
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="80dp"
         android:id="@+id/imageView1"
-        android:src="@drawable/download">
+        android:src="@drawable/registericon">
 
     </ImageView>
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="360dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp">
+        android:layout_marginTop="10dp">
 
         <TextView
             android:layout_marginTop="8dp"
-            android:layout_width="200dp"
+            android:layout_width="170dp"
             android:layout_height="50dp"
             android:textSize="20dp"
-            android:textStyle="bold"
-            android:textColor="@color/yellowheader"
+            android:textColor="@color/black"
             android:textAlignment="center"
             android:text="First Name"
             android:id="@+id/fname"/>
 
         <EditText
-            android:layout_width="200dp"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:id="@+id/edtfname"
+            android:layout_marginStart="180dp"
             android:textColorHint="@color/silver"
             android:hint="Enter First Name"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:layout_marginLeft="200dp"/>
+    </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="360dp"
+        android:layout_height="wrap_content">
         <TextView
-            android:layout_width="200dp"
+            android:layout_marginTop="8dp"
+            android:layout_width="170dp"
             android:layout_height="50dp"
-            android:text="Last Name"
             android:textSize="20dp"
-            android:textColor="@color/yellowheader"
+            android:textColor="@color/black"
             android:textAlignment="center"
-            android:textStyle="bold"
-            android:id="@+id/lname"
-            android:layout_below="@+id/fname"/>
+            android:text="Last Name"
+            android:id="@+id/lname"/>
+
         <EditText
-            android:layout_width="200dp"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:id="@+id/edtlname"
-            android:hint="Enter Last Name"
-            android:textColor="@color/white"
-            android:layout_below="@+id/fname"
+            android:layout_marginStart="180dp"
             android:textColorHint="@color/silver"
+            android:hint="Enter Last Name"
+            android:textColor="@color/black"
             android:layout_marginLeft="200dp"/>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="360dp"
+        android:layout_height="wrap_content">
+
+
         <TextView
-            android:layout_width="200dp"
+            android:layout_marginTop="8dp"
+            android:layout_width="170dp"
             android:layout_height="50dp"
-            android:text="Region"
-            android:id="@+id/region"
-            android:textStyle="bold"
             android:textSize="20dp"
-            android:textColor="@color/yellowheader"
+            android:textColor="@color/black"
             android:textAlignment="center"
-            android:layout_below="@+id/lname"/>
+            android:text="Region"
+            android:id="@+id/region"/>
+
         <EditText
-            android:layout_width="200dp"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:id="@+id/edtregion"
-            android:hint="Enter Region"
-            android:textColor="@color/white"
+            android:layout_marginStart="180dp"
             android:textColorHint="@color/silver"
-            android:layout_below="@+id/edtlname"
+            android:hint="Enter Region"
+            android:textColor="@color/black"
             android:layout_marginLeft="200dp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="360dp"
+        android:layout_height="wrap_content">
+
         <TextView
-            android:layout_width="200dp"
+            android:layout_marginTop="8dp"
+            android:layout_width="170dp"
             android:layout_height="50dp"
             android:textSize="20dp"
-            android:textStyle="bold"
-            android:textColor="@color/yellowheader"
+            android:textColor="@color/black"
             android:textAlignment="center"
             android:text="Address"
-            android:id="@+id/address"
-            android:layout_below="@id/region"/>
+            android:id="@+id/address"/>
+
         <EditText
-            android:layout_width="200dp"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:id="@+id/edtaddress"
+            android:layout_marginStart="180dp"
+            android:textColorHint="@color/silver"
             android:hint="Enter Address"
-            android:textColor="@color/white"
-            android:textColorHint="@color/silver"
-            android:layout_below="@+id/edtregion"
+            android:textColor="@color/black"
             android:layout_marginLeft="200dp"/>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="360dp"
+        android:layout_height="wrap_content">
+
         <TextView
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:text="Phone Number"
-            android:textStyle="bold"
-            android:id="@+id/phonenb"
-            android:textSize="20dp"
-            android:textColor="@color/yellowheader"
-            android:textAlignment="center"
-            android:layout_below="@id/address"/>
-        <EditText
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/edtphone"
-            android:inputType="phone"
-            android:hint="Enter Phone Number"
-            android:textColor="@color/white"
-            android:textColorHint="@color/silver"
-            android:layout_below="@+id/edtaddress"
-            android:layout_marginLeft="200dp"/>
-        <TextView
-            android:layout_width="200dp"
+            android:layout_width="170dp"
             android:layout_height="50dp"
             android:text="PIN"
             android:textSize="20dp"
-            android:textStyle="bold"
             android:textColor="@color/yellowheader"
             android:textAlignment="center"
             android:id="@+id/pin"
-            android:visibility="gone"
-            android:layout_below="@id/phonenb"/>
+            android:visibility="gone"/>
         <EditText
-            android:layout_width="200dp"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:id="@+id/edtpin"
             android:hint="Enter Your PIN"
+            android:layout_marginStart="180dp"
             android:textColor="@color/white"
             android:inputType="numberPassword"
             android:maxLength="6"
             android:text="0"
             android:visibility="gone"
             android:textColorHint="@color/silver"
-            android:layout_below="@+id/edtphone"
             android:layout_marginLeft="200dp"/>
+    </RelativeLayout>
 
-    
+
+
+    <RelativeLayout
+        android:layout_width="360dp"
+        android:layout_height="wrap_content">
+
+
         <TextView
-            android:layout_width="200dp"
+            android:layout_marginTop="8dp"
+            android:layout_width="170dp"
+            android:layout_height="50dp"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:text="Phone number"
+            android:id="@+id/phonenb"/>
+
+        <EditText
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/edtphone"
+            android:textColorHint="@color/silver"
+            android:layout_marginStart="180dp"
+            android:hint="Enter Phone number"
+            android:inputType="phone"
+            android:textColor="@color/black"
+            android:layout_marginLeft="200dp"/>
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:layout_width="360dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:id="@+id/agentimage"
-            android:layout_below="@+id/pin"
             android:text="Agent Image"
             android:textSize="20dp"
-            android:textColor="@color/yellowheader"
-            android:textAlignment="center"
-            android:textStyle="bold">
+            android:layout_marginTop="22dp"
+            android:textColor="@color/black"
+            android:textAlignment="center">
         </TextView>
-        
+
         <Button
-            android:layout_width="200dp"
+            android:layout_width="170dp"
             android:layout_height="50dp"
-            android:backgroundTint="@color/silver"
+            android:backgroundTint="@color/menusgrey"
             android:text="Agent Image"
+            android:layout_marginStart="10dp"
+            android:textSize="12dp"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:layout_below="@+id/edtpin"
             android:layout_toRightOf="@+id/agentimage"
             android:layout_marginTop="15dp"
             android:id="@+id/btnagentimg">
         </Button>
 
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:layout_width="360dp"
+        android:layout_height="wrap_content">
+
         <TextView
-            android:layout_width="200dp"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:id="@+id/frontid"
-            android:layout_below="@+id/agentimage"
             android:text="Agent Front ID"
-            android:textAlignment="center"
             android:textSize="20dp"
-            android:textColor="@color/yellowheader"
-            android:textStyle="bold"
-            android:layout_marginTop="40dp">
+            android:layout_marginTop="22dp"
+            android:textColor="@color/black"
+            android:textAlignment="center">
         </TextView>
 
         <Button
-            android:layout_width="200dp"
+            android:layout_width="170dp"
             android:layout_height="50dp"
-            android:backgroundTint="@color/silver"
+            android:backgroundTint="@color/menusgrey"
             android:text="Agent Front ID"
+            android:layout_marginStart="10dp"
+            android:textAlignment="center"
             android:textColor="@color/black"
-            android:layout_below="@+id/btnagentimg"
-            android:layout_toRightOf="@id/frontid"
-            android:id="@+id/btnagentfrontid"
-            android:layout_marginTop="10dp">
+            android:textSize="12dp"
+            android:layout_toRightOf="@+id/frontid"
+            android:layout_marginTop="15dp"
+            android:id="@+id/btnagentfrontid">
         </Button>
+
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:layout_width="360dp"
+        android:layout_height="wrap_content">
 
         <TextView
-            android:layout_width="200dp"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:id="@+id/backid"
-            android:layout_below="@id/frontid"
             android:text="Agent Back ID"
-            android:textAlignment="center"
             android:textSize="20dp"
-            android:textColor="@color/yellowheader"
-            android:textStyle="bold"
-            android:layout_marginTop="30dp">
-        </TextView>
-        <Button
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:backgroundTint="@color/silver"
-            android:text="Agent Back ID"
-            android:id="@+id/btnagentbackid"
+            android:layout_marginTop="22dp"
             android:textColor="@color/black"
-            android:layout_below="@id/btnagentfrontid"
+            android:textAlignment="center">
+        </TextView>
+
+        <Button
+            android:layout_width="170dp"
+            android:layout_height="50dp"
+            android:backgroundTint="@color/menusgrey"
+            android:text="Agent Back ID"
+            android:textSize="12dp"
+            android:layout_marginStart="10dp"
+            android:textAlignment="center"
+            android:textColor="@color/black"
             android:layout_toRightOf="@+id/backid"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="15dp"
+            android:id="@+id/btnagentbackid">
         </Button>
+
 
         <Button
             android:layout_width="match_parent"
@@ -225,7 +283,10 @@
             android:id="@+id/verify"
             android:layout_marginTop="10dp"
             android:layout_alignParentBottom="true"
-            android:backgroundTint="@color/red" />
+            android:textColor="@color/black"
+            android:backgroundTint="@color/menusgrey" />
+
+
 
     </RelativeLayout>
 
@@ -235,19 +296,4 @@
         android:layout_height="wrap_content"
         android:text="" />
 
-    <Button
-        android:id="@+id/BtnData"
-        android:layout_width="80dp"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginVertical="20dp"
-        android:textColor="@color/white"
-        android:text="DATA"
-        android:backgroundTint="@color/red"
-        android:textStyle="bold"
-        android:textSize="15dp"
-        android:layout_alignParentRight="true"
-        android:visibility="gone"
-        />
-
-</RelativeLayout>
+</LinearLayout>
