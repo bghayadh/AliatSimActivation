@@ -12,6 +12,7 @@
 
 
     <application
+        android:hardwareAccelerated="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:requestLegacyExternalStorage="true"
@@ -20,6 +21,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AliatSimActivation"
         android:usesCleartextTraffic="true">
+
+        <!-- Optionally, register AnalyticsReceiver and AnalyticsService to support background
+     dispatching on non-Google Play devices -->
+        <receiver android:name="com.google.android.gms.analytics.AnalyticsReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH" />
+            </intent-filter>
+        </receiver>
+        <service android:name="com.google.android.gms.analytics.AnalyticsService"
+            android:enabled="true"
+            android:exported="false"/>
+
         <activity android:name=".SimRegInfo" android:configChanges="orientation|screenSize"></activity>
         <activity android:name=".SimRegistrationReport" android:configChanges="orientation|screenSize" />
         <activity android:name=".Activate_Sim" android:configChanges="orientation|screenSize"/>

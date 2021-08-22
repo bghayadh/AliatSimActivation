@@ -2,6 +2,7 @@ package com.example.aliatsimactivation;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
@@ -64,9 +65,11 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         System.out.println("str "+ str);
 
        // if (str.toString().matches("-100")) {
-        //    textstatus.setVisibility(View.GONE);
-       // } else {
-            Handler handler = new Handler();
+       //     textstatus.setVisibility(View.GONE);
+       //     datestr=str;
+      //  } //else {
+
+            /*Handler handler = new Handler();
             handler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -76,7 +79,28 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
                         System.out.println(e.toString());
                     }
                 }
-            });
+            });*/
+        System.out.println("STARTIN HERE 1");
+
+        Handler handler = new Handler();
+
+        final Runnable r = new Runnable() {
+            public void run() {
+                thread1.start();
+            }
+        };
+
+        handler.postDelayed(r, 1000);
+        System.out.println("delayed 1 sec");
+
+
+
+
+
+
+
+
+
         //}
 
         btnprevious.setOnClickListener (new View.OnClickListener ( ) {
@@ -159,16 +183,17 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
             }
         });
 
+
     }
+
 
     public void GetSimData(int vfrom, int vto) {
         boolean flg=false;
         try {
-            //adapter=null;
-            //simregrecview.setAdapter(adapter);
+            System.out.println("CONNECT HERE");
             if((flg=connecttoDB())==true) {
 
-
+                System.out.println("CONNECT HERE");
                 // define recyclerview of sitelistview
 
                 simA = new ArrayList<>();
@@ -302,6 +327,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
                 @Override
                 public void run() {
                     try {
+
                         thread1.start();
                     } catch (Exception e) {
                         System.out.println(e.toString());
@@ -313,7 +339,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
     }
 
 
-    public boolean connecttoDB() {
+    public boolean connecttoDB() throws Exception {
         OraDB oradb = new OraDB();
         String url = oradb.getoraurl();
         String userName = oradb.getorausername();
@@ -324,6 +350,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
             try {
                 //Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
                 connsite = DriverManager.getConnection(url, userName, password);
+
                 if (connsite != null) {
                     connectflag = true;
                 } else {
@@ -332,6 +359,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
 
                 //Toast.makeText (MainActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
             } catch (SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
+                System.out.println("START NEW HERE 4");
                 System.out.println("error 1 is: " + e.toString());
                 //Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
                 connectflag = false;
@@ -439,6 +467,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
                 @Override
                 public void run() {
                     try {
+                        System.out.println("Call GetSimData");
                         GetSimData(1, 10);
                     }catch(Exception e) {
                         System.out.println(e.toString());

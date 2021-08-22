@@ -310,7 +310,7 @@ public class UserRegister extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
-                                    Toast.makeText(UserRegister.this,"In process please wait",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(UserRegister.this,"In process please wait",Toast.LENGTH_LONG).show();
                                     myText = input.getText().toString();
 
                                     if (Code.equalsIgnoreCase(myText)) {
@@ -362,6 +362,7 @@ public class UserRegister extends AppCompatActivity {
                                             }else
                                             {
                                                 //in case no database connection we are sending flag value -100
+                                                Toast.makeText(UserRegister.this,"Saving data in offmode",Toast.LENGTH_LONG).show();
                                                 System.out.println("offline in dialog");
                                                 Intent intent = new Intent(getApplicationContext(), UserLoginActivity.class);
                                                 intent.putExtra("db-offline-to-main","-100");
