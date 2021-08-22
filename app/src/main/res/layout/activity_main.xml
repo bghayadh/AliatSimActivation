@@ -324,7 +324,7 @@
         android:layout_height="140dp"
         android:layout_marginStart="1dp"
         android:id="@+id/versionid"
-        android:text="Ver:1.0.4"
+        android:text="Ver:1.0.5"
         android:textColor="@color/white"
         />
 

@@ -10,9 +10,8 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.CAMERA"/>
 
-
+    <!-- android:hardwareAccelerated="true" -->
     <application
-        android:hardwareAccelerated="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:requestLegacyExternalStorage="true"
@@ -23,7 +22,7 @@
         android:usesCleartextTraffic="true">
 
         <!-- Optionally, register AnalyticsReceiver and AnalyticsService to support background
-     dispatching on non-Google Play devices -->
+     dispatching on non-Google Play devices
         <receiver android:name="com.google.android.gms.analytics.AnalyticsReceiver"
             android:enabled="true">
             <intent-filter>
@@ -32,7 +31,7 @@
         </receiver>
         <service android:name="com.google.android.gms.analytics.AnalyticsService"
             android:enabled="true"
-            android:exported="false"/>
+            android:exported="false"/>-->
 
         <activity android:name=".SimRegInfo" android:configChanges="orientation|screenSize"></activity>
         <activity android:name=".SimRegistrationReport" android:configChanges="orientation|screenSize" />

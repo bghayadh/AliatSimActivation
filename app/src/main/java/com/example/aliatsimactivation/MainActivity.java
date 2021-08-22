@@ -1311,6 +1311,7 @@ public class MainActivity extends AppCompatActivity {
                                     if (!rs1.next()) break;
                                     today_total.setText(rs1.getString("COUNT(*)"));
                                     globaltotal=today_total.getText().toString().trim();
+                                    textstatus.setText("");
                                 } catch (SQLException throwables) {
                                     throwables.printStackTrace();
                                 }
