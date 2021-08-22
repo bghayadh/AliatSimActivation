@@ -12,9 +12,9 @@
         android:layout_height="60dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:backgroundTint="@color/red"
+        android:backgroundTint="@color/yellow"
         android:text="Submit"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="15dp"
         android:textStyle="bold" />
 
@@ -23,9 +23,9 @@
         android:layout_width="166dp"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:backgroundTint="@color/red"
+        android:backgroundTint="@color/yellow"
         android:text="Reset"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="15dp"
         android:textStyle="bold" />
 

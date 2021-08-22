@@ -258,6 +258,16 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         globalsimid = str.toString();
         stroffile= intent.getStringExtra("db-offline");
 
+        //show arrow
+        ImageButton backarrow = findViewById(R.id.backarrow);
+        backarrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(SimRegInfo.this,SimRegListViewActivity.class);
+                startActivity(i);
+            }
+        });
+
         ConnectivityManager connMgr = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();

@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_CODE = 100;
 
     //define buttons
-    private Button BtnMobCharge,BtnLogin,BtnSIMReg,BtnSimReport,BtnSimSwap,BtnSubscription,BtnSimStatus,BtnExit;
+    private Button BtnMobCharge,BtnSIMReg,BtnSimReport,BtnSimSwap,BtnSubscription,BtnSimStatus,BtnExit,btnlocalfiles,btnphotos;
 
     Connection conn;
     private boolean connectflag=false;
@@ -50,8 +50,9 @@ public class MainActivity extends AppCompatActivity {
         BtnSimSwap=findViewById(R.id.Btnsimswap);
         BtnSubscription=findViewById(R.id.Btnsubscription);
         BtnSimStatus=findViewById(R.id.Btnsimstatus);
-        BtnLogin=findViewById(R.id.BtnLogin);
         BtnExit=findViewById(R.id.BtnExit);
+        btnlocalfiles=findViewById(R.id.btnlocalfiles);
+        btnphotos=findViewById(R.id.btnphotos);
 
 
         Handler handler = new Handler();
@@ -146,19 +147,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
+
+
         // exit button
-        BtnLogin.setOnClickListener (new View.OnClickListener ( ) {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent =new Intent(MainActivity.this,UserLoginActivity.class);
-                intent.putExtra("key","Back");
-                startActivity(intent);
-            }
-        });
-
-
-        //// return to main page
         BtnExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -237,18 +230,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         // exit button
-        BtnLogin.setOnClickListener (new View.OnClickListener ( ) {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent =new Intent(MainActivity.this,UserLoginActivity.class);
-                intent.putExtra("key","Back");
-                startActivity(intent);
-            }
-        });
-
-
-        //// return to main page
         BtnExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

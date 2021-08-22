@@ -89,7 +89,7 @@
     <!-- display Main Page button -->
     <Button
         android:id="@+id/btnmain"
-        android:layout_width="360dp"
+        android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:backgroundTint="@color/menusgrey"

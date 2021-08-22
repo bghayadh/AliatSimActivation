@@ -51,9 +51,9 @@ public class SIMRegViewAdapter extends RecyclerView.Adapter<SIMRegViewAdapter.Vi
                 System.out.println(list.get(position).getSimRegListViewId());
 
                 // show line in green when select row
-                holder.name_id.setBackgroundColor(Color.GREEN);
-                holder.mobile_id.setBackgroundColor(Color.GREEN);
-                holder.simstatus_id.setBackgroundColor(Color.GREEN);
+                //holder.name_id.setBackgroundColor(Color.GREEN);
+                //holder.mobile_id.setBackgroundColor(Color.GREEN);
+                //holder.simstatus_id.setBackgroundColor(Color.GREEN);
 
                 // pass on click wareid value to new activity Sitinforactivity
                 Intent intent =  new Intent(context, SimRegInfo.class);
