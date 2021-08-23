@@ -196,6 +196,16 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        System.out.println("message_key " + stroffile.toString());
+        Intent i = new Intent(SimRegInfo.this, SimRegListViewActivity.class);
+        i.putExtra("message_key", stroffile.toString());
+        startActivity(i);
+    }
+
+
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1547,7 +1557,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     startActivity(a);
                 }
             });
-           //submit OOF LINE no internet
+           //submit OFF LINE no internet
             submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -1645,16 +1655,16 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                                 bw.write(b);
                                                 bw.close();
 
-                                                Toast.makeText(SimRegInfo.this, fileName + " is saved to\n" + dir, Toast.LENGTH_SHORT).show();
-                                                Intent intent = new Intent(SimRegInfo.this, SimRegOfflineDataActivity.class);
-                                                startActivity(intent);
+                                                //Toast.makeText(SimRegInfo.this, fileName + " is saved to\n" + dir, Toast.LENGTH_SHORT).show();
+                                                //Intent intent = new Intent(SimRegInfo.this, SimRegOfflineDataActivity.class);
+                                                //startActivity(intent);
                                             } catch (FileNotFoundException e) {
                                                 e.printStackTrace();
                                             } catch (IOException e) {
                                                 e.printStackTrace();
                                             }
                                             Toast.makeText(SimRegInfo.this,"Saving Offline",Toast.LENGTH_SHORT).show();
-
+                                            startActivity(getIntent());
                                         }
 
 
@@ -2320,6 +2330,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    startActivity(getIntent());
                     System.out.println ("SAVE COMPLETED  WHEN DB not reachable");
 
 

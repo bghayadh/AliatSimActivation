@@ -30,7 +30,23 @@ public class Activate_Sim extends AppCompatActivity {
     private String registrationStatus,globalsimid;
     private int clicks=0;
     private TextView txtrescode,txtresmessage,txtussd;
+    private String stroffile;
     Connection conn;
+
+
+
+
+
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(Activate_Sim.this, SimRegInfo.class);
+        i.putExtra("message_key",stroffile);
+        startActivity(i);
+    }
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +62,10 @@ public class Activate_Sim extends AppCompatActivity {
         txtresmessage=findViewById(R.id.responsemessage);
 
 
+        Intent i=Activate_Sim.this.getIntent();
+        stroffile=i.getStringExtra("globalsimid");
+        globalsimid=stroffile;
+        System.out.println("test : "+stroffile);
 
         Btnregisterviaussd.setOnClickListener(new View.OnClickListener() {
             @Override
