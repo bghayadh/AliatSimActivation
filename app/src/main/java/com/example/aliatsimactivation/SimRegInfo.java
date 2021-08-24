@@ -484,9 +484,9 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             btnlvsimreg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    System.out.println("message_key " + stroffile.toString());
+
                     Intent i = new Intent(SimRegInfo.this, SimRegListViewActivity.class);
-                    i.putExtra("message_key", stroffile.toString());
+                    i.putExtra("message_key", "0");
                     startActivity(i);
                 }
             });
@@ -1937,6 +1937,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         System.out.println("upload completed : " + sign);
                         UpdateSimRegistrationPicStatus(globalsimid, "SIGNATURE_STATUS");
                         signimgIcon.setColorFilter(Color.GREEN);
+                        linesign.setVisibility(View.INVISIBLE);
+                        discardsign.setVisibility(View.INVISIBLE);
                     }
                 }
 
@@ -1952,6 +1954,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         System.out.println("upload completed : "+front);
                         UpdateSimRegistrationPicStatus(globalsimid,"FRONT_SIDE_ID_STATUS");
                         frontimgIcon.setColorFilter(Color.GREEN);
+                        linefront.setVisibility(View.INVISIBLE);
+                        discardfront.setVisibility(View.INVISIBLE);
                     }
                 }
                 if(gbackstatus.equalsIgnoreCase("0")) {
@@ -1965,6 +1969,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         System.out.println("upload completed : " + back);
                         UpdateSimRegistrationPicStatus(globalsimid, "BACK_SIDE_ID_STATUS");
                         backimgIcon.setColorFilter(Color.GREEN);
+                        lineback.setVisibility(View.INVISIBLE);
+                        discardback.setVisibility(View.INVISIBLE);
                     }
                 }
 
@@ -2248,7 +2254,16 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     try {
                         stmtinsert1.executeUpdate();
                         OfflineFile.delete();
-
+                        // reduce counter of local save files
+                        count --;
+                        Button BtnData=(Button) findViewById(R.id.BtnData);
+                        if(count==0)
+                        {
+                            BtnData.setVisibility(View.INVISIBLE);
+                        }
+                        else {
+                            BtnData.setText(String.valueOf(count));
+                        }
 
                         //calling to upload pictures  using stfp
                         if (globalsimid.equalsIgnoreCase("0")) {
