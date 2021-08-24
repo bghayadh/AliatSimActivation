@@ -31,6 +31,9 @@ public class Activate_Sim extends AppCompatActivity {
     private int clicks=0;
     private TextView txtrescode,txtresmessage,txtussd;
     private String stroffile;
+    private String registerflag="0";
+    private String rechargeflag="0";
+    private String activateflag="0";
     Connection conn;
 
 
@@ -66,6 +69,10 @@ public class Activate_Sim extends AppCompatActivity {
         stroffile=i.getStringExtra("globalsimid");
         globalsimid=stroffile;
         System.out.println("test : "+stroffile);
+        //initial register ,reahrge, activation flag to 0
+        registerflag="0";
+        rechargeflag="0";
+        activateflag="0";
 
         Btnregisterviaussd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,7 +122,12 @@ public class Activate_Sim extends AppCompatActivity {
                         globalsimid = get.getStringExtra("globalsimid");
                         Toast.makeText(getApplicationContext(), "Already Success cannot resend command", Toast.LENGTH_SHORT).show();
                     } else {
-                        globalsimid = get.getStringExtra("globalsimid");
+                        if (globalsimid.equalsIgnoreCase("0")) {
+                            Toast.makeText(getApplicationContext(), "Save your data first", Toast.LENGTH_LONG).show();
+                        } else
+                        {
+                            registerflag="1";
+                            globalsimid = get.getStringExtra("globalsimid");
                         System.out.println("id : " + globalsimid);
                         String fname = get.getStringExtra("fname");
                         String mname = get.getStringExtra("mname");
@@ -134,16 +146,14 @@ public class Activate_Sim extends AppCompatActivity {
                         SimRegistrationAPI registrationAPI = new SimRegistrationAPI(globalsimid, fname, mname, lname, msisdn, idType, idNumber, dob, gender, email, altnumber, address1, state, agentmsisdn);
 
                         try {
-                            String res=registrationAPI.execute().get();
-                            if(res != null)
-                            {
+                            String res = registrationAPI.execute().get();
+                            if (res != null) {
 
-                                String[] data=res.split("!!") ;
+                                String[] data = res.split("!!");
                                 txtrescode.setText(data[0]);
                                 txtresmessage.setText(data[1]);
-                            }
-                            else{
-                                Toast.makeText(getApplicationContext(),"Error Occured Please Try Again Later",Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Error Occured Please Try Again Later", Toast.LENGTH_LONG).show();
                             }
 
                         } catch (ExecutionException e) {
@@ -151,7 +161,7 @@ public class Activate_Sim extends AppCompatActivity {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-
+                    }// end else 2nd
                     }
 
 
@@ -163,13 +173,21 @@ public class Activate_Sim extends AppCompatActivity {
             btnrechargeip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    if(registerflag.equalsIgnoreCase("0")){
+                        Toast.makeText(getApplicationContext(),"Register via IP first",Toast.LENGTH_LONG).show();
+                    } else {
+                       rechargeflag="1";
+                    }
                 }
             });
             btnsubip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    if(registerflag.equalsIgnoreCase("0")){
+                        Toast.makeText(getApplicationContext(),"Register via IP first",Toast.LENGTH_LONG).show();
+                    } else {
+                        activateflag="1";
+                    }
                 }
             });
             btnexit.setOnClickListener(new View.OnClickListener() {
@@ -189,6 +207,7 @@ public class Activate_Sim extends AppCompatActivity {
             btnrechargeip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                 }
             });
             btnsubip.setOnClickListener(new View.OnClickListener() {

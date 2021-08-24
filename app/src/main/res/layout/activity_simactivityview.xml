@@ -891,20 +891,6 @@
         </RelativeLayout>
 
 
-        <Button
-            android:id="@+id/activatesim"
-            android:layout_width="325dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginTop="15dp"
-            android:layout_centerInParent="true"
-            android:backgroundTint="@color/menusgrey"
-            android:textColor="@color/black"
-            android:drawableRight="@drawable/ic_activate1"
-            android:text="Register and Activate" />
-
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -950,6 +936,19 @@
 
 
         </RelativeLayout>
+
+        <Button
+            android:id="@+id/activatesim"
+            android:layout_width="340dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_centerInParent="true"
+            android:backgroundTint="@color/menusgrey"
+            android:textColor="@color/black"
+            android:drawableRight="@drawable/ic_activate1"
+            android:text="Register and Activate" />
+
 
         <RelativeLayout
             android:layout_width="match_parent"

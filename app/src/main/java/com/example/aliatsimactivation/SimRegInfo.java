@@ -513,7 +513,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
 
                         if(globalsimid.equalsIgnoreCase("0")) {
-                            frontimgIcon.setColorFilter(Color.YELLOW);
+                            frontimgIcon.setColorFilter(Color.parseColor("#4169E1"));
                             frontimgIcon.setVisibility(View.VISIBLE);
                             frontimgIcon.setVisibility(View.VISIBLE);
                             discardfront.setVisibility(View.VISIBLE);
@@ -570,7 +570,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             gfrontstatus=gfrontstatusorigin;
                             frontimgIcon.setVisibility(View.VISIBLE);
                             frontimgIcon.setBackgroundResource(0);
-                            frontimgIcon.setColorFilter(Color.YELLOW);
+                            frontimgIcon.setColorFilter(Color.parseColor("#4169E1"));
                             discardfront.setVisibility(View.INVISIBLE);
                             linefront.setVisibility(View.INVISIBLE);
                             File frontimage=new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),FRONTnew+".jpg");
@@ -598,7 +598,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         BACKnew=BACK;
 
                         if(globalsimid.equalsIgnoreCase("0")) {
-                            backimgIcon.setColorFilter(Color.YELLOW);
+                            backimgIcon.setColorFilter(Color.parseColor("#4169E1"));
                             lineback.setVisibility(View.VISIBLE);
                             discardback.setVisibility(View.VISIBLE);
 
@@ -658,7 +658,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             gbackstatus=gbackstatusorigin;
                             backimgIcon.setVisibility(View.VISIBLE);
                             backimgIcon.setBackgroundResource(0);
-                            backimgIcon.setColorFilter(Color.YELLOW);
+                            backimgIcon.setColorFilter(Color.parseColor("#4169E1"));
                             discardback.setVisibility(View.INVISIBLE);
                             lineback.setVisibility(View.INVISIBLE);
                             File backimage=new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),BACKnew+".jpg");
@@ -691,7 +691,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         a.putExtra("sign", SIGN);
                         startActivity(a);
                         if(globalsimid.equalsIgnoreCase("0")) {
-                            signimgIcon.setColorFilter(Color.YELLOW);
+                            signimgIcon.setColorFilter(Color.parseColor("#4169E1"));
 
 
                         }else{
@@ -751,7 +751,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             gsigstatus=gsigstatusorigin;
                             signimgIcon.setVisibility(View.VISIBLE);
                             signimgIcon.setBackgroundResource(0);
-                            signimgIcon.setColorFilter(Color.YELLOW);
+                            signimgIcon.setColorFilter(Color.parseColor("#4169E1"));
                             discardsign.setVisibility(View.INVISIBLE);
                             linesign.setVisibility(View.INVISIBLE);
                             File signimage=new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),SIGNnew+".jpg");
@@ -1840,7 +1840,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     } else {
                         signimgIcon.setVisibility(View.VISIBLE);
                         signimgIcon.setBackgroundResource(0);
-                        signimgIcon.setColorFilter(Color.YELLOW);
+                        signimgIcon.setColorFilter(Color.parseColor("#4169E1"));
                         signimgIcon.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -2450,7 +2450,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     signimgIcon.setBackgroundColor(0);
                 } else {
                     signimgIcon.setVisibility(View.VISIBLE);
-                    signimgIcon.setColorFilter(Color.YELLOW);
+                    signimgIcon.setColorFilter(Color.parseColor("#4169E1"));
                     signimgIcon.setBackgroundColor(0);
                 }
 
@@ -2460,7 +2460,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     frontimgIcon.setBackgroundColor(0);
                 } else {
                     frontimgIcon.setVisibility(View.VISIBLE);
-                    frontimgIcon.setColorFilter(Color.YELLOW);
+                    frontimgIcon.setColorFilter(Color.parseColor("#4169E1"));
                     frontimgIcon.setBackgroundColor(0);
                 }
 
@@ -2470,7 +2470,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     backimgIcon.setBackgroundColor(0);
                 } else {
                     backimgIcon.setVisibility(View.VISIBLE);
-                    backimgIcon.setColorFilter(Color.YELLOW);
+                    backimgIcon.setColorFilter(Color.parseColor("#4169E1"));
                     backimgIcon.setBackgroundColor(0);
                 }
 
