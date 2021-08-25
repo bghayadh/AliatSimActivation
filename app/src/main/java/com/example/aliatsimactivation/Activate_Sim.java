@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.View;
@@ -17,12 +18,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.time.LocalTime;
 import java.util.concurrent.ExecutionException;
 
 public class Activate_Sim extends AppCompatActivity {
@@ -35,7 +38,8 @@ public class Activate_Sim extends AppCompatActivity {
     private String rechargeflag="0";
     private String activateflag="0";
     Connection conn;
-
+    private LocalTime time,start,end;//to validate to time to access switch
+    private int flagstart,flagend;//flag
 
 
 
@@ -50,6 +54,7 @@ public class Activate_Sim extends AppCompatActivity {
 
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +68,9 @@ public class Activate_Sim extends AppCompatActivity {
 
         txtrescode=findViewById(R.id.responsecode);
         txtresmessage=findViewById(R.id.responsemessage);
+
+
+
 
 
         Intent i=Activate_Sim.this.getIntent();
@@ -114,6 +122,17 @@ public class Activate_Sim extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
+                    //setting time
+                    time=LocalTime.now();
+                    start=LocalTime.of(6,00,00);
+                    end=LocalTime.of(22,00,00);
+
+                    //comparing times
+                    flagstart=time.compareTo(start);
+                    flagend=time.compareTo(end);
+                    System.out.println(flagend+" "+flagstart);
+
+
 
                     Intent get = getIntent();
                     String mainstatus = get.getStringExtra("mainstatus");
@@ -122,46 +141,53 @@ public class Activate_Sim extends AppCompatActivity {
                         globalsimid = get.getStringExtra("globalsimid");
                         Toast.makeText(getApplicationContext(), "Already Success cannot resend command", Toast.LENGTH_SHORT).show();
                     } else {
-                        if (globalsimid.equalsIgnoreCase("0")) {
-                            Toast.makeText(getApplicationContext(), "Save your data first", Toast.LENGTH_LONG).show();
-                        } else
+                        if(flagstart==1 && flagend==-1)
                         {
-                            registerflag="1";
-                            globalsimid = get.getStringExtra("globalsimid");
-                        System.out.println("id : " + globalsimid);
-                        String fname = get.getStringExtra("fname");
-                        String mname = get.getStringExtra("mname");
-                        String lname = get.getStringExtra("lname");
-                        String msisdn = get.getStringExtra("msisdn");
-                        String idType = get.getStringExtra("idType");
-                        String idNumber = get.getStringExtra("idNumber");
-                        String dob = get.getStringExtra("dob");
-                        String gender = get.getStringExtra("gender");
-                        String email = get.getStringExtra("email");
-                        String altnumber = get.getStringExtra("altnumber");
-                        String address1 = get.getStringExtra("address1");
-                        String state = get.getStringExtra("state");
-                        String agentmsisdn = get.getStringExtra("agentmsisdn");
+                            if (globalsimid.equalsIgnoreCase("0")) {
+                                Toast.makeText(getApplicationContext(), "Save your data first", Toast.LENGTH_LONG).show();
+                            } else
+                            {
+                                registerflag="1";
+                                globalsimid = get.getStringExtra("globalsimid");
+                                System.out.println("id : " + globalsimid);
+                                String fname = get.getStringExtra("fname");
+                                String mname = get.getStringExtra("mname");
+                                String lname = get.getStringExtra("lname");
+                                String msisdn = get.getStringExtra("msisdn");
+                                String idType = get.getStringExtra("idType");
+                                String idNumber = get.getStringExtra("idNumber");
+                                String dob = get.getStringExtra("dob");
+                                String gender = get.getStringExtra("gender");
+                                String email = get.getStringExtra("email");
+                                String altnumber = get.getStringExtra("altnumber");
+                                String address1 = get.getStringExtra("address1");
+                                String state = get.getStringExtra("state");
+                                String agentmsisdn = get.getStringExtra("agentmsisdn");
 
-                        SimRegistrationAPI registrationAPI = new SimRegistrationAPI(globalsimid, fname, mname, lname, msisdn, idType, idNumber, dob, gender, email, altnumber, address1, state, agentmsisdn);
+                                SimRegistrationAPI registrationAPI = new SimRegistrationAPI(globalsimid, fname, mname, lname, msisdn, idType, idNumber, dob, gender, email, altnumber, address1, state, agentmsisdn);
 
-                        try {
-                            String res = registrationAPI.execute().get();
-                            if (res != null) {
+                                try {
+                                    String res = registrationAPI.execute().get();
+                                    if (res != null) {
 
-                                String[] data = res.split("!!");
-                                txtrescode.setText(data[0]);
-                                txtresmessage.setText(data[1]);
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Error Occured Please Try Again Later", Toast.LENGTH_LONG).show();
-                            }
+                                        String[] data = res.split("!!");
+                                        txtrescode.setText(data[0]);
+                                        txtresmessage.setText(data[1]);
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "Error Occured Please Try Again Later", Toast.LENGTH_LONG).show();
+                                    }
 
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+                                } catch (ExecutionException e) {
+                                    e.printStackTrace();
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }// end else 2nd
+
+                        }else {
+                            Toast.makeText(getApplicationContext(),"Please Try again between 6AM and 10PM",Toast.LENGTH_LONG).show();
                         }
-                    }// end else 2nd
+
                     }
 
 
@@ -176,7 +202,7 @@ public class Activate_Sim extends AppCompatActivity {
                     if(registerflag.equalsIgnoreCase("0")){
                         Toast.makeText(getApplicationContext(),"Register via IP first",Toast.LENGTH_LONG).show();
                     } else {
-                       rechargeflag="1";
+                        rechargeflag="1";
                     }
                 }
             });
@@ -248,3 +274,4 @@ public class Activate_Sim extends AppCompatActivity {
 
 
 }
+
