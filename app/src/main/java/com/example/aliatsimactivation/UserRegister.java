@@ -196,8 +196,6 @@ public class UserRegister extends AppCompatActivity {
         String Address=edtaddress.getText().toString();
         edtphonenbr=findViewById(R.id.edtphone);
         String MSISDN=edtphonenbr.getText().toString();
-        edtpin=findViewById(R.id.edtpin);
-        String PIN=edtpin.getText().toString();
         BtnAgentImage=findViewById(R.id.btnagentimg);
         BtnFrontID=findViewById(R.id.btnagentfrontid);
         BtnBackID=findViewById(R.id.btnagentbackid);
@@ -285,13 +283,12 @@ public class UserRegister extends AppCompatActivity {
                     //permit the user to verify if one edittext is empty
                     try {
                         //validat that all fiedls not to be empty
-                        if (TextUtils.isEmpty(edtfname.getText()) || TextUtils.isEmpty(edtlname.getText()) || TextUtils.isEmpty(edtregion.getText()) || TextUtils.isEmpty(edtaddress.getText()) || TextUtils.isEmpty(edtphonenbr.getText()) || TextUtils.isEmpty(edtpin.getText()) || TextUtils.isEmpty(AgentImage) || TextUtils.isEmpty(AgentFrontID) || TextUtils.isEmpty(AgentBackID)) {
+                        if (TextUtils.isEmpty(edtfname.getText()) || TextUtils.isEmpty(edtlname.getText()) || TextUtils.isEmpty(edtregion.getText()) || TextUtils.isEmpty(edtaddress.getText()) || TextUtils.isEmpty(edtphonenbr.getText()) || TextUtils.isEmpty(AgentImage) || TextUtils.isEmpty(AgentFrontID) || TextUtils.isEmpty(AgentBackID)) {
                             edtfname.setError("Enter First Name");
                             edtlname.setError("Enter Last Name");
                             edtregion.setError("Enter Region");
                             edtaddress.setError("Enter Address");
                             edtphonenbr.setError("Enter Phone Number");
-                            edtpin.setError("Enter PIN");
                             BtnAgentImage.setError("Take a Photo");
                             BtnFrontID.setError("Take a Photo");
                             BtnBackID.setError("Take a Photo");
@@ -326,7 +323,7 @@ public class UserRegister extends AppCompatActivity {
                                                     try {
                                                         //save agentlogin in Database
                                                         stmtinsert1 = conn.prepareStatement("insert into SIM_REGISTER_LOGIN (MSISDN,PIN_CODE,FIRST_NAME,LAST_NAME,ADDRESS,REGION,CREATION_DATE,AGENT_IMAGE,AGENT_FRONT_ID,AGENT_BACK_ID,VERIFICATION_CODE,AGENT_IMAGE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS) values " +
-                                                                "('" + edtphonenbr.getText().toString() + "','" + edtpin.getText().toString() + "','" + edtfname.getText().toString() + "','" + edtlname.getText().toString() + "','" + edtaddress.getText().toString() + "','" + edtregion.getText().toString() + "',sysdate,'" + AgentImage + "','" + AgentFrontID + "','" + AgentFrontID + "','" + Code + "',0,0,0)");
+                                                                "('" + edtphonenbr.getText().toString() + "','0','" + edtfname.getText().toString() + "','" + edtlname.getText().toString() + "','" + edtaddress.getText().toString() + "','" + edtregion.getText().toString() + "',sysdate,'" + AgentImage + "','" + AgentFrontID + "','" + AgentFrontID + "','" + Code + "',0,0,0)");
 
                                                     } catch (SQLException throwables) {
                                                         throwables.printStackTrace();
@@ -418,13 +415,12 @@ public class UserRegister extends AppCompatActivity {
                 //in case where no wifi or mobile internet connection
                 else{
 
-                    if (TextUtils.isEmpty(edtfname.getText()) || TextUtils.isEmpty(edtlname.getText()) || TextUtils.isEmpty(edtregion.getText()) || TextUtils.isEmpty(edtaddress.getText()) || TextUtils.isEmpty(edtphonenbr.getText()) || TextUtils.isEmpty(edtpin.getText()) || TextUtils.isEmpty(AgentImage) || TextUtils.isEmpty(AgentFrontID) || TextUtils.isEmpty(AgentBackID)) {
+                    if (TextUtils.isEmpty(edtfname.getText()) || TextUtils.isEmpty(edtlname.getText()) || TextUtils.isEmpty(edtregion.getText()) || TextUtils.isEmpty(edtaddress.getText()) || TextUtils.isEmpty(edtphonenbr.getText()) || TextUtils.isEmpty(AgentImage) || TextUtils.isEmpty(AgentFrontID) || TextUtils.isEmpty(AgentBackID)) {
                         edtfname.setError("Enter First Name");
                         edtlname.setError("Enter Last Name");
                         edtregion.setError("Enter Region");
                         edtaddress.setError("Enter Address");
                         edtphonenbr.setError("Enter Phone Number");
-                        edtpin.setError("Enter PIN");
                         BtnAgentImage.setError("Take a Photo");
                         BtnFrontID.setError("Take a Photo");
                         BtnBackID.setError("Take a Photo");
@@ -533,7 +529,6 @@ public class UserRegister extends AppCompatActivity {
         secondfileContents3= edtregion.getText().toString();
         secondfileContents4= edtaddress.getText().toString();
         secondfileContents5= edtphonenbr.getText().toString();
-        secondfileContents6= edtpin.getText().toString();
         secondfileContent7=AgentImage;
         secondfileContent8=AgentFrontID;
         secondfileContent9=AgentBackID;
@@ -549,8 +544,6 @@ public class UserRegister extends AppCompatActivity {
             fOut.write(secondfileContents4.getBytes());
             fOut.write(":".getBytes());
             fOut.write(secondfileContents5.getBytes());
-            fOut.write(":".getBytes());
-            fOut.write(secondfileContents6.getBytes());
             fOut.write(":".getBytes());
             fOut.write(secondfileContent7.getBytes());
             fOut.write(":".getBytes());

@@ -1,110 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-
-    <Button
-        android:id="@+id/signup"
-        android:layout_width="221dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="100dp"
-        android:background="#FFEB3B"
-        android:backgroundTint="@color/white"
-        android:text="Sign Up"
-        android:textColor="@color/black"
-        android:textSize="25dp"
-        app:backgroundTint="#FFEB3B"
-        app:layout_constraintBottom_toTopOf="@+id/BtnExit"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logooperator">
-
-    </Button>
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:weightSum="4"
+    android:orientation="vertical">
     <TextView
-        android:id="@+id/text_view1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/text_view2">
+        android:text="ver 1.0.10"/>
 
-    </TextView>
-
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/BtnData"
-        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:backgroundTint="@color/red"
-        android:nextFocusRight="@id/signup"
-        android:text="1"
-        android:textColor="@color/white"
-        android:visibility="invisible"
-        app:cornerRadius="50dp"
-        app:layout_constraintEnd_toEndOf="@+id/signup"
-        app:layout_constraintStart_toStartOf="@+id/signup"
-        app:layout_constraintTop_toBottomOf="@+id/signup"></com.google.android.material.button.MaterialButton>
 
     <ImageView
         android:id="@+id/logooperator"
-        android:layout_width="384dp"
+        android:layout_width="match_parent"
         android:layout_height="268dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginTop="111dp"
         android:src="@drawable/telekom"
-        app:layout_constraintBottom_toTopOf="@+id/BtnExit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.481"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.234" />
+        />
+
+
+
+    <LinearLayout
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        >
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        >
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        >
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_width="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign Up"
+                android:id="@+id/signup"
+                android:textSize="25dp"
+                android:textColor="@color/teal_700"
+                android:backgroundTint="@color/white" />
+
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:text="1"
+                android:id="@+id/BtnData"
+                android:layout_toRightOf="@+id/signup"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/white"
+                android:nextFocusRight="@id/signup"
+                app:cornerRadius="50dp"
+                style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+                android:backgroundTint="@color/red"
+                android:visibility="gone">
+            </com.google.android.material.button.MaterialButton>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
 
     <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Exit"
         android:id="@+id/BtnExit"
-        android:layout_width="360dp"
-        android:layout_height="60dp"
-        android:background="#FFEB3B"
-        android:backgroundTint="@color/white"
-        android:text="EXIT"
-        android:textColor="@color/black"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/teal_700"
         android:textSize="25dp"
-        app:backgroundTint="#FFEB3B"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:backgroundTint="@color/menusgrey" />
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_view1"
+        android:visibility="gone">
+    </TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/text_view2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></TextView>
+        android:visibility="gone">
+    </TextView>
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/text_view3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></TextView>
+        android:visibility="gone">
+    </TextView>
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ver 1.0.9"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="9dp" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
 
