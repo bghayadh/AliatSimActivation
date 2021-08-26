@@ -15,8 +15,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
     Connection conn;
     private boolean connectflag=false;
     private String globaltotal=null;
+    private String globalMode="0";
+    private String OpenMode="Online";
+    private ImageButton btnMenu;
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
@@ -53,6 +59,68 @@ public class MainActivity extends AppCompatActivity {
         BtnExit=findViewById(R.id.BtnExit);
         btnlocalfiles=findViewById(R.id.btnlocalfiles);
         btnphotos=findViewById(R.id.btnphotos);
+        btnMenu=findViewById(R.id.menubutton);
+
+
+
+
+        //menu button for online and offline
+        btnMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(getApplicationContext(),btnMenu);
+                popup.getMenuInflater().inflate(R.menu.main_menu, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.one:
+                                globalMode="Online";
+                                System.out.println("globalMode " +globalMode);
+                                startActivity(getIntent());
+                                 return true;
+                            case R.id.two:
+                                globalMode="Offline";
+                                System.out.println("globalMode " +globalMode);
+                                TextView today_total = findViewById(R.id.today_total);
+                                today_total.setText("");
+                                TextView today_success = findViewById(R.id.today_success);
+                                today_success.setText("");
+                                TextView today_failed = findViewById(R.id.today_failed);
+                                today_failed.setText("");
+                                TextView today_progress = findViewById(R.id.today_progress);
+                                today_progress.setText("");
+                                TextView week_total = findViewById(R.id.week_total);
+                                week_total.setText("");
+                                TextView week_success = findViewById(R.id.week_success);
+                                week_success.setText("");
+                                TextView week_failed = findViewById(R.id.week_failed);
+                                week_failed.setText("");
+                                TextView week_progress = findViewById(R.id.week_progress);
+                                week_progress.setText("");
+                                TextView month_total = findViewById(R.id.month_total);
+                                month_total.setText("");
+                                TextView month_success = findViewById(R.id.month_success);
+                                month_success.setText("");
+                                TextView month_failed = findViewById(R.id.month_failed);
+                                month_failed.setText("");
+                                TextView month_progress = findViewById(R.id.month_progress);
+                                month_progress.setText("");
+                                return true;
+                            default:
+                                return false;
+                        }
+                    }
+                });
+                popup.show();
+            }
+        });
+
+
+       //validate if the appication mode OFF/ON
+         if (globalMode.equalsIgnoreCase("0")) {
+             globalMode=OpenMode;
+         }
 
 
         Handler handler = new Handler();
@@ -1265,7 +1333,7 @@ public class MainActivity extends AppCompatActivity {
 
                 NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
-                if (networkInfo != null && networkInfo.isConnected()) {
+                if (networkInfo != null && networkInfo.isConnected() && (globalMode.equalsIgnoreCase("Online"))) {
                     if (strdbcon.equalsIgnoreCase("-100")) {
 
                     } else {

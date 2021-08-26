@@ -2,8 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/one"
-        android:title="Online" />
+        android:title="Mode Online" />
     <item
         android:id="@+id/two"
-        android:title="Offline"/>
+        android:title="Mode Offline"/>
+    <item
+        android:id="@+id/three"
+        android:title="Agent"/>
 </menu>
