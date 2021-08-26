@@ -4,20 +4,13 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:weightSum="4"
+    android:background="@drawable/loginimg"
     android:orientation="vertical">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ver 1.0.10"/>
-
-
-    <ImageView
-        android:id="@+id/logooperator"
-        android:layout_width="match_parent"
-        android:layout_height="268dp"
-        android:layout_marginTop="111dp"
-        android:src="@drawable/telekom"
-        />
+        android:textColor="@color/teal_700"
+        android:text="ver 1.0.11"/>
 
 
 
@@ -61,7 +54,7 @@
                 android:id="@+id/signup"
                 android:textSize="25dp"
                 android:textColor="@color/teal_700"
-                android:backgroundTint="@color/white" />
+                android:backgroundTint="@color/yellow" />
 
 
             <com.google.android.material.button.MaterialButton
@@ -94,7 +87,7 @@
         android:layout_alignParentBottom="true"
         android:textColor="@color/teal_700"
         android:textSize="25dp"
-        android:backgroundTint="@color/menusgrey" />
+        android:backgroundTint="@color/yellow" />
 
     <TextView
         android:layout_width="wrap_content"
