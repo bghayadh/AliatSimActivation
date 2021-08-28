@@ -8,5 +8,5 @@
         android:title="Mode Offline"/>
     <item
         android:id="@+id/three"
-        android:title="Agent"/>
+        android:title="Login User"/>
 </menu>

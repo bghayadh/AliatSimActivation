@@ -117,6 +117,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     private String SIGNorigin,SIGNnew,BACKorigin,BACKnew,gsigstatusnew,gsigstatusorigin,gbackstatusnew,gbackstatusorigin,FRONTnew,FRONTorigin,gfrontstatusnew,gfrontstatusorigin;
     private View linesign,linefront,lineback;  //line under discard
     private TextView discardsign,discardfront,discardback; // for discard
+    private String globalMode;
 
     //capture images from cam and save it on the phone
     @Override
@@ -198,10 +199,13 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
     @Override
     public void onBackPressed() {
-        System.out.println("message_key " + stroffile.toString());
-        Intent i = new Intent(SimRegInfo.this, SimRegListViewActivity.class);
-        i.putExtra("message_key", stroffile.toString());
-        startActivity(i);
+        if (globalMode.equalsIgnoreCase("Online")) {
+            System.out.println("message_key " + stroffile.toString());
+            Intent i = new Intent(SimRegInfo.this, SimRegListViewActivity.class);
+            i.putExtra("message_key", stroffile.toString());
+            i.putExtra("globalMode", globalMode);
+            startActivity(i);
+        }
     }
 
 
@@ -267,6 +271,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         String str = intent.getStringExtra("message_key");
         globalsimid = str.toString();
         stroffile= intent.getStringExtra("db-offline");
+        globalMode=intent.getStringExtra("globalMode");
 
         //show arrow
         ImageButton backarrow = findViewById(R.id.backarrow);
@@ -282,7 +287,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
-        if (networkInfo != null && networkInfo.isConnected()) {
+        if (networkInfo != null && networkInfo.isConnected() && globalMode.equalsIgnoreCase("Online")) {
 
             Toast.makeText(SimRegInfo.this, "Connected", Toast.LENGTH_SHORT).show();
 
@@ -480,7 +485,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     startActivity(i);
                 }
             });
-            //BtnData appear in case offline files exist
+            //BtnData appear in case online files exist
             btnlvsimreg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -770,6 +775,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 public void onClick(View v) {
                     Intent i = new Intent(SimRegInfo.this, MainActivity.class);
                     i.putExtra("db-offline-to-main","0");
+                    i.putExtra("globalMode",globalMode);
                     startActivity(i);
                 }
             });
@@ -1625,6 +1631,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 public void onClick(View v) {
                     Intent i = new Intent(SimRegInfo.this, MainActivity.class);
                     i.putExtra("db-offline-to-main","0");
+                    i.putExtra("globalMode",globalMode);
                     startActivity(i);
                 }
             });

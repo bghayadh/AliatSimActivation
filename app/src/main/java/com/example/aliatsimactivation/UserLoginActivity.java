@@ -104,10 +104,12 @@ public class UserLoginActivity extends AppCompatActivity {
                         str1 = "1";
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.putExtra("db-offline-to-main", str1);
+                        intent.putExtra("globalMode","Online");
                         startActivity(intent);
                     } else {
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.putExtra("db-offline-to-main", str1);
+                        intent.putExtra("globalMode","Offline");
                         startActivity(intent);
                     }
                 }

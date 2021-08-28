@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -42,7 +44,9 @@ public class MainActivity extends AppCompatActivity {
     private String globalMode="0";
     private String OpenMode="Online";
     private ImageButton btnMenu;
+    private Button btnMode;
 
+    @SuppressLint("ResourceAsColor")
     @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,27 +64,34 @@ public class MainActivity extends AppCompatActivity {
         btnlocalfiles=findViewById(R.id.btnlocalfiles);
         btnphotos=findViewById(R.id.btnphotos);
         btnMenu=findViewById(R.id.menubutton);
+        btnMode=findViewById(R.id.btnMode);
 
 
 
-
-        //menu button for online and offline
+//menu button for online and offline
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PopupMenu popup = new PopupMenu(getApplicationContext(),btnMenu);
                 popup.getMenuInflater().inflate(R.menu.main_menu, popup.getMenu());
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @SuppressLint("ResourceAsColor")
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.one:
                                 globalMode="Online";
+                                finish();
+                                Intent i=new Intent(MainActivity.this,MainActivity.class);
+                                i.putExtra("globalMode",globalMode);
+                                i.putExtra("db-offline-to-main","0");
+                                startActivity(i);
                                 System.out.println("globalMode " +globalMode);
-                                startActivity(getIntent());
-                                 return true;
+                                btnMode.setBackgroundColor(R.color.mixte);
+                                return true;
                             case R.id.two:
                                 globalMode="Offline";
+                                btnMode.setBackgroundColor(Color.RED);
                                 System.out.println("globalMode " +globalMode);
                                 TextView today_total = findViewById(R.id.today_total);
                                 today_total.setText("");
@@ -107,6 +118,9 @@ public class MainActivity extends AppCompatActivity {
                                 TextView month_progress = findViewById(R.id.month_progress);
                                 month_progress.setText("");
                                 return true;
+
+
+
                             default:
                                 return false;
                         }
@@ -115,6 +129,21 @@ public class MainActivity extends AppCompatActivity {
                 popup.show();
             }
         });
+
+        Intent i=this.getIntent();
+        OpenMode=i.getStringExtra("globalMode");
+        System.out.println("globalMode from back : "+OpenMode);
+
+
+        if(OpenMode.equalsIgnoreCase("Online"))
+        {
+            globalMode="Online";
+
+           // btnMode.setBackgroundColor(R.color.mixte);
+        }else{
+            globalMode="Offline";
+            btnMode.setBackgroundColor(Color.RED);
+        }
 
 
        //validate if the appication mode OFF/ON
@@ -153,83 +182,8 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace ( );
         }
 
-        // click to move to Sim Registration List
-        BtnSIMReg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                ConnectivityManager connMgr = (ConnectivityManager) getApplicationContext ( )
-                        .getSystemService(Context.CONNECTIVITY_SERVICE);
-
-                NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-
-
-                if (networkInfo != null && networkInfo.isConnected()) {
-
-                    //Toast.makeText(MainActivity.this,  "Welcome to Sim Registration page",Toast.LENGTH_SHORT).show();
-                    Intent intent =new Intent(MainActivity.this, SimRegListViewActivity.class);
-                    startActivity(intent);
-                } else {
-
-                    Toast.makeText(MainActivity.this,  "Not Connected",Toast.LENGTH_SHORT).show();
-                    Intent i=new Intent(getApplicationContext(),SimRegInfo.class);
-                    startActivity(i);
-                }
-            }
-
-        });
-
-
-
-        // click to move to Mobile Charge List
-        BtnMobCharge.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //check network connection
-                ConnectivityManager connMgr = (ConnectivityManager) getApplicationContext ( )
-                        .getSystemService(Context.CONNECTIVITY_SERVICE);
-
-                NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-
-                if (networkInfo != null && networkInfo.isConnected()) {
-                    //   Toast.makeText(MainActivity.this,  "Welcome to Mobile Charge page",Toast.LENGTH_SHORT).show();
-                    // Intent intent =new Intent(MainActivity.this, ClientChargeListViewActivity.class);
-                    //startActivity(intent);
-                } else {
-                    // Toast.makeText(MainActivity.this,  "No Connection",Toast.LENGTH_SHORT).show();
-                    //Intent i=new Intent(getApplicationContext(),ClientChargeInfoActivity.class);
-                    //startActivity(i);
-                }
-
-
-            }
-        });
-
-
-        //open sim registration reports
-        BtnSimReport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this,"Welcome To Sim Registration Reports",Toast.LENGTH_LONG).show();
-                Intent intent=new Intent(MainActivity.this,SimRegistrationReport.class);
-                startActivity(intent);
-            }
-        });
-
-
-
-
-        // exit button
-        BtnExit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                finishAffinity();
-            }
-        });
-
-
-        // click to move to Sim Registration List
+          // click to move to Sim Registration List
         BtnSIMReg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -240,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
 
                 NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
-                if (networkInfo != null && networkInfo.isConnected()) {
+                if (networkInfo != null && networkInfo.isConnected() && globalMode.equalsIgnoreCase("Online")) {
                     Toast.makeText(MainActivity.this,  "Welcome to Sim Registration page",Toast.LENGTH_SHORT).show();
                     Intent intent =new Intent(MainActivity.this, SimRegListViewActivity.class);
                     System.out.println("SEND TO "+ globaltotal);
@@ -255,6 +209,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this,  "Not Connected",Toast.LENGTH_SHORT).show();
                     Intent i=new Intent(getApplicationContext(),SimRegInfo.class);
                     i.putExtra("message_key","0");
+                    i.putExtra("globalMode","Offline");
                     startActivity(i);
                 }
             }

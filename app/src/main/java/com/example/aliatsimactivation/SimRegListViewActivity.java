@@ -139,6 +139,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
 
                 Intent intent =new Intent(getApplicationContext(),MainActivity.class);
                 intent.putExtra("db-offline-to-main", "0");
+                intent.putExtra("globalMode","Online");
                 startActivity(intent);
             }
         });
@@ -179,6 +180,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
                 Intent intent= new Intent(getApplicationContext(), SimRegInfo.class);
                 intent.putExtra("message_key","0");
                 intent.putExtra("db-offline", str);
+                intent.putExtra("globalMode","Online");
                 startActivity(intent);
             }
         });
@@ -186,6 +188,16 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
 
     }
 
+
+
+
+   /* @Override
+    public void onBackPressed() {
+        Intent i = new Intent(SimRegListViewActivity.this, MainActivity.class);
+        i.putExtra("message_key", "0");
+        i.putExtra("globalMode","Online");
+        startActivity(i);
+    }*/
 
     public void GetSimData(int vfrom, int vto) {
         boolean flg=false;
