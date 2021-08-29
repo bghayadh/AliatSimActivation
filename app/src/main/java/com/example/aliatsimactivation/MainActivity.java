@@ -119,8 +119,9 @@ public class MainActivity extends AppCompatActivity {
                                 month_progress.setText("");
                                 return true;
 
-
-
+                            case R.id.three:
+                               // Intent i1 =new Intent(MainActivity.this,UserRegister.class);
+                               // startActivity(i1);
                             default:
                                 return false;
                         }
