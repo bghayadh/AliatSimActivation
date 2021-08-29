@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class SimRegOfflineDataActivity extends AppCompatActivity {
 
 
-
+    private String globalMode;
     private RecyclerView offlinedataRecView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +26,7 @@ public class SimRegOfflineDataActivity extends AppCompatActivity {
         Button btnback = findViewById(R.id.btnback);
         Intent intent = this.getIntent();
         String simid=intent.getStringExtra("message_key");
+        globalMode=intent.getStringExtra("globalMode");
 
         //counting the number of files
         File dir = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
@@ -112,6 +113,7 @@ public class SimRegOfflineDataActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i=new Intent(getApplicationContext(),SimRegInfo.class);
                 i.putExtra("message_key","0");
+                i.putExtra("globalMode",globalMode);
                 startActivity(i);
             }
         });

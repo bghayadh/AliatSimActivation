@@ -476,15 +476,17 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             }
 
 
-            //BtnData appear in case offline files exist
+            //BtnData appear in case online files exist
             BtnData.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(SimRegInfo.this, SimRegOfflineDataActivity.class);
                     i.putExtra("message_key", globalsimid);
+                    i.putExtra("globalMode",globalMode);
                     startActivity(i);
                 }
             });
+
             //BtnData appear in case online files exist
             btnlvsimreg.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -858,6 +860,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
                     Intent a = new Intent(SimRegInfo.this, Activate_Sim.class);
                     a.putExtra("globalsimid", globalsimid);
+                    a.putExtra("globalMode",globalMode);
                     a.putExtra("fname", fname);
                     a.putExtra("mname", mname);
                     a.putExtra("lname", lname);
@@ -876,6 +879,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     startActivity(a);
                 }
             });
+
             //submit ON LINE
             submit.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1649,7 +1653,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 }
             });
 
-
+            //OFF LINE
             BtnRegandActivate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -1675,6 +1679,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
                     Intent a = new Intent(SimRegInfo.this, Activate_Sim.class);
                     a.putExtra("globalsimid", globalsimid);
+                    a.putExtra("globalMode",globalMode);
                     a.putExtra("fname", fname);
                     a.putExtra("mname", mname);
                     a.putExtra("lname", lname);
@@ -1691,7 +1696,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     startActivity(a);
                 }
             });
-           //submit OFF LINE no internet
+
+            //submit OFF LINE no internet
             submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -1817,14 +1823,17 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             });
 
             //BtnData appear in case offline files exist
+            //offline
             Button BtnData = (Button) findViewById(R.id.BtnData);
             BtnData.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(SimRegInfo.this, SimRegOfflineDataActivity.class);
+                    i.putExtra("globalMode",globalMode);
                     startActivity(i);
                 }
             });
+
             if (count >= 5) {
                 submit.setEnabled(false);
                 Toast.makeText(SimRegInfo.this, "You Already Have 5 Unsubmitted Files", Toast.LENGTH_SHORT).show();

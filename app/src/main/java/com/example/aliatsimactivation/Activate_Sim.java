@@ -37,6 +37,7 @@ public class Activate_Sim extends AppCompatActivity {
     private String registerflag="0";
     private String rechargeflag="0";
     private String activateflag="0";
+    private String globalMode;
     Connection conn;
     private LocalTime time,start,end;//to validate to time to access switch
     private int flagstart,flagend;//flag
@@ -49,6 +50,7 @@ public class Activate_Sim extends AppCompatActivity {
     public void onBackPressed() {
         Intent i = new Intent(Activate_Sim.this, SimRegInfo.class);
         i.putExtra("message_key",stroffile);
+        i.putExtra("globalMode",globalMode);
         startActivity(i);
     }
 
@@ -75,6 +77,7 @@ public class Activate_Sim extends AppCompatActivity {
 
         Intent i=Activate_Sim.this.getIntent();
         stroffile=i.getStringExtra("globalsimid");
+        globalMode=i.getStringExtra("globalMode");
         globalsimid=stroffile;
         System.out.println("test : "+stroffile);
         //initial register ,reahrge, activation flag to 0
@@ -116,7 +119,7 @@ public class Activate_Sim extends AppCompatActivity {
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
 
-        if (networkInfo != null && networkInfo.isConnected()) {
+        if (networkInfo != null && networkInfo.isConnected() && globalMode.equalsIgnoreCase("Online")) {
             Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_SHORT).show();
             btnip.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -223,28 +226,41 @@ public class Activate_Sim extends AppCompatActivity {
                     //finish();
                     Intent intent= new Intent(getApplicationContext(), SimRegInfo.class);
                     intent.putExtra("message_key",globalsimid);
+                    intent.putExtra("globalMode",globalMode);
                     intent.putExtra("db-offline","1");
-
                     startActivity(intent);
                 }
             });
         }else {
 
+            btnip.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(Activate_Sim.this, "Off line mode", Toast.LENGTH_SHORT).show();
+                }
+            });
+
             btnrechargeip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Toast.makeText(Activate_Sim.this, "Off line mode", Toast.LENGTH_SHORT).show();
                 }
             });
             btnsubip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Toast.makeText(Activate_Sim.this, "Off line mode", Toast.LENGTH_SHORT).show();
                 }
             });
             btnexit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    finish();
+                    //finish();
+                    Intent intent= new Intent(getApplicationContext(), SimRegInfo.class);
+                    intent.putExtra("message_key",globalsimid);
+                    intent.putExtra("globalMode",globalMode);
+                    intent.putExtra("db-offline","1");
+                    startActivity(intent);
                 }
             });
         }
