@@ -122,7 +122,6 @@ public class Activate_Sim extends AppCompatActivity {
                         System.out.println("start sending " + UssdCode);
                         //dial Ussd code
                         startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + UssdCodeNew)));
-                       
                     }
 
                     // now update in DB or in Offline mode
