@@ -44,7 +44,7 @@ public class SimRegOfflineDataActivity extends AppCompatActivity {
             String a = files[0].getName();
             ArrayList<SimRegOfflineDataListView> offlinedata = new ArrayList<>();
             offlinedata.add(new SimRegOfflineDataListView(a));
-            SimRegOfflineDataRecViewAdapter adapter = new SimRegOfflineDataRecViewAdapter(SimRegOfflineDataActivity.this);
+            SimRegOfflineDataRecViewAdapter adapter = new SimRegOfflineDataRecViewAdapter(SimRegOfflineDataActivity.this,getIntent().getStringExtra("globalMode"));
             adapter.setContacts(offlinedata);
             offlinedataRecView.setAdapter(adapter);
             offlinedataRecView.setLayoutManager(new LinearLayoutManager(SimRegOfflineDataActivity.this));
@@ -56,7 +56,7 @@ public class SimRegOfflineDataActivity extends AppCompatActivity {
             ArrayList<SimRegOfflineDataListView> offlinedata = new ArrayList<>();
             offlinedata.add(new SimRegOfflineDataListView(a));
             offlinedata.add(new SimRegOfflineDataListView(b));
-            SimRegOfflineDataRecViewAdapter adapter = new SimRegOfflineDataRecViewAdapter(SimRegOfflineDataActivity.this);
+            SimRegOfflineDataRecViewAdapter adapter = new SimRegOfflineDataRecViewAdapter(SimRegOfflineDataActivity.this,getIntent().getStringExtra("globalMode"));
             adapter.setContacts(offlinedata);
             offlinedataRecView.setAdapter(adapter);
             offlinedataRecView.setLayoutManager(new LinearLayoutManager(SimRegOfflineDataActivity.this)); }
@@ -69,7 +69,7 @@ public class SimRegOfflineDataActivity extends AppCompatActivity {
             offlinedata.add(new SimRegOfflineDataListView(a));
             offlinedata.add(new SimRegOfflineDataListView(b));
             offlinedata.add(new SimRegOfflineDataListView(c));
-            SimRegOfflineDataRecViewAdapter adapter = new SimRegOfflineDataRecViewAdapter(SimRegOfflineDataActivity.this);
+            SimRegOfflineDataRecViewAdapter adapter = new SimRegOfflineDataRecViewAdapter(SimRegOfflineDataActivity.this,getIntent().getStringExtra("globalMode"));
             adapter.setContacts(offlinedata);
             offlinedataRecView.setAdapter(adapter);
             offlinedataRecView.setLayoutManager(new LinearLayoutManager(SimRegOfflineDataActivity.this)); }
@@ -84,7 +84,7 @@ public class SimRegOfflineDataActivity extends AppCompatActivity {
             offlinedata.add(new SimRegOfflineDataListView(b));
             offlinedata.add(new SimRegOfflineDataListView(c));
             offlinedata.add(new SimRegOfflineDataListView(d));
-            SimRegOfflineDataRecViewAdapter adapter = new SimRegOfflineDataRecViewAdapter(SimRegOfflineDataActivity.this);
+            SimRegOfflineDataRecViewAdapter adapter = new SimRegOfflineDataRecViewAdapter(SimRegOfflineDataActivity.this,getIntent().getStringExtra("globalMode"));
             adapter.setContacts(offlinedata);
             offlinedataRecView.setAdapter(adapter);
             offlinedataRecView.setLayoutManager(new LinearLayoutManager(SimRegOfflineDataActivity.this)); }
@@ -101,7 +101,7 @@ public class SimRegOfflineDataActivity extends AppCompatActivity {
             offlinedata.add(new SimRegOfflineDataListView(c));
             offlinedata.add(new SimRegOfflineDataListView(d));
             offlinedata.add(new SimRegOfflineDataListView(e));
-            SimRegOfflineDataRecViewAdapter adapter = new SimRegOfflineDataRecViewAdapter(SimRegOfflineDataActivity.this);
+            SimRegOfflineDataRecViewAdapter adapter = new SimRegOfflineDataRecViewAdapter(SimRegOfflineDataActivity.this,getIntent().getStringExtra("globalMode"));
             adapter.setContacts(offlinedata);
             offlinedataRecView.setAdapter(adapter);
             offlinedataRecView.setLayoutManager(new LinearLayoutManager(SimRegOfflineDataActivity.this));    }

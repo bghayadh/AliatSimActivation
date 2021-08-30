@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Environment;
 import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,22 +23,18 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 public class SimRegOfflineDataRecViewAdapter extends RecyclerView.Adapter<SimRegOfflineDataRecViewAdapter.ViewHolder>{
     FileInputStream fstream;
-
+    private String globalMode;
     private ArrayList<SimRegOfflineDataListView> offlinedata = new ArrayList<>();
     private Context context;
     Connection conn;
-    public SimRegOfflineDataRecViewAdapter(Context context) {
+    public SimRegOfflineDataRecViewAdapter(Context context, String globalMode) {
         this.context=context;
+        this.globalMode=globalMode;
     }
 
     @NonNull
@@ -131,6 +126,7 @@ public class SimRegOfflineDataRecViewAdapter extends RecyclerView.Adapter<SimReg
                     String globalsimid = "0";
                     Intent intent = new Intent(context,SimRegInfo.class);
                     intent.putExtra("message_key",globalsimid);
+                    intent.putExtra("globalMode",globalMode);
                     intent.putExtra("offline1",a);
                     intent.putExtra("offline2",b);
                     intent.putExtra("offline3",c);
