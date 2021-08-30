@@ -444,6 +444,39 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="13dp"
+            android:layout_below="@+id/epostaladdress"
+            android:background="@color/menusgrey" />
+        <TextView
+            android:layout_width="350dp"
+            android:layout_height="match_parent"
+            android:id="@+id/ussdstatus"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:text="USSD Status"/>
+
+        <EditText
+            android:layout_width="330dp"
+            android:layout_height="match_parent"
+            android:id="@+id/edtussdstatus"
+            android:hint="USSD STATUS"
+            android:text="0"
+            android:enabled="false"
+            android:textColor="#808080"
+            android:textColorHint="#808080"
+            android:layout_marginStart="15dp"
+            android:maxLines="1"
+            android:maxLength="50"
+            android:inputType="textPersonName"
+            android:background="@null"/>
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="13dp"
             android:layout_below="@+id/textView10"
             android:background="@color/menusgrey" />
 

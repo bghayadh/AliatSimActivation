@@ -91,7 +91,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     private String vsimid,vpic,vcol;
     private String s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,s12,s13,s14,s15,s16,s17,b;
     private String emailpattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-    private EditText editaltnumber,editemail,editphylocation,editpost;
+    private EditText editaltnumber,editemail,editphylocation,editpost,editussdstatus;
     private TextView editlname, editfname, textF, textB, textS;
     private String file1 = "MSISDN.txt";
     private String s0, s1, Result;
@@ -118,6 +118,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     private View linesign,linefront,lineback;  //line under discard
     private TextView discardsign,discardfront,discardback; // for discard
     private String globalMode;
+
 
     //capture images from cam and save it on the phone
     @Override
@@ -254,6 +255,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         lineback=findViewById(R.id.line2);
         btnlvsimreg=findViewById(R.id.simreglistview);
         txtmsg=findViewById(R.id.txtmsg);
+        editussdstatus=findViewById(R.id.edtussdstatus);
 
         Date c = Calendar.getInstance().getTime();
         SimpleDateFormat df=new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
@@ -427,6 +429,9 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 String Off16 = intent.getStringExtra("offline16");
                 textB.setText(Off16);
                 BACK = Off16;
+
+                String Off17 = intent.getStringExtra("offline17");
+                editussdstatus.setText(Off17);
 
                 checkBox.setChecked(true);
 
@@ -1602,6 +1607,9 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 textB.setText(Off16);
                 BACK = Off16;
 
+                String Off17 = intent.getStringExtra("offline17");
+                editussdstatus.setText(Off17);
+
                 checkBox.setChecked(true);
 
                 if (textF.getText().toString() != "") {
@@ -2299,7 +2307,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
                     Statement stmt1 = null;
                     stmt1 = conn.createStatement();
-                    String sqlStmt = "select FIRST_NAME,MIDDLE_NAME,LAST_NAME,STATUS,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHISICAL_LOCATION,POSTAL_ADDRESS,GENDER,AGENT_ID,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,SIGNATURE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS FROM SIM_REGISTRATION where SIM_REG_ID = '" + globalsimid + "'";
+                    String sqlStmt = "select FIRST_NAME,MIDDLE_NAME,LAST_NAME,STATUS,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHISICAL_LOCATION,POSTAL_ADDRESS,GENDER,AGENT_ID,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,SIGNATURE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS,USSD_STATUS FROM SIM_REGISTRATION where SIM_REG_ID = '" + globalsimid + "'";
                     ResultSet rs1 = null;
                     try {
                         rs1 = stmt1.executeQuery(sqlStmt);
@@ -2310,7 +2318,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     while (true) {
                         try {
                             if (!rs1.next()) break;
-                            FilldatafromDataBase(true,rs1.getString("FIRST_NAME"),rs1.getString("MIDDLE_NAME"),rs1.getString("LAST_NAME"),rs1.getString("MOBILE_NUMBER"),rs1.getString("DATE_OF_BIRTH").substring(8, 10) + "-" + rs1.getString("DATE_OF_BIRTH").substring(5, 7) + "-" + rs1.getString("DATE_OF_BIRTH").substring(0, 4),rs1.getString("NATIONALITY"),rs1.getString("ALTERNATIVE_NUMBER"),rs1.getString("EMAIL_ADDRESS"),rs1.getString("PHISICAL_LOCATION"),rs1.getString("POSTAL_ADDRESS"),rs1.getString("GENDER"),rs1.getString("STATUS"),rs1.getString("AGENT_ID"),rs1.getString("ID_FRONT_SIDE_PHOTO"),rs1.getString("ID_BACK_SID_PHOTO"),rs1.getString("SIGNATURE"),rs1.getString("SIGNATURE_STATUS"),rs1.getString("FRONT_SIDE_ID_STATUS"),rs1.getString("BACK_SIDE_ID_STATUS"));
+                            FilldatafromDataBase(true,rs1.getString("FIRST_NAME"),rs1.getString("MIDDLE_NAME"),rs1.getString("LAST_NAME"),rs1.getString("MOBILE_NUMBER"),rs1.getString("DATE_OF_BIRTH").substring(8, 10) + "-" + rs1.getString("DATE_OF_BIRTH").substring(5, 7) + "-" + rs1.getString("DATE_OF_BIRTH").substring(0, 4),rs1.getString("NATIONALITY"),rs1.getString("ALTERNATIVE_NUMBER"),rs1.getString("EMAIL_ADDRESS"),rs1.getString("PHISICAL_LOCATION"),rs1.getString("POSTAL_ADDRESS"),rs1.getString("GENDER"),rs1.getString("STATUS"),rs1.getString("AGENT_ID"),rs1.getString("ID_FRONT_SIDE_PHOTO"),rs1.getString("ID_BACK_SID_PHOTO"),rs1.getString("SIGNATURE"),rs1.getString("SIGNATURE_STATUS"),rs1.getString("FRONT_SIDE_ID_STATUS"),rs1.getString("BACK_SIDE_ID_STATUS"),rs1.getString("USSD_STATUS"));
 
                             //System.out.println(rs1.getString("compteur"));
 
@@ -2384,13 +2392,12 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             // send data from fragment to super activity
 
 
-                            stmtinsert1 = conn.prepareStatement("insert into SIM_REGISTRATION (SIM_REG_ID,STATUS,CREATION_DATE,LAST_MODIFIED_DATE,FIRST_NAME,MIDDLE_NAME,LAST_NAME,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHISICAL_LOCATION,POSTAL_ADDRESS,GENDER,AGENT_NUMBER,AGENT_ID,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,SIGNATURE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS) values " +
-                                    "('" + globalsimid + "','" + b + "' ,sysdate, sysdate,'" + editfname.getText() + "','" + editmname.getText() + "', '" + editlname.getText() + "','" + editmobile.getText() + "',TO_DATE('" + editdate.getText() + "','DD-MM-YYYY'),'" + nationality + "','" + editaltnumber.getText() + "','" + editemail.getText() + "','" + editphylocation.getText() + "','" + editpost.getText() + "','" + gender + "','" + editagent.getText() + "','" + editidagent.getText() + "','" + SIGN + "','" + FRONT + "','" + BACK + "',0,0,0)");
-
+                            stmtinsert1 = conn.prepareStatement("insert into SIM_REGISTRATION (SIM_REG_ID,STATUS,CREATION_DATE,LAST_MODIFIED_DATE,FIRST_NAME,MIDDLE_NAME,LAST_NAME,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHISICAL_LOCATION,POSTAL_ADDRESS,GENDER,AGENT_NUMBER,AGENT_ID,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,SIGNATURE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS,USSD_STATUS) values " +
+                                    "('" + globalsimid + "','" + b + "' ,sysdate, sysdate,'" + editfname.getText() + "','" + editmname.getText() + "', '" + editlname.getText() + "','" + editmobile.getText() + "',TO_DATE('" + editdate.getText() + "','DD-MM-YYYY'),'" + nationality + "','" + editaltnumber.getText() + "','" + editemail.getText() + "','" + editphylocation.getText() + "','" + editpost.getText() + "','" + gender + "','" + editagent.getText() + "','" + editidagent.getText() + "','" + SIGN + "','" + FRONT + "','" + BACK + "',0,0,0,'"+editussdstatus.getText().toString()+"')");
                             ///added for pass data in fragment
 
                         } else {
-                            stmtinsert1 = conn.prepareStatement("update SIM_REGISTRATION set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + editfname.getText() + "',MIDDLE_NAME='" + editmname.getText() + "',LAST_NAME='" + editlname.getText() + "',STATUS='" + b + "',MOBILE_NUMBER='" + editmobile.getText() + "',NATIONALITY='" + nationality + "',ALTERNATIVE_NUMBER='" + editaltnumber.getText() + "',EMAIL_ADDRESS='" + editemail.getText() + "',PHISICAL_LOCATION='" + editphylocation.getText() + "',POSTAL_ADDRESS='" + editpost.getText() + "',GENDER='" + gender + "',AGENT_NUMBER='" + editagent.getText() + "',AGENT_ID='" + editidagent.getText() + "',SIGNATURE='" + SIGN + "',ID_FRONT_SIDE_PHOTO='" + FRONT + "',ID_BACK_SID_PHOTO='" + BACK + "' where SIM_REG_ID ='" + globalsimid + "'");
+                            stmtinsert1 = conn.prepareStatement("update SIM_REGISTRATION set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + editfname.getText() + "',MIDDLE_NAME='" + editmname.getText() + "',LAST_NAME='" + editlname.getText() + "',STATUS='" + b + "',MOBILE_NUMBER='" + editmobile.getText() + "',NATIONALITY='" + nationality + "',ALTERNATIVE_NUMBER='" + editaltnumber.getText() + "',EMAIL_ADDRESS='" + editemail.getText() + "',PHISICAL_LOCATION='" + editphylocation.getText() + "',POSTAL_ADDRESS='" + editpost.getText() + "',GENDER='" + gender + "',AGENT_NUMBER='" + editagent.getText() + "',AGENT_ID='" + editidagent.getText() + "',SIGNATURE='" + SIGN + "',ID_FRONT_SIDE_PHOTO='" + FRONT + "',ID_BACK_SID_PHOTO='" + BACK + "',USSD_STATUS='" + editussdstatus.getText().toString() + "' where SIM_REG_ID ='" + globalsimid + "'");
                         }
                         txtmsg.setText("Saving Completed,now start load pictures");
                     } catch (SQLException throwables) {
@@ -2525,7 +2532,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         }
     }
 
-    public void FilldatafromDataBase(Boolean valeur,String firstname,String middlename,String lastname,String mobilenuber,String dob,String nation,String altnumber,String emailadrs,String phylocation,String postaladr,String vgender,String stat, String agentid,String txtf, String txtb, String txts,String gsigstat,String gfrontstat,String gbackstat  ) {
+    public void FilldatafromDataBase(Boolean valeur,String firstname,String middlename,String lastname,String mobilenuber,String dob,String nation,String altnumber,String emailadrs,String phylocation,String postaladr,String vgender,String stat, String agentid,String txtf, String txtb, String txts,String gsigstat,String gfrontstat,String gbackstat,String ussdstatus  ) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -2547,6 +2554,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 editemail.setText(emailadrs);
                 editphylocation.setText(phylocation);
                 editpost.setText(postaladr);
+                editussdstatus.setText(ussdstatus);
                 if (vgender.matches("Male")) {
                     male.setChecked(true);
                     female.setChecked(false);
