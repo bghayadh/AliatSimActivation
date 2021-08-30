@@ -40,7 +40,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:textColor="@color/white"
-                    android:text="Ver 1.0.12" />
+                    android:text="Ver 1.0.13" />
 
             </RelativeLayout>
 
