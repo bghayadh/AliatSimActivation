@@ -23,9 +23,12 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -37,7 +40,7 @@ import java.util.concurrent.ExecutionException;
 
 public class Activate_Sim extends AppCompatActivity {
     private Button btnip,btnsubip,btnexit,btnrechargeip,Btnregisterviaussd;
-    private String registrationStatus,globalsimid;
+    private String registrationStatus,globalsimid,mainstatus,vagentussdid,msisdnussdid;
     private int clicks=0;
     private TextView txtrescode,txtresmessage,txtussd;
     private String stroffile;
@@ -85,12 +88,23 @@ public class Activate_Sim extends AppCompatActivity {
         Intent i=Activate_Sim.this.getIntent();
         stroffile=i.getStringExtra("globalsimid");
         globalMode=i.getStringExtra("globalMode");
+        vagentussdid=i.getStringExtra("agentmsisdn");
+        msisdnussdid=i.getStringExtra("msisdn");
+        mainstatus = i.getStringExtra("mainstatus");
         globalsimid=stroffile;
         System.out.println("test : "+stroffile);
         //initial register ,reahrge, activation flag to 0
         registerflag="0";
         rechargeflag="0";
         activateflag="0";
+
+
+        //Fill txtussd with default command
+        if (msisdnussdid.equalsIgnoreCase("")) {
+             // no msisdn to fill txtussd
+        }else {
+            txtussd.setText("*111*"+vagentussdid+"*1*"+msisdnussdid+"#");
+        }
 
 
         // get picture file name using date day month hour min and sec
@@ -106,52 +120,91 @@ public class Activate_Sim extends AppCompatActivity {
         Btnregisterviaussd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String UssdCode = txtussd.getText().toString();
-                if (UssdCode.startsWith("*") && UssdCode.endsWith("#")) {
-                    System.out.println("start with " + UssdCode);
-                    //we want to remove the last # from the ussd code as we need to encode it. so *555# becomes *555
-                    UssdCode = UssdCode.substring(0, UssdCode.length() - 1);
-
-                    String UssdCodeNew = UssdCode + Uri.encode("#");
-
-                    //request for permission
-                    if (ActivityCompat.checkSelfPermission(Activate_Sim.this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(Activate_Sim.this, new String[]{Manifest.permission.CALL_PHONE}, 1);
-                        System.out.println("NO ACTION");
-                    } else {
-                        System.out.println("start sending " + UssdCode);
-                        //dial Ussd code
-                        startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + UssdCodeNew)));
+                if (mainstatus.toString().matches("Success")) {
+                    Toast.makeText(getApplicationContext(), "Already Success", Toast.LENGTH_LONG).show();
+                }else{
+                    if (clicks == 0 && globalMode.equalsIgnoreCase("Online")) {
+                        Toast.makeText(getApplicationContext(), "You must try once with registration via IP", Toast.LENGTH_LONG).show();
                     }
+                    else{
+                        String UssdCode = txtussd.getText().toString();
+                        if (UssdCode.startsWith("*") && UssdCode.endsWith("#")) {
+                            System.out.println("start with " + UssdCode);
+                            //we want to remove the last # from the ussd code as we need to encode it. so *555# becomes *555
+                            UssdCode = UssdCode.substring(0, UssdCode.length() - 1);
 
-                    // now update in DB or in Offline mode
-                    if (networkInfo != null && networkInfo.isConnected() && globalMode.equalsIgnoreCase("Online")) {
-                        thread1.start();
-                    }else{
+                            String UssdCodeNew = UssdCode + Uri.encode("#");
 
-                        try {
-                            String filename = i.getStringExtra("msisdn");
-                            String myFileName = "SIM_" + filename + ".txt";
-                            File directory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
-                            File OfflineFile = new File(directory, myFileName);
-                            FileWriter fw = new FileWriter(OfflineFile.getAbsoluteFile(),true);
-                            BufferedWriter bw = new BufferedWriter(fw);
-                            bw.write("\n"+txtussdstatus.toString());
-                            bw.close();
-                        }catch (Exception e){
-                            e.printStackTrace();
+                            //request for permission
+                            if (ActivityCompat.checkSelfPermission(Activate_Sim.this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                                ActivityCompat.requestPermissions(Activate_Sim.this, new String[]{Manifest.permission.CALL_PHONE}, 1);
+                                System.out.println("NO ACTION");
+                            } else {
+                                System.out.println("start sending " + UssdCode);
+                                //dial Ussd code
+                                startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + UssdCodeNew)));
+                            }
+                            // now update in DB or in Offline mode
+                            if (networkInfo != null && networkInfo.isConnected() && globalMode.equalsIgnoreCase("Online")) {
+                                thread1.start();
+                            }else{
+
+                                try {
+                                    String filename = i.getStringExtra("msisdn");
+                                    String myFileName = "SIM_" + filename + ".txt";
+                                    File directory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+                                    File OfflineFile = new File(directory, myFileName);
+
+                                    FileInputStream is;
+                                    BufferedReader reader;
+                                    is = new FileInputStream(OfflineFile);
+                                    reader = new BufferedReader(new InputStreamReader(is));
+                                    String line = reader.readLine();
+                                    String OldContent=null;
+                                    while(line != null){
+                                        if (OldContent==null) {
+                                            OldContent = line+System.lineSeparator();
+                                        } else {
+                                        OldContent = OldContent+line+System.lineSeparator(); }
+                                        line = reader.readLine();
+
+                                            if(OldContent.contains("SENT_USSD")) {
+
+                                            } else {
+                                                if(OldContent.contains("USSD")) {
+                                                    System.out.println("Found it 1 " + txtussdstatus);
+                                                    String newContent = OldContent.replaceAll("USSD", txtussdstatus);
+                                                    FileWriter fw = new FileWriter(OfflineFile.getAbsoluteFile());
+                                                    BufferedWriter bw = new BufferedWriter(fw);
+                                                    bw.write(newContent.toString());
+                                                    bw.close();
+                                                }
+                                            }
+
+
+
+                                    }
+                                    reader.close();
+
+
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
+
+
+                            }
+                        }else {
+                            System.out.println("Please enter a valid ussd code");
+                            Toast.makeText(Activate_Sim.this, "Please enter a valid ussd code", Toast.LENGTH_LONG).show();
                         }
 
                     }
-
-
-                } else {
-                    System.out.println("Please enter a valid ussd code");
-                    Toast.makeText(Activate_Sim.this, "Please enter a valid ussd code", Toast.LENGTH_LONG).show();
                 }
-
             }
+
+
         });
+
 
 
 
@@ -170,14 +223,13 @@ public class Activate_Sim extends AppCompatActivity {
                     flagstart=time.compareTo(start);
                     flagend=time.compareTo(end);
                     System.out.println(flagend+" "+flagstart);
+                    clicks=1;
 
 
 
-                    Intent get = getIntent();
-                    String mainstatus = get.getStringExtra("mainstatus");
                     System.out.println("STATUS IS HERE NOW "+ mainstatus);
                     if (mainstatus.toString().matches("Success")) {
-                        globalsimid = get.getStringExtra("globalsimid");
+                        globalsimid = i.getStringExtra("globalsimid");
                         Toast.makeText(getApplicationContext(), "Already Success cannot resend command", Toast.LENGTH_SHORT).show();
                     } else {
                         if(flagstart==1 && flagend==-1)
@@ -187,21 +239,21 @@ public class Activate_Sim extends AppCompatActivity {
                             } else
                             {
                                 registerflag="1";
-                                globalsimid = get.getStringExtra("globalsimid");
+                                globalsimid = i.getStringExtra("globalsimid");
                                 System.out.println("id : " + globalsimid);
-                                String fname = get.getStringExtra("fname");
-                                String mname = get.getStringExtra("mname");
-                                String lname = get.getStringExtra("lname");
-                                String msisdn = get.getStringExtra("msisdn");
-                                String idType = get.getStringExtra("idType");
-                                String idNumber = get.getStringExtra("idNumber");
-                                String dob = get.getStringExtra("dob");
-                                String gender = get.getStringExtra("gender");
-                                String email = get.getStringExtra("email");
-                                String altnumber = get.getStringExtra("altnumber");
-                                String address1 = get.getStringExtra("address1");
-                                String state = get.getStringExtra("state");
-                                String agentmsisdn = get.getStringExtra("agentmsisdn");
+                                String fname = i.getStringExtra("fname");
+                                String mname = i.getStringExtra("mname");
+                                String lname = i.getStringExtra("lname");
+                                String msisdn = i.getStringExtra("msisdn");
+                                String idType = i.getStringExtra("idType");
+                                String idNumber = i.getStringExtra("idNumber");
+                                String dob = i.getStringExtra("dob");
+                                String gender = i.getStringExtra("gender");
+                                String email = i.getStringExtra("email");
+                                String altnumber = i.getStringExtra("altnumber");
+                                String address1 = i.getStringExtra("address1");
+                                String state = i.getStringExtra("state");
+                                String agentmsisdn = i.getStringExtra("agentmsisdn");
 
                                 SimRegistrationAPI registrationAPI = new SimRegistrationAPI(globalsimid, fname, mname, lname, msisdn, idType, idNumber, dob, gender, email, altnumber, address1, state, agentmsisdn);
 

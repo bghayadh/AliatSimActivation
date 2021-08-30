@@ -1701,6 +1701,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     a.putExtra("address1", address1);
                     a.putExtra("state", state);
                     a.putExtra("agentmsisdn", agentmsisdn);
+                    a.putExtra("mainstatus", sp.getSelectedItem().toString().toString());
+
                     startActivity(a);
                 }
             });
@@ -1800,7 +1802,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                                 bw.write(SIGN.toString() + "\n");
                                                 bw.write(FRONT.toString() + "\n");
                                                 bw.write(BACK.toString() + "\n");
-                                                bw.write(b);
+                                                bw.write(b + "\n");
+                                                bw.write(editussdstatus.getText().toString());
                                                 bw.close();
 
                                                 //Toast.makeText(SimRegInfo.this, fileName + " is saved to\n" + dir, Toast.LENGTH_SHORT).show();
@@ -2475,7 +2478,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         bw.write(SIGN.toString() + "\n");
                         bw.write(FRONT.toString() + "\n");
                         bw.write(BACK.toString() + "\n");
-                        bw.write(b);
+                        bw.write(b + "\n");
+                        bw.write(editussdstatus.getText().toString());
                         bw.close();
                         txtmsg.setText("Saving offmode completed");
                         Thread.sleep(500);

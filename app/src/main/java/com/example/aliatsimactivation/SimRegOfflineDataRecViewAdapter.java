@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Environment;
 import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +36,10 @@ public class SimRegOfflineDataRecViewAdapter extends RecyclerView.Adapter<SimReg
     public SimRegOfflineDataRecViewAdapter(Context context, String globalMode) {
         this.context=context;
         this.globalMode=globalMode;
+
     }
+
+
 
     @NonNull
     @Override
@@ -77,6 +81,7 @@ public class SimRegOfflineDataRecViewAdapter extends RecyclerView.Adapter<SimReg
             txttitle=itemView.findViewById(R.id.txttitle);
             sendImage=itemView.findViewById(R.id.sendImage);
             parent=itemView.findViewById(R.id.parent3);
+
             sendImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -87,8 +92,8 @@ public class SimRegOfflineDataRecViewAdapter extends RecyclerView.Adapter<SimReg
                     StringBuffer sbuffer = new StringBuffer();
                     try {
                         ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 23);
-
-                        File dir =new File("/storage/emulated/0/Android/data/com.example.aliatsimactivation/files/Documents",name);
+                        File dir = new File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS),name);
+                        // File dir =new File("/storage/emulated/0/Android/data/com.example.aliatsimactivation/files/Documents",name);
                         System.out.println(dir);
                         fstream = new FileInputStream(dir);
 
@@ -155,26 +160,5 @@ public class SimRegOfflineDataRecViewAdapter extends RecyclerView.Adapter<SimReg
     }
 
 
-    public void connecttoDB() {
-        // connect to DB
-        OraDB oradb = new OraDB();
-        String url = oradb.getoraurl();
-        String userName = oradb.getorausername();
-        String password = oradb.getorapwd();
-        try {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-            Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
-            conn = DriverManager.getConnection(url, userName, password);
-        } catch (IllegalArgumentException | ClassNotFoundException | SQLException e) {
-            System.out.println("error is: " + e.toString());
-          //  Toast.makeText(context, "" + e.toString(), Toast.LENGTH_SHORT).show();
-        } catch (IllegalAccessException e) {
-            System.out.println("error is: " + e.toString());
-            //Toast.makeText(context, "" + e.toString(), Toast.LENGTH_SHORT).show();
-        } catch (InstantiationException e) {
-            System.out.println("error is: " + e.toString());
-        }
-    }
 
 }

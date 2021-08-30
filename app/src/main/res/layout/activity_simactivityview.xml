@@ -461,7 +461,7 @@
             android:layout_height="match_parent"
             android:id="@+id/edtussdstatus"
             android:hint="USSD STATUS"
-            android:text="0"
+            android:text="USSD"
             android:enabled="false"
             android:textColor="#808080"
             android:textColorHint="#808080"
