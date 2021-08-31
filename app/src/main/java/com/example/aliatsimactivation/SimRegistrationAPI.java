@@ -9,11 +9,14 @@ import com.google.gson.JsonObject;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -97,6 +100,7 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
 
             URL url = new URL("http://10.22.25.10:8995/ipacs/ussd/api/");
             System.out.println("step1");
+            try {
             urlConnection = (HttpURLConnection) url.openConnection();
             System.out.println("step2");
             urlConnection.setRequestProperty("Content-Type", "application/json");
@@ -113,11 +117,27 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
                 writer.write(postData.toString());
                 writer.flush();
                 flag = 1;
-            } catch (Exception e) {
+                } catch (UnknownHostException e) {
                 e.printStackTrace();
                 flag = 0;
+                }
+                catch (Exception e) {
+                e.printStackTrace();
+                flag = 0;
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                System.out.println("step4");
+                flag = 0;
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("step5");
+                flag = 0;
+            }catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("step6");
+                flag = 0;
             }
-
 
             if (flag == 1){
                 System.out.println("Sent successfully to server");
@@ -133,7 +153,6 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
 
             BufferedReader rd = new BufferedReader(new InputStreamReader(
                     urlConnection.getInputStream()));
-            System.out.println("Read result step4");
             String line = null;
             while ((line = rd.readLine()) != null) {
                 //Log.i("data", line);

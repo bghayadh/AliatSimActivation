@@ -77,12 +77,8 @@ public class Activate_Sim extends AppCompatActivity {
         btnrechargeip=findViewById(R.id.Btnrechargeviaip);
         Btnregisterviaussd=findViewById(R.id.Btnregisterviaussd);
         txtussd=(EditText)findViewById(R.id.txtussd);
-
         txtrescode=findViewById(R.id.responsecode);
         txtresmessage=findViewById(R.id.responsemessage);
-
-
-
 
 
         Intent i=Activate_Sim.this.getIntent();
@@ -238,6 +234,7 @@ public class Activate_Sim extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "Save your data first", Toast.LENGTH_LONG).show();
                             } else
                             {
+                                Toast.makeText(getApplicationContext(), "Please wait while registration until getting response back", Toast.LENGTH_LONG).show();
                                 registerflag="1";
                                 globalsimid = i.getStringExtra("globalsimid");
                                 System.out.println("id : " + globalsimid);
@@ -264,7 +261,7 @@ public class Activate_Sim extends AppCompatActivity {
                                         String[] data = res.split("!!");
                                         txtrescode.setText(data[0]);
                                         txtresmessage.setText(data[1]);
-                                    } else {
+                                     } else {
                                         Toast.makeText(getApplicationContext(), "Error Occured Please Try Again Later", Toast.LENGTH_LONG).show();
                                     }
 

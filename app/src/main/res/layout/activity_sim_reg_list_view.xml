@@ -1,117 +1,209 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="5"
     android:backgroundTint="@color/white">
 
-    <Button
-        android:id="@+id/btnprevious"
-        android:layout_width="110dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="1.5dp"
-        android:textSize="12dp"
-        android:backgroundTint="@color/menusgrey"
-        android:drawableLeft="@drawable/ic_left1"
-        android:textColor="@color/black"
-        android:text="PREV" />
-
-    <Button
-        android:id="@+id/btnnext"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="3dp"
-        android:textSize="12dp"
-        android:layout_toRightOf="@+id/btnprevious"
-        android:backgroundTint="@color/menusgrey"
-        android:drawableRight="@drawable/ic_right1"
-        android:textColor="@color/black"
-        android:text="NEXT" />
-
-    <Button
-        android:id="@+id/btnnew"
-        android:layout_width="134dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="3dp"
-        android:textSize="12dp"
-        android:layout_toRightOf="@+id/btnnext"
-        android:backgroundTint="@color/menusgrey"
-        android:drawableLeft="@drawable/ic_new1"
-        android:textColor="@color/black"
-        android:text="NEW" />
 
 
-
-    <TextView
-        android:id="@+id/textstatus"
-        android:layout_marginStart="120dp"
-        android:layout_width="220dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="200dp"
-        android:textColor="@color/black"
-        android:textSize="22dp"
-        android:text="Please wait ..."
-        />
-
-    <TextView
-        android:id="@+id/textdate"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@id/btnnew"
-        android:layout_marginTop="13dp"
-        android:layout_toRightOf="@id/Btnselectdate"
-        android:inputType="date"
-        android:textAlignment="center"
-        android:textSize="20dp"
-        android:hint="SELECTED DATE"
-        android:textColor="@color/black" />
+        android:layout_height="wrap_content"
+        android:weightSum="3"
+        android:orientation="horizontal"
+        android:baselineAligned="false"
+        android:id="@+id/firstLayout">
 
-    <TableLayout
-        android:id="@+id/tableid"
+
+
+        <Button
+            android:id="@+id/btnprevious"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="1.5dp"
+            android:textSize="12sp"
+            android:backgroundTint="@color/menusgrey"
+            android:drawableLeft="@drawable/newprevious"
+            android:paddingBottom="0dp"
+            android:paddingTop="0dp"
+            android:paddingRight="0dp"
+            android:paddingLeft="0dp"
+            android:textColor="@color/black"
+            android:text="PREV" />
+
+        <Button
+            android:id="@+id/btnnext"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="3dp"
+            android:textSize="12sp"
+            android:layout_toRightOf="@+id/btnprevious"
+            android:backgroundTint="@color/menusgrey"
+            android:drawableRight="@drawable/newnext"
+            android:paddingBottom="0dp"
+            android:paddingTop="0dp"
+            android:paddingRight="0dp"
+            android:paddingLeft="0dp"
+            android:textColor="@color/black"
+            android:text="NEXT" />
+
+        <Button
+            android:id="@+id/btnnew"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="3dp"
+            android:textSize="12sp"
+            android:layout_toRightOf="@+id/btnnext"
+            android:backgroundTint="@color/menusgrey"
+            android:drawableLeft="@drawable/newuser"
+            android:paddingBottom="0dp"
+            android:paddingTop="0dp"
+            android:paddingRight="0dp"
+            android:paddingLeft="0dp"
+            android:textColor="@color/black"
+            android:text="NEW" />
+    </LinearLayout>
+
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="120dp"
-        android:stretchColumns="1,2,3,4,5">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:baselineAligned="false"
+        android:id="@+id/secomdLayout">
 
 
-    </TableLayout>
+        <Button
+            android:id="@+id/Btnselectdate"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:layout_marginStart="2dp"
+            android:backgroundTint="@color/menusgrey"
+            android:drawableRight="@drawable/newcalender"
+            android:paddingBottom="0dp"
+            android:paddingTop="0dp"
+            android:paddingRight="0dp"
+            android:paddingLeft="0dp"
+            android:text="Select Date"
+            android:textColor="@color/black"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/simRecView"
+        <TextView
+            android:id="@+id/textdate"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:paddingTop="5dp"
+            android:layout_weight="0.5"
+            android:layout_marginEnd="2dp"
+            android:layout_toRightOf="@id/Btnselectdate"
+            android:inputType="date"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:hint="SELECTED DATE"
+            android:textColor="@color/black" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="395dp"
-        android:layout_below="@+id/btnprevious"
-        android:layout_marginTop="102dp"
-        android:scrollbarSize="12dp"
-        android:scrollbars="vertical"
-        tools:layout_editor_absoluteX="191dp" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/thirdLayout"
+        android:orientation="horizontal">
 
-    <!-- display Main Page button -->
-    <Button
-        android:id="@+id/btnmain"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/textstatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="22sp"
+                android:layout_centerInParent="true"
+                android:text="Please wait ..." />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:backgroundTint="@color/menusgrey"
-        android:text="Home"
-        android:textColor="@color/black"
-        android:textSize="15dp"
-        android:textStyle="bold"
-        android:drawableRight="@drawable/ic_home1"/>
-
-    <Button
-        android:id="@+id/Btnselectdate"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:drawableRight="@drawable/ic_calender1"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="0dp"
-        android:backgroundTint="@color/menusgrey"
-        android:text="Select Date"
-        android:textColor="@color/black"
-        android:layout_below="@id/btnprevious"
-        android:textSize="15dp" />
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        android:id="@+id/fourthLayout">
 
 
-</RelativeLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/simRecView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbarSize="12dp"
+            android:scrollbars="vertical"/>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:id="@+id/paginationLayout">
+
+
+        <TextView
+            android:id="@+id/pagination"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:backgroundTint="@color/menusgrey"
+            android:text="30/30"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="15sp"/>
+
+    </LinearLayout>
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:id="@+id/fifthLayout">
+
+
+        <Button
+            android:id="@+id/btnmain"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:backgroundTint="@color/menusgrey"
+            android:text="Home"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:drawableRight="@drawable/ic_home1"/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
 

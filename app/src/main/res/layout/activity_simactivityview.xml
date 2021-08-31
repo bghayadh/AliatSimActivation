@@ -38,7 +38,7 @@
                 android:id="@+id/txtsim"
                 android:text="SIM Registration"
                 android:textColor="@color/white"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:textAlignment="center"/>
             <!--
             <ImageButton
@@ -53,20 +53,22 @@
 
         <TextView
             android:id="@+id/firstname"
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:text="First Name"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textColor="@color/black"/>
 
 
         <EditText
             android:id="@+id/efirstname"
-            android:layout_width="330dp"
-            android:layout_height="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:background="@null"
             android:hint="First Name"
             android:inputType="textPersonName"
@@ -86,24 +88,26 @@
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:text="Middle Name"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textColor="@color/black"/>
 
 
 
         <EditText
             android:id="@+id/emiddlename"
-            android:layout_width="330dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="Middle Name"
             android:textColor="#808080"
             android:textColorHint="#808080"
             android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:maxLines="1"
             android:maxLength="50"
             android:inputType="textPersonName"
@@ -120,19 +124,20 @@
 
         <TextView
             android:id="@+id/textView3"
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:text="Last Name"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textColor="@color/black"/>
 
 
         <EditText
             android:id="@+id/elastname"
-            android:layout_width="330dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="Last Name"
             android:textColor="#808080"
             android:textColorHint="#808080"
@@ -156,23 +161,25 @@
 
         <TextView
             android:id="@+id/textView20"
-            android:layout_width="150dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="15dp"
             android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:text="Agent Number"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textColor="@color/black"/>
 
 
         <EditText
             android:id="@+id/eagentnum"
-            android:layout_width="330dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="Agent Number"
             android:textColor="#808080"
             android:textColorHint="#808080"
             android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:maxLines="1"
             android:maxLength="50"
             android:inputType="textPersonName"
@@ -190,24 +197,26 @@
 
         <TextView
             android:id="@+id/textView21"
-            android:layout_width="250dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:text="Client ID Number"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textColor="@color/black"/>
 
 
 
         <EditText
             android:id="@+id/eagentid"
-            android:layout_width="330dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="Client ID Number"
             android:textColor="#808080"
             android:textColorHint="#808080"
             android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:maxLines="1"
             android:maxLength="50"
             android:inputType="phone"
@@ -224,12 +233,13 @@
 
         <TextView
             android:id="@+id/textView4"
-            android:layout_width="350dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:text="Client Mobile Number"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textColor="@color/black"/>
 
 
@@ -237,12 +247,13 @@
 
         <EditText
             android:id="@+id/emobilenumber"
-            android:layout_width="330dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="Client Mobile Number"
             android:textColor="#808080"
             android:textColorHint="#808080"
             android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:maxLines="1"
             android:maxLength="50"
             android:inputType="phone"
@@ -261,46 +272,51 @@
 
         <TextView
             android:id="@+id/textView5"
-            android:layout_width="350dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:text="Date of Birth"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textColor="@color/black"/>
 
 
-        <RelativeLayout
-            android:layout_width="330dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".MainActivity"
-            android:background="#FFFFFF">
+            android:orientation="horizontal"
+            android:weightSum="3"
+            android:id="@+id/dob">
 
 
             <EditText
                 android:id="@+id/edateofbirth"
-                android:layout_width="260dp"
-                android:layout_height="60dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:hint="DD-MM-YYYY"
                 android:textColor="#808080"
                 android:textColorHint="#808080"
                 android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
                 android:maxLines="1"
                 android:maxLength="50"
                 android:inputType="textPersonName"
                 android:background="@null"/>
 
             <ImageButton
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="10dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:layout_marginEnd="15dp"
                 android:id="@+id/btncalender"
                 android:layout_toRightOf="@+id/edateofbirth"
                 android:background="@null"
                 android:src="@drawable/ic_calender1"/>
 
-        </RelativeLayout>
+        </LinearLayout>
+
 
         <View
             android:layout_width="match_parent"
@@ -313,23 +329,25 @@
 
         <TextView
             android:id="@+id/textView7"
-            android:layout_width="350dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:text="Alternative Number"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textColor="@color/black"/>
 
 
         <EditText
             android:id="@+id/ealtirnativenumber"
-            android:layout_width="330dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="Alternative Number"
             android:textColor="#808080"
             android:textColorHint="#808080"
             android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:maxLines="1"
             android:maxLength="50"
             android:inputType="phone"
@@ -348,24 +366,26 @@
 
         <TextView
             android:id="@+id/textView8"
-            android:layout_width="350dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
             android:layout_marginStart="15dp"
             android:text="Email"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textColor="@color/black"/>
 
 
 
         <EditText
             android:id="@+id/email"
-            android:layout_width="330dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="Email"
             android:textColor="#808080"
             android:textColorHint="#808080"
             android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:maxLines="1"
             android:maxLength="50"
             android:inputType="textEmailAddress"
@@ -384,23 +404,25 @@
 
         <TextView
             android:id="@+id/textView9"
-            android:layout_width="350dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
             android:layout_marginStart="15dp"
             android:text="Physical Location"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textColor="@color/black"/>
 
 
         <EditText
             android:id="@+id/ephysicallocation"
-            android:layout_width="330dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="Your address"
             android:textColor="#808080"
             android:textColorHint="#808080"
             android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:maxLines="1"
             android:maxLength="50"
             android:inputType="textPersonName"
@@ -417,61 +439,30 @@
 
         <TextView
             android:id="@+id/textView10"
-            android:layout_width="350dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:text="Postal Address"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textColor="@color/black"/>
 
 
 
         <EditText
             android:id="@+id/epostaladdress"
-            android:layout_width="330dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="Postal Number"
             android:textColor="#808080"
             android:textColorHint="#808080"
             android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:maxLines="1"
             android:maxLength="50"
             android:inputType="textPersonName"
             android:background="@null"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="13dp"
-            android:layout_below="@+id/epostaladdress"
-            android:background="@color/menusgrey" />
-        <TextView
-            android:layout_width="350dp"
-            android:layout_height="match_parent"
-            android:id="@+id/ussdstatus"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
-            android:textSize="20dp"
-            android:textColor="@color/black"
-            android:text="USSD Status"/>
-
-        <EditText
-            android:layout_width="330dp"
-            android:layout_height="match_parent"
-            android:id="@+id/edtussdstatus"
-            android:hint="USSD STATUS"
-            android:text="USSD"
-            android:enabled="false"
-            android:textColor="#808080"
-            android:textColorHint="#808080"
-            android:layout_marginStart="15dp"
-            android:maxLines="1"
-            android:maxLength="50"
-            android:inputType="textPersonName"
-            android:background="@null"/>
-
-
 
         <View
             android:layout_width="match_parent"
@@ -481,23 +472,58 @@
             android:background="@color/menusgrey" />
 
 
+        <TextView
+            android:id="@+id/txtussd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:text="USSD Status"
+            android:textSize="20sp"
+            android:textColor="@color/black"/>
+
+
+
+        <EditText
+            android:id="@+id/edtussdstatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="USSD Status"
+            android:textColor="#808080"
+            android:textColorHint="#808080"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:maxLines="1"
+            android:maxLength="50"
+            android:inputType="textPersonName"
+            android:background="@null"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="13dp"
+            android:layout_below="@+id/txtussd"
+            android:background="@color/menusgrey" />
+
+
 
 
         <TextView
             android:id="@+id/textView11"
-            android:layout_width="350dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:text="Gender"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textColor="@color/black"/>
 
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".MainActivity"
             android:background="#FFFFFF">
 
 
@@ -514,7 +540,7 @@
                     android:layout_height="wrap_content"
                     android:text="MALE"
                     android:textColor="@color/black"
-                    android:textSize="16dp" />
+                    android:textSize="16sp" />
 
                 <RadioButton
                     android:id="@+id/efemale"
@@ -523,7 +549,7 @@
                     android:text="FEMALE"
                     android:layout_marginStart="22dp"
                     android:textColor="@color/black"
-                    android:textSize="16dp" />
+                    android:textSize="16sp" />
             </RadioGroup>
 
 
@@ -540,19 +566,19 @@
 
         <TextView
             android:id="@+id/textView6"
-            android:layout_width="350dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:text="Nationality"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textColor="@color/black"/>
 
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".MainActivity"
             android:background="#FFFFFF">
 
             <RadioGroup
@@ -568,7 +594,7 @@
                     android:layout_height="wrap_content"
                     android:text="FOREIGN"
                     android:textColor="@color/black"
-                    android:textSize="16dp" />
+                    android:textSize="16sp" />
 
                 <RadioButton
                     android:id="@+id/ekenian"
@@ -577,7 +603,7 @@
                     android:layout_marginStart="15dp"
                     android:text="KENYAN"
                     android:textColor="@color/black"
-                    android:textSize="16dp" />
+                    android:textSize="16sp" />
             </RadioGroup>
 
 
@@ -594,31 +620,41 @@
 
         <TextView
             android:id="@+id/textView25"
-            android:layout_width="350dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:text="Status"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textColor="@color/black"/>
 
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".MainActivity"
-            android:background="#FFFFFF">
-
+            android:weightSum="2"
+            android:orientation="horizontal"
+            android:background="#FFFFFF"
+            android:id="@+id/status">
 
             <Spinner
                 android:id="@+id/statusSpinner"
-                android:layout_width="200dp"
-                android:layout_height="50dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:layout_marginStart="15dp"
+                android:layout_marginTop="5dp"
                 android:entries="@array/Simstatus" />
 
-        </RelativeLayout>
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"/>
 
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
@@ -629,41 +665,49 @@
 
         <TextView
             android:id="@+id/textView12"
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:text="Signature"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textColor="@color/black"/>
 
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".MainActivity"
-            android:background="#FFFFFF">
+            android:weightSum="5"
+            android:id="@+id/signing"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/bsigniture"
-                android:layout_width="260dp"
+                android:layout_width="fill_parent"
                 android:layout_height="60dp"
+                android:layout_weight="1"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
                 android:textColor="@color/white"
                 android:backgroundTint="#505050"
                 android:text="Sign Please"/>
 
+
             <ImageButton
                 android:id="@+id/signimgIcon"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:layout_weight="4"
                 android:clickable="true"
+                android:layout_marginEnd="15dp"
                 android:layout_marginTop="28dp"
-                android:layout_marginStart="20dp"
+                android:background="@null"
                 android:layout_toRightOf="@+id/bsigniture"
                 android:src="@drawable/imgbtn_foreground"
                 android:visibility="gone"/>
+
 
             <TextView
                 android:id="@+id/sigpath"
@@ -674,11 +718,17 @@
                 android:backgroundTint="@color/red"
                 android:visibility="gone" />
 
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF">
+
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/signstatus"
-                android:layout_below="@+id/bsigniture"
                 android:text="DISCARD"
                 android:textColor="@color/red"
                 android:layout_marginStart="15dp"
@@ -702,59 +752,72 @@
             android:background="@color/menusgrey" />
 
 
+
         <TextView
             android:id="@+id/textView13"
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="15dp"
-            android:layout_marginStart="15dp"
-            android:text="ID Front Side"
-            android:textSize="20dp"
-            android:textColor="@color/black"/>
-
-
-        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".MainActivity"
-            android:background="#FFFFFF">
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:text="ID Front Side"
+            android:textSize="20sp"
+            android:textColor="@color/black"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="5"
+            android:id="@+id/front"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/bfront"
-                android:layout_width="260dp"
+                android:layout_width="fill_parent"
                 android:layout_height="60dp"
+                android:layout_weight="1"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
                 android:textColor="@color/white"
                 android:backgroundTint="#505050"
                 android:text="Front Image"/>
 
             <ImageButton
                 android:id="@+id/frontimgIcon"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:layout_weight="4"
                 android:clickable="true"
+                android:layout_marginEnd="15dp"
                 android:layout_marginTop="28dp"
-                android:layout_marginStart="20dp"
+                android:background="@null"
                 android:layout_toRightOf="@+id/bfront"
                 android:src="@drawable/imgbtn_foreground"
                 android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/frontpath"
-                android:layout_width="130dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="21dp"
-                android:layout_toRightOf="@+id/bfront"
+                android:layout_marginTop="60dp"
+                android:layout_toRightOf="@id/bfront"
                 android:backgroundTint="@color/red"
                 android:visibility="gone" />
+
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF">
 
 
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/frontstatus"
-                android:layout_below="@+id/bfront"
                 android:text="DISCARD"
                 android:textColor="@color/red"
                 android:layout_marginStart="15dp"
@@ -779,38 +842,46 @@
 
         <TextView
             android:id="@+id/textView14"
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:text="ID Back Side"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textColor="@color/black"/>
 
 
-        <RelativeLayout
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".MainActivity"
-            android:background="#FFFFFF">
+            android:weightSum="5"
+            android:id="@+id/back"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/bback"
-                android:layout_width="260dp"
+                android:layout_width="fill_parent"
                 android:layout_height="60dp"
+                android:layout_weight="1"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
                 android:textColor="@color/white"
                 android:backgroundTint="#505050"
                 android:text="Back Image"/>
 
+
             <ImageButton
                 android:id="@+id/backimgIcon"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:layout_weight="4"
                 android:clickable="true"
+                android:layout_marginEnd="15dp"
                 android:layout_marginTop="28dp"
-                android:layout_marginStart="20dp"
+                android:background="@null"
                 android:layout_toRightOf="@+id/bback"
                 android:src="@drawable/imgbtn_foreground"
                 android:visibility="gone"/>
@@ -819,17 +890,24 @@
                 android:id="@+id/backpath"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="27dp"
-                android:layout_toRightOf="@+id/bback"
+                android:layout_marginTop="60dp"
+                android:layout_toRightOf="@id/bsigniture"
                 android:backgroundTint="@color/red"
                 android:visibility="gone" />
+
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF">
 
 
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/backstatus"
-                android:layout_below="@+id/bback"
                 android:text="DISCARD"
                 android:textColor="@color/red"
                 android:layout_marginStart="15dp"
@@ -850,6 +928,7 @@
             android:layout_height="1dp"
             android:layout_marginTop="6dp"
             android:background="@color/menusgrey" />
+
 
 
         <ImageButton
@@ -887,6 +966,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
                 android:text="I confirm that I have verified the identification documents presented for registration."
                 android:textColor="@color/black"
                 android:textSize="16dp" />
@@ -899,6 +979,7 @@
                 android:textSize="13dp"
                 android:textColor="@color/black"
                 android:id="@+id/txtmsg"/>
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/BtnData"
                 style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
@@ -906,12 +987,13 @@
                 android:layout_height="45dp"
                 android:layout_below="@id/chterms"
                 android:layout_alignParentLeft="true"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginStart="10dp"
                 android:backgroundTint="@color/red"
                 android:textColor="@color/white"
-                android:visibility="gone"
-                app:cornerRadius="50dp"></com.google.android.material.button.MaterialButton>
+                app:cornerRadius="50dp"
+                android:visibility="gone">
+            </com.google.android.material.button.MaterialButton>
 
             <View
                 android:layout_width="match_parent"
@@ -924,94 +1006,119 @@
         </RelativeLayout>
 
 
-        <RelativeLayout
+        <Button
+            android:id="@+id/activatesim"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_centerInParent="true"
+            android:backgroundTint="@color/menusgrey"
+            android:textColor="@color/black"
+            android:drawableRight="@drawable/ic_activate1"
+            android:text="Register" />
+
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".MainActivity"
-            android:background="#FFFFFF">
+            android:weightSum="2"
+            android:orientation="horizontal"
+            android:baselineAligned="false"
+            android:id="@+id/buttons">
+
 
             <Button
-                android:layout_width="110dp"
+                android:layout_width="fill_parent"
                 android:layout_height="60dp"
+                android:layout_weight="1"
                 android:text="Save"
                 android:drawableRight="@drawable/ic_save1"
                 android:id="@+id/submitbtn"
                 android:backgroundTint="@color/menusgrey"
                 android:textColor="@color/black"
-                android:layout_marginTop="1dp"
                 android:layout_marginStart="15dp">
             </Button>
-
-            <Button
-                android:id="@+id/Btnftp"
-                android:layout_width="100dp"
-                android:layout_height="60dp"
-                android:layout_toEndOf="@+id/submitbtn"
-                android:backgroundTint="@color/menusgrey"
-                android:textColor="@color/black"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="1dp"
-                android:text="UPLOAD IMAGES" />
 
 
             <Button
                 android:id="@+id/BtnDelete"
-                android:layout_width="120dp"
+                android:layout_width="fill_parent"
                 android:layout_height="60dp"
+                android:layout_weight="1"
                 android:layout_toRightOf="@+id/Btnftp"
                 android:backgroundTint="@color/menusgrey"
                 android:textColor="@color/black"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="15dp"
-                android:layout_marginTop="1dp"
                 android:drawableRight="@drawable/ic_delete1"
                 android:text="Del" />
 
-
-        </RelativeLayout>
-
-        <Button
-            android:id="@+id/activatesim"
-            android:layout_width="340dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_centerInParent="true"
-            android:backgroundTint="@color/menusgrey"
-            android:textColor="@color/black"
-            android:drawableRight="@drawable/ic_activate1"
-            android:text="Register and Activate" />
+        </LinearLayout>
 
 
-        <RelativeLayout
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".MainActivity"
-            android:background="#FFFFFF">
+            android:weightSum="2"
+            android:orientation="horizontal"
+            android:baselineAligned="false"
+            android:id="@+id/buttonss">
+
+
+            <Button
+                android:id="@+id/Btnftp"
+                android:layout_width="fill_parent"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/menusgrey"
+                android:textColor="@color/black"
+                android:layout_marginStart="15dp"
+                android:text="UPLOAD IMAGES" />
+
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="15dp"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/menusgrey"
+                android:id="@+id/simreglistview"
+                android:text="Sim Reg Listview" />
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:orientation="horizontal"
+            android:baselineAligned="false"
+            android:id="@+id/lastone">
+
 
             <Button
                 android:id="@+id/BtnMainn"
-                android:layout_width="170dp"
+                android:layout_width="fill_parent"
                 android:layout_height="60dp"
+                android:layout_weight="1"
                 android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
                 android:layout_marginBottom="15dp"
                 android:backgroundTint="@color/menusgrey"
                 android:textColor="@color/black"
                 android:drawableRight="@drawable/ic_home1"
                 android:text="Home" />
 
-            <Button
-                android:layout_width="170dp"
-                android:layout_height="60dp"
-                android:layout_toRightOf="@id/BtnMainn"
-                android:layout_marginTop="1dp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/black"
-                android:layout_marginEnd="15dp"
-                android:backgroundTint="@color/menusgrey"
-                android:id="@+id/simreglistview"
-                android:text="Sim Reg Listview" />
-        </RelativeLayout>
+        </LinearLayout>
+
+
     </LinearLayout>
 
 </ScrollView>
