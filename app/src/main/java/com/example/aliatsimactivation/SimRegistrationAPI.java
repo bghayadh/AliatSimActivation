@@ -74,7 +74,7 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
 
         try {
             JsonObject postData = new JsonObject();
-            postData.addProperty("requestId", "REQ9");
+            postData.addProperty("requestId", "RQ"+globalsimid);
             postData.addProperty("serviceId", "SIMREG");
             postData.addProperty("clientId", "1");
             postData.addProperty("msisdn", msisdn);
