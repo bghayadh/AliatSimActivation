@@ -1,8 +1,10 @@
 package com.example.aliatsimactivation;
 
 import android.os.AsyncTask;
-import android.os.Handler;
+import android.os.Build;
 import android.os.StrictMode;
+
+import androidx.annotation.RequiresApi;
 
 import com.google.gson.JsonObject;
 
@@ -21,6 +23,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
@@ -52,6 +56,7 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
 
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected String doInBackground(String... params) {
 
@@ -73,8 +78,9 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
         HttpURLConnection urlConnection = null;
 
         try {
+            String getid=getrequestid();
             JsonObject postData = new JsonObject();
-            postData.addProperty("requestId", "RQ"+globalsimid);
+            postData.addProperty("requestId", getid);
             postData.addProperty("serviceId", "SIMREG");
             postData.addProperty("clientId", "1");
             postData.addProperty("msisdn", msisdn);
@@ -315,7 +321,31 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
         return connectflag;
     }
 
+@RequiresApi(api = Build.VERSION_CODES.O)
+public String getrequestid() {
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd;HH:mm:ss");
+    LocalDateTime now = LocalDateTime.now();
+    String res=dtf.format(now).toString();
+    //System.out.println(res);
 
+    String[] data1 = res.split(";");
+    String val1=data1[0];
+    String val2=data1[1];
+
+    //System.out.println(val1);
+    String[] data2 = val1.split("-");
+    String valmonth=data2[1];
+    //System.out.println("valmonth " + valmonth);
+
+    //System.out.println(val2);
+    String[] data3 = val2.split(":");
+    String valtime=data3[0]+data3[1]+data3[2];
+
+    //System.out.println("valtime " +valtime);
+
+    System.out.println("month and valtime "+ "RR"+valmonth+valtime);
+    return ("RR"+valmonth+valtime);
+}
 
 
 }
