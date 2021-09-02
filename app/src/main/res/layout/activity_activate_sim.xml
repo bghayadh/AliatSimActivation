@@ -5,7 +5,7 @@
     android:id="@+id/Aliatnetwork"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0A5EA8"
+    android:background="#FFFFFF"
     tools:context=".Activate_Sim">
 
   <!-- Button Activate via USSD -->
@@ -14,11 +14,11 @@
       android:layout_width="match_parent"
       android:layout_height="80dp"
       android:layout_marginStart="1dp"
+      android:textColor="@color/black"
       android:text="Register Via IP"
-      android:textStyle="bold"
-      android:textSize="15dp"
-      android:backgroundTint="@color/red"
-      android:drawableRight="@mipmap/ic_activate_via_ip"
+      android:textSize="15sp"
+      android:backgroundTint="@color/menusgrey"
+      android:drawableRight="@drawable/ic_ip_registration"
       style="@style/Widget.MaterialComponents.Button"
       />
 
@@ -33,10 +33,10 @@
       android:layout_below="@+id/Btnip"
       android:layout_marginStart="1dp"
       android:text="Recharge Via IP"
-      android:textStyle="bold"
-      android:textSize="15dp"
-      android:drawableRight="@drawable/ic_sim_recharge"
-      android:backgroundTint="@color/red"
+      android:textSize="15sp"
+      android:textColor="@color/black"
+      android:drawableRight="@drawable/ic_ip_recharge"
+      android:backgroundTint="@color/menusgrey"
       style="@style/Widget.MaterialComponents.Button"
       />
   <!-- Button activation via ip -->
@@ -47,10 +47,10 @@
       android:layout_below="@+id/Btnrechargeviaip"
       android:layout_marginStart="1dp"
       android:text="Subscribe Via IP"
-      android:textStyle="bold"
-      android:textSize="15dp"
-      android:drawableRight="@drawable/ic_activate_switch"
-      android:backgroundTint="@color/red"
+      android:textSize="15sp"
+      android:textColor="@color/black"
+      android:drawableRight="@drawable/ic_ip_subscribe"
+      android:backgroundTint="@color/menusgrey"
       style="@style/Widget.MaterialComponents.Button"
       />
 
@@ -61,11 +61,11 @@
       android:layout_height="80dp"
       android:layout_below="@+id/Btnsubscribeviaip"
       android:layout_marginStart="1dp"
-      android:backgroundTint="@color/red"
-      android:drawableRight="@drawable/ic_activate_via_sms_foreground"
+      android:backgroundTint="@color/menusgrey"
+      android:drawableRight="@drawable/ic_sms"
       android:text="Register Via ussd"
-      android:textSize="15dp"
-      android:textStyle="bold" />
+      android:textColor="@color/black"
+      android:textSize="15sp"/>
 
 
   <EditText
@@ -73,19 +73,20 @@
       android:layout_height="wrap_content"
       android:id="@+id/txtussd"
       android:hint="Enter USSD CODE"
-      android:textColorHint="@color/yellowheader"
-      android:textColor="@color/yellowheader"
+      android:textColorHint="#808080"
+      android:textColor="@color/black"
       android:layout_below="@+id/Btnregisterviaussd"/>
 
   <TextView
       android:layout_width="170dp"
       android:layout_height="wrap_content"
+      android:layout_marginStart="5dp"
       android:layout_below="@id/txtussd"
       android:layout_marginTop="5dp"
       android:id="@+id/txtresponse"
-      android:textSize="20dp"
+      android:textSize="20sp"
       android:textStyle="bold"
-      android:textColor="@color/mixte"
+      android:textColor="@color/teal_700"
       android:text="Respone Code"
       >
   </TextView>
@@ -93,20 +94,22 @@
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_marginStart="5dp"
       android:id="@+id/responsecode"
       android:layout_below="@id/txtussd"
-      android:textSize="20dp"
-      android:textColor="@color/yellowheader"
+      android:textSize="20sp"
+      android:textColor="#808080"
       android:layout_toRightOf="@id/txtresponse">
   </TextView>
   <TextView
       android:layout_width="170dp"
       android:layout_height="wrap_content"
+      android:layout_marginStart="5dp"
       android:layout_below="@id/txtresponse"
       android:id="@+id/txtmessage"
       android:textStyle="bold"
       android:textSize="20dp"
-      android:textColor="@color/mixte"
+      android:textColor="@color/teal_700"
       android:text="Respone Message"
       >
   </TextView>
@@ -114,25 +117,26 @@
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_marginStart="5dp"
       android:id="@+id/responsemessage"
       android:layout_below="@id/txtresponse"
       android:textSize="20dp"
-      android:textColor="@color/yellowheader"
+      android:textColor="#808080"
       android:layout_toRightOf="@id/txtmessage">
   </TextView>
 
   <!-- display Exit button -->
   <Button
       android:id="@+id/BtnExit"
-      android:layout_width="wrap_content"
+      android:layout_width="match_parent"
       android:layout_height="60dp"
       android:layout_alignParentBottom="true"
       android:layout_marginVertical="20dp"
-      android:textColor="@color/white"
+      android:textColor="@color/black"
       android:text="Exit"
       android:textStyle="bold"
       android:textSize="15dp"
-      android:backgroundTint="@color/red"
+      android:backgroundTint="@color/menusgrey"
       android:layout_alignParentRight="true"
       />
 

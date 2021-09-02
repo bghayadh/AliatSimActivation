@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/menusgrey" />
+    <TextView
+        android:id="@+id/client_nbr"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:padding="10dp"
+        android:layout_alignParentLeft="true"
+        android:textColor="@color/black"
+        />
+
+    <TextView
+        android:id="@+id/frontid_status"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:padding="5dp"
+        android:layout_toRightOf="@id/client_nbr"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/backid_status"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:padding="5dp"
+        android:layout_toRightOf="@id/frontid_status"
+        android:gravity="left"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/sign_status"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:layout_toRightOf="@id/backid_status"
+        android:gravity="left"
+        android:padding="5dp"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/frontimgname"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:layout_toRightOf="@id/backid_status"
+        android:gravity="left"
+        android:padding="5dp"
+        android:textColor="@color/black"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/backimgname"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:layout_toRightOf="@id/backid_status"
+        android:gravity="left"
+        android:padding="5dp"
+        android:textColor="@color/black"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/signimgname"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:layout_toRightOf="@id/backid_status"
+        android:gravity="left"
+        android:padding="5dp"
+        android:textColor="@color/black"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/simid"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:layout_toRightOf="@id/backid_status"
+        android:gravity="left"
+        android:padding="5dp"
+        android:textColor="@color/black"
+        android:visibility="gone"/>
+
+
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_toRightOf="@id/sign_status"
+        android:id="@+id/picresend"
+        android:src="@drawable/ic_baseline_send_24"
+        android:backgroundTint="@color/teal_700" />
+
+</RelativeLayout>

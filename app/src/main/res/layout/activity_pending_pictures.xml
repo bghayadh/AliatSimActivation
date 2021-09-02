@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PendingPictures">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Pending Pictures"
+            android:textAlignment="center"
+            android:id="@+id/title"
+            android:textSize="25dp"
+            android:textColor="@color/black"/>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="4dp"
+            android:layout_below="@id/title"
+            android:id="@+id/view"
+            android:background="@color/menusgrey" />
+    <Button
+        android:id="@+id/btnprevious"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_below="@id/view"
+        android:layout_marginStart="1.5dp"
+        android:textSize="12sp"
+        android:backgroundTint="@color/menusgrey"
+        android:drawableLeft="@drawable/newprevious"
+        android:paddingBottom="0dp"
+        android:paddingTop="0dp"
+        android:paddingRight="0dp"
+        android:paddingLeft="0dp"
+        android:textColor="@color/black"
+        android:text="PREV" />
+
+    <Button
+        android:id="@+id/btnnext"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="3dp"
+        android:layout_below="@id/view"
+        android:textSize="12sp"
+        android:layout_toRightOf="@+id/btnprevious"
+        android:backgroundTint="@color/menusgrey"
+        android:drawableRight="@drawable/newnext"
+        android:paddingBottom="0dp"
+        android:paddingTop="0dp"
+        android:paddingRight="0dp"
+        android:paddingLeft="0dp"
+        android:textColor="@color/black"
+        android:text="NEXT" />
+
+    <Button
+        android:id="@+id/Btnselectdate"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:layout_marginStart="2dp"
+        android:backgroundTint="@color/menusgrey"
+        android:drawableRight="@drawable/newcalender"
+        android:layout_below="@+id/btnprevious"
+        android:paddingBottom="0dp"
+        android:paddingTop="0dp"
+        android:paddingRight="0dp"
+        android:paddingLeft="0dp"
+        android:text="Select Date"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/textdate"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="15dp"
+        android:layout_weight="0.5"
+        android:layout_marginEnd="2dp"
+        android:layout_toRightOf="@id/Btnselectdate"
+        android:layout_below="@+id/btnnext"
+        android:inputType="date"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:hint="SELECTED DATE"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/client_nbr"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:text="Client Number"
+        android:padding="5dp"
+        android:layout_below="@id/Btnselectdate"
+        android:layout_alignParentLeft="true"
+        android:textColor="@color/black"
+        />
+
+    <TextView
+        android:id="@+id/frontstatus"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:padding="5dp"
+        android:layout_toRightOf="@id/client_nbr"
+        android:layout_below="@id/Btnselectdate"
+        android:text="FrontID"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/backstatus"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:padding="5dp"
+        android:layout_toRightOf="@id/frontstatus"
+        android:gravity="left"
+        android:text="BackID"
+        android:layout_below="@id/Btnselectdate"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/signstatus"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:layout_toRightOf="@+id/backstatus"
+        android:gravity="left"
+        android:padding="5dp"
+        android:layout_below="@id/Btnselectdate"
+        android:text="Sign"
+        android:textColor="@color/black" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/pendingpicrecview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbarSize="12dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/client_nbr"
+        android:scrollbars="vertical"
+        />
+
+    <Button
+        android:id="@+id/btnmain"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="@color/menusgrey"
+        android:text="Home"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:drawableRight="@drawable/ic_home1"/>
+
+</RelativeLayout>
+
+
+
+
+
+
+
+

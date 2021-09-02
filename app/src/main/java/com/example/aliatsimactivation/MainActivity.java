@@ -218,6 +218,26 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        btnphotos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //check network connection
+                ConnectivityManager connMgr = (ConnectivityManager) getApplicationContext ( )
+                        .getSystemService(Context.CONNECTIVITY_SERVICE);
+
+                NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+                if (networkInfo != null && networkInfo.isConnected() && globalMode.equalsIgnoreCase("Online")) {
+                    //Toast.makeText(MainActivity.this,  "Welcome to Mobile Charge page",Toast.LENGTH_SHORT).show();
+                    Intent intent =new Intent(MainActivity.this, PendingPictures.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(MainActivity.this,  "No Connection",Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        });
 
         // click to move to Mobile Charge List
         BtnMobCharge.setOnClickListener(new View.OnClickListener() {
