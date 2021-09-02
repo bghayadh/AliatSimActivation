@@ -334,7 +334,10 @@ public String getrequestid() {
 
     //System.out.println(val1);
     String[] data2 = val1.split("-");
+    String valyear=data2[0];
+    valyear=valyear.substring(2,4);
     String valmonth=data2[1];
+    String valday=data2[2];
     //System.out.println("valmonth " + valmonth);
 
     //System.out.println(val2);
@@ -343,8 +346,8 @@ public String getrequestid() {
 
     //System.out.println("valtime " +valtime);
 
-    System.out.println("month and valtime "+ "RR"+valmonth+valtime);
-    return ("RR"+valmonth+valtime);
+    System.out.println("month and valtime "+ valyear+valmonth+valday+valtime);
+    return (valyear+valmonth+valday+valtime);
 }
 
 
