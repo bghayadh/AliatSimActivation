@@ -269,8 +269,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this,"Welcome To Sim Registration Reports",Toast.LENGTH_LONG).show();
-                Intent intent=new Intent(MainActivity.this,SimRegistrationReport.class);
-                startActivity(intent);
+               // Intent intent=new Intent(MainActivity.this,SimRegistrationReport.class);
+               // startActivity(intent);
             }
         });
         // exit button
