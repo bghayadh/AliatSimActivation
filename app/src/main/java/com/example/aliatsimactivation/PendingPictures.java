@@ -4,10 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -17,23 +25,68 @@ import java.util.ArrayList;
 
 public class PendingPictures extends AppCompatActivity {
     private Connection conn;
+    private Button btnmain;
     private boolean connectflag=false;
     public ArrayList<PendingPictureListView> simA,simdb;
     private int arraysize=0;
     private int varraysize=0;
     private RecyclerView pendingpicrec;
+    private String text,agentNumber;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pending_pictures);
 
         pendingpicrec=(RecyclerView) findViewById(R.id.pendingpicrecview);
+        btnmain=findViewById(R.id.btnmain);
+
+        btnmain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =new Intent(getApplicationContext(),MainActivity.class);
+                intent.putExtra("db-offline-to-main", "0");
+                intent.putExtra("globalMode","Online");
+                startActivity(intent);
+            }
+        });
+
+        try {
+            FileInputStream fis = null;
+
+            File file = new File(getFilesDir(), "MSISDN.txt");
+            if (file.exists()) {
+                System.out.println("file Exists");
+                fis = openFileInput("MSISDN.txt");
+                InputStreamReader isr = new InputStreamReader(fis);
+                BufferedReader br = new BufferedReader(isr);
+                StringBuilder sb = new StringBuilder();
+                while ((text = br.readLine()) != null) {
+                    sb.append(text).append("\n");
+                    Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+                    System.out.println("text pre : "+text);
+
+                    agentNumber=text;
+                }
+
+                System.out.println("agent number : "+agentNumber);
+
+
+            } } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
         GetClientPendingPictures(1,100);
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent =new Intent(getApplicationContext(),MainActivity.class);
+        intent.putExtra("db-offline-to-main", "0");
+        intent.putExtra("globalMode","Online");
+        startActivity(intent);
+    }
 
     private void GetClientPendingPictures(int vfrom, int vto) {
         boolean flg=false;
@@ -51,9 +104,8 @@ public class PendingPictures extends AppCompatActivity {
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
+                String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY CREATION_DATE) row_num,SIM_REG_ID,AGENT_NUMBER,MOBILE_NUMBER,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS,SIGNATURE_STATUS from SIM_REGISTRATION where FRONT_SIDE_ID_STATUS='0' or BACK_SIDE_ID_STATUS='0' or SIGNATURE_STATUS='0' ) T WHERE row_num >='" + vfrom + "' AND row_num <='" + vto + "' AND AGENT_NUMBER='"+agentNumber+"'" ;
 
-                String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY CREATION_DATE) row_num,SIM_REG_ID,CREATION_DATE,MOBILE_NUMBER,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS,SIGNATURE_STATUS,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,SIGNATURE from SIM_REGISTRATION where FRONT_SIDE_ID_STATUS=0 or BACK_SIDE_ID_STATUS=0 or SIGNATURE_STATUS=0 ) T WHERE row_num >='" + vfrom + "' AND row_num <='" + vto + "'" +
-                        " ORDER BY CREATION_DATE DESC" ;
                 ResultSet rs1 = null;
 
                 try {
@@ -66,7 +118,7 @@ public class PendingPictures extends AppCompatActivity {
                     try {
                         if (!rs1.next()) break;
                         arraysize = arraysize + 1;
-                        simdb.add(new PendingPictureListView(rs1.getString("SIM_REG_ID"),rs1.getString("MOBILE_NUMBER"), rs1.getString("FRONT_SIDE_ID_STATUS"), rs1.getString("BACK_SIDE_ID_STATUS"), rs1.getString("SIGNATURE_STATUS"),rs1.getString("ID_FRONT_SIDE_PHOTO"),rs1.getString("ID_BACK_SID_PHOTO"),rs1.getString("SIGNATURE")));
+                        simdb.add(new PendingPictureListView(rs1.getString("SIM_REG_ID"),rs1.getString("MOBILE_NUMBER"), rs1.getString("FRONT_SIDE_ID_STATUS"), rs1.getString("BACK_SIDE_ID_STATUS"), rs1.getString("SIGNATURE_STATUS")));
 
 
                     } catch (SQLException throwables) {
@@ -96,7 +148,7 @@ public class PendingPictures extends AppCompatActivity {
 
                     for (i = varraysize; i < 10; i++) {
                         if (varraysize < arraysize) {
-                            simA.add(new PendingPictureListView(simdb.get(i).getGlobalSimID(),simdb.get(i).getClientNumer(), simdb.get(i).getFrontStatus(), simdb.get(i).getBackStatus(), simdb.get(i).getSignStatus(),simdb.get(i).getFrontImage(),simdb.get(i).getBackImage(),simdb.get(i).getSignImage()));
+                            simA.add(new PendingPictureListView(simdb.get(i).getGlobalSimID(),simdb.get(i).getClientNumer(), simdb.get(i).getFrontStatus(), simdb.get(i).getBackStatus(), simdb.get(i).getSignStatus()));
                             varraysize = varraysize + 1;
                         }
                     }
@@ -151,3 +203,4 @@ public class PendingPictures extends AppCompatActivity {
     }
 
 }
+

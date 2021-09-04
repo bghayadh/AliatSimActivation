@@ -8,7 +8,7 @@
     android:background="#FFFFFF"
     tools:context=".Activate_Sim">
 
-  <!-- Button Activate via USSD -->
+  <!-- Button Activate via ip -->
   <Button
       android:id="@+id/Btnip"
       android:layout_width="match_parent"
@@ -63,7 +63,7 @@
       android:layout_marginStart="1dp"
       android:backgroundTint="@color/menusgrey"
       android:drawableRight="@drawable/ic_sms"
-      android:text="Register Via ussd"
+      android:text="Register manually"
       android:textColor="@color/black"
       android:textSize="15sp"/>
 
@@ -72,9 +72,9 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:id="@+id/txtussd"
-      android:hint="Enter USSD CODE"
       android:textColorHint="#808080"
       android:textColor="@color/black"
+      android:visibility="gone"
       android:layout_below="@+id/Btnregisterviaussd"/>
 
   <TextView

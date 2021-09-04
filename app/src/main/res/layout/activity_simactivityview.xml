@@ -479,7 +479,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
-            android:text="USSD Status"
+            android:text="Subscription Status"
             android:textSize="20sp"
             android:textColor="@color/black"/>
 
@@ -489,13 +489,14 @@
             android:id="@+id/edtussdstatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="USSD Status"
+            android:enabled="false"
             android:textColor="#808080"
             android:textColorHint="#808080"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
             android:maxLines="1"
             android:maxLength="50"
+            android:text="USSD"
             android:inputType="textPersonName"
             android:background="@null"/>
 

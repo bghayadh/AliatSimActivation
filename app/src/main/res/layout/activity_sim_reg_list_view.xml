@@ -165,12 +165,13 @@
 
 
         <TextView
-            android:id="@+id/pagination"
+            android:id="@+id/txtpagination"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:backgroundTint="@color/menusgrey"
-            android:text="30/30"
+            android:text=""
+            android:textStyle="bold"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="15sp"/>
@@ -206,4 +207,3 @@
 
 
 </LinearLayout>
-

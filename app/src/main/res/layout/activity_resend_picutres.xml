@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00aaca"
+    tools:context=".ResendPicutres">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="5dp"
+        android:id="@+id/clnbr"
+        android:layout_marginTop="10dp"
+        android:textSize="15dp"
+        android:textColor="@color/yellowheader"
+        android:text="Client Number"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:textColor="@color/white"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/clnbr"
+        android:textSize="15dp"
+        android:id="@+id/clientnumber" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/menusgrey"
+        android:layout_below="@id/clientnumber"/>
+    <TextView
+        android:id="@+id/imgfront"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/clientnumber"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:text="Front Image"
+        android:textColor="@color/yellowheader"
+        android:textSize="15dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="5dp"
+        android:textColor="@color/white"
+        android:layout_below="@+id/imgfront"
+        android:textSize="15dp"
+        android:id="@+id/frontimagename"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/menusgrey"
+        android:layout_below="@id/frontimagename"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="Back Image"
+        android:textSize="15dp"
+        android:layout_marginStart="5dp"
+        android:textColor="@color/yellowheader"
+        android:layout_below="@+id/frontimagename"
+        android:layout_marginTop="5dp"
+        android:id="@+id/imgback"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="5dp"
+        android:textColor="@color/white"
+        android:layout_below="@id/imgback"
+        android:textSize="15dp"
+        android:id="@+id/backimagename" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/menusgrey"
+        android:layout_below="@id/backimagename"/>
+
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="40dp"
+          android:text="Signature"
+          android:textSize="15dp"
+          android:layout_marginStart="5dp"
+          android:textColor="@color/yellowheader"
+          android:layout_below="@id/backimagename"
+          android:layout_marginTop="5dp"
+          android:id="@+id/signature"/>
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="40dp"
+          android:layout_marginStart="5dp"
+          android:layout_marginTop="5dp"
+          android:textColor="@color/white"
+          android:layout_below="@id/signature"
+          android:textSize="15dp"
+          android:id="@+id/signaturename"
+         />
+
+   <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/signaturename"
+        android:layout_marginTop="50dp"
+        android:textColor="@color/white"
+        android:textSize="15dp"
+        android:textAlignment="center"
+        android:layout_centerInParent="true"
+        android:id="@+id/txtmsgresend"/>
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Resend Pictures"
+        android:backgroundTint="@color/menusgrey"
+        android:textColor="@color/black"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/resend"/>
+
+</RelativeLayout>

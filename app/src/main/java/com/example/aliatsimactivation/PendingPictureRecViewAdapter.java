@@ -1,6 +1,7 @@
 package com.example.aliatsimactivation;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -58,49 +59,37 @@ public class PendingPictureRecViewAdapter extends RecyclerView.Adapter<PendingPi
         holder.front_status.setText(list.get(position).getFrontStatus());
         holder.back_status.setText(list.get(position).getBackStatus());
         holder.sign_status.setText(list.get(position).getSignStatus());
-        holder.front_image.setText(list.get(position).getFrontImage());
-        holder.back_image.setText(list.get(position).getBackImage());
-        holder.sign_image.setText(list.get(position).getSignImage());
         holder.globalsimid.setText(list.get(position).getGlobalSimID());
 
-         globalsimid=holder.globalsimid.getText().toString();
-         Front_Status= holder.front_status.getText().toString();
-         Back_Status = holder.back_status.getText().toString();
-         Sign_Status = holder.sign_status.getText().toString();
-
-        frontimg=holder.front_image.getText().toString();
-        backimg=holder.back_image.getText().toString();
-        signimg=holder.sign_image.getText().toString();
-
-        if(Front_Status.equalsIgnoreCase("1")){
+        if(holder.front_status.getText().toString().equalsIgnoreCase("1")){
             holder.front_status.setText("Y");
         }else{
             holder.front_status.setText("N");
         }
-        if(Back_Status.equalsIgnoreCase("1")){
+        if(holder.back_status.getText().toString().equalsIgnoreCase("1")){
             holder.back_status.setText("Y");
         }else{
             holder.back_status.setText("N");
         }
-        if(Sign_Status.equalsIgnoreCase("1")){
+        if(holder.sign_status.getText().toString().equalsIgnoreCase("1")){
             holder.sign_status.setText("Y");
         }else{
             holder.sign_status.setText("N");
         }
-        if (Front_Status.equalsIgnoreCase("1") && Back_Status.equalsIgnoreCase("1") && Sign_Status.equalsIgnoreCase("1")){
-            holder.picresend.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_activate1));
 
-        }
 
 
         holder.picresend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println(frontimg + " " + backimg + " " + signimg+" "+globalsimid);
 
+                Toast.makeText(context,holder.globalsimid.getText().toString(),Toast.LENGTH_LONG).show();
 
-                        }
-                    });
+                Intent i=new Intent(context,ResendPicutres.class);
+                i.putExtra("globalsimid",holder.globalsimid.getText().toString());
+                context.startActivity(i);
+            }
+        });
     }
 
     @Override
@@ -114,7 +103,7 @@ public class PendingPictureRecViewAdapter extends RecyclerView.Adapter<PendingPi
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView client_nbr,front_status,back_status,sign_status,front_image,back_image,sign_image,globalsimid;
+        private TextView client_nbr,front_status,back_status,sign_status,globalsimid;
         private ImageButton picresend;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -122,9 +111,6 @@ public class PendingPictureRecViewAdapter extends RecyclerView.Adapter<PendingPi
             front_status=itemView.findViewById(R.id.frontid_status);
             back_status=itemView.findViewById(R.id.backid_status);
             sign_status=itemView.findViewById(R.id.sign_status);
-            front_image=itemView.findViewById(R.id.frontimgname);
-            back_image=itemView.findViewById(R.id.backimgname);
-            sign_image=itemView.findViewById(R.id.signimgname);
             globalsimid=itemView.findViewById(R.id.simid);
             picresend=itemView.findViewById(R.id.picresend);
         }
@@ -204,3 +190,4 @@ public class PendingPictureRecViewAdapter extends RecyclerView.Adapter<PendingPi
 
 
 }
+

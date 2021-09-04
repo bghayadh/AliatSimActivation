@@ -47,6 +47,7 @@
         <activity android:name=".SimRegSignature" android:configChanges="orientation|screenSize"/>
         <activity android:name=".SimRegOfflineDataActivity" android:configChanges="orientation|screenSize"/>
         <activity android:name=".PendingPictures" android:configChanges="orientation|screenSize"></activity>
+        <activity android:name=".ResendPicutres" android:configChanges="orientation|screenSize"></activity>
         <activity android:name=".SplashActivity">
 
             <intent-filter>

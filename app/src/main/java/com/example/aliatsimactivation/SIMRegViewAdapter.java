@@ -39,6 +39,7 @@ public class SIMRegViewAdapter extends RecyclerView.Adapter<SIMRegViewAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         holder.sim_id.setText(list.get(position).getSimRegListViewId());
+        holder.rownb.setText(list.get(position).getRow());
         holder.name_id.setText(list.get(position).getName());
         holder.mobile_id.setText(list.get(position).getMobile());
         holder.simstatus_id.setText(list.get (position).getStatus());
@@ -51,6 +52,7 @@ public class SIMRegViewAdapter extends RecyclerView.Adapter<SIMRegViewAdapter.Vi
                 System.out.println(list.get(position).getSimRegListViewId());
 
                 // show line in green when select row
+                holder.rownb.setBackgroundColor(Color.GREEN);
                 holder.name_id.setBackgroundColor(Color.GREEN);
                 holder.mobile_id.setBackgroundColor(Color.GREEN);
                 holder.simstatus_id.setBackgroundColor(Color.GREEN);
@@ -82,11 +84,12 @@ public class SIMRegViewAdapter extends RecyclerView.Adapter<SIMRegViewAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TableLayout parent;
-        private TextView sim_id,name_id,mobile_id,simstatus_id;
+        private TextView sim_id,rownb,name_id,mobile_id,simstatus_id;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             sim_id=itemView.findViewById(R.id.sim_id);
+            rownb=itemView.findViewById(R.id.rownb);
             name_id=itemView.findViewById(R.id.name_id);
             mobile_id=itemView.findViewById(R.id.mobile_id);
             simstatus_id=itemView.findViewById(R.id.simstatus_id);
@@ -94,3 +97,4 @@ public class SIMRegViewAdapter extends RecyclerView.Adapter<SIMRegViewAdapter.Vi
         }
     }
 }
+

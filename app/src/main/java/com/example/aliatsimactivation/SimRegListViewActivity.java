@@ -18,6 +18,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -37,10 +41,10 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
     private Connection connsite;
     public ArrayList<SimRegListView> simA,simdb,simA1,simdb1;
     private Button btnprevious,btnnext,btnnew,btnmain,btndelete,btnselectdate;
-    private TextView datet,textstatus;
+    private TextView datet,textstatus,txtpagination;
     private boolean connectflag=false;
     private SIMRegViewAdapter adapter;
-    private String datestr;
+    private String datestr,text,agentNumber;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +55,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         btnmain=findViewById (R.id.btnmain);
         btnselectdate=findViewById(R.id.Btnselectdate);
         simregrecview = findViewById(R.id.simRecView);
+        txtpagination = findViewById(R.id.txtpagination);
 
         Date c = Calendar.getInstance().getTime();
         datet=findViewById(R.id.textdate);
@@ -64,10 +69,37 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         //datestr=str;
         System.out.println("str "+ str);
 
-       // if (str.toString().matches("-100")) {
-       //     textstatus.setVisibility(View.GONE);
-       //     datestr=str;
-      //  } //else {
+
+
+        try {
+            FileInputStream fis = null;
+
+            File file = new File(getFilesDir(), "MSISDN.txt");
+            if (file.exists()) {
+                System.out.println("file Exists");
+                fis = openFileInput("MSISDN.txt");
+                InputStreamReader isr = new InputStreamReader(fis);
+                BufferedReader br = new BufferedReader(isr);
+                StringBuilder sb = new StringBuilder();
+                while ((text = br.readLine()) != null) {
+                    sb.append(text).append("\n");
+                    Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+                    System.out.println("text pre : "+text);
+
+                    agentNumber=text;
+                }
+
+                System.out.println("agent number : "+agentNumber);
+
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // if (str.toString().matches("-100")) {
+        //     textstatus.setVisibility(View.GONE);
+        //     datestr=str;
+        //  } //else {
 
             /*Handler handler = new Handler();
             handler.post(new Runnable() {
@@ -93,6 +125,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         handler.postDelayed(r, 1000);
         System.out.println("delayed 1 sec");
 
+        pagination();
 
 
 
@@ -102,6 +135,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
 
 
         //}
+
 
         btnprevious.setOnClickListener (new View.OnClickListener ( ) {
             @Override
@@ -165,6 +199,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
                 }else {
                     GetSimData(1,10);
                 }
+                pagination();
 
             }
 
@@ -219,26 +254,29 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
+                System.out.println("you are here");
 
                 //SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY CREATION_DATE DESC) row_num,CREATION_DATE,SIM_REG_ID,FIRST_NAME ,LAST_NAME,MOBILE_NUMBER, STATUS from SIM_REGISTRATION where TO_DATE(TO_CHAR(CREATION_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + datet.getText() + "','DD-MM-YYYY')) T WHERE row_num >= '" + vfrom + "' AND row_num <='" + vto + "';
                 // String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,SIM_REG_ID,FIRST_NAME ,LAST_NAME,MOBILE_NUMBER, STATUS from SIM_REGISTRATION where TO_DATE(TO_CHAR(CREATION_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + datet.getText() + "','DD-MM-YYYY')) T WHERE row_num >= '" + vfrom + "' AND row_num <='" + vto + "' " +
                 //       " ORDER BY CREATION_DATE DESC";
 
-                String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY CREATION_DATE DESC) row_num,CREATION_DATE,SIM_REG_ID,FIRST_NAME ,LAST_NAME,MOBILE_NUMBER, STATUS from SIM_REGISTRATION where TO_DATE(TO_CHAR(CREATION_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + datet.getText() + "','DD-MM-YYYY')) T WHERE row_num >= '" + vfrom + "' AND row_num <='" + vto + "'";
+                System.out.println("text : "+agentNumber);
+                String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY CREATION_DATE DESC) row_num,CREATION_DATE,AGENT_NUMBER,SIM_REG_ID,FIRST_NAME,LAST_NAME,MOBILE_NUMBER, STATUS from SIM_REGISTRATION where TO_DATE(TO_CHAR(CREATION_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + datet.getText() + "','DD-MM-YYYY')) T WHERE row_num >= '" + vfrom + "' AND row_num <='" + vto + "' AND AGENT_NUMBER='"+agentNumber+"'";
                 ResultSet rs1 = null;
 
                 try {
                     rs1 = stmt1.executeQuery(sqlStmt);
+                    System.out.println("now here");
 
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
                 while (true) {
                     try {
+                        System.out.println("how about here ?");
                         if (!rs1.next()) break;
                         arraysize = arraysize + 1;
-                        simdb.add(new SimRegListView(rs1.getString("SIM_REG_ID"), rs1.getString("FIRST_NAME") + " " + rs1.getString("LAST_NAME"), rs1.getString("MOBILE_NUMBER"), rs1.getString("STATUS")));
-                    } catch (SQLException throwables) {
+                        simdb.add(new SimRegListView(rs1.getString("SIM_REG_ID"), rs1.getString("ROW_NUM"),rs1.getString("FIRST_NAME") + " " + rs1.getString("LAST_NAME"), rs1.getString("MOBILE_NUMBER"), rs1.getString("STATUS")));                    } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
                 }
@@ -275,8 +313,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
 
             for (i = varraysize; i < 10; i++) {
                 if (varraysize < arraysize) {
-                    simA.add(new SimRegListView(simdb.get(i).getSimRegListViewId(), simdb.get(i).getName(), simdb.get(i).getMobile(), simdb.get(i).getStatus()));
-                    varraysize = varraysize + 1;
+                    simA.add(new SimRegListView(simdb.get(i).getSimRegListViewId(), simdb.get(i).getRow(), simdb.get(i).getName(), simdb.get(i).getMobile(), simdb.get(i).getStatus()));                    varraysize = varraysize + 1;
                 }
             }
 
@@ -393,84 +430,6 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
     }
 
 
-    public void GetDataInitial(int vfrom,int vto)
-    {
-        boolean flg=false;
-        try {
-            if((flg=connecttoDB())==true) {
-                // define recyclerview of sitelistview
-                simA = new ArrayList<>();
-                simdb = new ArrayList<>();
-                datestr="0";
-                //Add data for sitelistview recyclerview
-                Statement stmt1 = null;
-                int i = 0;
-                try {
-                    stmt1 = connsite.createStatement();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-
-                String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY CREATION_DATE) row_num,SIM_REG_ID,FIRST_NAME,CREATION_DATE,LAST_NAME,MOBILE_NUMBER, STATUS from SIM_REGISTRATION ) T WHERE row_num >='" + vfrom + "' AND row_num <='" + vto + "'" +
-                        " ORDER BY CREATION_DATE DESC";
-
-                ResultSet rs1 = null;
-
-                try {
-                    rs1 = stmt1.executeQuery(sqlStmt);
-
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-                while (true) {
-                    try {
-                        if (!rs1.next()) break;
-                        arraysize = arraysize + 1;
-                        simdb.add(new SimRegListView(rs1.getString("SIM_REG_ID"), rs1.getString("FIRST_NAME") + " " + rs1.getString("LAST_NAME"), rs1.getString("MOBILE_NUMBER"), rs1.getString("STATUS")));
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
-                }
-                try {
-                    rs1.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-                try {
-                    stmt1.close();
-                    connsite.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-
-                arraysize = simdb.size();
-
-                if (arraysize > 0) {
-                    //System.out.println("Array Size is : "+arraysize);
-                    simA.clear();
-                    varraysize = 0;
-
-                    for (i = varraysize; i < 10; i++) {
-                        if (varraysize < arraysize) {
-                            simA.add(new SimRegListView(simdb.get(i).getSimRegListViewId(), simdb.get(i).getName(), simdb.get(i).getMobile(), simdb.get(i).getStatus()));
-                            varraysize = varraysize + 1;
-                        }
-                    }
-
-
-                    pagination = pagination + 1;
-                    //connect data to coveragelistadapter
-                    adapter = new SIMRegViewAdapter(SimRegListViewActivity.this);
-                    adapter.setContacts(simA);
-                    simregrecview.setAdapter(adapter);
-                    simregrecview.setLayoutManager(new LinearLayoutManager(SimRegListViewActivity.this));
-                }
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-    }
 
     Thread thread1 = new Thread() {
         @Override
@@ -506,6 +465,127 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         }
     };
 
+    private void pagination() {
+
+        boolean flg = false;
+        try {
+            if ((flg = connecttoDB()) == true) {
+                // define recyclerview of sitelistview
+                simA = new ArrayList<>();
+                simdb = new ArrayList<>();
+                datestr = "0";
+                //Add data for sitelistview recyclerview
+                Statement stmt1 = null;
+                int i = 0;
+                try {
+                    stmt1 = connsite.createStatement();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+
+                String sqlStmt = "SELECT COUNT(*) FROM SIM_REGISTRATION where TO_DATE(TO_CHAR(CREATION_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + datet.getText() + "','DD-MM-YYYY')";
+
+                ResultSet rs1 = null;
+
+                try {
+                    rs1 = stmt1.executeQuery(sqlStmt);
+
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                while (true) {
+                    try {
+                        if (!rs1.next()) break;
+
+                        String count = rs1.getString("COUNT(*)");
+                        int page = Integer.valueOf(count);
+                        int pagecount = (page/10);
+                        int pagecountremain = (page%10);
+                        int pagenumber;
+                        final int[] currentpagenumber = {1};
+
+                        if (page == 0){
+                            txtpagination.setVisibility(View.INVISIBLE);
+                        } else {
+                            txtpagination.setVisibility(View.VISIBLE);
+                            if (pagecountremain != 0) {
+                                pagenumber = pagecount + 1;
+                            } else {
+                                pagenumber = pagecount;
+                            }
+                            txtpagination.setText(String.valueOf(currentpagenumber[0]) + "/" + String.valueOf(pagenumber));
+
+                            if (currentpagenumber[0] == 1){
+                                btnprevious.setClickable(false);
+                            }
+
+                            if (currentpagenumber[0] == pagenumber){
+                                btnnext.setClickable(false);
+                            } else {
+                                btnnext.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        btnprevious.setClickable(true);
+                                        if (datestr.toString().matches("-100")) {
+
+                                        }else {
+                                            //GetDataInitial((pagination*10)+1,(pagination*10)+10);
+                                            GetSimData((pagination*10)+1,(pagination*10)+10);
+                                        }
+                                        currentpagenumber[0]++;
+                                        int finalCurrentpagenumber = currentpagenumber[0];
+                                        txtpagination.setText(String.valueOf(finalCurrentpagenumber) + "/" + String.valueOf(pagenumber));
+                                        if (finalCurrentpagenumber == pagenumber){
+                                            btnnext.setClickable(false);
+                                        }
+                                    }
+                                });
+
+                                btnprevious.setOnClickListener (new View.OnClickListener ( ) {
+                                    @Override
+                                    public void onClick(View v) {
+                                        btnnext.setClickable(true);
+                                        if (datestr.toString().matches("-100")) {
+
+                                        }else {
+                                            pagination=pagination-2;
+                                            if (pagination <=0 ) {pagination=0;}
+                                            //GetDataInitial((pagination *10)+1,(pagination*10)+10);
+                                            GetSimData((pagination *10)+1,(pagination*10)+10);
+                                        }
+                                        currentpagenumber[0]--;
+                                        int finalCurrentpagenumber = currentpagenumber[0];
+                                        txtpagination.setText(String.valueOf(finalCurrentpagenumber) + "/" + String.valueOf(pagenumber));
+                                        if (finalCurrentpagenumber == 1){
+                                            btnprevious.setClickable(false);
+                                        }
+                                    }
+                                });
+
+                            }
+
+
+                        }
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+                try {
+                    rs1.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                try {
+                    stmt1.close();
+                    connsite.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }
-

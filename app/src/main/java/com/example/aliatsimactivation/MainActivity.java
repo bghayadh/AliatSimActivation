@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -15,16 +17,23 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -40,11 +49,14 @@ public class MainActivity extends AppCompatActivity {
 
     Connection conn;
     private boolean connectflag=false;
-    private String globaltotal=null;
+    private int count=0;
+    private String globaltotal=null,text,agentNumber;
     private String globalMode="0";
     private String OpenMode="Online";
     private ImageButton btnMenu;
     private Button btnMode;
+    LinearLayout collapsablelayout;
+    ImageButton collapsebutton;
 
     @SuppressLint("ResourceAsColor")
     @RequiresApi(api = Build.VERSION_CODES.P)
@@ -65,7 +77,23 @@ public class MainActivity extends AppCompatActivity {
         btnphotos=findViewById(R.id.btnphotos);
         btnMenu=findViewById(R.id.menubutton);
         btnMode=findViewById(R.id.btnMode);
+        collapsebutton = findViewById(R.id.collapsebutton);
+        collapsablelayout = (LinearLayout) findViewById(R.id.collapsable);
 
+        collapsablelayout.setVisibility(View.GONE);
+        collapsebutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(collapsablelayout.getVisibility()==View.GONE)
+                {
+                    expand();
+                }
+                else
+                {
+                    collapse();
+                }
+            }
+        });
 
 
 //menu button for online and offline
@@ -120,8 +148,8 @@ public class MainActivity extends AppCompatActivity {
                                 return true;
 
                             case R.id.three:
-                               // Intent i1 =new Intent(MainActivity.this,UserRegister.class);
-                               // startActivity(i1);
+                                // Intent i1 =new Intent(MainActivity.this,UserRegister.class);
+                                // startActivity(i1);
                             default:
                                 return false;
                         }
@@ -130,6 +158,62 @@ public class MainActivity extends AppCompatActivity {
                 popup.show();
             }
         });
+
+        try {
+            FileInputStream fis = null;
+
+            File file = new File(getFilesDir(), "MSISDN.txt");
+            if (file.exists()) {
+                System.out.println("file Exists");
+                fis = openFileInput("MSISDN.txt");
+                InputStreamReader isr = new InputStreamReader(fis);
+                BufferedReader br = new BufferedReader(isr);
+                StringBuilder sb = new StringBuilder();
+                while ((text = br.readLine()) != null) {
+                    sb.append(text).append("\n");
+                    Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+                    System.out.println("text pre : "+text);
+
+                    agentNumber=text;
+                }
+
+                System.out.println("agent number : "+agentNumber);
+
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        File dir = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+        File[] files = dir.listFiles();
+        count = 0;
+        for (File f : files) {
+            String name = f.getName();
+            if (name.startsWith("SIM") && name.endsWith(".txt"))
+                count++;
+            System.out.println("COUNT IS:" + count);
+        }
+        if(count!=0) {
+            btnlocalfiles.setText("Local Files " + count);
+        }
+        btnlocalfiles.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (count==0)
+                {
+                    Toast.makeText(getApplicationContext(),"You Don't Have Local Files",Toast.LENGTH_LONG).show();
+                }else {
+                    Intent intent = new Intent(getApplicationContext(), SimRegOfflineDataActivity.class);
+                    intent.putExtra("globalMode", globalMode);
+                    intent.putExtra("message_key", "0");
+                    startActivity(intent);
+                }
+
+            }
+        });
+
 
         Intent i=this.getIntent();
         OpenMode=i.getStringExtra("globalMode");
@@ -140,17 +224,17 @@ public class MainActivity extends AppCompatActivity {
         {
             globalMode="Online";
 
-           // btnMode.setBackgroundColor(R.color.mixte);
+            // btnMode.setBackgroundColor(R.color.mixte);
         }else{
             globalMode="Offline";
             btnMode.setBackgroundColor(Color.RED);
         }
 
 
-       //validate if the appication mode OFF/ON
-         if (globalMode.equalsIgnoreCase("0")) {
-             globalMode=OpenMode;
-         }
+        //validate if the appication mode OFF/ON
+        if (globalMode.equalsIgnoreCase("0")) {
+            globalMode=OpenMode;
+        }
 
 
         Handler handler = new Handler();
@@ -184,7 +268,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-          // click to move to Sim Registration List
+        GetPendingPicturesNbr();
+
+
+        // click to move to Sim Registration List
         BtnSIMReg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -233,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent =new Intent(MainActivity.this, PendingPictures.class);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(MainActivity.this,  "No Connection",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this,  "No Internet Connection",Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -269,8 +356,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this,"Welcome To Sim Registration Reports",Toast.LENGTH_LONG).show();
-               // Intent intent=new Intent(MainActivity.this,SimRegistrationReport.class);
-               // startActivity(intent);
+                // Intent intent=new Intent(MainActivity.this,SimRegistrationReport.class);
+                // startActivity(intent);
             }
         });
         // exit button
@@ -372,7 +459,7 @@ public class MainActivity extends AppCompatActivity {
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
                             }
-                            String sqlStmt1 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE from SIM_REGISTRATION order by SIM_REG_ID) T WHERE CREATION_DATE  >= cast(trunc(current_timestamp) as timestamp) ";
+                            String sqlStmt1 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,AGENT_NUMBER from SIM_REGISTRATION order by SIM_REG_ID) T WHERE CREATION_DATE  >= cast(trunc(current_timestamp) as timestamp) ";
 
                             ResultSet rs1 = null;
                             try {
@@ -1317,14 +1404,14 @@ public class MainActivity extends AppCompatActivity {
                         System.out.println("flag : " + connecttoDB());
                         if ((flg = connecttoDB()) == true) {
                             textstatus.setText("Please wait ...");
-                             Statement stmt1 = null;
+                            Statement stmt1 = null;
                             int i = 0;
                             try {
                                 stmt1 = conn.createStatement();
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
                             }
-                            String sqlStmt1 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE from SIM_REGISTRATION order by SIM_REG_ID) T WHERE CREATION_DATE  >= cast(trunc(current_timestamp) as timestamp) ";
+                            String sqlStmt1 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,AGENT_NUMBER from SIM_REGISTRATION order by SIM_REG_ID) T WHERE CREATION_DATE  >= cast(trunc(current_timestamp) as timestamp) AND AGENT_NUMBER='"+agentNumber+"'";
                             ResultSet rs1 = null;
                             try {
                                 rs1 = stmt1.executeQuery(sqlStmt1);
@@ -1360,7 +1447,7 @@ public class MainActivity extends AppCompatActivity {
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
                             }
-                            String sqlStmt2 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS from SIM_REGISTRATION order by SIM_REG_ID) T WHERE STATUS = 'Success' AND CREATION_DATE  >= cast(trunc(current_timestamp) as timestamp) ";
+                            String sqlStmt2 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS,AGENT_NUMBER from SIM_REGISTRATION order by SIM_REG_ID) T WHERE STATUS = 'Success' AND CREATION_DATE  >= cast(trunc(current_timestamp) as timestamp) AND AGENT_NUMBER='"+agentNumber+"' ";
 
                             ResultSet rs2 = null;
                             try {
@@ -1395,7 +1482,7 @@ public class MainActivity extends AppCompatActivity {
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
                             }
-                            String sqlStmt3 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS from SIM_REGISTRATION order by SIM_REG_ID) T WHERE STATUS = 'Failed' AND CREATION_DATE  >= cast(trunc(current_timestamp) as timestamp) ";
+                            String sqlStmt3 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS,AGENT_NUMBER from SIM_REGISTRATION order by SIM_REG_ID) T WHERE STATUS = 'Failed' AND CREATION_DATE  >= cast(trunc(current_timestamp) as timestamp) AND AGENT_NUMBER='"+agentNumber+"'";
 
                             ResultSet rs3 = null;
                             try {
@@ -1430,7 +1517,7 @@ public class MainActivity extends AppCompatActivity {
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
                             }
-                            String sqlStmt4 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS from SIM_REGISTRATION order by SIM_REG_ID) T WHERE STATUS = 'In Progress' AND CREATION_DATE  >= cast(trunc(current_timestamp) as timestamp) ";
+                            String sqlStmt4 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS,AGENT_NUMBER from SIM_REGISTRATION order by SIM_REG_ID) T WHERE STATUS = 'In Progress' AND CREATION_DATE  >= cast(trunc(current_timestamp) as timestamp) AND AGENT_NUMBER='"+agentNumber+"'";
 
                             ResultSet rs4 = null;
                             try {
@@ -1465,7 +1552,7 @@ public class MainActivity extends AppCompatActivity {
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
                             }
-                            String sqlStmt5 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE from SIM_REGISTRATION order by SIM_REG_ID) T WHERE CREATION_DATE  >= sysdate -7 ";
+                            String sqlStmt5 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,AGENT_NUMBER from SIM_REGISTRATION order by SIM_REG_ID) T WHERE CREATION_DATE  >= sysdate -7 AND AGENT_NUMBER='"+agentNumber+"'";
 
                             ResultSet rs5 = null;
                             try {
@@ -1500,7 +1587,7 @@ public class MainActivity extends AppCompatActivity {
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
                             }
-                            String sqlStmt6 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS from SIM_REGISTRATION order by SIM_REG_ID) T WHERE STATUS = 'Success' AND CREATION_DATE  >= sysdate -7 ";
+                            String sqlStmt6 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS,AGENT_NUMBER from SIM_REGISTRATION order by SIM_REG_ID) T WHERE STATUS = 'Success' AND CREATION_DATE  >= sysdate -7 AND AGENT_NUMBER='"+agentNumber+"' ";
 
                             ResultSet rs6 = null;
                             try {
@@ -1535,7 +1622,7 @@ public class MainActivity extends AppCompatActivity {
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
                             }
-                            String sqlStmt7 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS from SIM_REGISTRATION order by SIM_REG_ID) T WHERE STATUS = 'Failed' AND CREATION_DATE  >= sysdate -7 ";
+                            String sqlStmt7 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS,AGENT_NUMBER from SIM_REGISTRATION order by SIM_REG_ID) T WHERE STATUS = 'Failed' AND CREATION_DATE  >= sysdate -7 AND AGENT_NUMBER='"+agentNumber+"'";
 
                             ResultSet rs7 = null;
                             try {
@@ -1570,7 +1657,7 @@ public class MainActivity extends AppCompatActivity {
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
                             }
-                            String sqlStmt8 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS from SIM_REGISTRATION order by SIM_REG_ID) T WHERE STATUS = 'In Progress' AND CREATION_DATE  >= sysdate -7 ";
+                            String sqlStmt8 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS,AGENT_NUMBER from SIM_REGISTRATION order by SIM_REG_ID) T WHERE STATUS = 'In Progress' AND CREATION_DATE  >= sysdate -7 AND AGENT_NUMBER='"+agentNumber+"'";
 
                             ResultSet rs8 = null;
                             try {
@@ -1605,7 +1692,7 @@ public class MainActivity extends AppCompatActivity {
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
                             }
-                            String sqlStmt9 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS from SIM_REGISTRATION order by SIM_REG_ID) T WHERE CREATION_DATE  >= sysdate -30  ";
+                            String sqlStmt9 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS,AGENT_NUMBER from SIM_REGISTRATION order by SIM_REG_ID) T WHERE CREATION_DATE  >= sysdate -30  AND AGENT_NUMBER='"+agentNumber+"'";
 
                             ResultSet rs9 = null;
                             try {
@@ -1640,7 +1727,7 @@ public class MainActivity extends AppCompatActivity {
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
                             }
-                            String sqlStmt10 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS from SIM_REGISTRATION order by SIM_REG_ID) T WHERE STATUS = 'Success' AND CREATION_DATE  >= sysdate -30 ";
+                            String sqlStmt10 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS,AGENT_NUMBER from SIM_REGISTRATION order by SIM_REG_ID) T WHERE STATUS = 'Success' AND CREATION_DATE  >= sysdate -30 AND AGENT_NUMBER='"+agentNumber+"'";
 
                             ResultSet rs10 = null;
                             try {
@@ -1675,7 +1762,7 @@ public class MainActivity extends AppCompatActivity {
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
                             }
-                            String sqlStmt11 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS from SIM_REGISTRATION order by SIM_REG_ID) T WHERE STATUS = 'Failed' AND CREATION_DATE  >= sysdate -30 ";
+                            String sqlStmt11 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS,AGENT_NUMBER from SIM_REGISTRATION order by SIM_REG_ID) T WHERE STATUS = 'Failed' AND CREATION_DATE  >= sysdate -30 AND AGENT_NUMBER='"+agentNumber+"'";
 
                             ResultSet rs11 = null;
                             try {
@@ -1710,7 +1797,7 @@ public class MainActivity extends AppCompatActivity {
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
                             }
-                            String sqlStmt12 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS from SIM_REGISTRATION order by SIM_REG_ID) T WHERE STATUS = 'In Progress' AND CREATION_DATE  >= sysdate -30 ";
+                            String sqlStmt12 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,STATUS,AGENT_NUMBER from SIM_REGISTRATION order by SIM_REG_ID) T WHERE STATUS = 'In Progress' AND CREATION_DATE  >= sysdate -30 AND AGENT_NUMBER='"+agentNumber+"'";
 
                             ResultSet rs12 = null;
                             try {
@@ -1737,7 +1824,7 @@ public class MainActivity extends AppCompatActivity {
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
                             }
-                             textstatus.setText("");
+                            textstatus.setText("");
                         } else {
                             textstatus.setText("");
                             System.out.println("database not connected");
@@ -1758,9 +1845,126 @@ public class MainActivity extends AppCompatActivity {
 
     });
 
+    public void GetPendingPicturesNbr() {
+        Intent i1=MainActivity.this.getIntent();
+        String strdbcon=i1.getStringExtra("db-offline-to-main").toString();
+        ConnectivityManager connMgr = (ConnectivityManager) getApplicationContext()
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
 
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected() && (globalMode.equalsIgnoreCase("Online"))) {
+            if (strdbcon.equalsIgnoreCase("-100")) {
+
+            } else {
+
+                boolean flg = false;
+
+                if ((flg = connecttoDB()) == true) {
+
+                    System.out.println("STarteeeed");
+                    Statement stmt3 = null;
+                    System.out.println("yalla");
+                    try {
+                        stmt3 = conn.createStatement();
+
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    System.out.println("you are here");
+                    String sqlStmt1 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,AGENT_NUMBER,front_side_id_status,back_side_id_status,signature_status from SIM_REGISTRATION where front_side_id_status='0' or back_side_id_status='0' or signature_status='0') T where AGENT_NUMBER='"+agentNumber+"'";
+                    ResultSet rs1 = null;
+                    try {
+                        rs1 = stmt3.executeQuery(sqlStmt1);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    System.out.println("reached here");
+                    while (true) {
+                        try {
+                            if (!rs1.next()) break;
+                            btnphotos.setText("Pending Images "+rs1.getString("COUNT(*)"));
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                    }
+                    try {
+                        rs1.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    try {
+                        stmt3.close();
+                        //conn.close ( );
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+
+                }
+            }
+
+        }
+
+    }
+
+
+    private void expand() {
+        collapsablelayout.setVisibility(View.VISIBLE);
+
+        final int widthSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        final int heightSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        collapsablelayout.measure(widthSpec, heightSpec);
+
+        ValueAnimator mAnimator = slideAnimator(0, collapsablelayout.getMeasuredHeight());
+        mAnimator.start();
+    }
+
+    private void collapse() {
+        int finalHeight = collapsablelayout.getHeight();
+
+        ValueAnimator mAnimator = slideAnimator(finalHeight, 0);
+
+        mAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                //Height=0, but it set visibility to GONE
+                collapsablelayout.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+
+        });
+        mAnimator.start();
+    }
+
+    private ValueAnimator slideAnimator(int start, int end)
+    {
+
+        ValueAnimator animator = ValueAnimator.ofInt(start, end);
+
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                //Update Height
+                int value = (Integer) valueAnimator.getAnimatedValue();
+                ViewGroup.LayoutParams layoutParams = collapsablelayout.getLayoutParams();
+                layoutParams.height = value;
+                collapsablelayout.setLayoutParams(layoutParams);
+            }
+        });
+        return animator;
+    }
 }
-
-
-
 

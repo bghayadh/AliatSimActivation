@@ -22,8 +22,10 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="40dp"
+            android:id="@+id/mainlayout"
             android:orientation="horizontal"
             android:baselineAligned="false"
+            android:animateLayoutChanges="true"
             android:background="#00aaca">
 
 
@@ -40,7 +42,27 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:textColor="@color/white"
-                    android:text="Ver 1.0.14" />
+                    android:text="" />
+
+
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="1">
+
+
+                <ImageButton
+                    android:layout_width="fill_parent"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/collapsebutton"
+                    android:background="@null"
+                    android:src="@drawable/ic_baseline_arrow_down_24"/>
+
 
             </RelativeLayout>
 
@@ -48,7 +70,7 @@
             <RelativeLayout
                 android:layout_width="0dip"
                 android:layout_height="fill_parent"
-                android:layout_weight="12">
+                android:layout_weight="11">
 
 
                 <TextView
@@ -102,7 +124,8 @@
 
         <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:id="@+id/collapsable">
             <TableRow android:background="#00aaca" android:padding="5dp"
                 android:weightSum="5">
                 <TextView
@@ -291,7 +314,6 @@
             />
 
 
-
         <LinearLayout
             android:id="@+id/firstLayout"
             android:layout_width="match_parent"
@@ -442,7 +464,7 @@
                 android:layout_height="125dp"
                 android:layout_marginStart="15dp"
                 android:backgroundTint="@color/menusgrey"
-                android:drawableTop="@drawable/ic_report1"
+                android:drawableTop="@drawable/ic_image1"
                 android:paddingTop="10dp"
                 android:text="Pending pictures"
                 android:textAlignment="center"
@@ -459,7 +481,7 @@
                 android:layout_marginEnd="13dp"
                 android:layout_toRightOf="@+id/btnphotos"
                 android:backgroundTint="@color/menusgrey"
-                android:drawableTop="@drawable/ic_swap1"
+                android:drawableTop="@drawable/ic_local1"
                 android:paddingTop="10dp"
                 android:text="Local Files"
                 android:textAlignment="center"
@@ -487,5 +509,5 @@
 
 
 
-</ScrollView>
 
+</ScrollView>

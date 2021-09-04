@@ -2095,6 +2095,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         SIGNorigin=SIGN;
                         System.out.println("gsigstatus "+gsigstatus);
                         System.out.println("SIGNorigin "+SIGNorigin);
+                        signpic.delete();
                     }
                 }
 
@@ -2112,6 +2113,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         frontimgIcon.setColorFilter(Color.GREEN);
                         gfrontstatus="1";
                         FRONTorigin=FRONT;
+                        frontpic.delete();
                     }
                 }
                 if(gbackstatus.equalsIgnoreCase("0")) {
@@ -2127,6 +2129,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         backimgIcon.setColorFilter(Color.GREEN);
                         gbackstatus="1";
                         BACKorigin=BACK;
+                        backpic.delete();
                     }
                 }
 
