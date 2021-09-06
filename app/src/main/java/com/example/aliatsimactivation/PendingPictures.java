@@ -104,7 +104,7 @@ public class PendingPictures extends AppCompatActivity {
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
-                String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY CREATION_DATE) row_num,SIM_REG_ID,AGENT_NUMBER,MOBILE_NUMBER,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS,SIGNATURE_STATUS from SIM_REGISTRATION where FRONT_SIDE_ID_STATUS='0' or BACK_SIDE_ID_STATUS='0' or SIGNATURE_STATUS='0' ) T WHERE row_num >='" + vfrom + "' AND row_num <='" + vto + "' AND AGENT_NUMBER='"+agentNumber+"'" ;
+                String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY CREATED_DATE) row_num,CLIENT_ID ,AGENT_NUMBER,MOBILE_NUMBER,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS,SIGNATURE_STATUS from CLIENTS where FRONT_SIDE_ID_STATUS='0' or BACK_SIDE_ID_STATUS='0' or SIGNATURE_STATUS='0' ) T WHERE row_num >='" + vfrom + "' AND row_num <='" + vto + "' AND AGENT_NUMBER='"+agentNumber+"'" ;
 
                 ResultSet rs1 = null;
 
@@ -118,7 +118,7 @@ public class PendingPictures extends AppCompatActivity {
                     try {
                         if (!rs1.next()) break;
                         arraysize = arraysize + 1;
-                        simdb.add(new PendingPictureListView(rs1.getString("SIM_REG_ID"),rs1.getString("MOBILE_NUMBER"), rs1.getString("FRONT_SIDE_ID_STATUS"), rs1.getString("BACK_SIDE_ID_STATUS"), rs1.getString("SIGNATURE_STATUS")));
+                        simdb.add(new PendingPictureListView(rs1.getString("CLIENT_ID"),rs1.getString("MOBILE_NUMBER"), rs1.getString("FRONT_SIDE_ID_STATUS"), rs1.getString("BACK_SIDE_ID_STATUS"), rs1.getString("SIGNATURE_STATUS")));
 
 
                     } catch (SQLException throwables) {

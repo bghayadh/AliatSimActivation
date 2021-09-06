@@ -256,27 +256,24 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
                 }
                 System.out.println("you are here");
 
-                //SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY CREATION_DATE DESC) row_num,CREATION_DATE,SIM_REG_ID,FIRST_NAME ,LAST_NAME,MOBILE_NUMBER, STATUS from SIM_REGISTRATION where TO_DATE(TO_CHAR(CREATION_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + datet.getText() + "','DD-MM-YYYY')) T WHERE row_num >= '" + vfrom + "' AND row_num <='" + vto + "';
-                // String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY SIM_REG_ID) row_num,CREATION_DATE,SIM_REG_ID,FIRST_NAME ,LAST_NAME,MOBILE_NUMBER, STATUS from SIM_REGISTRATION where TO_DATE(TO_CHAR(CREATION_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + datet.getText() + "','DD-MM-YYYY')) T WHERE row_num >= '" + vfrom + "' AND row_num <='" + vto + "' " +
-                //       " ORDER BY CREATION_DATE DESC";
 
                 System.out.println("text : "+agentNumber);
-                String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY CREATION_DATE DESC) row_num,CREATION_DATE,AGENT_NUMBER,SIM_REG_ID,FIRST_NAME,LAST_NAME,MOBILE_NUMBER, STATUS from SIM_REGISTRATION where TO_DATE(TO_CHAR(CREATION_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + datet.getText() + "','DD-MM-YYYY')) T WHERE row_num >= '" + vfrom + "' AND row_num <='" + vto + "' AND AGENT_NUMBER='"+agentNumber+"'";
+                String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY CREATED_DATE DESC) row_num,CREATED_DATE,AGENT_NUMBER,CLIENT_ID,FIRST_NAME,LAST_NAME,MOBILE_NUMBER,STATUS from CLIENTS where TO_DATE(TO_CHAR(CREATED_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + datet.getText() + "','DD-MM-YYYY')) T WHERE row_num >= '" + vfrom + "' AND row_num <='" + vto + "' AND AGENT_NUMBER='"+agentNumber+"'";
                 ResultSet rs1 = null;
 
                 try {
                     rs1 = stmt1.executeQuery(sqlStmt);
-                    System.out.println("now here");
+
 
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
                 while (true) {
                     try {
-                        System.out.println("how about here ?");
+
                         if (!rs1.next()) break;
                         arraysize = arraysize + 1;
-                        simdb.add(new SimRegListView(rs1.getString("SIM_REG_ID"), rs1.getString("ROW_NUM"),rs1.getString("FIRST_NAME") + " " + rs1.getString("LAST_NAME"), rs1.getString("MOBILE_NUMBER"), rs1.getString("STATUS")));                    } catch (SQLException throwables) {
+                        simdb.add(new SimRegListView(rs1.getString("CLIENT_ID"), rs1.getString("ROW_NUM"),rs1.getString("FIRST_NAME") + " " + rs1.getString("LAST_NAME"), rs1.getString("MOBILE_NUMBER"), rs1.getString("STATUS")));                    } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
                 }
@@ -483,7 +480,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
                     throwables.printStackTrace();
                 }
 
-                String sqlStmt = "SELECT COUNT(*) FROM SIM_REGISTRATION where TO_DATE(TO_CHAR(CREATION_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + datet.getText() + "','DD-MM-YYYY')";
+                String sqlStmt = "SELECT COUNT(*) FROM CLIENTS where TO_DATE(TO_CHAR(CREATED_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + datet.getText() + "','DD-MM-YYYY')";
 
                 ResultSet rs1 = null;
 
@@ -589,3 +586,4 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
     }
 
 }
+

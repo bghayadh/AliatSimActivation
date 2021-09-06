@@ -103,13 +103,7 @@ public class Activate_Sim extends AppCompatActivity {
         }
 
 
-        // get picture file name using date day month hour min and sec
-        LocalDateTime picsdT= LocalDateTime.now();
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-        String formatDateTime = picsdT.format(format);
-        ussddate=formatDateTime;
-
-        txtussdstatus="SENT_USSD_"+ussddate;
+        txtussdstatus="SENT_USSD";
         ConnectivityManager connMgr = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
@@ -418,10 +412,10 @@ public class Activate_Sim extends AppCompatActivity {
             PreparedStatement stmtinsert1 = null;
 
             try {
-                stmtinsert1 = conn.prepareStatement("UPDATE SIM_REGISTRATION" +
+                stmtinsert1 = conn.prepareStatement("UPDATE CLIENTS" +
                         " SET " +
                         " USSD_STATUS='"+txtussdstatus.toString()+"'"+
-                        "WHERE SIM_REG_ID='" + globalsimid + "'");
+                        "WHERE CLIENT_ID ='" + globalsimid + "'");
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }

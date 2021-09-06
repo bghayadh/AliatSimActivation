@@ -269,6 +269,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         picsdate=formatDateTime;
 
 
+
         Intent intent = SimRegInfo.this.getIntent();
         String str = intent.getStringExtra("message_key");
         globalsimid = str.toString();
@@ -803,7 +804,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             PreparedStatement stmtinsert1 = null;
 
                             try {
-                                stmtinsert1 = conn.prepareStatement("delete from SIM_REGISTRATION where SIM_REG_ID='" + globalsimid + "'");
+                                stmtinsert1 = conn.prepareStatement("delete from CLIENTS where CLIENT_ID ='" + globalsimid + "'");
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
                             }
@@ -991,7 +992,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                             Calendar calendar = new GregorianCalendar();
                                             calendar.setTime(date);
                                             int year = calendar.get(Calendar.YEAR);
-                                            simID = "REG_" + year + "_";
+                                            simID = "CL_" + year + "_";
 
 
 
@@ -1025,7 +1026,6 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
 
                                                 //not in use now
-                                                //SavedataSIM();
                                                 //Toast.makeText(SimRegInfo.this, "Saving Completed", Toast.LENGTH_SHORT).show();
 
 
@@ -1076,137 +1076,137 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
 
 
-                signimgIcon.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        System.out.println("gsigstatus "+ gsigstatus);
-                        System.out.println("SIGNorigin "+ SIGNorigin);
+            signimgIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println("gsigstatus "+ gsigstatus);
+                    System.out.println("SIGNorigin "+ SIGNorigin);
 
-                        if(gsigstatus != "0") {
+                    if(gsigstatus != "0") {
 
-                            try {
+                        try {
 
-                                SFTP sftp = new SFTP();
-                                System.out.println("Start");
+                            SFTP sftp = new SFTP();
+                            System.out.println("Start");
 
-                                String user = sftp.getUser();
-                                String pass = sftp.getPass();
-                                String host = sftp.getServer();
-                                int e = sftp.getPort();
+                            String user = sftp.getUser();
+                            String pass = sftp.getPass();
+                            String host = sftp.getServer();
+                            int e = sftp.getPort();
 
-                                Properties config = new Properties();
-                                config.put("StrictHostKeyChecking", "no");
+                            Properties config = new Properties();
+                            config.put("StrictHostKeyChecking", "no");
 
-                                JSch jSch = new JSch();
-                                Session session = jSch.getSession(user, host, e);
-                                System.out.println("Step1");
-                                session.setPassword(pass);
-                                session.setConfig(config);
-                                session.connect();
-                                System.out.println("Step Connect");
-                                ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
-                                channelSftp.connect();
-                                System.out.println("connected");
-                                channelSftp.cd("SIMPICSFTP");
-                                System.out.println(channelSftp.pwd());
-                                String path = channelSftp.pwd() + "/";
-                                System.out.println("u are here");
-                                if (channelSftp.lstat(path + SIGNorigin + ".jpg") != null) {
-                                    System.out.println("Existed");
-                                }
-                                byte[] buffer = new byte[1024];
-                                System.out.println(buffer);
-                                BufferedInputStream bis = new BufferedInputStream(channelSftp.get(path + SIGNorigin + ".jpg"));
-                                System.out.println(bis);
-                                ddd = Drawable.createFromStream(bis, "ddd");
-                                System.out.println(ddd);
-                                AlertDialog.Builder builder = new AlertDialog.Builder(SimRegInfo.this);
-                                LayoutInflater inflater = getLayoutInflater();
-                                View dialogLayout = inflater.inflate(R.layout.alert_dialog_with_imageview, null);
-                                builder.setPositiveButton("BACK", null);
-                                ImageView imageView = dialogLayout.findViewById(R.id.imageView);
-                                imageView.setImageDrawable(ddd);
-                                builder.setView(dialogLayout);
-                                builder.show();
-                                bis.close();
-                                System.out.println("you are here now !!!!!!");
-                                channelSftp.disconnect();
-                                session.disconnect();
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                            JSch jSch = new JSch();
+                            Session session = jSch.getSession(user, host, e);
+                            System.out.println("Step1");
+                            session.setPassword(pass);
+                            session.setConfig(config);
+                            session.connect();
+                            System.out.println("Step Connect");
+                            ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
+                            channelSftp.connect();
+                            System.out.println("connected");
+                            channelSftp.cd("SIMPICSFTP");
+                            System.out.println(channelSftp.pwd());
+                            String path = channelSftp.pwd() + "/";
+                            System.out.println("u are here");
+                            if (channelSftp.lstat(path + SIGNorigin + ".jpg") != null) {
+                                System.out.println("Existed");
                             }
-                        } //end if gpictstus=1
-                    }
-                });
+                            byte[] buffer = new byte[1024];
+                            System.out.println(buffer);
+                            BufferedInputStream bis = new BufferedInputStream(channelSftp.get(path + SIGNorigin + ".jpg"));
+                            System.out.println(bis);
+                            ddd = Drawable.createFromStream(bis, "ddd");
+                            System.out.println(ddd);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(SimRegInfo.this);
+                            LayoutInflater inflater = getLayoutInflater();
+                            View dialogLayout = inflater.inflate(R.layout.alert_dialog_with_imageview, null);
+                            builder.setPositiveButton("BACK", null);
+                            ImageView imageView = dialogLayout.findViewById(R.id.imageView);
+                            imageView.setImageDrawable(ddd);
+                            builder.setView(dialogLayout);
+                            builder.show();
+                            bis.close();
+                            System.out.println("you are here now !!!!!!");
+                            channelSftp.disconnect();
+                            session.disconnect();
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } //end if gpictstus=1
+                }
+            });
 
 
-                frontimgIcon.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(gfrontstatus != "0") {
-                            try {
+            frontimgIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(gfrontstatus != "0") {
+                        try {
 
-                                SFTP sftp = new SFTP();
-                                System.out.println("Start");
+                            SFTP sftp = new SFTP();
+                            System.out.println("Start");
 
-                                String user = sftp.getUser();
-                                String pass = sftp.getPass();
-                                String host = sftp.getServer();
-                                int e = sftp.getPort();
+                            String user = sftp.getUser();
+                            String pass = sftp.getPass();
+                            String host = sftp.getServer();
+                            int e = sftp.getPort();
 
-                                Properties config = new Properties();
-                                config.put("StrictHostKeyChecking", "no");
+                            Properties config = new Properties();
+                            config.put("StrictHostKeyChecking", "no");
 
-                                JSch jSch = new JSch();
-                                Session session = jSch.getSession(user, host, e);
-                                System.out.println("Step1");
-                                session.setPassword(pass);
-                                session.setConfig(config);
-                                session.connect();
-                                System.out.println("Step Connect");
-                                ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
-                                channelSftp.connect();
-                                System.out.println("connected");
-                                channelSftp.cd("SIMPICSFTP");
-                                System.out.println(channelSftp.pwd());
-                                String path = channelSftp.pwd() + "/";
-                                System.out.println("u are here");
-                                if (channelSftp.lstat(path + FRONTorigin + ".jpg") != null) {
-                                    System.out.println("Existed");
-                                }
-                                byte[] buffer = new byte[1024];
-                                System.out.println(buffer);
-                                BufferedInputStream bis = new BufferedInputStream(channelSftp.get(path + FRONTorigin + ".jpg"));
-                                System.out.println(bis);
-                                ddd = Drawable.createFromStream(bis, "ddd");
-                                System.out.println(ddd);
-                                AlertDialog.Builder builder = new AlertDialog.Builder(SimRegInfo.this);
-                                LayoutInflater inflater = getLayoutInflater();
-                                View dialogLayout = inflater.inflate(R.layout.alert_dialog_with_imageview, null);
-                                builder.setPositiveButton("BACK", null);
-                                ImageView imageView = dialogLayout.findViewById(R.id.imageView);
-                                imageView.setImageDrawable(ddd);
-                                builder.setView(dialogLayout);
-                                builder.show();
-                                bis.close();
-                                System.out.println("you are here now !!!!!!");
-                                channelSftp.disconnect();
-                                session.disconnect();
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                            JSch jSch = new JSch();
+                            Session session = jSch.getSession(user, host, e);
+                            System.out.println("Step1");
+                            session.setPassword(pass);
+                            session.setConfig(config);
+                            session.connect();
+                            System.out.println("Step Connect");
+                            ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
+                            channelSftp.connect();
+                            System.out.println("connected");
+                            channelSftp.cd("SIMPICSFTP");
+                            System.out.println(channelSftp.pwd());
+                            String path = channelSftp.pwd() + "/";
+                            System.out.println("u are here");
+                            if (channelSftp.lstat(path + FRONTorigin + ".jpg") != null) {
+                                System.out.println("Existed");
                             }
-                        } // end if gstatus
-                    }
-                });
+                            byte[] buffer = new byte[1024];
+                            System.out.println(buffer);
+                            BufferedInputStream bis = new BufferedInputStream(channelSftp.get(path + FRONTorigin + ".jpg"));
+                            System.out.println(bis);
+                            ddd = Drawable.createFromStream(bis, "ddd");
+                            System.out.println(ddd);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(SimRegInfo.this);
+                            LayoutInflater inflater = getLayoutInflater();
+                            View dialogLayout = inflater.inflate(R.layout.alert_dialog_with_imageview, null);
+                            builder.setPositiveButton("BACK", null);
+                            ImageView imageView = dialogLayout.findViewById(R.id.imageView);
+                            imageView.setImageDrawable(ddd);
+                            builder.setView(dialogLayout);
+                            builder.show();
+                            bis.close();
+                            System.out.println("you are here now !!!!!!");
+                            channelSftp.disconnect();
+                            session.disconnect();
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } // end if gstatus
+                }
+            });
 
 
 
-                backimgIcon.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(gbackstatus != "0") {
+            backimgIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(gbackstatus != "0") {
                         try {
 
                             SFTP sftp = new SFTP();
@@ -1259,9 +1259,9 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                     }// end if gstatus
-                    }
-                });
+                    }// end if gstatus
+                }
+            });
 
 
             ////////end load picture from sftp
@@ -1274,7 +1274,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             Btnftp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   //resend picture if not sent to sftp server
+                    //resend picture if not sent to sftp server
                     if (globalsimid != "0") {
                         if (gsigstatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0") || gbackstatus.equalsIgnoreCase("0")) {
                             Toast.makeText(SimRegInfo.this, "Uploading Photos started", Toast.LENGTH_LONG).show();
@@ -1971,7 +1971,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         signimgIcon.setVisibility(View.VISIBLE);
                         signimgIcon.setBackgroundResource(0);
                         signimgIcon.setColorFilter(Color.GREEN);
-                        signimgIcon.setOnClickListener(new View.OnClickListener() {
+                       signimgIcon.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(SimRegInfo.this);
@@ -2058,7 +2058,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         @Override
         public void run() {
             try {
-                 //Toast.makeText(SimTest.this,"Trying to connect..",Toast.LENGTH_LONG).show();
+                //Toast.makeText(SimTest.this,"Trying to connect..",Toast.LENGTH_LONG).show();
                 System.out.println("Start");
                 System.out.println("globalsimid = "+globalsimid);
                 String user=sftp.getUser().toString();
@@ -2153,8 +2153,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 PreparedStatement stmtinsert1 = null;
 
                 try {
-                    System.out.println("update SIM_REGISTRATION set " + vcolname + "=1  where SIM_REG_ID ='" + vsimregid + "'");
-                    stmtinsert1 = conn.prepareStatement("update SIM_REGISTRATION set " + vcolname + "=1  where SIM_REG_ID ='" + vsimregid + "'");
+                    System.out.println("update CLIENTS set " + vcolname + "=1  where CLIENT_ID ='" + vsimregid + "'");
+                    stmtinsert1 = conn.prepareStatement("update CLIENTS set " + vcolname + "=1  where CLIENT_ID ='" + vsimregid + "'");
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
@@ -2177,6 +2177,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         }
     }
 
+
+
     public void DeleteSimRegistrationPicStatus(String vsimregid,String vcolname)
     {
         boolean flg=false;
@@ -2185,7 +2187,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 PreparedStatement stmtinsert1 = null;
 
                 try {
-                    stmtinsert1 = conn.prepareStatement("update SIM_REGISTRATION set " + vcolname + "=-1  where SIM_REG_ID ='" + vsimregid + "'");
+                    stmtinsert1 = conn.prepareStatement("update CLIENTS  set " + vcolname + "=-1  where CLIENT_ID  ='" + vsimregid + "'");
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
@@ -2313,7 +2315,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
                     Statement stmt1 = null;
                     stmt1 = conn.createStatement();
-                    String sqlStmt = "select FIRST_NAME,MIDDLE_NAME,LAST_NAME,STATUS,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHISICAL_LOCATION,POSTAL_ADDRESS,GENDER,AGENT_ID,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,SIGNATURE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS,USSD_STATUS FROM SIM_REGISTRATION where SIM_REG_ID = '" + globalsimid + "'";
+                    String sqlStmt = "select FIRST_NAME,MIDDLE_NAME,LAST_NAME,STATUS,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHYSICAL_LOCATION,POSTAL_ADDRESS,GENDER,CLIENT_ID_NUMBER,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,SIGNATURE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS,USSD_STATUS FROM CLIENTS where CLIENT_ID = '" + globalsimid + "'";
                     ResultSet rs1 = null;
                     try {
                         rs1 = stmt1.executeQuery(sqlStmt);
@@ -2324,7 +2326,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     while (true) {
                         try {
                             if (!rs1.next()) break;
-                            FilldatafromDataBase(true,rs1.getString("FIRST_NAME"),rs1.getString("MIDDLE_NAME"),rs1.getString("LAST_NAME"),rs1.getString("MOBILE_NUMBER"),rs1.getString("DATE_OF_BIRTH").substring(8, 10) + "-" + rs1.getString("DATE_OF_BIRTH").substring(5, 7) + "-" + rs1.getString("DATE_OF_BIRTH").substring(0, 4),rs1.getString("NATIONALITY"),rs1.getString("ALTERNATIVE_NUMBER"),rs1.getString("EMAIL_ADDRESS"),rs1.getString("PHISICAL_LOCATION"),rs1.getString("POSTAL_ADDRESS"),rs1.getString("GENDER"),rs1.getString("STATUS"),rs1.getString("AGENT_ID"),rs1.getString("ID_FRONT_SIDE_PHOTO"),rs1.getString("ID_BACK_SID_PHOTO"),rs1.getString("SIGNATURE"),rs1.getString("SIGNATURE_STATUS"),rs1.getString("FRONT_SIDE_ID_STATUS"),rs1.getString("BACK_SIDE_ID_STATUS"),rs1.getString("USSD_STATUS"));
+                            FilldatafromDataBase(true,rs1.getString("FIRST_NAME"),rs1.getString("MIDDLE_NAME"),rs1.getString("LAST_NAME"),rs1.getString("MOBILE_NUMBER"),rs1.getString("DATE_OF_BIRTH").substring(8, 10) + "-" + rs1.getString("DATE_OF_BIRTH").substring(5, 7) + "-" + rs1.getString("DATE_OF_BIRTH").substring(0, 4),rs1.getString("NATIONALITY"),rs1.getString("ALTERNATIVE_NUMBER"),rs1.getString("EMAIL_ADDRESS"),rs1.getString("PHYSICAL_LOCATION"),rs1.getString("POSTAL_ADDRESS"),rs1.getString("GENDER"),rs1.getString("STATUS"),rs1.getString("CLIENT_ID_NUMBER"),rs1.getString("ID_FRONT_SIDE_PHOTO"),rs1.getString("ID_BACK_SID_PHOTO"),rs1.getString("SIGNATURE"),rs1.getString("SIGNATURE_STATUS"),rs1.getString("FRONT_SIDE_ID_STATUS"),rs1.getString("BACK_SIDE_ID_STATUS"),rs1.getString("USSD_STATUS"));
 
                             //System.out.println(rs1.getString("compteur"));
 
@@ -2373,7 +2375,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
                             Statement stmt1 = null;
                             stmt1 = conn.createStatement();
-                            String sqlStmt = "select SIM_REGISTRATION_SEQ.nextval as nbr from dual";
+                            String sqlStmt = "select CLIENTS_SEQ.nextval as nbr from dual";
                             ResultSet rs1 = null;
                             try {
                                 rs1 = stmt1.executeQuery(sqlStmt);
@@ -2396,14 +2398,11 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
 
                             // send data from fragment to super activity
-
-
-                            stmtinsert1 = conn.prepareStatement("insert into SIM_REGISTRATION (SIM_REG_ID,STATUS,CREATION_DATE,LAST_MODIFIED_DATE,FIRST_NAME,MIDDLE_NAME,LAST_NAME,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHISICAL_LOCATION,POSTAL_ADDRESS,GENDER,AGENT_NUMBER,AGENT_ID,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,SIGNATURE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS,USSD_STATUS) values " +
-                                    "('" + globalsimid + "','" + b + "' ,sysdate, sysdate,'" + editfname.getText() + "','" + editmname.getText() + "', '" + editlname.getText() + "','" + editmobile.getText() + "',TO_DATE('" + editdate.getText() + "','DD-MM-YYYY'),'" + nationality + "','" + editaltnumber.getText() + "','" + editemail.getText() + "','" + editphylocation.getText() + "','" + editpost.getText() + "','" + gender + "','" + editagent.getText() + "','" + editidagent.getText() + "','" + SIGN + "','" + FRONT + "','" + BACK + "',0,0,0,'"+editussdstatus.getText().toString()+"')");
-                            ///added for pass data in fragment
-
+                            String ussd_status="USSD";
+                            stmtinsert1 = conn.prepareStatement("insert into CLIENTS (CLIENT_ID,DISPLAY_NAME,CREATED_DATE,LAST_MODIFIED_DATE,FIRST_NAME,MIDDLE_NAME,LAST_NAME,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHYSICAL_LOCATION,STATUS,POSTAL_ADDRESS,GENDER,AGENT_NUMBER,CLIENT_ID_NUMBER,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,SIGNATURE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS,USSD_STATUS,DEPARTMENT,DESCREPTION) values " +
+                                    "('"+globalsimid+"',0,sysdate, sysdate,'" + editfname.getText() +"','" + editmname.getText() + "', '" + editlname.getText() +"','" + editmobile.getText() +"',TO_DATE('" + editdate.getText() + "','DD-MM-YYYY'),'" + nationality + "','" + editaltnumber.getText() + "','" + editemail.getText() + "','" + editphylocation.getText() + "','"+ b +"','"+ editpost.getText() +"','" + gender + "','" + editagent.getText() +"','" +editidagent.getText() +"','"+ SIGN + "','" + FRONT + "','" + BACK + "',0,0,0,'"+ussd_status+"',0,0)");
                         } else {
-                            stmtinsert1 = conn.prepareStatement("update SIM_REGISTRATION set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + editfname.getText() + "',MIDDLE_NAME='" + editmname.getText() + "',LAST_NAME='" + editlname.getText() + "',STATUS='" + b + "',MOBILE_NUMBER='" + editmobile.getText() + "',NATIONALITY='" + nationality + "',ALTERNATIVE_NUMBER='" + editaltnumber.getText() + "',EMAIL_ADDRESS='" + editemail.getText() + "',PHISICAL_LOCATION='" + editphylocation.getText() + "',POSTAL_ADDRESS='" + editpost.getText() + "',GENDER='" + gender + "',AGENT_NUMBER='" + editagent.getText() + "',AGENT_ID='" + editidagent.getText() + "',SIGNATURE='" + SIGN + "',ID_FRONT_SIDE_PHOTO='" + FRONT + "',ID_BACK_SID_PHOTO='" + BACK + "',USSD_STATUS='" + editussdstatus.getText().toString() + "' where SIM_REG_ID ='" + globalsimid + "'");
+                            stmtinsert1 = conn.prepareStatement("update CLIENTS set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + editfname.getText() + "',MIDDLE_NAME='" + editmname.getText() + "',LAST_NAME='" + editlname.getText() + "',STATUS='" + b + "',MOBILE_NUMBER='" + editmobile.getText() + "',NATIONALITY='" + nationality + "',ALTERNATIVE_NUMBER='" + editaltnumber.getText() + "',EMAIL_ADDRESS='" + editemail.getText() + "',PHYSICAL_LOCATION='" + editphylocation.getText() + "',POSTAL_ADDRESS='" + editpost.getText() + "',GENDER='" + gender + "',AGENT_NUMBER='" + editagent.getText() + "',AGENT_ID='" + editidagent.getText() + "',SIGNATURE='" + SIGN + "',ID_FRONT_SIDE_PHOTO='" + FRONT + "',ID_BACK_SID_PHOTO='" + BACK + "',USSD_STATUS='" + editussdstatus.getText().toString() + "' where CLIENT_ID  ='" + globalsimid + "'");
                         }
                         txtmsg.setText("Saving Completed,now start load pictures");
                     } catch (SQLException throwables) {
@@ -2489,7 +2488,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         txtmsg.setText("");
                         //Toast.makeText(SimRegInfo.this, fileName + " is saved to\n" + dir, Toast.LENGTH_SHORT).show();
                         //Intent intent = new Intent(SimRegInfo.this, SimRegOfflineDataActivity.class);
-                       // startActivity(intent);
+                        // startActivity(intent);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -2562,6 +2561,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 editphylocation.setText(phylocation);
                 editpost.setText(postaladr);
                 editussdstatus.setText(ussdstatus);
+                System.out.println("--> "+editussdstatus.getText().toString());
                 if (vgender.matches("Male")) {
                     male.setChecked(true);
                     female.setChecked(false);
@@ -2625,85 +2625,17 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     backimgIcon.setBackgroundColor(0);
                 }
 
+                if(editussdstatus.getText().toString().matches("USSD")){
+                    editussdstatus.setText("NOT SENT");
+                }
+                if(editussdstatus.getText().toString().matches("USSD_SENT")){
+                    editussdstatus.setText("SENT");
+                }
+
             }
 
         });
     }
 
-    public void SavedataSIM() {
-        boolean flg = false;
-        try {
-            if ((flg = connecttoDB()) == true) {
-                PreparedStatement stmtinsert1 = null;
-
-                try {
-                    if (globalsimid.equalsIgnoreCase("0") || OfflineFile.exists() ) {
-                        // if it is a new Warehouse we will use insert
-
-
-                        Statement stmt1 = null;
-                        stmt1 = conn.createStatement();
-                        String sqlStmt = "select SIM_REGISTRATION_SEQ.nextval as nbr from dual";
-                        ResultSet rs1 = null;
-                        try {
-                            rs1 = stmt1.executeQuery(sqlStmt);
-                        } catch (SQLException throwables) {
-                            throwables.printStackTrace();
-                        }
-
-                        while (true) {
-                            try {
-                                if (!rs1.next()) break;
-                                globalsimid = simID + rs1.getString("nbr");
-                                //System.out.println(rs1.getString("compteur"));
-
-                            } catch (SQLException throwables) {
-                                throwables.printStackTrace();
-                            }
-                        }
-                        rs1.close();
-                        stmt1.close();
-
-
-                        // send data from fragment to super activity
-
-
-                        stmtinsert1 = conn.prepareStatement("insert into SIM_REGISTRATION (SIM_REG_ID,STATUS,CREATION_DATE,LAST_MODIFIED_DATE,FIRST_NAME,MIDDLE_NAME,LAST_NAME,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHISICAL_LOCATION,POSTAL_ADDRESS,GENDER,AGENT_NUMBER,AGENT_ID,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,SIGNATURE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS) values " +
-                                "('" + globalsimid + "','" + b + "' ,sysdate, sysdate,'" + editfname.getText() + "','" + editmname.getText() + "', '" + editlname.getText() + "','" + editmobile.getText() + "',TO_DATE('" + editdate.getText() + "','DD-MM-YYYY'),'" + nationality + "','" + editaltnumber.getText() + "','" + editemail.getText() + "','" + editphylocation.getText() + "','" + editpost.getText() + "','" + gender + "','" + editagent.getText() + "','" + editidagent.getText() + "','" + SIGN + "','" + FRONT + "','" + BACK + "',0,0,0)");
-
-                        ///added for pass data in fragment
-
-                    } else {
-                        stmtinsert1 = conn.prepareStatement("update SIM_REGISTRATION set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + editfname.getText() + "',MIDDLE_NAME='" + editmname.getText() + "',LAST_NAME='" + editlname.getText() + "',STATUS='" + b + "',MOBILE_NUMBER='" + editmobile.getText() + "',NATIONALITY='" + nationality + "',ALTERNATIVE_NUMBER='" + editaltnumber.getText() + "',EMAIL_ADDRESS='" + editemail.getText() + "',PHISICAL_LOCATION='" + editphylocation.getText() + "',POSTAL_ADDRESS='" + editpost.getText() + "',GENDER='" + gender + "',AGENT_NUMBER='" + editagent.getText() + "',AGENT_ID='" + editidagent.getText() + "',SIGNATURE='" + SIGN + "',ID_FRONT_SIDE_PHOTO='" + FRONT + "',ID_BACK_SID_PHOTO='" + BACK + "' where SIM_REG_ID ='" + globalsimid + "'");
-                    }
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-                try {
-                    stmtinsert1.executeUpdate();
-                    OfflineFile.delete();
-
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-
-
-                try {
-                    stmtinsert1.close();
-                    conn.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-
-            }
-            else {
-                //Saving OFFLINE when no connection to DB  TURKIEH
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 
 }
-

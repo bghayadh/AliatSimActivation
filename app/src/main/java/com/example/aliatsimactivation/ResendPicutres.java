@@ -128,7 +128,7 @@ public class ResendPicutres extends AppCompatActivity {
 
                     Statement stmt1 = null;
                     stmt1 = conn.createStatement();
-                    String sqlStmt = "select MOBILE_NUMBER,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,SIGNATURE,SIGNATURE_STATUS,BACK_SIDE_ID_STATUS,FRONT_SIDE_ID_STATUS FROM SIM_REGISTRATION where SIM_REG_ID = '" + globalsimid + "'";
+                    String sqlStmt = "select MOBILE_NUMBER,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,SIGNATURE,SIGNATURE_STATUS,BACK_SIDE_ID_STATUS,FRONT_SIDE_ID_STATUS FROM CLIENTS where CLIENT_ID = '" + globalsimid + "'";
                     ResultSet rs1 = null;
                     try {
                         rs1 = stmt1.executeQuery(sqlStmt);
@@ -283,8 +283,8 @@ public class ResendPicutres extends AppCompatActivity {
                 PreparedStatement stmtinsert1 = null;
 
                 try {
-                    System.out.println("update SIM_REGISTRATION set " + vcolname + "=1  where SIM_REG_ID ='" + vsimregid + "'");
-                    stmtinsert1 = conn.prepareStatement("update SIM_REGISTRATION set " + vcolname + "=1  where SIM_REG_ID ='" + vsimregid + "'");
+                    System.out.println("update CLIENTS set " + vcolname + "=1  where CLIENT_ID ='" + vsimregid + "'");
+                    stmtinsert1 = conn.prepareStatement("update CLIENTS set " + vcolname + "=1  where CLIENT_ID ='" + vsimregid + "'");
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }

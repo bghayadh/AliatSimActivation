@@ -80,6 +80,7 @@
                     android:textStyle="bold"
                     android:textColor="@color/white"
                     android:layout_marginTop="10dp"
+                    android:id="@+id/txtsummary"
                     android:text="Statistical Summary" />
 
             </RelativeLayout>
@@ -436,7 +437,7 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="13dp"
                 android:backgroundTint="@color/menusgrey"
-                android:drawableTop="@drawable/ic_swap1"
+                android:drawableTop="@drawable/ic_status1"
                 android:paddingTop="10dp"
                 android:text="CHECK SIM STATUS"
                 android:textAlignment="center"
@@ -472,13 +473,24 @@
                 android:layout_weight="1"
                 android:textSize="13sp" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/nbrpendingpics"
+                style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="-50dp"
+                android:backgroundTint="@color/red"
+                android:textColor="@color/white"
+                android:textSize="10dp"
+                app:cornerRadius="30dp"
+                android:visibility="gone"/>
             <Button
                 android:id="@+id/btnlocalfiles"
                 style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="fill_parent"
                 android:layout_height="125dp"
                 android:layout_marginStart="15dp"
-                android:layout_marginEnd="13dp"
                 android:layout_toRightOf="@+id/btnphotos"
                 android:backgroundTint="@color/menusgrey"
                 android:drawableTop="@drawable/ic_local1"
@@ -488,6 +500,18 @@
                 android:textColor="@color/black"
                 android:layout_weight="1"
                 android:textSize="13sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/nbrlocalfiles"
+                style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="-37dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/red"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                app:cornerRadius="30dp" />
 
         </LinearLayout>
 
