@@ -99,7 +99,7 @@ public class Activate_Sim extends AppCompatActivity {
         if (msisdnussdid.equalsIgnoreCase("")) {
              // no msisdn to fill txtussd
         }else {
-            txtussd.setText("*111*"+vagentussdid+"*1*"+msisdnussdid+"#");
+            txtussd.setText("*111*"+msisdnussdid+"*1*"+"#");
         }
 
 
