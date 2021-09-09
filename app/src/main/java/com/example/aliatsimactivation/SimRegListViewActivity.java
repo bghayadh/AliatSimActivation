@@ -45,6 +45,14 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
     private boolean connectflag=false;
     private SIMRegViewAdapter adapter;
     private String datestr,text,agentNumber;
+    String count="0";
+    int page=0;
+    int pagecount = 0;
+    int pagecountremain = 0;
+    int pagenumber=0;
+    final int[] currentpagenumber = {1};
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,33 +77,10 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         //datestr=str;
         System.out.println("str "+ str);
 
+        agentNumber=intent.getStringExtra("agentNumber");
+        System.out.println("agent Number : "+agentNumber);
 
 
-        try {
-            FileInputStream fis = null;
-
-            File file = new File(getFilesDir(), "MSISDN.txt");
-            if (file.exists()) {
-                System.out.println("file Exists");
-                fis = openFileInput("MSISDN.txt");
-                InputStreamReader isr = new InputStreamReader(fis);
-                BufferedReader br = new BufferedReader(isr);
-                StringBuilder sb = new StringBuilder();
-                while ((text = br.readLine()) != null) {
-                    sb.append(text).append("\n");
-                    Toast.makeText(this, text, Toast.LENGTH_LONG).show();
-                    System.out.println("text pre : "+text);
-
-                    agentNumber=text;
-                }
-
-                System.out.println("agent number : "+agentNumber);
-
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         // if (str.toString().matches("-100")) {
         //     textstatus.setVisibility(View.GONE);
         //     datestr=str;
@@ -125,16 +110,6 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         handler.postDelayed(r, 1000);
         System.out.println("delayed 1 sec");
 
-        pagination();
-
-
-
-
-
-
-
-
-        //}
 
 
         btnprevious.setOnClickListener (new View.OnClickListener ( ) {
@@ -142,16 +117,25 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
             public void onClick(View v) {
                 if (datestr.toString().matches("-100")) {
 
-                }else {
-                    pagination=pagination-2;
-                    if (pagination <=0 ) {pagination=0;}
-                    //GetDataInitial((pagination *10)+1,(pagination*10)+10);
-                    GetSimData((pagination *10)+1,(pagination*10)+10);
+                } else {
+                    int finalCurrentpagenumber = currentpagenumber[0];
+                    if (finalCurrentpagenumber == 1) {
+                        //btnprevious.setClickable(false);
+                    } else {
+                        btnnext.setClickable(true);
+                        pagination = pagination - 2;
+                        if (pagination <= 0) {
+                            pagination = 0;
+                        }
+                        GetSimData((pagination * 10) + 1, (pagination * 10) + 10);
+                        currentpagenumber[0]--;
+                        finalCurrentpagenumber = currentpagenumber[0];
+                        txtpagination.setText(String.valueOf(finalCurrentpagenumber) + "/" + String.valueOf(pagenumber));
+                    }
+
                 }
             }
-
         });
-
 
         //button Next
         btnnext.setOnClickListener (new View.OnClickListener ( ) {
@@ -159,10 +143,20 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
             public void onClick(View v) {
                 if (datestr.toString().matches("-100")) {
 
-                }else {
-                    //GetDataInitial((pagination*10)+1,(pagination*10)+10);
-                    GetSimData((pagination*10)+1,(pagination*10)+10);
+                } else {
+                int finalCurrentpagenumber = currentpagenumber[0];
+                if (finalCurrentpagenumber == pagenumber) {
+                    btnnext.setClickable(false);
+
+                } else {
+                    //btnprevious.setClickable(true);
+                    System.out.println("pagination " + pagination);
+                    GetSimData((pagination * 10) + 1, (pagination * 10) + 10);
+                    currentpagenumber[0]++;
+                    finalCurrentpagenumber = currentpagenumber[0];
+                    txtpagination.setText(String.valueOf(finalCurrentpagenumber) + "/" + String.valueOf(pagenumber));
                 }
+            }
             }
         });
 
@@ -186,28 +180,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
             }
         });
 
-        datet.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (datestr.toString().matches("-100")) {
-
-                }else {
-                    GetSimData(1,10);
-                }
-                pagination();
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
 
         btnnew.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -284,7 +257,6 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
                 }
                 try {
                     stmt1.close();
-                    connsite.close();
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
@@ -321,6 +293,73 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
             adapter.setContacts(simA);
             simregrecview.setAdapter(adapter);
             simregrecview.setLayoutManager(new LinearLayoutManager(SimRegListViewActivity.this));
+
+
+            Statement stmt2 = null;
+            try {
+                stmt2 = connsite.createStatement();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+            String sqlStmt1 = "SELECT COUNT(*) FROM CLIENTS where TO_DATE(TO_CHAR(CREATED_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + datet.getText() + "','DD-MM-YYYY')";
+            ResultSet rs2 = null;
+
+            try {
+                rs2 = stmt2.executeQuery(sqlStmt1);
+
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+            while(true){
+                try{
+                    if (!rs2.next()) break;
+                    count = rs2.getString("COUNT(*)");
+                    page = Integer.valueOf(count);
+                    pagecount = (page/10);
+                    pagecountremain = (page%10);
+                    int[] currentpagenumber = {1};
+
+                    if (page == 0){
+                        txtpagination.setVisibility(View.INVISIBLE);
+                    } else {
+                        txtpagination.setVisibility(View.VISIBLE);
+                        if (pagecountremain != 0) {
+                            pagenumber = pagecount + 1;
+                        } else {
+                            pagenumber = pagecount;
+                        }
+                        txtpagination.setText(String.valueOf(currentpagenumber[0]) + "/" + String.valueOf(pagenumber));
+
+                        if (currentpagenumber[0] == 1) {
+                            //btnprevious.setClickable(false);
+                        }
+
+                        if (currentpagenumber[0] == pagenumber) {
+                            btnnext.setClickable(false);
+                        } else {
+                            btnnext.setClickable(true);
+                        }
+
+                    }
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }try {
+                rs2.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            try {
+                stmt2.close();
+                connsite.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
         }
         else {
             adapter=null;
@@ -360,26 +399,27 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         String date= dayOfMonth+"-"+(month+1)+"-"+year;
         datet.setText(date);
-        pagination=0;
+
         // connect to DB
         if (datestr.toString().matches("-100")) {
 
         } else {
 
 
+            pagination=0;
+            GetSimData(1,10);
+            //Handler handler = new Handler();
+            //handler.post(new Runnable() {
+            //  @Override
+            // public void run() {
+            //  try {
 
-            Handler handler = new Handler();
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-
-                        thread1.start();
-                    } catch (Exception e) {
-                        System.out.println(e.toString());
-                    }
-                }
-            });
+            //   thread1.start();
+            // } catch (Exception e) {
+            //     System.out.println(e.toString());
+            //  }
+            // }
+            // });
 
         }
     }
@@ -462,128 +502,5 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         }
     };
 
-    private void pagination() {
-
-        boolean flg = false;
-        try {
-            if ((flg = connecttoDB()) == true) {
-                // define recyclerview of sitelistview
-                simA = new ArrayList<>();
-                simdb = new ArrayList<>();
-                datestr = "0";
-                //Add data for sitelistview recyclerview
-                Statement stmt1 = null;
-                int i = 0;
-                try {
-                    stmt1 = connsite.createStatement();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-
-                String sqlStmt = "SELECT COUNT(*) FROM CLIENTS where TO_DATE(TO_CHAR(CREATED_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + datet.getText() + "','DD-MM-YYYY')";
-
-                ResultSet rs1 = null;
-
-                try {
-                    rs1 = stmt1.executeQuery(sqlStmt);
-
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-                while (true) {
-                    try {
-                        if (!rs1.next()) break;
-
-                        String count = rs1.getString("COUNT(*)");
-                        int page = Integer.valueOf(count);
-                        int pagecount = (page/10);
-                        int pagecountremain = (page%10);
-                        int pagenumber;
-                        final int[] currentpagenumber = {1};
-
-                        if (page == 0){
-                            txtpagination.setVisibility(View.INVISIBLE);
-                        } else {
-                            txtpagination.setVisibility(View.VISIBLE);
-                            if (pagecountremain != 0) {
-                                pagenumber = pagecount + 1;
-                            } else {
-                                pagenumber = pagecount;
-                            }
-                            txtpagination.setText(String.valueOf(currentpagenumber[0]) + "/" + String.valueOf(pagenumber));
-
-                            if (currentpagenumber[0] == 1){
-                                btnprevious.setClickable(false);
-                            }
-
-                            if (currentpagenumber[0] == pagenumber){
-                                btnnext.setClickable(false);
-                            } else {
-                                btnnext.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        btnprevious.setClickable(true);
-                                        if (datestr.toString().matches("-100")) {
-
-                                        }else {
-                                            //GetDataInitial((pagination*10)+1,(pagination*10)+10);
-                                            GetSimData((pagination*10)+1,(pagination*10)+10);
-                                        }
-                                        currentpagenumber[0]++;
-                                        int finalCurrentpagenumber = currentpagenumber[0];
-                                        txtpagination.setText(String.valueOf(finalCurrentpagenumber) + "/" + String.valueOf(pagenumber));
-                                        if (finalCurrentpagenumber == pagenumber){
-                                            btnnext.setClickable(false);
-                                        }
-                                    }
-                                });
-
-                                btnprevious.setOnClickListener (new View.OnClickListener ( ) {
-                                    @Override
-                                    public void onClick(View v) {
-                                        btnnext.setClickable(true);
-                                        if (datestr.toString().matches("-100")) {
-
-                                        }else {
-                                            pagination=pagination-2;
-                                            if (pagination <=0 ) {pagination=0;}
-                                            //GetDataInitial((pagination *10)+1,(pagination*10)+10);
-                                            GetSimData((pagination *10)+1,(pagination*10)+10);
-                                        }
-                                        currentpagenumber[0]--;
-                                        int finalCurrentpagenumber = currentpagenumber[0];
-                                        txtpagination.setText(String.valueOf(finalCurrentpagenumber) + "/" + String.valueOf(pagenumber));
-                                        if (finalCurrentpagenumber == 1){
-                                            btnprevious.setClickable(false);
-                                        }
-                                    }
-                                });
-
-                            }
-
-
-                        }
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
-                }
-                try {
-                    rs1.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-                try {
-                    stmt1.close();
-                    connsite.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
 }
-

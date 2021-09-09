@@ -297,8 +297,10 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("SEND TO "+ globaltotal);
                     if (globaltotal== null) {
                         intent.putExtra("message_key", "-100");
+                        intent.putExtra("agentNumber",agentNumber);
                     } else {
                         intent.putExtra("message_key", "1");
+                        intent.putExtra("agentNumber",agentNumber);
                     }
 
                     startActivity(intent);
