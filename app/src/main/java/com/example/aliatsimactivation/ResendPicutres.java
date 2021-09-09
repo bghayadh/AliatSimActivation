@@ -31,6 +31,7 @@ public class ResendPicutres extends AppCompatActivity {
     private String globalsimid,gfrontstatus,gsigstatus,gbackstatus;
     private TextView txtclientnumber,txtfrontimage,txtbackimage,txtsignature,txtmsg;
     private Button resend;
+    private Button btnmain;
     private SFTP sftp = new SFTP();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +44,13 @@ public class ResendPicutres extends AppCompatActivity {
         txtsignature=findViewById(R.id.signaturename);
         txtmsg=findViewById(R.id.txtmsgresend);
         resend=findViewById(R.id.resend);
+        btnmain=findViewById(R.id.btnmain);
         Intent i = this.getIntent();
         globalsimid=i.getStringExtra("globalsimid");
         System.out.println("globalimid : "+globalsimid);
 
         if (globalsimid != "0") {
-              runOnUiThread(new Runnable() {
+            runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
 
@@ -64,12 +66,30 @@ public class ResendPicutres extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
+                File signpic = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), txtsignature.getText().toString() + ".jpg");
+                File frontpic = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), txtfrontimage.getText().toString() + ".jpg");
+                File backpic = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), txtbackimage.getText().toString() + ".jpg");
                 txtmsg.setText("Please Wait....");
-                if (gsigstatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0") || gbackstatus.equalsIgnoreCase("0")) {
-                   txtmsg.setText("Start uploading...");
-                    thread1.start();
+                if(signpic.exists() && frontpic.exists() && backpic.exists()) {
+                    if (gsigstatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0") || gbackstatus.equalsIgnoreCase("0")) {
+                        thread1.start();
+
+                    }
+                }else{
+                    txtmsg.setText("You don't have pictures saved on your phone, please check and try again later");
                 }
+            }
+        });
+
+        //// return to main page
+        btnmain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent =new Intent(getApplicationContext(),MainActivity.class);
+                intent.putExtra("db-offline-to-main", "0");
+                intent.putExtra("globalMode","Online");
+                startActivity(intent);
             }
         });
 
@@ -225,11 +245,13 @@ public class ResendPicutres extends AppCompatActivity {
                     Boolean success1 = true;
 
                     if (success1) {
-
+                        txtmsg.setText("upload completed : " + sign);
                         System.out.println("upload completed : " + sign);
                         UpdateSimRegistrationPicStatus(globalsimid, "SIGNATURE_STATUS");
                         gsigstatus="1";
                         signpic.delete();
+                    }else {
+                        txtmsg.setText("upload Failed : " + sign);
                     }
                 }
 
@@ -246,6 +268,8 @@ public class ResendPicutres extends AppCompatActivity {
                         UpdateSimRegistrationPicStatus(globalsimid,"FRONT_SIDE_ID_STATUS");
                         gfrontstatus="1";
                         frontpic.delete();
+                    }else{
+
                     }
                 }
                 if(gbackstatus.equalsIgnoreCase("0")) {

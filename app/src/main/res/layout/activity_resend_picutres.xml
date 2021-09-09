@@ -85,28 +85,28 @@
         android:background="@color/menusgrey"
         android:layout_below="@id/backimagename"/>
 
-      <TextView
-          android:layout_width="match_parent"
-          android:layout_height="40dp"
-          android:text="Signature"
-          android:textSize="15dp"
-          android:layout_marginStart="5dp"
-          android:textColor="@color/yellowheader"
-          android:layout_below="@id/backimagename"
-          android:layout_marginTop="5dp"
-          android:id="@+id/signature"/>
-      <TextView
-          android:layout_width="match_parent"
-          android:layout_height="40dp"
-          android:layout_marginStart="5dp"
-          android:layout_marginTop="5dp"
-          android:textColor="@color/white"
-          android:layout_below="@id/signature"
-          android:textSize="15dp"
-          android:id="@+id/signaturename"
-         />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="Signature"
+        android:textSize="15dp"
+        android:layout_marginStart="5dp"
+        android:textColor="@color/yellowheader"
+        android:layout_below="@id/backimagename"
+        android:layout_marginTop="5dp"
+        android:id="@+id/signature"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/white"
+        android:layout_below="@id/signature"
+        android:textSize="15dp"
+        android:id="@+id/signaturename"
+        />
 
-   <TextView
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/signaturename"
@@ -117,14 +117,29 @@
         android:layout_centerInParent="true"
         android:id="@+id/txtmsgresend"/>
 
-
-    <Button
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="Resend Pictures"
-        android:backgroundTint="@color/menusgrey"
-        android:textColor="@color/black"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:id="@+id/resend"/>
-
+        android:gravity="bottom">
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:text="HOME"
+            android:drawableRight="@drawable/ic_home1"
+            android:backgroundTint="@color/menusgrey"
+            android:layout_toRightOf="@id/resend"
+            android:textColor="@color/black"
+            android:id="@+id/btnmain"/>
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:text="Resend Pictures"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="@color/menusgrey"
+            android:textColor="@color/black"
+            android:id="@+id/resend"/>
+    </LinearLayout>
 </RelativeLayout>
+

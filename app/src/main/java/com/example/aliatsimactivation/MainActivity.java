@@ -327,6 +327,7 @@ public class MainActivity extends AppCompatActivity {
                 if (networkInfo != null && networkInfo.isConnected() && globalMode.equalsIgnoreCase("Online")) {
                     //Toast.makeText(MainActivity.this,  "Welcome to Mobile Charge page",Toast.LENGTH_SHORT).show();
                     Intent intent =new Intent(MainActivity.this, PendingPictures.class);
+                    intent.putExtra("agentNumber",agentNumber);
                     startActivity(intent);
                 } else {
                     Toast.makeText(MainActivity.this,  "No Internet Connection",Toast.LENGTH_SHORT).show();

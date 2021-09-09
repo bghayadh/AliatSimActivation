@@ -18,6 +18,7 @@ public class SimRegOfflineDataActivity extends AppCompatActivity {
 
     private String globalMode;
     private RecyclerView offlinedataRecView;
+    private Button btnmain;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +28,22 @@ public class SimRegOfflineDataActivity extends AppCompatActivity {
         Intent intent = this.getIntent();
         String simid=intent.getStringExtra("message_key");
         globalMode=intent.getStringExtra("globalMode");
+        btnmain=findViewById(R.id.BtnMainn);
 
+        btnmain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(),MainActivity.class);
+                i.putExtra("globalMode",globalMode);
+                if(globalMode.equalsIgnoreCase("Online")) {
+                    i.putExtra("db-offline-to-main", "0");
+                }else{
+                    i.putExtra("db-offline-to-main", "-100");
+                }
+                startActivity(i);
+
+            }
+        });
         //counting the number of files
         File dir = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
         File[] files = dir.listFiles();
@@ -119,3 +135,4 @@ public class SimRegOfflineDataActivity extends AppCompatActivity {
         });
     }
 }
+

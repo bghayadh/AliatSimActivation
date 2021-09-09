@@ -238,13 +238,13 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
                 PreparedStatement stmtinsert1 = null;
 
                 try {
-                    stmtinsert1 = conn.prepareStatement("UPDATE SIM_REGISTRATION" +
+                    stmtinsert1 = conn.prepareStatement("UPDATE CLIENTS" +
                             " SET " +
                             " RESPONSE_CODE='" + api_response_code + "'," +
                             "RESPONSE_MESSAGE='" + response_message + "'," +
                             "REGISTRATION_STATUS='" + registration_status + "'," +
                             "STATUS='" + registration_status + "'" +
-                            "WHERE SIM_REG_ID='" + globalsimid + "'");
+                            "WHERE CLIENT_ID='" + globalsimid + "'");
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }

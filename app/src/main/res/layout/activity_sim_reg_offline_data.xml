@@ -1,37 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0A5EA8"
+    android:background="#00aaca"
+    android:orientation="vertical"
+    android:weightSum="5"
     >
 
     <!-- display Main Page button -->
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/offlinedataRecView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="565dp"
-        android:layout_marginTop="-1dp"
-        android:scrollbarSize="12dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:id="@+id/firstLayout">
 
-        android:scrollbars="vertical"
-        tools:layout_editor_absoluteX="191dp" />
 
-    <!-- display Bazk button -->
-    <Button
-        android:id="@+id/btnback"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginVertical="20dp"
-        android:textColor="@color/white"
-        android:text="BACK"
-        android:textStyle="bold"
-        android:textSize="15dp"
-        android:backgroundTint="@color/red"
-        android:layout_alignParentRight="true"
-        />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/offlinedataRecView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbarSize="12dp"
+            android:scrollbars="vertical"/>
 
-</RelativeLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:orientation="horizontal"
+        android:baselineAligned="false"
+        android:id="@+id/secomdLayout">
+
+
+        <Button
+            android:id="@+id/BtnMainn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="5dp"
+            android:textSize="12sp"
+            android:layout_toRightOf="@+id/btnprevious"
+            android:backgroundTint="@color/menusgrey"
+            android:paddingBottom="0dp"
+            android:paddingTop="0dp"
+            android:paddingRight="0dp"
+            android:paddingLeft="0dp"
+            android:textColor="@color/black"
+            android:drawableRight="@drawable/ic_home1"
+            android:text="Home" />
+
+        <Button
+            android:id="@+id/btnback"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:textSize="12sp"
+            android:backgroundTint="@color/menusgrey"
+            android:paddingBottom="0dp"
+            android:paddingTop="0dp"
+            android:paddingRight="0dp"
+            android:paddingLeft="0dp"
+            android:textColor="@color/black"
+            android:drawableRight="@drawable/ic_door1"
+            android:text="BACK" />
+
+
+
+    </LinearLayout>
+
+
+
+
+
+
+
+</LinearLayout>
+

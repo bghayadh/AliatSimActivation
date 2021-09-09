@@ -360,7 +360,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         String date= dayOfMonth+"-"+(month+1)+"-"+year;
         datet.setText(date);
-
+        pagination=0;
         // connect to DB
         if (datestr.toString().matches("-100")) {
 

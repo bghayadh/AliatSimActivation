@@ -355,6 +355,7 @@ public class UserRegister extends AppCompatActivity {
                                                 //if we have cnnection the value sent is 1
                                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                                 intent.putExtra("db-offline-to-main","1");
+                                                intent.putExtra("globalMode","Online");
                                                 startActivity(intent);
                                             }else
                                             {
@@ -363,6 +364,8 @@ public class UserRegister extends AppCompatActivity {
                                                 System.out.println("offline in dialog");
                                                 Intent intent = new Intent(getApplicationContext(), UserLoginActivity.class);
                                                 intent.putExtra("db-offline-to-main","-100");
+                                                intent.putExtra("globalMode","Offline");
+
                                                 startActivity(intent);
 
                                             }
@@ -448,6 +451,7 @@ public class UserRegister extends AppCompatActivity {
                                     createandSaveOfflinedata();
                                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                     intent.putExtra("db-offline-to-main","-100");
+                                    intent.putExtra("globalMode","Offline");
                                     startActivity(intent);
 
                                 } else {

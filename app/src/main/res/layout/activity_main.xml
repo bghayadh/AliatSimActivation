@@ -476,14 +476,14 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/nbrpendingpics"
                 style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="-50dp"
                 android:backgroundTint="@color/red"
                 android:textColor="@color/white"
-                android:textSize="10dp"
-                app:cornerRadius="30dp"
+                android:textSize="14dp"
+                app:cornerRadius="40dp"
                 android:visibility="gone"/>
             <Button
                 android:id="@+id/btnlocalfiles"
@@ -535,3 +535,4 @@
 
 
 </ScrollView>
+
