@@ -87,7 +87,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     private TextView editdate, editmname;
     private Integer a;
     private long fb = 0;
-    private String gsigstatus,gfrontstatus,gbackstatus;
+    private String gsigstatus,gfrontstatus,gbackstatus,agentNumber;
     private String vsimid,vpic,vcol;
     private String s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,s12,s13,s14,s15,s16,s17,b;
     private String emailpattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
@@ -275,6 +275,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         globalsimid = str.toString();
         stroffile= intent.getStringExtra("db-offline");
         globalMode=intent.getStringExtra("globalMode");
+        agentNumber=intent.getStringExtra("agentNumber");
 
         //show arrow
         ImageButton backarrow = findViewById(R.id.backarrow);
@@ -499,7 +500,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 public void onClick(View v) {
 
                     Intent i = new Intent(SimRegInfo.this, SimRegListViewActivity.class);
-                    i.putExtra("message_key", "0");
+                    i.putExtra("message_key", stroffile);
+                    i.putExtra("agentNumber", agentNumber);
                     startActivity(i);
                 }
             });
@@ -782,7 +784,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(SimRegInfo.this, MainActivity.class);
-                    i.putExtra("db-offline-to-main","0");
+                    i.putExtra("db-offline-to-main",stroffile);
                     i.putExtra("globalMode",globalMode);
                     startActivity(i);
                 }
