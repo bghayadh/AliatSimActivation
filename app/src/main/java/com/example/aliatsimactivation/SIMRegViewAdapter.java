@@ -18,9 +18,11 @@ public class SIMRegViewAdapter extends RecyclerView.Adapter<SIMRegViewAdapter.Vi
 
     private ArrayList<SimRegListView> list=new ArrayList<>();
     private Context context;
+    private String agentNumber;
 
-    public SIMRegViewAdapter(Context context) {
+    public SIMRegViewAdapter(Context context, String agentNumber) {
         this.context=context;
+        this.agentNumber=agentNumber;
     }
 
     @NonNull
@@ -62,6 +64,7 @@ public class SIMRegViewAdapter extends RecyclerView.Adapter<SIMRegViewAdapter.Vi
                 intent.putExtra("message_key", list.get(position).getSimRegListViewId());
                 intent.putExtra("db-offline", "1");
                 intent.putExtra("globalMode","Online");
+                intent.putExtra("agentNumber",agentNumber);
                 context.startActivity(intent);
 
             }

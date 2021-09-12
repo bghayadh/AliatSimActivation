@@ -290,7 +290,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
 
             pagination = pagination + 1;
             //connect data to coveragelistadapter
-            adapter = new SIMRegViewAdapter(SimRegListViewActivity.this);
+            adapter = new SIMRegViewAdapter(SimRegListViewActivity.this,getIntent().getStringExtra("agentNumber"));
             adapter.setContacts(simA);
             simregrecview.setAdapter(adapter);
             simregrecview.setLayoutManager(new LinearLayoutManager(SimRegListViewActivity.this));

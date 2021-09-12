@@ -205,6 +205,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             Intent i = new Intent(SimRegInfo.this, SimRegListViewActivity.class);
             i.putExtra("message_key", stroffile.toString());
             i.putExtra("globalMode", globalMode);
+            i.putExtra("agentNumber", agentNumber);
             startActivity(i);
         }
     }
