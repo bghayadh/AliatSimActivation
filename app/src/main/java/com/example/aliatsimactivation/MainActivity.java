@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     Connection conn;
     private boolean connectflag=false;
     private int count=0;
-    private String globaltotal=null,text,agentNumber;
+    private String globaltotal=null,text,agentNumber,modestatus;
     private String globalMode="0";
     private String OpenMode="Online";
     private ImageButton btnMenu;
@@ -229,6 +229,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), SimRegOfflineDataActivity.class);
                     intent.putExtra("globalMode", globalMode);
                     intent.putExtra("message_key", "0");
+                    intent.putExtra("db-offline-to-main",modestatus );
                     startActivity(intent);
                 }
 
@@ -238,7 +239,26 @@ public class MainActivity extends AppCompatActivity {
 
         Intent i=this.getIntent();
         OpenMode=i.getStringExtra("globalMode");
+        modestatus=i.getStringExtra("db-offline-to-main");
         System.out.println("globalMode from back : "+OpenMode);
+
+
+           // in case null means oN Line
+            if(modestatus==null){
+                modestatus="0";
+                }
+
+            if(modestatus.equalsIgnoreCase("-100")){
+
+        }else {
+            Thread thread=new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    GetPendingPicturesNbr();
+                }
+            });
+
+        }
 
 
         if(OpenMode.equalsIgnoreCase("Online"))
@@ -323,10 +343,11 @@ public class MainActivity extends AppCompatActivity {
                 //check network connection
                 ConnectivityManager connMgr = (ConnectivityManager) getApplicationContext ( )
                         .getSystemService(Context.CONNECTIVITY_SERVICE);
-
+                Intent i1 = MainActivity.this.getIntent();
+                String strdbcon = i1.getStringExtra("db-offline-to-main").toString();
                 NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
-                if (networkInfo != null && networkInfo.isConnected() && globalMode.equalsIgnoreCase("Online")) {
+                if (networkInfo != null && networkInfo.isConnected() && globalMode.equalsIgnoreCase("Online") && modestatus.equalsIgnoreCase("1")) {
                     //Toast.makeText(MainActivity.this,  "Welcome to Mobile Charge page",Toast.LENGTH_SHORT).show();
                     Intent intent =new Intent(MainActivity.this, PendingPictures.class);
                     intent.putExtra("agentNumber",agentNumber);
@@ -908,14 +929,14 @@ public class MainActivity extends AppCompatActivity {
     });
 
     public void GetPendingPicturesNbr() {
-        Intent i1=MainActivity.this.getIntent();
-        String strdbcon=i1.getStringExtra("db-offline-to-main").toString();
+        //Intent i1=MainActivity.this.getIntent();
+       // String strdbcon=i1.getStringExtra("db-offline-to-main").toString();
         ConnectivityManager connMgr = (ConnectivityManager) getApplicationContext()
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected() && (globalMode.equalsIgnoreCase("Online"))) {
-            if (strdbcon.equalsIgnoreCase("-100")) {
+            if (modestatus.equalsIgnoreCase("-100")) {
 
             } else {
 

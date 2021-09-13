@@ -75,7 +75,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     private int count;
     public Connection conn;
     private String globalsimid,simID;
-    private Button submit, frontid, backid,btnlvsimreg;
+    private Button submit, frontid, backid,btnlvsimreg,btnclientimg;
     private Button sign;
     private File file,OfflineFile;
     private String nationality = "";
@@ -94,12 +94,12 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     private EditText editaltnumber,editemail,editphylocation,editpost,editussdstatus;
     private TextView editlname, editfname, textF, textB, textS;
     private String file1 = "MSISDN.txt";
-    private String s0, s1, Result;
+    private String s0, s1, Result,CLIENT,gclientstatus;
     private String FRONT, BACK, SIGN = null;
-    private TextView editidagent, editagent;
+    private TextView editidagent, editagent,textC,txtussd;
     SFTP sftp = new SFTP();
     private Button Btnftp,BtnDelete,BtnMain,BtnRegandActivate;
-    private ImageButton signimgIcon, frontimgIcon, backimgIcon,btndob;
+    private ImageButton signimgIcon, frontimgIcon, backimgIcon,btndob,clientimgIcon;
     private String[] imagesource;
     FTP ftp = new FTP();
     String server = ftp.getServer();//"ftp.ipage.com";
@@ -115,9 +115,9 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     private Drawable ddd;
     private String picsdate; /// variable for picture name
     private String SIGNorigin,SIGNnew,BACKorigin,BACKnew,gsigstatusnew,gsigstatusorigin,gbackstatusnew,gbackstatusorigin,FRONTnew,FRONTorigin,gfrontstatusnew,gfrontstatusorigin;
-    private View linesign,linefront,lineback;  //line under discard
-    private TextView discardsign,discardfront,discardback; // for discard
-    private String globalMode;
+    private View linesign,linefront,lineback,lineclient,ussdview;  //line under discard
+    private TextView discardsign,discardfront,discardback,discardclient; // for discard
+    private String globalMode,gclientstatusnew,gclientstatusorigin,CLIENTorigin,CLIENTnew;
 
 
     //capture images from cam and save it on the phone
@@ -196,6 +196,43 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             }
 
         }
+
+        if (requestCode == 102) {
+            CLIENT = editfname.getText().toString() + editlname.getText().toString() + "_CLIENT_" + editmobile.getText().toString() + "_" + editidagent.getText().toString()+"_"+picsdate;
+
+            Bitmap bmp = (Bitmap) data.getExtras().get("data");
+            file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), CLIENT + ".jpg");
+
+            Log.d("path", file.toString());
+            FileOutputStream fileOutputStream = null;
+            try {
+                fileOutputStream = new FileOutputStream(file);
+
+                // Compress bitmap to png image.
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+
+                // Flush bitmap to image file.
+                fileOutputStream.flush();
+
+                // Close the output stream.
+                fileOutputStream.close();
+                textC.setText(getExternalFilesDir(Environment.DIRECTORY_PICTURES) + CLIENT);
+
+            } catch (Exception e) {
+                Log.v("ID Gestures", e.getMessage());
+                e.printStackTrace();
+            }
+
+
+            File clientsave = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), CLIENT + ".jpg");
+            if (clientsave.exists()) {
+                clientimgIcon.setVisibility(View.VISIBLE);
+                clientimgIcon.setBackgroundResource(0);
+                gclientstatus="0";
+            }
+
+        }
+
     }
 
     @Override
@@ -257,6 +294,14 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         btnlvsimreg=findViewById(R.id.simreglistview);
         txtmsg=findViewById(R.id.txtmsg);
         editussdstatus=findViewById(R.id.edtussdstatus);
+        btnclientimg=findViewById(R.id.btnclientimg);
+        discardclient=findViewById(R.id.clientimgstatus);
+        lineclient=findViewById(R.id.lineclient);
+        textC=findViewById(R.id.clientimgpath);
+        clientimgIcon=findViewById(R.id.clientimgIcon);
+        txtussd=findViewById(R.id.txtussd);
+        ussdview=findViewById(R.id.ussdview);
+        sp.setEnabled(false);
 
         Date c = Calendar.getInstance().getTime();
         SimpleDateFormat df=new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
@@ -274,7 +319,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         Intent intent = SimRegInfo.this.getIntent();
         String str = intent.getStringExtra("message_key");
         globalsimid = str.toString();
-        stroffile= intent.getStringExtra("db-offline");
+        stroffile= intent.getStringExtra("db-offline-to-main");
         globalMode=intent.getStringExtra("globalMode");
         agentNumber=intent.getStringExtra("agentNumber");
 
@@ -301,6 +346,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 gsigstatus="0";
                 gfrontstatus="0";
                 gbackstatus="0";
+                gclientstatus="0";
             }
 
             if (globalsimid != "0") {
@@ -418,8 +464,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     }
                 }
 
-                String Off13 = intent.getStringExtra("offline13");
-                sp.setSelection(((ArrayAdapter<String>) sp.getAdapter()).getPosition(Off13));
+                String Off17 = intent.getStringExtra("offline17");
+                sp.setSelection(((ArrayAdapter<String>) sp.getAdapter()).getPosition(Off17));
 
                 String Off14 = intent.getStringExtra("offline14");
                 textS.setText(Off14);
@@ -433,8 +479,12 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 textB.setText(Off16);
                 BACK = Off16;
 
-                String Off17 = intent.getStringExtra("offline17");
-                editussdstatus.setText(Off17);
+                String Off13 = intent.getStringExtra("offline13");
+                textC.setText(Off13);
+                CLIENT = Off13;
+
+                String Off18 = intent.getStringExtra("offline18");
+                editussdstatus.setText(Off18);
 
                 checkBox.setChecked(true);
 
@@ -462,10 +512,15 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     linesign.setVisibility(View.VISIBLE);
                 }
 
+                if (textC.getText().toString() != "") {
+                    clientimgIcon.setVisibility(View.VISIBLE);
+                    clientimgIcon.setBackgroundResource(0);
+                    gclientstatus = "0";
+                    discardclient.setVisibility(View.VISIBLE);
+                    lineclient.setVisibility(View.VISIBLE);
+                }
+
             }
-
-
-
 
 
             File dir = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
@@ -491,6 +546,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     Intent i = new Intent(SimRegInfo.this, SimRegOfflineDataActivity.class);
                     i.putExtra("message_key", globalsimid);
                     i.putExtra("globalMode",globalMode);
+                    i.putExtra("db-offline-to-main",stroffile);
                     startActivity(i);
                 }
             });
@@ -781,6 +837,93 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 }
             });
 
+            //agentimage  button to capture the agent image
+            btnclientimg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (editfname.getText().toString().matches("") || editlname.getText().toString().matches("") || editidagent.getText().toString().matches("")) {
+                        Toast.makeText(SimRegInfo.this, "INSERT YOUR NAME and  ID NUMBER", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(intent, 102);
+                        CLIENTnew=CLIENT;
+
+
+                        if(globalsimid.equalsIgnoreCase("0")) {
+                            clientimgIcon.setColorFilter(Color.parseColor("#4169E1"));
+                            clientimgIcon.setVisibility(View.VISIBLE);
+                            clientimgIcon.setVisibility(View.VISIBLE);
+                            discardclient.setVisibility(View.VISIBLE);
+                            lineclient.setVisibility(View.VISIBLE);
+
+                        }else{
+                            clientimgIcon.setColorFilter(Color.parseColor("#ffa500"));
+                            gclientstatusnew="0";
+
+                        }
+
+
+                        if (textC.getText().toString() != "") {
+
+                            clientimgIcon.setVisibility(View.VISIBLE);
+                            clientimgIcon.setBackgroundResource(0);
+                            gclientstatus =gclientstatusnew;
+                            discardclient.setVisibility(View.VISIBLE);
+                            lineclient.setVisibility(View.VISIBLE);
+
+                        }else {
+                            clientimgIcon.setVisibility(View.INVISIBLE);
+                        }
+                    }
+                }
+            });
+
+            //discarding picture from saving
+            discardclient.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (globalsimid.equalsIgnoreCase("0")) {
+                        textC.setText("");
+                        File clientimage=new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),CLIENT+".jpg");
+                        clientimage.delete();
+                        clientimgIcon.setVisibility(View.INVISIBLE);
+                        discardclient.setVisibility(View.INVISIBLE);
+                        lineclient.setVisibility(View.INVISIBLE);
+                    }
+
+                    else{
+                        if (gclientstatusorigin.equalsIgnoreCase("1")) {
+                            discardclient.setVisibility(View.INVISIBLE);
+                            lineclient.setVisibility(View.INVISIBLE);
+                            File clientimage = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), CLIENT + ".jpg");
+                            clientimage.delete();
+                            clientimgIcon.setVisibility(View.VISIBLE);
+                            clientimgIcon.setColorFilter(Color.GREEN);
+                            textC.setText(CLIENTorigin);
+                            CLIENT = CLIENTorigin;
+                            gclientstatus=gclientstatusorigin;
+                        }
+                        if(gclientstatusorigin.equalsIgnoreCase("0")){
+                            gclientstatus=gclientstatusorigin;
+                            clientimgIcon.setVisibility(View.VISIBLE);
+                            clientimgIcon.setBackgroundResource(0);
+                            clientimgIcon.setColorFilter(Color.parseColor("#4169E1"));
+                            discardclient.setVisibility(View.INVISIBLE);
+                            lineclient.setVisibility(View.INVISIBLE);
+                            File clientimage=new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),CLIENTnew+".jpg");
+                            clientimage.delete();
+                            textC.setText(CLIENTorigin);
+                            CLIENT = CLIENTorigin;
+                        }
+                    }
+
+
+
+                }
+            });
+
+
             BtnMain.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -826,6 +969,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                 throwables.printStackTrace();
                             }
                             Intent i = new Intent(SimRegInfo.this, SimRegListViewActivity.class);
+                            i.putExtra("agentNumber",agentNumber);
+                            i.putExtra("message_key",stroffile);
                             startActivity(i);
                         } else {
                             String myFileName = "SIM_" + editmobile.getText().toString() + ".txt";
@@ -906,10 +1051,10 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
                     String dY[] = editdate.getText().toString().split("-");
                     fb = getAge(Integer.parseInt(dY[2]), Integer.parseInt(dY[1]), Integer.parseInt(dY[0]));
-                    if (SIGN==null || FRONT==null || BACK==null) {
+                    if (SIGN==null || FRONT==null || BACK==null || CLIENT==null) {
                         Toast.makeText(SimRegInfo.this, "Must Have Signature and Photos", Toast.LENGTH_LONG).show();
                     } else {
-                        if (editfname.getText().toString().matches("") || editmname.getText().toString().matches("") || editlname.getText().toString().matches("") || editmobile.getText().toString().matches("") || editaltnumber.getText().toString().matches("") || editemail.getText().toString().matches("") || editphylocation.getText().toString().matches("") || editpost.getText().toString().matches("") || !editemail.getText().toString().matches(emailpattern) || fb < 18 || !checkBox.isChecked() || SIGN == null || FRONT == null || BACK == null || fb == 0 || editdate.getText().toString() == null) {
+                        if (editfname.getText().toString().matches("") || editmname.getText().toString().matches("") || editlname.getText().toString().matches("") || editmobile.getText().toString().matches("") || editaltnumber.getText().toString().matches("") || editemail.getText().toString().matches("") || editphylocation.getText().toString().matches("") || editpost.getText().toString().matches("") || !editemail.getText().toString().matches(emailpattern) || fb < 18 || !checkBox.isChecked() || SIGN == null || FRONT == null || BACK == null || fb == 0 || editdate.getText().toString() == null || CLIENT==null) {
 
                             if (editfname.getText().toString().matches("")) {
                                 editfname.setError("Empty Field");
@@ -1023,9 +1168,10 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                                 discardback.setVisibility(View.INVISIBLE);
                                                 discardfront.setVisibility(View.INVISIBLE);
                                                 discardsign.setVisibility(View.INVISIBLE);
+                                                discardclient.setVisibility(View.INVISIBLE);
                                                 lineback.setVisibility(View.INVISIBLE);
                                                 linefront.setVisibility(View.INVISIBLE);
-                                                linesign.setVisibility(View.INVISIBLE);
+                                                lineclient.setVisibility(View.INVISIBLE);
 
 
                                                 //not in use now
@@ -1267,6 +1413,69 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             });
 
 
+            clientimgIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(gclientstatus != "0") {
+                        try {
+
+                            SFTP sftp = new SFTP();
+                            System.out.println("Start");
+
+                            String user = sftp.getUser();
+                            String pass = sftp.getPass();
+                            String host = sftp.getServer();
+                            int e = sftp.getPort();
+
+                            Properties config = new Properties();
+                            config.put("StrictHostKeyChecking", "no");
+
+                            JSch jSch = new JSch();
+                            Session session = jSch.getSession(user, host, e);
+                            System.out.println("Step1");
+                            session.setPassword(pass);
+                            session.setConfig(config);
+                            session.connect();
+                            System.out.println("Step Connect");
+                            ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
+                            channelSftp.connect();
+                            System.out.println("connected");
+                            channelSftp.cd("SIMPICSFTP");
+                            System.out.println(channelSftp.pwd());
+                            String path = channelSftp.pwd() + "/";
+                            System.out.println("u are here");
+                            if (channelSftp.lstat(path + CLIENTorigin + ".jpg") != null) {
+                                System.out.println("Existed");
+                            }
+                            byte[] buffer = new byte[1024];
+                            System.out.println(buffer);
+                            BufferedInputStream bis = new BufferedInputStream(channelSftp.get(path + CLIENTorigin + ".jpg"));
+                            System.out.println(bis);
+                            ddd = Drawable.createFromStream(bis, "ddd");
+                            System.out.println(ddd);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(SimRegInfo.this);
+                            LayoutInflater inflater = getLayoutInflater();
+                            View dialogLayout = inflater.inflate(R.layout.alert_dialog_with_imageview, null);
+                            builder.setPositiveButton("BACK", null);
+                            ImageView imageView = dialogLayout.findViewById(R.id.imageView);
+                            imageView.setImageDrawable(ddd);
+                            builder.setView(dialogLayout);
+                            builder.show();
+                            bis.close();
+                            System.out.println("you are here now !!!!!!");
+                            channelSftp.disconnect();
+                            session.disconnect();
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }// end if gstatus
+                }
+            });
+
+
+
+
             ////////end load picture from sftp
 
 
@@ -1279,7 +1488,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 public void onClick(View v) {
                     //resend picture if not sent to sftp server
                     if (globalsimid != "0") {
-                        if (gsigstatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0") || gbackstatus.equalsIgnoreCase("0")) {
+                        if (gsigstatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0") || gbackstatus.equalsIgnoreCase("0") || gclientstatus.equalsIgnoreCase("0")) {
                             Toast.makeText(SimRegInfo.this, "Uploading Photos started", Toast.LENGTH_LONG).show();
                             System.out.println("UPDATE HERE");
                             thread1.start();
@@ -1337,7 +1546,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             gsigstatus="0";
             gfrontstatus="0";
             gbackstatus="0";
-
+            gclientstatus="0";
 
             btndob.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1493,7 +1702,50 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             });
 
 
+            //client image button to capture the client photo
+            btnclientimg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
+                    if (editfname.getText().toString().matches("") || editlname.getText().toString().matches("") || editidagent.getText().toString().matches("")) {
+                        Toast.makeText(SimRegInfo.this, "INSERT YOUR NAME and  ID NUMBER", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(intent, 102);
+                        CLIENTnew=CLIENT;
+
+
+                        clientimgIcon.setColorFilter(Color.parseColor("#4169E1"));
+                        lineclient.setVisibility(View.VISIBLE);
+                        discardclient.setVisibility(View.VISIBLE);
+
+                        if (textC.getText().toString() != "") {
+
+                            clientimgIcon.setVisibility(View.VISIBLE);
+                            clientimgIcon.setBackgroundResource(0);
+                            gclientstatus =gclientstatusnew;
+                            discardclient.setVisibility(View.VISIBLE);
+                            lineclient.setVisibility(View.VISIBLE);
+
+                        }else {
+                            clientimgIcon.setVisibility(View.INVISIBLE);
+                        }
+                    }
+                }
+            });
+
+            //discarding picture from saving
+            discardclient.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    textC.setText("");
+                    File clientimage=new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),CLIENT+".jpg");
+                    clientimage.delete();
+                    clientimgIcon.setVisibility(View.INVISIBLE);
+                    discardclient.setVisibility(View.INVISIBLE);
+                    lineclient.setVisibility(View.INVISIBLE);
+                }
+            });
 
 
 
@@ -1537,6 +1789,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
 
 
+            // add dsicard and button left when changing pictures and signature
             String Off5 = intent.getStringExtra("offline5");
             String myFileName = "SIM_" + Off5 + ".txt";
             File directory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
@@ -1595,8 +1848,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     }
                 }
 
-                String Off13 = intent.getStringExtra("offline13");
-                sp.setSelection(((ArrayAdapter<String>) sp.getAdapter()).getPosition(Off13));
+                String Off17 = intent.getStringExtra("offline17");
+                sp.setSelection(((ArrayAdapter<String>) sp.getAdapter()).getPosition(Off17));
 
                 String Off14 = intent.getStringExtra("offline14");
                 textS.setText(Off14);
@@ -1610,8 +1863,12 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 textB.setText(Off16);
                 BACK = Off16;
 
-                String Off17 = intent.getStringExtra("offline17");
-                editussdstatus.setText(Off17);
+                String Off13 = intent.getStringExtra("offline13");
+                textC.setText(Off13);
+                CLIENT = Off13;
+
+                String Off18 = intent.getStringExtra("offline18");
+                editussdstatus.setText(Off18);
 
                 checkBox.setChecked(true);
 
@@ -1639,13 +1896,22 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     linesign.setVisibility(View.VISIBLE);
                 }
 
+                if (textC.getText().toString() != "") {
+                    clientimgIcon.setVisibility(View.VISIBLE);
+                    clientimgIcon.setBackgroundResource(0);
+                    gclientstatus = "0";
+                    discardclient.setVisibility(View.VISIBLE);
+                    lineclient.setVisibility(View.VISIBLE);
+                }
+
             }
+
 
             BtnMain.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(SimRegInfo.this, MainActivity.class);
-                    i.putExtra("db-offline-to-main","0");
+                    i.putExtra("db-offline-to-main",stroffile);
                     i.putExtra("globalMode",globalMode);
                     startActivity(i);
                 }
@@ -1714,12 +1980,12 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (SIGN==null || FRONT==null || BACK==null) {
+                    if (SIGN==null || FRONT==null || BACK==null || CLIENT==null)  {
                         Toast.makeText(SimRegInfo.this, "Must Have Signature and Photos", Toast.LENGTH_LONG).show();
                     } else {
                         String dY[] = editdate.getText().toString().split("-");
                         fb = getAge(Integer.parseInt(dY[2]), Integer.parseInt(dY[1]), Integer.parseInt(dY[0]));
-                        if (editfname.getText().toString().matches("") || editmname.getText().toString().matches("") || editlname.getText().toString().matches("") || editmobile.getText().toString().matches("") || editaltnumber.getText().toString().matches("") || editemail.getText().toString().matches("") || editphylocation.getText().toString().matches("") || editpost.getText().toString().matches("") || !editemail.getText().toString().matches(emailpattern) || fb < 18 || !checkBox.isChecked() || SIGN == null || FRONT == null || BACK == null || fb == 0 || editdate.getText().toString() == null) {
+                        if (editfname.getText().toString().matches("") || editmname.getText().toString().matches("") || editlname.getText().toString().matches("") || editmobile.getText().toString().matches("") || editaltnumber.getText().toString().matches("") || editemail.getText().toString().matches("") || editphylocation.getText().toString().matches("") || editpost.getText().toString().matches("") || !editemail.getText().toString().matches(emailpattern) || fb < 18 || !checkBox.isChecked() || SIGN == null || FRONT == null || BACK == null || fb == 0 || editdate.getText().toString() == null || CLIENT==null) {
 
                             if (editfname.getText().toString().matches("")) {
                                 editfname.setError("Empty Field");
@@ -1805,9 +2071,11 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                                 bw.write(SIGN.toString() + "\n");
                                                 bw.write(FRONT.toString() + "\n");
                                                 bw.write(BACK.toString() + "\n");
+                                                bw.write(CLIENT.toString() + "\n");
                                                 bw.write(b + "\n");
                                                 bw.write(editussdstatus.getText().toString());
                                                 bw.close();
+
 
                                                 //Toast.makeText(SimRegInfo.this, fileName + " is saved to\n" + dir, Toast.LENGTH_SHORT).show();
                                                 //Intent intent = new Intent(SimRegInfo.this, SimRegOfflineDataActivity.class);
@@ -1844,6 +2112,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 public void onClick(View v) {
                     Intent i = new Intent(SimRegInfo.this, SimRegOfflineDataActivity.class);
                     i.putExtra("globalMode",globalMode);
+                    i.putExtra("db-offline-to-main",stroffile);
                     startActivity(i);
                 }
             });
@@ -2136,6 +2405,23 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     }
                 }
 
+                if(gclientstatus.equalsIgnoreCase("0")) {
+                    File clientpic = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), CLIENT + ".jpg");
+                    String client = String.valueOf(clientpic);
+                    channelSftp.put(client, "SIMPICSFTP");
+                    Boolean success4 = true;
+
+                    if (success4) {
+                        txtmsg.setText("upload completed : " + client);
+                        System.out.println("upload completed : " + client);
+                        UpdateSimRegistrationPicStatus(globalsimid, "CLIENT_PHOTO_STATUS");
+                        clientimgIcon.setColorFilter(Color.GREEN);
+                        gclientstatus="1";
+                        CLIENTorigin=CLIENT;
+                        clientpic.delete();
+                    }
+                }
+
                 //   Toast.makeText(SimTest.this,"session connection"+session.isConnected(),Toast.LENGTH_LONG).show();
                 channelSftp.disconnect();
                 session.disconnect();
@@ -2268,10 +2554,21 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
 
                     channelSftp.rm(path+"/"+BACK+".jpg");
-                    Boolean success2 = true;
-                    if(success2){
+                    Boolean success3 = true;
+                    if(success3){
                         DeleteSimRegistrationPicStatus(globalsimid,"BACK_SIDE_ID_STATUS");
                         backimgIcon.setVisibility(View.INVISIBLE);
+                    }
+                }
+
+                if(gclientstatus.equalsIgnoreCase("1")) {
+
+
+                    channelSftp.rm(path+"/"+CLIENT+".jpg");
+                    Boolean success4 = true;
+                    if(success4){
+                        DeleteSimRegistrationPicStatus(globalsimid,"CLIENT_PHOTO_STATUS");
+                        clientimgIcon.setVisibility(View.INVISIBLE);
                     }
                 }
 
@@ -2318,7 +2615,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
                     Statement stmt1 = null;
                     stmt1 = conn.createStatement();
-                    String sqlStmt = "select FIRST_NAME,MIDDLE_NAME,LAST_NAME,STATUS,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHYSICAL_LOCATION,POSTAL_ADDRESS,GENDER,CLIENT_ID_NUMBER,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,SIGNATURE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS,USSD_STATUS FROM CLIENTS where CLIENT_ID = '" + globalsimid + "'";
+                    String sqlStmt = "select FIRST_NAME,MIDDLE_NAME,LAST_NAME,STATUS,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHYSICAL_LOCATION,POSTAL_ADDRESS,GENDER,CLIENT_ID_NUMBER,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,SIGNATURE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS,CLIENT_PHOTO,CLIENT_PHOTO_STATUS,USSD_STATUS FROM CLIENTS where CLIENT_ID = '" + globalsimid + "'";
                     ResultSet rs1 = null;
                     try {
                         rs1 = stmt1.executeQuery(sqlStmt);
@@ -2329,7 +2626,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     while (true) {
                         try {
                             if (!rs1.next()) break;
-                            FilldatafromDataBase(true,rs1.getString("FIRST_NAME"),rs1.getString("MIDDLE_NAME"),rs1.getString("LAST_NAME"),rs1.getString("MOBILE_NUMBER"),rs1.getString("DATE_OF_BIRTH").substring(8, 10) + "-" + rs1.getString("DATE_OF_BIRTH").substring(5, 7) + "-" + rs1.getString("DATE_OF_BIRTH").substring(0, 4),rs1.getString("NATIONALITY"),rs1.getString("ALTERNATIVE_NUMBER"),rs1.getString("EMAIL_ADDRESS"),rs1.getString("PHYSICAL_LOCATION"),rs1.getString("POSTAL_ADDRESS"),rs1.getString("GENDER"),rs1.getString("STATUS"),rs1.getString("CLIENT_ID_NUMBER"),rs1.getString("ID_FRONT_SIDE_PHOTO"),rs1.getString("ID_BACK_SID_PHOTO"),rs1.getString("SIGNATURE"),rs1.getString("SIGNATURE_STATUS"),rs1.getString("FRONT_SIDE_ID_STATUS"),rs1.getString("BACK_SIDE_ID_STATUS"),rs1.getString("USSD_STATUS"));
+                            FilldatafromDataBase(true,rs1.getString("FIRST_NAME"),rs1.getString("MIDDLE_NAME"),rs1.getString("LAST_NAME"),rs1.getString("MOBILE_NUMBER"),rs1.getString("DATE_OF_BIRTH").substring(8, 10) + "-" + rs1.getString("DATE_OF_BIRTH").substring(5, 7) + "-" + rs1.getString("DATE_OF_BIRTH").substring(0, 4),rs1.getString("NATIONALITY"),rs1.getString("ALTERNATIVE_NUMBER"),rs1.getString("EMAIL_ADDRESS"),rs1.getString("PHYSICAL_LOCATION"),rs1.getString("POSTAL_ADDRESS"),rs1.getString("GENDER"),rs1.getString("STATUS"),rs1.getString("CLIENT_ID_NUMBER"),rs1.getString("ID_FRONT_SIDE_PHOTO"),rs1.getString("ID_BACK_SID_PHOTO"),rs1.getString("SIGNATURE"),rs1.getString("SIGNATURE_STATUS"),rs1.getString("FRONT_SIDE_ID_STATUS"),rs1.getString("BACK_SIDE_ID_STATUS"),rs1.getString("CLIENT_PHOTO"),rs1.getString("CLIENT_PHOTO_STATUS"),rs1.getString("USSD_STATUS"));
 
                             //System.out.println(rs1.getString("compteur"));
 
@@ -2402,10 +2699,10 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
                             // send data from fragment to super activity
                             String ussd_status="USSD";
-                            stmtinsert1 = conn.prepareStatement("insert into CLIENTS (CLIENT_ID,DISPLAY_NAME,CREATED_DATE,LAST_MODIFIED_DATE,FIRST_NAME,MIDDLE_NAME,LAST_NAME,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHYSICAL_LOCATION,STATUS,POSTAL_ADDRESS,GENDER,AGENT_NUMBER,CLIENT_ID_NUMBER,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,SIGNATURE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS,USSD_STATUS,DEPARTMENT,DESCREPTION) values " +
-                                    "('"+globalsimid+"',0,sysdate, sysdate,'" + editfname.getText() +"','" + editmname.getText() + "', '" + editlname.getText() +"','" + editmobile.getText() +"',TO_DATE('" + editdate.getText() + "','DD-MM-YYYY'),'" + nationality + "','" + editaltnumber.getText() + "','" + editemail.getText() + "','" + editphylocation.getText() + "','"+ b +"','"+ editpost.getText() +"','" + gender + "','" + editagent.getText() +"','" +editidagent.getText() +"','"+ SIGN + "','" + FRONT + "','" + BACK + "',0,0,0,'"+ussd_status+"',0,0)");
+                            stmtinsert1 = conn.prepareStatement("insert into CLIENTS (CLIENT_ID,DISPLAY_NAME,CREATED_DATE,LAST_MODIFIED_DATE,FIRST_NAME,MIDDLE_NAME,LAST_NAME,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHYSICAL_LOCATION,STATUS,POSTAL_ADDRESS,GENDER,AGENT_NUMBER,CLIENT_ID_NUMBER,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,CLIENT_PHOTO,SIGNATURE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS,CLIENT_PHOTO_STATUS,USSD_STATUS,DEPARTMENT,DESCREPTION) values " +
+                                    "('"+globalsimid+"',0,sysdate, sysdate,'" + editfname.getText() +"','" + editmname.getText() + "', '" + editlname.getText() +"','" + editmobile.getText() +"',TO_DATE('" + editdate.getText() + "','DD-MM-YYYY'),'" + nationality + "','" + editaltnumber.getText() + "','" + editemail.getText() + "','" + editphylocation.getText() + "','"+ b +"','"+ editpost.getText() +"','" + gender + "','" + editagent.getText() +"','" +editidagent.getText() +"','"+ SIGN + "','" + FRONT + "','" + BACK + "','" + CLIENT + "',0,0,0,0,'"+ussd_status+"',0,0)");
                         } else {
-                            stmtinsert1 = conn.prepareStatement("update CLIENTS set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + editfname.getText() + "',MIDDLE_NAME='" + editmname.getText() + "',LAST_NAME='" + editlname.getText() + "',STATUS='" + b + "',MOBILE_NUMBER='" + editmobile.getText() + "',NATIONALITY='" + nationality + "',ALTERNATIVE_NUMBER='" + editaltnumber.getText() + "',EMAIL_ADDRESS='" + editemail.getText() + "',PHYSICAL_LOCATION='" + editphylocation.getText() + "',POSTAL_ADDRESS='" + editpost.getText() + "',GENDER='" + gender + "',AGENT_NUMBER='" + editagent.getText() + "',AGENT_ID='" + editidagent.getText() + "',SIGNATURE='" + SIGN + "',ID_FRONT_SIDE_PHOTO='" + FRONT + "',ID_BACK_SID_PHOTO='" + BACK + "',USSD_STATUS='" + editussdstatus.getText().toString() + "' where CLIENT_ID  ='" + globalsimid + "'");
+                            stmtinsert1 = conn.prepareStatement("update CLIENTS set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + editfname.getText() + "',MIDDLE_NAME='" + editmname.getText() + "',LAST_NAME='" + editlname.getText() + "',STATUS='" + b + "',MOBILE_NUMBER='" + editmobile.getText() + "',NATIONALITY='" + nationality + "',ALTERNATIVE_NUMBER='" + editaltnumber.getText() + "',EMAIL_ADDRESS='" + editemail.getText() + "',PHYSICAL_LOCATION='" + editphylocation.getText() + "',POSTAL_ADDRESS='" + editpost.getText() + "',GENDER='" + gender + "',AGENT_NUMBER='" + editagent.getText() + "',CLIENT_ID_NUMBER='" + editidagent.getText() + "',SIGNATURE='" + SIGN + "',ID_FRONT_SIDE_PHOTO='" + FRONT + "',ID_BACK_SID_PHOTO='" + BACK + "',USSD_STATUS='" + editussdstatus.getText().toString() + "' where CLIENT_ID  ='" + globalsimid + "'");
                         }
                         txtmsg.setText("Saving Completed,now start load pictures");
                     } catch (SQLException throwables) {
@@ -2423,7 +2720,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             // Toast.makeText(SimRegInfo.this, "New SIM Upload Completed", Toast.LENGTH_LONG).show();
                         }
                         else {
-                            if (gsigstatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0") || gbackstatus.equalsIgnoreCase("0")) {
+                            if (gsigstatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0") || gbackstatus.equalsIgnoreCase("0") || gclientstatus.equalsIgnoreCase("0")) {
                                 //Toast.makeText(SimRegInfo.this, "Exist SIM Uploading Photos started", Toast.LENGTH_LONG).show();
                                 thread1.start();
                                 // Toast.makeText(SimRegInfo.this, "Exist SIM Upload Completed", Toast.LENGTH_LONG).show();
@@ -2483,6 +2780,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         bw.write(SIGN.toString() + "\n");
                         bw.write(FRONT.toString() + "\n");
                         bw.write(BACK.toString() + "\n");
+                        bw.write(CLIENT.toString() + "\n");
                         bw.write(b + "\n");
                         bw.write(editussdstatus.getText().toString());
                         bw.close();
@@ -2508,6 +2806,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             }
         }
     });
+
+
 
 
     public void showDatePickerDialog(){
@@ -2541,7 +2841,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         }
     }
 
-    public void FilldatafromDataBase(Boolean valeur,String firstname,String middlename,String lastname,String mobilenuber,String dob,String nation,String altnumber,String emailadrs,String phylocation,String postaladr,String vgender,String stat, String agentid,String txtf, String txtb, String txts,String gsigstat,String gfrontstat,String gbackstat,String ussdstatus  ) {
+    public void FilldatafromDataBase(Boolean valeur,String firstname,String middlename,String lastname,String mobilenuber,String dob,String nation,String altnumber,String emailadrs,String phylocation,String postaladr,String vgender,String stat, String agentid,String txtf, String txtb, String txts,String gsigstat,String gfrontstat,String gbackstat,String txtc,String gclientstat,String ussdstatus  ) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -2588,12 +2888,15 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 textF.setText(txtf);
                 textB.setText(txtb);
                 textS.setText(txts);
+                textC.setText(txtc);
                 SIGNorigin =SIGN= txts;
                 FRONTorigin =FRONT= txtf;
                 BACKorigin =BACK= txtb;
+                CLIENTorigin =CLIENT= txtc;
                 gsigstatusorigin =gsigstatus= gsigstat;
                 gfrontstatusorigin =gfrontstatus= gfrontstat;
                 gbackstatusorigin =gbackstatus = gbackstat;
+                gclientstatusorigin =gclientstatus = gclientstat;
 
                 System.out.println(gbackstatus+" "+gfrontstatus+" "+gsigstatus);
 
@@ -2628,17 +2931,31 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     backimgIcon.setBackgroundColor(0);
                 }
 
+                if (gclientstatusorigin.equalsIgnoreCase("1")) {
+                    clientimgIcon.setVisibility(View.VISIBLE);
+                    clientimgIcon.setColorFilter(Color.GREEN);
+                    clientimgIcon.setBackgroundColor(0);
+                } else {
+                    clientimgIcon.setVisibility(View.VISIBLE);
+                    clientimgIcon.setColorFilter(Color.parseColor("#4169E1"));
+                    clientimgIcon.setBackgroundColor(0);
+                }
+
                 if(editussdstatus.getText().toString().matches("USSD")){
                     editussdstatus.setText("NOT SENT");
                 }
                 if(editussdstatus.getText().toString().matches("USSD_SENT")){
                     editussdstatus.setText("SENT");
+                    txtussd.setVisibility(View.VISIBLE);
+                    editussdstatus.setVisibility(View.VISIBLE);
+                    ussdview.setVisibility(View.VISIBLE);
                 }
 
             }
 
         });
     }
+
 
 
 }
