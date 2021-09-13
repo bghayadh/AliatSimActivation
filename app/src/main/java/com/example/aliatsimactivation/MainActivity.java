@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
                                 finish();
                                 Intent i=new Intent(MainActivity.this,MainActivity.class);
                                 i.putExtra("globalMode",globalMode);
-                                i.putExtra("db-offline-to-main","0");
+                                i.putExtra("db-offline-to-main","1");
                                 startActivity(i);
                                 System.out.println("globalMode " +globalMode);
                                 btnMode.setBackgroundColor(R.color.mixte);
