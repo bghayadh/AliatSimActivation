@@ -328,7 +328,9 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         backarrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(SimRegInfo.this,SimRegListViewActivity.class);
+                Intent i = new Intent(SimRegInfo.this, SimRegListViewActivity.class);
+                i.putExtra("message_key", stroffile);
+                i.putExtra("agentNumber", agentNumber);
                 startActivity(i);
             }
         });
@@ -576,9 +578,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             frontid.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (editfname.getText().toString().matches("") || editlname.getText().toString().matches("") || editidagent.getText().toString().matches("")) {
-                        Toast.makeText(SimRegInfo.this, "INSERT YOUR NAME and  ID NUMBER", Toast.LENGTH_SHORT).show();
-                    } else {
+
                         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         startActivityForResult(intent, 100);
                         FRONTnew=FRONT;
@@ -609,7 +609,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         }else {
                             frontimgIcon.setVisibility(View.INVISIBLE);
                         }
-                    }
+
                 }
             });
 
@@ -661,9 +661,6 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             backid.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (editfname.getText().toString().matches("") || editlname.getText().toString().matches("") || editidagent.getText().toString().matches("")) {
-                        Toast.makeText(SimRegInfo.this, "INSERT YOUR NAME and  ID NUMBER", Toast.LENGTH_SHORT).show();
-                    } else {
                         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         startActivityForResult(intent, 101);
 
@@ -693,7 +690,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         }else {
                             backimgIcon.setVisibility(View.INVISIBLE);
                         }
-                    }
+
                 }
             });
 
@@ -1172,7 +1169,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                                 lineback.setVisibility(View.INVISIBLE);
                                                 linefront.setVisibility(View.INVISIBLE);
                                                 lineclient.setVisibility(View.INVISIBLE);
-
+                                                linesign.setVisibility(View.INVISIBLE);
 
                                                 //not in use now
                                                 //Toast.makeText(SimRegInfo.this, "Saving Completed", Toast.LENGTH_SHORT).show();
