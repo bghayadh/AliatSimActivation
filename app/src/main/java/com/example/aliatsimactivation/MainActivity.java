@@ -87,6 +87,16 @@ public class MainActivity extends AppCompatActivity {
         collapsebutton = findViewById(R.id.collapsebutton);
         collapsablelayout = (LinearLayout) findViewById(R.id.collapsable);
 
+
+        // check if we have permission to get our location in manifest xml file
+        try {
+            if (ContextCompat.checkSelfPermission (getApplicationContext ( ), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions (this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+            }
+        } catch (Exception e) {
+            e.printStackTrace ( );
+        }
+
         collapsablelayout.setVisibility(View.GONE);
         collapsebutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -245,20 +255,10 @@ public class MainActivity extends AppCompatActivity {
 
            // in case null means oN Line
             if(modestatus==null){
-                modestatus="0";
+                modestatus="1";
                 }
 
-            if(modestatus.equalsIgnoreCase("-100")){
 
-        }else {
-            Thread thread=new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    GetPendingPicturesNbr();
-                }
-            });
-
-        }
 
 
         if(OpenMode.equalsIgnoreCase("Online"))
@@ -287,17 +287,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        // check if we have permission to get our location in manifest xml file
-        try {
-            if (ContextCompat.checkSelfPermission (getApplicationContext ( ), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions (this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
-            }
-        } catch (Exception e) {
-            e.printStackTrace ( );
-        }
 
-
-        GetPendingPicturesNbr();
 
 
         // click to move to Sim Registration List
@@ -347,11 +337,14 @@ public class MainActivity extends AppCompatActivity {
                 String strdbcon = i1.getStringExtra("db-offline-to-main").toString();
                 NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
-                if (networkInfo != null && networkInfo.isConnected() && globalMode.equalsIgnoreCase("Online") && modestatus.equalsIgnoreCase("1")) {
-                    //Toast.makeText(MainActivity.this,  "Welcome to Mobile Charge page",Toast.LENGTH_SHORT).show();
-                    Intent intent =new Intent(MainActivity.this, PendingPictures.class);
-                    intent.putExtra("agentNumber",agentNumber);
-                    startActivity(intent);
+                if (networkInfo != null && networkInfo.isConnected() && globalMode.equalsIgnoreCase("Online") ) {
+                    if (globaltotal != null)  {
+                        Intent intent =new Intent(MainActivity.this, PendingPictures.class);
+                        intent.putExtra("agentNumber",agentNumber);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(MainActivity.this,  "No reachability to connect",Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(MainActivity.this,  "No Internet Connection",Toast.LENGTH_SHORT).show();
 
@@ -906,13 +899,17 @@ public class MainActivity extends AppCompatActivity {
                             try {
                                 stmt12.close();
                                 conn.close();
+
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
                             }
                             textstatus.setText("");
+                            //call pending picture count
+                            thread2.start();
                         } else {
                             textstatus.setText("");
                             System.out.println("database not connected");
+
 
                         }
                     }
@@ -930,19 +927,18 @@ public class MainActivity extends AppCompatActivity {
 
     });
 
+
+
     public void GetPendingPicturesNbr() {
-        //Intent i1=MainActivity.this.getIntent();
-       // String strdbcon=i1.getStringExtra("db-offline-to-main").toString();
+
         ConnectivityManager connMgr = (ConnectivityManager) getApplicationContext()
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+          NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected() && (globalMode.equalsIgnoreCase("Online"))) {
             if (modestatus.equalsIgnoreCase("-100")) {
 
             } else {
-
-                boolean flg = false;
+                  boolean flg = false;
 
                 if ((flg = connecttoDB()) == true) {
 
@@ -997,6 +993,21 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    Thread thread2 = new Thread() {
+        @Override
+        public void run() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        GetPendingPicturesNbr();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+    };
 
     private void expand() {
         collapsablelayout.setVisibility(View.VISIBLE);

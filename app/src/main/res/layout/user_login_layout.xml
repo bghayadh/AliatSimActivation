@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/teal_700"
-        android:text="ver 1.0.18"/>
+        android:text="ver 1.0.19"/>
 
 
 

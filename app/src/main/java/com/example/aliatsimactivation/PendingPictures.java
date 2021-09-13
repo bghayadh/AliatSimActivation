@@ -76,8 +76,6 @@ public class PendingPictures extends AppCompatActivity implements DatePickerDial
         //get the agentNumber
         Intent i= this.getIntent();
         agentNumber=i.getStringExtra("agentNumber");
-
-
         thread1.start();
 
         //button main
@@ -85,7 +83,7 @@ public class PendingPictures extends AppCompatActivity implements DatePickerDial
             @Override
             public void onClick(View v) {
                 Intent intent =new Intent(getApplicationContext(),MainActivity.class);
-                intent.putExtra("db-offline-to-main", "0");
+                intent.putExtra("db-offline-to-main", "1");
                 intent.putExtra("globalMode","Online");
                 startActivity(intent);
             }
