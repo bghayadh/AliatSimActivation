@@ -40,6 +40,19 @@
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textAlignment="center"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/btnMode"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_alignParentRight="true"
+                app:cornerRadius="50dp"
+                style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+                android:backgroundTint="@color/icontelkom_background">
+            </com.google.android.material.button.MaterialButton>
+
             <!--
             <ImageButton
                 android:layout_width="wrap_content"

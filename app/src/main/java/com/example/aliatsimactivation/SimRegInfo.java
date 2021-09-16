@@ -98,7 +98,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     private String FRONT, BACK, SIGN = null;
     private TextView editidagent, editagent,textC,txtussd;
     SFTP sftp = new SFTP();
-    private Button Btnftp,BtnDelete,BtnMain,BtnRegandActivate;
+    private Button Btnftp,BtnDelete,BtnMain,BtnRegandActivate,btnMode;
     private ImageButton signimgIcon, frontimgIcon, backimgIcon,btndob,clientimgIcon;
     private String[] imagesource;
     FTP ftp = new FTP();
@@ -301,6 +301,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         clientimgIcon=findViewById(R.id.clientimgIcon);
         txtussd=findViewById(R.id.txtussd);
         ussdview=findViewById(R.id.ussdview);
+        btnMode=findViewById(R.id.btnMode);
         sp.setEnabled(false);
 
         Date c = Calendar.getInstance().getTime();
@@ -322,6 +323,12 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         stroffile= intent.getStringExtra("db-offline-to-main");
         globalMode=intent.getStringExtra("globalMode");
         agentNumber=intent.getStringExtra("agentNumber");
+        if (globalMode.equalsIgnoreCase("Online")) {
+            btnMode.setBackgroundColor(Color.BLUE);
+        }else {
+            btnMode.setBackgroundColor(Color.GRAY);
+        }
+
 
         //show arrow
         ImageButton backarrow = findViewById(R.id.backarrow);
@@ -1026,7 +1033,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     a.putExtra("state", state);
                     a.putExtra("agentmsisdn", agentmsisdn);
                     a.putExtra("mainstatus", sp.getSelectedItem().toString().toString());
-
+                    a.putExtra("agentNumber", agentNumber);
                     startActivity(a);
                 }
             });
@@ -1052,7 +1059,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         Toast.makeText(SimRegInfo.this, "Must Have Signature and Photos", Toast.LENGTH_LONG).show();
                     } else {
                         if (editfname.getText().toString().matches("") || editmname.getText().toString().matches("") || editlname.getText().toString().matches("") || editmobile.getText().toString().matches("") || editaltnumber.getText().toString().matches("") || editemail.getText().toString().matches("") || editphylocation.getText().toString().matches("") || editpost.getText().toString().matches("") || !editemail.getText().toString().matches(emailpattern) || fb < 18 || !checkBox.isChecked() || SIGN == null || FRONT == null || BACK == null || fb == 0 || editdate.getText().toString() == null || CLIENT==null) {
-
+                            Toast.makeText(SimRegInfo.this, "You have empty fields mandatory", Toast.LENGTH_LONG).show();
                             if (editfname.getText().toString().matches("")) {
                                 editfname.setError("Empty Field");
                             }

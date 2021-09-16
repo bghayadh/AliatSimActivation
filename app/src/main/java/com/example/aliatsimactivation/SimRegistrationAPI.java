@@ -74,7 +74,7 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
         System.out.println(address1);
         System.out.println(agentmsisdn);
 
-
+        //776761539    msisdn
         HttpURLConnection urlConnection = null;
 
         try {
@@ -102,7 +102,7 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
             postData.addProperty("country", "KENYA");
             postData.addProperty("userId", "USSD");
             postData.addProperty("clientPassword", "iPacsUssd@123");
-            postData.addProperty("agentMsisdn", "776761539");
+            postData.addProperty("agentMsisdn", agentmsisdn);
 
             URL url = new URL("http://10.22.25.10:8995/ipacs/ussd/api/");
             System.out.println("step1");

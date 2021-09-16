@@ -47,6 +47,7 @@ public class Activate_Sim extends AppCompatActivity {
     private String registerflag="0";
     private String rechargeflag="0";
     private String activateflag="0";
+    String agentNumber;
     private String globalMode,ussddate,txtussdstatus;
     Connection conn;
     private LocalTime time,start,end;//to validate to time to access switch
@@ -61,6 +62,7 @@ public class Activate_Sim extends AppCompatActivity {
         Intent i = new Intent(Activate_Sim.this, SimRegInfo.class);
         i.putExtra("message_key",stroffile);
         i.putExtra("globalMode",globalMode);
+        i.putExtra("agentNumber",agentNumber);
         startActivity(i);
     }
 
@@ -82,6 +84,7 @@ public class Activate_Sim extends AppCompatActivity {
 
 
         Intent i=Activate_Sim.this.getIntent();
+        agentNumber=i.getStringExtra("agentNumber");
         stroffile=i.getStringExtra("globalsimid");
         globalMode=i.getStringExtra("globalMode");
         vagentussdid=i.getStringExtra("agentmsisdn");
@@ -231,7 +234,8 @@ public class Activate_Sim extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "Please wait while registration until getting response back", Toast.LENGTH_LONG).show();
                                 registerflag="1";
                                 globalsimid = i.getStringExtra("globalsimid");
-                                System.out.println("id : " + globalsimid);
+                                //System.out.println("id : " + globalsimid);
+
                                 String fname = i.getStringExtra("fname");
                                 String mname = i.getStringExtra("mname");
                                 String lname = i.getStringExtra("lname");
@@ -245,7 +249,7 @@ public class Activate_Sim extends AppCompatActivity {
                                 String address1 = i.getStringExtra("address1");
                                 String state = i.getStringExtra("state");
                                 String agentmsisdn = i.getStringExtra("agentmsisdn");
-
+                                Toast.makeText(getApplicationContext(), fname+":"+lname+":"+msisdn+":"+idNumber+":"+agentmsisdn, Toast.LENGTH_LONG).show();
                                 SimRegistrationAPI registrationAPI = new SimRegistrationAPI(globalsimid, fname, mname, lname, msisdn, idType, idNumber, dob, gender, email, altnumber, address1, state, agentmsisdn);
 
                                 try {
@@ -306,6 +310,7 @@ public class Activate_Sim extends AppCompatActivity {
                     Intent intent= new Intent(getApplicationContext(), SimRegInfo.class);
                     intent.putExtra("message_key",globalsimid);
                     intent.putExtra("globalMode",globalMode);
+                    intent.putExtra("agentNumber",agentNumber);
                     intent.putExtra("db-offline","1");
                     startActivity(intent);
                 }
