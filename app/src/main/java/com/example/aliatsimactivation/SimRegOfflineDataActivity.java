@@ -38,7 +38,7 @@ public class SimRegOfflineDataActivity extends AppCompatActivity {
                 Intent i = new Intent(getApplicationContext(),MainActivity.class);
                 i.putExtra("globalMode",globalMode);
                 if(globalMode.equalsIgnoreCase("Online")) {
-                    i.putExtra("db-offline-to-main", "0");
+                    i.putExtra("db-offline-to-main", "1");
                 }else{
                     i.putExtra("db-offline-to-main", "-100");
                 }
@@ -125,16 +125,6 @@ public class SimRegOfflineDataActivity extends AppCompatActivity {
             offlinedataRecView.setLayoutManager(new LinearLayoutManager(SimRegOfflineDataActivity.this));    }
 
 
-
-        btnback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i=new Intent(getApplicationContext(),SimRegInfo.class);
-                i.putExtra("message_key","0");
-                i.putExtra("globalMode",globalMode);
-                startActivity(i);
-            }
-        });
-    }
+   }
 }
 

@@ -56,22 +56,7 @@
             android:drawableRight="@drawable/ic_home1"
             android:text="Home" />
 
-        <Button
-            android:id="@+id/btnback"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:textSize="12sp"
-            android:backgroundTint="@color/menusgrey"
-            android:paddingBottom="0dp"
-            android:paddingTop="0dp"
-            android:paddingRight="0dp"
-            android:paddingLeft="0dp"
-            android:textColor="@color/black"
-            android:drawableRight="@drawable/ic_door1"
-            android:text="BACK" />
+
 
 
 
