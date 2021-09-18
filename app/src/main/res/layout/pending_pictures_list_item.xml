@@ -59,6 +59,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:padding="5dp"
+                android:textAlignment="center"
                 android:text="FrontID"
                 android:textColor="@color/black" />
 
@@ -81,6 +82,7 @@
                 android:layout_weight="1"
                 android:padding="5dp"
                 android:gravity="left"
+                android:textAlignment="center"
                 android:text="BackID"
                 android:textColor="@color/black" />
 
@@ -102,12 +104,33 @@
                 android:layout_weight="1"
                 android:gravity="left"
                 android:padding="5dp"
+                android:textAlignment="center"
                 android:text="Sign"
                 android:textColor="@color/black" />
 
 
         </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="4">
 
+
+            <TextView
+                android:id="@+id/clientstatus"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="Client"
+                android:textAlignment="center"
+                android:padding="5dp"
+                android:textColor="@color/black"
+                />
+
+
+        </RelativeLayout>
         <RelativeLayout
             android:layout_width="0dip"
             android:layout_height="fill_parent"

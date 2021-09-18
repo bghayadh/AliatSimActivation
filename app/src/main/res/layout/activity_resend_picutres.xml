@@ -106,10 +106,37 @@
         android:id="@+id/signaturename"
         />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/menusgrey"
+        android:layout_below="@id/signaturename"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="Client Image"
+        android:textSize="15dp"
+        android:layout_marginStart="5dp"
+        android:textColor="@color/yellowheader"
+        android:layout_below="@id/signaturename"
+        android:layout_marginTop="5dp"
+        android:id="@+id/client"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/white"
+        android:layout_below="@id/client"
+        android:textSize="15dp"
+        android:id="@+id/clientimgname"
+        />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/signaturename"
+        android:layout_below="@+id/clientimgname"
         android:layout_marginTop="50dp"
         android:textColor="@color/white"
         android:textSize="15dp"

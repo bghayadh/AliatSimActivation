@@ -195,8 +195,7 @@ public class PendingPictures extends AppCompatActivity implements DatePickerDial
                     throwables.printStackTrace();
                 }
 
-                //String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY CLIENT_ID) row_num,CREATED_DATE,CLIENT_ID,AGENT_NUMBER,MOBILE_NUMBER,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS,SIGNATURE_STATUS from CLIENTS where TO_DATE(TO_CHAR(CREATED_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + txtdate.getText() +"','DD-MM-YYYY') AND FRONT_SIDE_ID_STATUS='0' or BACK_SIDE_ID_STATUS='0' or SIGNATURE_STATUS='0' AND AGENT_NUMBER='"+agentNumber+"') T WHERE  row_num >='" + vfrom + "' AND row_num <='" + vto + "' "  ;
-                 String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY CLIENT_ID) row_num,CREATED_DATE,CLIENT_ID,AGENT_NUMBER,MOBILE_NUMBER,FRONT_SIDE_ID_STATUS, BACK_SIDE_ID_STATUS,SIGNATURE_STATUS from CLIENTS where ( FRONT_SIDE_ID_STATUS='0' or BACK_SIDE_ID_STATUS='0' or SIGNATURE_STATUS='0') AND AGENT_NUMBER='"+agentNumber+"' AND TO_DATE(TO_CHAR(CREATED_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + txtdate.getText().toString() +"','DD-MM-YYYY') ) T WHERE  row_num >='" + vfrom + "' AND row_num <='" + vto + "' ";
+                String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY CLIENT_ID) row_num,CREATED_DATE,CLIENT_ID,AGENT_NUMBER,MOBILE_NUMBER,FRONT_SIDE_ID_STATUS, BACK_SIDE_ID_STATUS,SIGNATURE_STATUS,CLIENT_PHOTO_STATUS from CLIENTS where ( FRONT_SIDE_ID_STATUS='0' or BACK_SIDE_ID_STATUS='0' or SIGNATURE_STATUS='0' or CLIENT_PHOTO_STATUS='0') AND AGENT_NUMBER='"+agentNumber+"' AND TO_DATE(TO_CHAR(CREATED_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + txtdate.getText().toString() +"','DD-MM-YYYY') ) T WHERE  row_num >='" + vfrom + "' AND row_num <='" + vto + "' ";
                 System.out.println("query is :" +sqlStmt);
 
                 ResultSet rs1 = null;
@@ -207,11 +206,11 @@ public class PendingPictures extends AppCompatActivity implements DatePickerDial
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
-                while (true) {
-                    try {
-                        if (!rs1.next()) break;
-                        arraysize = arraysize + 1;
-                        simdb.add(new PendingPictureListView(rs1.getString("CLIENT_ID"),rs1.getString("MOBILE_NUMBER"), rs1.getString("FRONT_SIDE_ID_STATUS"), rs1.getString("BACK_SIDE_ID_STATUS"), rs1.getString("SIGNATURE_STATUS")));
+                        while (true) {
+                            try {
+                                if (!rs1.next()) break;
+                                arraysize = arraysize + 1;
+                        simdb.add(new PendingPictureListView(rs1.getString("CLIENT_ID"),rs1.getString("MOBILE_NUMBER"), rs1.getString("FRONT_SIDE_ID_STATUS"), rs1.getString("BACK_SIDE_ID_STATUS"), rs1.getString("SIGNATURE_STATUS"),rs1.getString("CLIENT_PHOTO_STATUS")));
 
 
                     } catch (SQLException throwables) {
@@ -240,7 +239,7 @@ public class PendingPictures extends AppCompatActivity implements DatePickerDial
 
                     for (i = varraysize; i < 10; i++) {
                         if (varraysize < arraysize) {
-                            simA.add(new PendingPictureListView(simdb.get(i).getGlobalSimID(),simdb.get(i).getClientNumer(), simdb.get(i).getFrontStatus(), simdb.get(i).getBackStatus(), simdb.get(i).getSignStatus()));
+                            simA.add(new PendingPictureListView(simdb.get(i).getGlobalSimID(),simdb.get(i).getClientNumer(), simdb.get(i).getFrontStatus(), simdb.get(i).getBackStatus(), simdb.get(i).getSignStatus(),simdb.get(i).getClientStatus()));
                             varraysize = varraysize + 1;
                         }
                     }
@@ -261,7 +260,7 @@ public class PendingPictures extends AppCompatActivity implements DatePickerDial
                         throwables.printStackTrace();
                     }
 
-                    String sqlStmt1 = "SELECT COUNT(*) FROM CLIENTS where ( FRONT_SIDE_ID_STATUS='0' or BACK_SIDE_ID_STATUS='0' or SIGNATURE_STATUS='0')AND AGENT_NUMBER='"+agentNumber+"' AND TO_DATE(TO_CHAR(CREATED_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + txtdate.getText() + "','DD-MM-YYYY') ";
+                    String sqlStmt1 = "SELECT COUNT(*) FROM CLIENTS where ( FRONT_SIDE_ID_STATUS='0' or BACK_SIDE_ID_STATUS='0' or SIGNATURE_STATUS='0' or CLIENT_PHOTO_STATUS='0')AND AGENT_NUMBER='"+agentNumber+"' AND TO_DATE(TO_CHAR(CREATED_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + txtdate.getText() + "','DD-MM-YYYY') ";
                     ResultSet rs2 = null;
 
                     try {

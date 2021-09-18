@@ -7,6 +7,17 @@ public class PendingPictureListView {
     private String FrontStatus;
     private String BackStatus;
     private String SignStatus;
+    private String ClientStatus;
+
+
+    public PendingPictureListView(String globalSimID, String clientNumer, String frontStatus, String backStatus, String signStatus, String clientStatus) {
+        this.globalSimID = globalSimID;
+        ClientNumer = clientNumer;
+        FrontStatus = frontStatus;
+        BackStatus = backStatus;
+        SignStatus = signStatus;
+        ClientStatus = clientStatus;
+    }
 
     public String getGlobalSimID() {
         return globalSimID;
@@ -14,15 +25,6 @@ public class PendingPictureListView {
 
     public void setGlobalSimID(String globalSimID) {
         this.globalSimID = globalSimID;
-    }
-
-    public PendingPictureListView(String globalSimID, String ClientNumer, String FrontStatus, String BackStatus, String SignStatus){
-        this.globalSimID=globalSimID;
-        this.ClientNumer=ClientNumer;
-        this.FrontStatus=FrontStatus;
-        this.BackStatus=BackStatus;
-        this.SignStatus=SignStatus;
-
     }
 
     public String getClientNumer() {
@@ -57,7 +59,12 @@ public class PendingPictureListView {
         SignStatus = signStatus;
     }
 
+    public String getClientStatus() {
+        return ClientStatus;
+    }
 
-
+    public void setClientStatus(String clientStatus) {
+        ClientStatus = clientStatus;
+    }
 }
 

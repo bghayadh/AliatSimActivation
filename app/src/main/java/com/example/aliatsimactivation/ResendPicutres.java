@@ -28,8 +28,8 @@ import java.util.Properties;
 public class ResendPicutres extends AppCompatActivity {
     private boolean connectflag;
     private Connection conn;
-    private String globalsimid,gfrontstatus,gsigstatus,gbackstatus;
-    private TextView txtclientnumber,txtfrontimage,txtbackimage,txtsignature,txtmsg;
+    private String globalsimid,gfrontstatus,gsigstatus,gbackstatus,gclientstatus;
+    private TextView txtclientnumber,txtfrontimage,txtbackimage,txtsignature,txtclientimgname,txtmsg;
     private Button resend;
     private Button btnmain;
     private SFTP sftp = new SFTP();
@@ -43,6 +43,8 @@ public class ResendPicutres extends AppCompatActivity {
         txtbackimage=findViewById(R.id.backimagename);
         txtsignature=findViewById(R.id.signaturename);
         txtmsg=findViewById(R.id.txtmsgresend);
+        txtclientimgname=findViewById(R.id.clientimgname);
+
         resend=findViewById(R.id.resend);
         btnmain=findViewById(R.id.btnmain);
         Intent i = this.getIntent();
@@ -69,9 +71,10 @@ public class ResendPicutres extends AppCompatActivity {
                 File signpic = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), txtsignature.getText().toString() + ".jpg");
                 File frontpic = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), txtfrontimage.getText().toString() + ".jpg");
                 File backpic = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), txtbackimage.getText().toString() + ".jpg");
+                File clientpic = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), txtclientimgname.getText().toString() + ".jpg");
                 txtmsg.setText("Please Wait....");
-                if(signpic.exists() && frontpic.exists() && backpic.exists()) {
-                    if (gsigstatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0") || gbackstatus.equalsIgnoreCase("0")) {
+                if(signpic.exists() || frontpic.exists() || backpic.exists() || clientpic.exists()) {
+                    if (gsigstatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0") || gbackstatus.equalsIgnoreCase("0") || gclientstatus.equalsIgnoreCase("0")) {
                         thread1.start();
 
                     }
@@ -148,7 +151,7 @@ public class ResendPicutres extends AppCompatActivity {
 
                     Statement stmt1 = null;
                     stmt1 = conn.createStatement();
-                    String sqlStmt = "select MOBILE_NUMBER,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,SIGNATURE,SIGNATURE_STATUS,BACK_SIDE_ID_STATUS,FRONT_SIDE_ID_STATUS FROM CLIENTS where CLIENT_ID = '" + globalsimid + "'";
+                    String sqlStmt = "select MOBILE_NUMBER,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,SIGNATURE,SIGNATURE_STATUS,BACK_SIDE_ID_STATUS,FRONT_SIDE_ID_STATUS,CLIENT_PHOTO,CLIENT_PHOTO_STATUS FROM CLIENTS where CLIENT_ID = '" + globalsimid + "'";
                     ResultSet rs1 = null;
                     try {
                         rs1 = stmt1.executeQuery(sqlStmt);
@@ -159,7 +162,7 @@ public class ResendPicutres extends AppCompatActivity {
                     while (true) {
                         try {
                             if (!rs1.next()) break;
-                            FilldatafromDataBase(rs1.getString("MOBILE_NUMBER"),rs1.getString("ID_FRONT_SIDE_PHOTO"),rs1.getString("ID_BACK_SID_PHOTO"),rs1.getString("SIGNATURE"),rs1.getString("SIGNATURE_STATUS"),rs1.getString("BACK_SIDE_ID_STATUS"),rs1.getString("FRONT_SIDE_ID_STATUS"));
+                            FilldatafromDataBase(rs1.getString("MOBILE_NUMBER"),rs1.getString("ID_FRONT_SIDE_PHOTO"),rs1.getString("ID_BACK_SID_PHOTO"),rs1.getString("SIGNATURE"),rs1.getString("SIGNATURE_STATUS"),rs1.getString("BACK_SIDE_ID_STATUS"),rs1.getString("FRONT_SIDE_ID_STATUS"),rs1.getString("CLIENT_PHOTO"),rs1.getString("CLIENT_PHOTO_STATUS"));
 
                             //System.out.println(rs1.getString("compteur"));
 
@@ -180,7 +183,7 @@ public class ResendPicutres extends AppCompatActivity {
         }
     }
 
-    public void FilldatafromDataBase(String mobilenumber,String frontimage,String backimage,String signature,String signstatus,String backstatus,String frontstatus) {
+    public void FilldatafromDataBase(String mobilenumber,String frontimage,String backimage,String signature,String signstatus,String backstatus,String frontstatus,String clientimg,String clientstatus) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -189,9 +192,11 @@ public class ResendPicutres extends AppCompatActivity {
                 txtfrontimage.setText(frontimage);
                 txtbackimage.setText(backimage);
                 txtsignature.setText(signature);
+                txtclientimgname.setText(clientimg);
                 gsigstatus=signstatus;
                 gfrontstatus=frontstatus;
                 gbackstatus=backstatus;
+                gclientstatus=clientstatus;
 
 
             }
@@ -245,13 +250,13 @@ public class ResendPicutres extends AppCompatActivity {
                     Boolean success1 = true;
 
                     if (success1) {
-                        txtmsg.setText("upload completed : " + sign);
+                        //txtmsg.setText("upload completed : " + sign);
                         System.out.println("upload completed : " + sign);
                         UpdateSimRegistrationPicStatus(globalsimid, "SIGNATURE_STATUS");
                         gsigstatus="1";
                         signpic.delete();
                     }else {
-                        txtmsg.setText("upload Failed : " + sign);
+                        //txtmsg.setText("upload Failed : " + sign);
                     }
                 }
 
@@ -284,6 +289,24 @@ public class ResendPicutres extends AppCompatActivity {
                         UpdateSimRegistrationPicStatus(globalsimid, "BACK_SIDE_ID_STATUS");
                         gbackstatus="1";
                         backpic.delete();
+                    }
+                }
+
+                if(gclientstatus.equalsIgnoreCase("0")) {
+
+                    File clientpic = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), txtclientimgname.getText().toString() + ".jpg");
+                    String client = String.valueOf(clientpic);
+                    channelSftp.put(client, "SIMPICSFTP");
+                    Boolean success4 = true;
+
+                    if (success4) {
+                        //txtmsg.setText("upload completed : " + sign);
+                        System.out.println("upload completed : " + client);
+                        UpdateSimRegistrationPicStatus(globalsimid, "CLIENT_PHOTO_STATUS");
+                        gclientstatus="1";
+                        clientpic.delete();
+                    }else {
+                        //txtmsg.setText("upload Failed : " + sign);
                     }
                 }
 

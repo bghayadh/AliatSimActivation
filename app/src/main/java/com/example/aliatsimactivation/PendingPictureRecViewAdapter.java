@@ -60,7 +60,7 @@ public class PendingPictureRecViewAdapter extends RecyclerView.Adapter<PendingPi
         holder.back_status.setText(list.get(position).getBackStatus());
         holder.sign_status.setText(list.get(position).getSignStatus());
         holder.globalsimid.setText(list.get(position).getGlobalSimID());
-
+        holder.client_img.setText(list.get(position).getClientStatus());
         if(holder.front_status.getText().toString().equalsIgnoreCase("1")){
             holder.front_status.setText("Y");
         }else{
@@ -75,6 +75,11 @@ public class PendingPictureRecViewAdapter extends RecyclerView.Adapter<PendingPi
             holder.sign_status.setText("Y");
         }else{
             holder.sign_status.setText("N");
+        }
+        if(holder.client_img.getText().toString().equalsIgnoreCase("1")){
+            holder.client_img.setText("Y");
+        }else{
+            holder.client_img.setText("N");
         }
 
 
@@ -103,7 +108,7 @@ public class PendingPictureRecViewAdapter extends RecyclerView.Adapter<PendingPi
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView client_nbr,front_status,back_status,sign_status,globalsimid;
+        private TextView client_nbr,front_status,back_status,sign_status,globalsimid,client_img;
         private ImageButton picresend;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -112,82 +117,9 @@ public class PendingPictureRecViewAdapter extends RecyclerView.Adapter<PendingPi
             back_status=itemView.findViewById(R.id.backid_status);
             sign_status=itemView.findViewById(R.id.sign_status);
             globalsimid=itemView.findViewById(R.id.simid);
+            client_img=itemView.findViewById(R.id.clientstatus);
             picresend=itemView.findViewById(R.id.picresend);
         }
     }
-
-
-    public boolean connecttoDB() {
-        // connect to DB
-        OraDB oradb= new OraDB();
-        String url = oradb.getoraurl ();
-        String userName = oradb.getorausername ();
-        String password = oradb.getorapwd ();
-
-        try {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-            try {
-                //Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
-                conn = DriverManager.getConnection(url, userName, password);
-                if (conn != null) {
-                    connectflag = true;
-                } else {
-                    connectflag = false;
-                }
-
-                //Toast.makeText (MainActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
-            } catch (SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
-                System.out.println("error is: " + e.toString());
-                //Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
-                connectflag = false;
-            } /*catch (IllegalAccessException e) {
-            System.out.println("error is: " +e.toString());
-            Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();
-            connectflag=false;
-        }*/ catch (Exception e) {
-                System.out.println("error is: " + e.toString());
-                //Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
-                connectflag = false;
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return connectflag;
-    }
-
-    public void UpdateSimRegistrationPicStatus(String vsimregid,String vcolname)
-    {
-        boolean flg=false;
-        try {
-            if((flg=connecttoDB())==true) {
-                PreparedStatement stmtinsert1 = null;
-
-                try {
-                    System.out.println("update SIM_REGISTRATION set " + vcolname + "=1  where SIM_REG_ID ='" + vsimregid + "'");
-                    stmtinsert1 = conn.prepareStatement("update SIM_REGISTRATION set " + vcolname + "=1  where SIM_REG_ID ='" + vsimregid + "'");
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-                try {
-                    stmtinsert1.executeUpdate();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-
-
-                try {
-                    stmtinsert1.close();
-                    conn.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-
 }
 

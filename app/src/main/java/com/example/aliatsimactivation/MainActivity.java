@@ -952,7 +952,7 @@ public class MainActivity extends AppCompatActivity {
                         throwables.printStackTrace();
                     }
                     System.out.println("you are here");
-                    String sqlStmt1 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY CLIENT_ID) row_num,AGENT_NUMBER,front_side_id_status,back_side_id_status,signature_status from CLIENTS where front_side_id_status='0' or back_side_id_status='0' or signature_status='0') T where AGENT_NUMBER='"+agentNumber+"'";
+                    String sqlStmt1 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY CLIENT_ID) row_num,AGENT_NUMBER,front_side_id_status,back_side_id_status,signature_status,CLIENT_PHOTO_STATUS from CLIENTS where CLIENT_PHOTO_STATUS='0' or front_side_id_status='0' or back_side_id_status='0' or signature_status='0') T where AGENT_NUMBER='"+agentNumber+"'";
                     ResultSet rs1 = null;
                     try {
                         rs1 = stmt3.executeQuery(sqlStmt1);

@@ -64,6 +64,7 @@ public class SIMRegViewAdapter extends RecyclerView.Adapter<SIMRegViewAdapter.Vi
                 intent.putExtra("message_key", list.get(position).getSimRegListViewId());
                 intent.putExtra("db-offline", "1");
                 intent.putExtra("globalMode","Online");
+                intent.putExtra("db-offline-to-main","1");
                 intent.putExtra("agentNumber",agentNumber);
                 context.startActivity(intent);
 

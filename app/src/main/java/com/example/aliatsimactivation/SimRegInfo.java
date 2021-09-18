@@ -29,6 +29,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -83,7 +84,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     private RadioButton foreign;
     private RadioButton male;
     private RadioButton female;
-    private CheckBox checkBox;
+    private CheckBox checkBox,checkSim;
     private TextView editdate, editmname;
     private Integer a;
     private long fb = 0;
@@ -98,14 +99,13 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     private String FRONT, BACK, SIGN = null;
     private TextView editidagent, editagent,textC,txtussd;
     SFTP sftp = new SFTP();
+    String user = sftp.getUser();
+    String pass = sftp.getPass();
+    String host = sftp.getServer();
+    int e = sftp.getPort();
     private Button Btnftp,BtnDelete,BtnMain,BtnRegandActivate,btnMode;
     private ImageButton signimgIcon, frontimgIcon, backimgIcon,btndob,clientimgIcon;
     private String[] imagesource;
-    FTP ftp = new FTP();
-    String server = ftp.getServer();//"ftp.ipage.com";
-    int port = ftp.getPort();//21;
-    String user = ftp.getUser();//"beid";
-    String pass =ftp.getPass();// "10th@Loop";
     FTPClient ftpClient = new FTPClient();
     private String PathSignFTP, PathFrontFTP, PathBackFTP;
     private TextView editmobile,txttest,txtmsg;
@@ -302,6 +302,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         txtussd=findViewById(R.id.txtussd);
         ussdview=findViewById(R.id.ussdview);
         btnMode=findViewById(R.id.btnMode);
+        checkSim=findViewById(R.id.simulation);
         sp.setEnabled(false);
 
         Date c = Calendar.getInstance().getTime();
@@ -928,6 +929,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             BtnMain.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    System.out.println("stroffile "+ stroffile);
                     Intent i = new Intent(SimRegInfo.this, MainActivity.class);
                     i.putExtra("db-offline-to-main",stroffile);
                     i.putExtra("globalMode",globalMode);
@@ -1035,6 +1037,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 }
             });
 
+
+
             //submit ON LINE
             submit.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1111,7 +1115,6 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                 sp.setSelection(1);
                             }
                         } else {
-
                             if (male.isChecked()) {
                                 gender = "Male";
                             }
@@ -1125,6 +1128,11 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                 nationality = "Foreign";
                             }
 
+                            if (checkSim.isChecked()) {
+                                e=0;
+                            }else {
+                                e=22;
+                            }
 
                             b = sp.getSelectedItem().toString();
                             if (sp.getSelectedItem().toString().matches("New")){
@@ -1209,15 +1217,6 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     if(gsigstatus != "0") {
 
                         try {
-
-                            SFTP sftp = new SFTP();
-                            System.out.println("Start");
-
-                            String user = sftp.getUser();
-                            String pass = sftp.getPass();
-                            String host = sftp.getServer();
-                            int e = sftp.getPort();
-
                             Properties config = new Properties();
                             config.put("StrictHostKeyChecking", "no");
 
@@ -1270,14 +1269,6 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 public void onClick(View v) {
                     if(gfrontstatus != "0") {
                         try {
-
-                            SFTP sftp = new SFTP();
-                            System.out.println("Start");
-
-                            String user = sftp.getUser();
-                            String pass = sftp.getPass();
-                            String host = sftp.getServer();
-                            int e = sftp.getPort();
 
                             Properties config = new Properties();
                             config.put("StrictHostKeyChecking", "no");
@@ -1333,14 +1324,6 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     if(gbackstatus != "0") {
                         try {
 
-                            SFTP sftp = new SFTP();
-                            System.out.println("Start");
-
-                            String user = sftp.getUser();
-                            String pass = sftp.getPass();
-                            String host = sftp.getServer();
-                            int e = sftp.getPort();
-
                             Properties config = new Properties();
                             config.put("StrictHostKeyChecking", "no");
 
@@ -1393,15 +1376,6 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 public void onClick(View v) {
                     if(gclientstatus != "0") {
                         try {
-
-                            SFTP sftp = new SFTP();
-                            System.out.println("Start");
-
-                            String user = sftp.getUser();
-                            String pass = sftp.getPass();
-                            String host = sftp.getServer();
-                            int e = sftp.getPort();
-
                             Properties config = new Properties();
                             config.put("StrictHostKeyChecking", "no");
 
@@ -1461,14 +1435,23 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             Btnftp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (checkSim.isChecked()) {
+                        e=0;
+                    }else {
+                        e=22;
+                    }
                     //resend picture if not sent to sftp server
-                    if (globalsimid != "0") {
-                        if (gsigstatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0") || gbackstatus.equalsIgnoreCase("0") || gclientstatus.equalsIgnoreCase("0")) {
-                            Toast.makeText(SimRegInfo.this, "Uploading Photos started", Toast.LENGTH_LONG).show();
-                            System.out.println("UPDATE HERE");
-                            thread1.start();
-                            Toast.makeText(SimRegInfo.this, "Upload Completed", Toast.LENGTH_LONG).show();
+                    if (e != 0) {
+                        if (globalsimid != "0") {
+                            if (gsigstatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0") || gbackstatus.equalsIgnoreCase("0") || gclientstatus.equalsIgnoreCase("0")) {
+                                Toast.makeText(SimRegInfo.this, "Uploading Photos started", Toast.LENGTH_LONG).show();
+                                System.out.println("UPDATE HERE");
+                                thread1.start();
+                                Toast.makeText(SimRegInfo.this, "Upload Completed", Toast.LENGTH_LONG).show();
+                            }
                         }
+                    } else {
+                        Toast.makeText(SimRegInfo.this, "You cannot reupload pictures in simulation mmode", Toast.LENGTH_LONG).show();
                     }
                 }
             });
@@ -2291,65 +2274,72 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         @Override
         public void run() {
             try {
+                ChannelSftp channelSftp=null;
+                Session session=null;
                 //Toast.makeText(SimTest.this,"Trying to connect..",Toast.LENGTH_LONG).show();
                 System.out.println("Start");
                 System.out.println("globalsimid = "+globalsimid);
-                String user=sftp.getUser().toString();
-                String pass=sftp.getPass().toString();
-                String host=sftp.getServer().toString();
-                int e = sftp.getPort();
-
-                Properties config=new Properties();
-                config.put("StrictHostKeyChecking","no");
-
-                JSch jSch = new JSch();
-                Session session =jSch.getSession(user,host,e);
-                System.out.println("Step1");
-                session.setPassword(pass);
-                session.setConfig(config);
-                session.connect();
-                System.out.println("Step Connect");
-                ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
-                channelSftp.connect();
+                if(e!=0) {
+                    Properties config = new Properties();
+                    config.put("StrictHostKeyChecking", "no");
+                    JSch jSch = new JSch();
+                    session = jSch.getSession(user, host, e);
+                    System.out.println("Step1");
+                    session.setPassword(pass);
+                    session.setConfig(config);
+                    session.connect();
+                    System.out.println("Step Connect");
+                    channelSftp = (ChannelSftp) session.openChannel("sftp");
+                    channelSftp.connect();
+                }
                 //check if the global status if equals zero do it
                 if(gsigstatus.equalsIgnoreCase("0")) {
+                    if(e!=0) {
+                        File signpic = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), SIGN + ".jpg");
+                        String sign = String.valueOf(signpic);
+                        channelSftp.put(sign, "SIMPICSFTP");
+                        Boolean success1 = true;
 
-                    File signpic = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), SIGN + ".jpg");
-                    String sign = String.valueOf(signpic);
-                    channelSftp.put(sign, "SIMPICSFTP");
-                    Boolean success1 = true;
-
-                    if (success1) {
-                        txtmsg.setText("upload completed : " + sign);
-                        System.out.println("upload completed : " + sign);
-                        UpdateSimRegistrationPicStatus(globalsimid, "SIGNATURE_STATUS");
-                        signimgIcon.setColorFilter(Color.GREEN);
-                        gsigstatus="1";
-                        SIGNorigin=SIGN;
-                        System.out.println("gsigstatus "+gsigstatus);
-                        System.out.println("SIGNorigin "+SIGNorigin);
-                        signpic.delete();
+                        if (success1) {
+                            txtmsg.setText("upload completed : " + sign);
+                            System.out.println("upload completed : " + sign);
+                            UpdateSimRegistrationPicStatus(globalsimid, "SIGNATURE_STATUS",1);
+                            signimgIcon.setColorFilter(Color.GREEN);
+                            gsigstatus = "1";
+                            SIGNorigin = SIGN;
+                            System.out.println("gsigstatus " + gsigstatus);
+                            System.out.println("SIGNorigin " + SIGNorigin);
+                            signpic.delete();
+                        }
+                    }
+                    else {
+                        UpdateSimRegistrationPicStatus(globalsimid, "SIGNATURE_STATUS",0);
                     }
                 }
 
                 if(gfrontstatus.equalsIgnoreCase("0")){
+                    if(e!=0) {
+                        File frontpic = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), FRONT + ".jpg");
+                        String front = String.valueOf(frontpic);
+                        channelSftp.put(front, "SIMPICSFTP");
+                        Boolean success2 = true;
 
-                    File frontpic=new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), FRONT + ".jpg");
-                    String front=String.valueOf(frontpic);
-                    channelSftp.put(front, "SIMPICSFTP");
-                    Boolean success2 = true;
-
-                    if(success2){
-                        txtmsg.setText("upload completed : " + front);
-                        System.out.println("upload completed : "+front);
-                        UpdateSimRegistrationPicStatus(globalsimid,"FRONT_SIDE_ID_STATUS");
-                        frontimgIcon.setColorFilter(Color.GREEN);
-                        gfrontstatus="1";
-                        FRONTorigin=FRONT;
-                        frontpic.delete();
+                        if (success2) {
+                            txtmsg.setText("upload completed : " + front);
+                            System.out.println("upload completed : " + front);
+                            UpdateSimRegistrationPicStatus(globalsimid, "FRONT_SIDE_ID_STATUS",1);
+                            frontimgIcon.setColorFilter(Color.GREEN);
+                            gfrontstatus = "1";
+                            FRONTorigin = FRONT;
+                            frontpic.delete();
+                        }
+                    }
+                    else {
+                        UpdateSimRegistrationPicStatus(globalsimid, "FRONT_SIDE_ID_STATUS",0);
                     }
                 }
                 if(gbackstatus.equalsIgnoreCase("0")) {
+                    if(e!=0) {
                     File backpic = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), BACK + ".jpg");
                     String back = String.valueOf(backpic);
                     channelSftp.put(back, "SIMPICSFTP");
@@ -2358,34 +2348,42 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     if (success3) {
                         txtmsg.setText("upload completed : " + back);
                         System.out.println("upload completed : " + back);
-                        UpdateSimRegistrationPicStatus(globalsimid, "BACK_SIDE_ID_STATUS");
+                        UpdateSimRegistrationPicStatus(globalsimid, "BACK_SIDE_ID_STATUS",1);
                         backimgIcon.setColorFilter(Color.GREEN);
-                        gbackstatus="1";
-                        BACKorigin=BACK;
+                        gbackstatus = "1";
+                        BACKorigin = BACK;
                         backpic.delete();
+                    }
+                }
+                    else {
+                        UpdateSimRegistrationPicStatus(globalsimid, "BACK_SIDE_ID_STATUS",0);
                     }
                 }
 
                 if(gclientstatus.equalsIgnoreCase("0")) {
-                    File clientpic = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), CLIENT + ".jpg");
-                    String client = String.valueOf(clientpic);
-                    channelSftp.put(client, "SIMPICSFTP");
-                    Boolean success4 = true;
+                    if (e != 0) {
+                        File clientpic = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), CLIENT + ".jpg");
+                        String client = String.valueOf(clientpic);
+                        channelSftp.put(client, "SIMPICSFTP");
+                        Boolean success4 = true;
 
-                    if (success4) {
-                        txtmsg.setText("upload completed : " + client);
-                        System.out.println("upload completed : " + client);
-                        UpdateSimRegistrationPicStatus(globalsimid, "CLIENT_PHOTO_STATUS");
-                        clientimgIcon.setColorFilter(Color.GREEN);
-                        gclientstatus="1";
-                        CLIENTorigin=CLIENT;
-                        clientpic.delete();
+                        if (success4) {
+                            txtmsg.setText("upload completed : " + client);
+                            System.out.println("upload completed : " + client);
+                            UpdateSimRegistrationPicStatus(globalsimid, "CLIENT_PHOTO_STATUS", 1);
+                            clientimgIcon.setColorFilter(Color.GREEN);
+                            gclientstatus = "1";
+                            CLIENTorigin = CLIENT;
+                            clientpic.delete();
+                        }
+                    } else {
+                        UpdateSimRegistrationPicStatus(globalsimid, "CLIENT_PHOTO_STATUS", 0);
                     }
                 }
-
-                //   Toast.makeText(SimTest.this,"session connection"+session.isConnected(),Toast.LENGTH_LONG).show();
-                channelSftp.disconnect();
-                session.disconnect();
+                if(e!=0) {
+                    channelSftp.disconnect();
+                    session.disconnect();
+                }
                 txtmsg.setText("Transaction completed");
                 Thread.sleep(500);
                 txtmsg.setText("");
@@ -2395,7 +2393,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         }
     });
 
-    public void UpdateSimRegistrationPicStatus(String vsimregid,String vcolname)
+    public void UpdateSimRegistrationPicStatus(String vsimregid,String vcolname,int val1)
     {
         boolean flg=false;
         try {
@@ -2403,8 +2401,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 PreparedStatement stmtinsert1 = null;
 
                 try {
-                    System.out.println("update CLIENTS set " + vcolname + "=1  where CLIENT_ID ='" + vsimregid + "'");
-                    stmtinsert1 = conn.prepareStatement("update CLIENTS set " + vcolname + "=1  where CLIENT_ID ='" + vsimregid + "'");
+                    System.out.println("update CLIENTS set " + vcolname + "="+ val1 +"  where CLIENT_ID ='" + vsimregid + "'");
+                    stmtinsert1 = conn.prepareStatement("update CLIENTS set " + vcolname + "="+ val1 +"  where CLIENT_ID ='" + vsimregid + "'");
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
@@ -2465,14 +2463,6 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         public void run() {
             try {
 
-
-                //Toast.makeText(SimTest.this,"Trying to connect..",Toast.LENGTH_LONG).show();
-                System.out.println("Start");
-
-                String user=sftp.getUser().toString();
-                String pass=sftp.getPass().toString();
-                String host=sftp.getServer().toString();
-                int e = sftp.getPort();
 
                 Properties config=new Properties();
                 config.put("StrictHostKeyChecking","no");
@@ -2663,7 +2653,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             stmtinsert1 = conn.prepareStatement("insert into CLIENTS (CLIENT_ID,DISPLAY_NAME,CREATED_DATE,LAST_MODIFIED_DATE,FIRST_NAME,MIDDLE_NAME,LAST_NAME,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHYSICAL_LOCATION,STATUS,POSTAL_ADDRESS,GENDER,AGENT_NUMBER,CLIENT_ID_NUMBER,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,CLIENT_PHOTO,SIGNATURE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS,CLIENT_PHOTO_STATUS,USSD_STATUS,DEPARTMENT,DESCREPTION) values " +
                                     "('"+globalsimid+"',0,sysdate, sysdate,'" + editfname.getText() +"','" + editmname.getText() + "', '" + editlname.getText() +"','" + editmobile.getText() +"',TO_DATE('" + editdate.getText() + "','DD-MM-YYYY'),'" + nationality + "','" + editaltnumber.getText() + "','" + editemail.getText() + "','" + editphylocation.getText() + "','"+ b +"','"+ editpost.getText() +"','" + gender + "','" + editagent.getText() +"','" +editidagent.getText() +"','"+ SIGN + "','" + FRONT + "','" + BACK + "','" + CLIENT + "',0,0,0,0,'"+ussd_status+"',0,0)");
                         } else {
-                            stmtinsert1 = conn.prepareStatement("update CLIENTS set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + editfname.getText() + "',MIDDLE_NAME='" + editmname.getText() + "',LAST_NAME='" + editlname.getText() + "',STATUS='" + b + "',MOBILE_NUMBER='" + editmobile.getText() + "',NATIONALITY='" + nationality + "',ALTERNATIVE_NUMBER='" + editaltnumber.getText() + "',EMAIL_ADDRESS='" + editemail.getText() + "',PHYSICAL_LOCATION='" + editphylocation.getText() + "',POSTAL_ADDRESS='" + editpost.getText() + "',GENDER='" + gender + "',AGENT_NUMBER='" + editagent.getText() + "',CLIENT_ID_NUMBER='" + editidagent.getText() + "',SIGNATURE='" + SIGN + "',ID_FRONT_SIDE_PHOTO='" + FRONT + "',ID_BACK_SID_PHOTO='" + BACK + "',USSD_STATUS='" + editussdstatus.getText().toString() + "' where CLIENT_ID  ='" + globalsimid + "'");
+                            stmtinsert1 = conn.prepareStatement("update CLIENTS set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + editfname.getText() + "',MIDDLE_NAME='" + editmname.getText() + "',LAST_NAME='" + editlname.getText() + "',STATUS='" + b + "',MOBILE_NUMBER='" + editmobile.getText() + "',NATIONALITY='" + nationality + "',ALTERNATIVE_NUMBER='" + editaltnumber.getText() + "',EMAIL_ADDRESS='" + editemail.getText() + "',PHYSICAL_LOCATION='" + editphylocation.getText() + "',POSTAL_ADDRESS='" + editpost.getText() + "',GENDER='" + gender + "',AGENT_NUMBER='" + editagent.getText() + "',CLIENT_ID_NUMBER='" + editidagent.getText() + "',SIGNATURE='" + SIGN + "',ID_FRONT_SIDE_PHOTO='" + FRONT + "',ID_BACK_SID_PHOTO='" + BACK + "',USSD_STATUS='" + editussdstatus.getText().toString() + "',CLIENT_PHOTO='" + CLIENT + "' where CLIENT_ID  ='" + globalsimid + "'");
                         }
                         txtmsg.setText("Saving Completed,now start load pictures");
                     } catch (SQLException throwables) {
