@@ -48,6 +48,8 @@
         <activity android:name=".SimRegOfflineDataActivity" android:configChanges="orientation|screenSize"/>
         <activity android:name=".PendingPictures" android:configChanges="orientation|screenSize"></activity>
         <activity android:name=".ResendPicutres" android:configChanges="orientation|screenSize"></activity>
+        <activity android:name=".AgentLogin" android:configChanges="orientation|screenSize"></activity>
+        <activity android:name=".AgentRegistration" android:configChanges="orientation|screenSize"></activity>
         <activity android:name=".SplashActivity">
 
             <intent-filter>
