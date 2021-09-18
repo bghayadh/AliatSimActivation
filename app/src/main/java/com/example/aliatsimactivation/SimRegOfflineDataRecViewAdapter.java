@@ -149,6 +149,7 @@ public class SimRegOfflineDataRecViewAdapter extends RecyclerView.Adapter<SimReg
                     intent.putExtra("offline15",p);
                     intent.putExtra("offline16",q);
                     intent.putExtra("offline17",s);
+                    intent.putExtra("agentNumber",m);
                     context.startActivity(intent);
 
                 }

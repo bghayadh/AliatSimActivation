@@ -233,6 +233,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
 
                 System.out.println("text : "+agentNumber);
                 String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY CREATED_DATE DESC) row_num,CREATED_DATE,AGENT_NUMBER,CLIENT_ID,FIRST_NAME,LAST_NAME,MOBILE_NUMBER,STATUS from CLIENTS where TO_DATE(TO_CHAR(CREATED_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + datet.getText() + "','DD-MM-YYYY')) T WHERE row_num >= '" + vfrom + "' AND row_num <='" + vto + "' AND AGENT_NUMBER='"+agentNumber+"'";
+                System.out.println(sqlStmt);
                 ResultSet rs1 = null;
 
                 try {
