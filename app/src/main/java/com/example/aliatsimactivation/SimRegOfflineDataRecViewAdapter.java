@@ -26,15 +26,16 @@ import java.util.ArrayList;
 
 public class SimRegOfflineDataRecViewAdapter extends RecyclerView.Adapter<SimRegOfflineDataRecViewAdapter.ViewHolder>{
     FileInputStream fstream;
-    private String globalMode,modestatus;
+    private String globalMode,modestatus,agentNumber;
     private ArrayList<SimRegOfflineDataListView> offlinedata = new ArrayList<>();
     private Context context;
     Connection conn;
 
-    public SimRegOfflineDataRecViewAdapter(Context context, String globalMode, String modestatus) {
+    public SimRegOfflineDataRecViewAdapter(Context context, String globalMode, String modestatus, String agentNumber) {
         this.context=context;
         this.globalMode=globalMode;
         this.modestatus=modestatus;
+        this.agentNumber=agentNumber;
     }
 
 
@@ -149,7 +150,7 @@ public class SimRegOfflineDataRecViewAdapter extends RecyclerView.Adapter<SimReg
                     intent.putExtra("offline15",p);
                     intent.putExtra("offline16",q);
                     intent.putExtra("offline17",s);
-                    intent.putExtra("agentNumber",m);
+                    intent.putExtra("agentNumber",agentNumber);
                     context.startActivity(intent);
 
                 }

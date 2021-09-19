@@ -19,6 +19,7 @@ public class SimRegOfflineDataActivity extends AppCompatActivity {
     private String globalMode,stroffline;
     private RecyclerView offlinedataRecView;
     private Button btnmain;
+    private String agentNumber;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,14 +30,15 @@ public class SimRegOfflineDataActivity extends AppCompatActivity {
         String simid=intent.getStringExtra("message_key");
         globalMode=intent.getStringExtra("globalMode");
         btnmain=findViewById(R.id.BtnMainn);
-
         stroffline=intent.getStringExtra("db-offline-to-main");
+        agentNumber=intent.getStringExtra("agentNumber");
 
         btnmain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(),MainActivity.class);
                 i.putExtra("globalMode",globalMode);
+                i.putExtra("agentNumber",agentNumber);
                 if(globalMode.equalsIgnoreCase("Online")) {
                     i.putExtra("db-offline-to-main", "1");
                 }else{
@@ -62,7 +64,7 @@ public class SimRegOfflineDataActivity extends AppCompatActivity {
             String a = files[0].getName();
             ArrayList<SimRegOfflineDataListView> offlinedata = new ArrayList<>();
             offlinedata.add(new SimRegOfflineDataListView(a));
-            SimRegOfflineDataRecViewAdapter adapter = new SimRegOfflineDataRecViewAdapter(SimRegOfflineDataActivity.this,getIntent().getStringExtra("globalMode"),getIntent().getStringExtra("db-offline-to-main"));
+            SimRegOfflineDataRecViewAdapter adapter = new SimRegOfflineDataRecViewAdapter(SimRegOfflineDataActivity.this,getIntent().getStringExtra("globalMode"),getIntent().getStringExtra("db-offline-to-main"), getIntent().getStringExtra("agentNumber"));
             adapter.setContacts(offlinedata);
             offlinedataRecView.setAdapter(adapter);
             offlinedataRecView.setLayoutManager(new LinearLayoutManager(SimRegOfflineDataActivity.this));
@@ -74,7 +76,7 @@ public class SimRegOfflineDataActivity extends AppCompatActivity {
             ArrayList<SimRegOfflineDataListView> offlinedata = new ArrayList<>();
             offlinedata.add(new SimRegOfflineDataListView(a));
             offlinedata.add(new SimRegOfflineDataListView(b));
-            SimRegOfflineDataRecViewAdapter adapter = new SimRegOfflineDataRecViewAdapter(SimRegOfflineDataActivity.this,getIntent().getStringExtra("globalMode"), getIntent().getStringExtra("db-offline-to-main"));
+            SimRegOfflineDataRecViewAdapter adapter = new SimRegOfflineDataRecViewAdapter(SimRegOfflineDataActivity.this,getIntent().getStringExtra("globalMode"), getIntent().getStringExtra("db-offline-to-main"), getIntent().getStringExtra("agentNumber"));
             adapter.setContacts(offlinedata);
             offlinedataRecView.setAdapter(adapter);
             offlinedataRecView.setLayoutManager(new LinearLayoutManager(SimRegOfflineDataActivity.this)); }
@@ -87,7 +89,7 @@ public class SimRegOfflineDataActivity extends AppCompatActivity {
             offlinedata.add(new SimRegOfflineDataListView(a));
             offlinedata.add(new SimRegOfflineDataListView(b));
             offlinedata.add(new SimRegOfflineDataListView(c));
-            SimRegOfflineDataRecViewAdapter adapter = new SimRegOfflineDataRecViewAdapter(SimRegOfflineDataActivity.this,getIntent().getStringExtra("globalMode"), getIntent().getStringExtra("db-offline-to-main"));
+            SimRegOfflineDataRecViewAdapter adapter = new SimRegOfflineDataRecViewAdapter(SimRegOfflineDataActivity.this,getIntent().getStringExtra("globalMode"), getIntent().getStringExtra("db-offline-to-main"), getIntent().getStringExtra("agentNumber"));
             adapter.setContacts(offlinedata);
             offlinedataRecView.setAdapter(adapter);
             offlinedataRecView.setLayoutManager(new LinearLayoutManager(SimRegOfflineDataActivity.this)); }
@@ -102,7 +104,7 @@ public class SimRegOfflineDataActivity extends AppCompatActivity {
             offlinedata.add(new SimRegOfflineDataListView(b));
             offlinedata.add(new SimRegOfflineDataListView(c));
             offlinedata.add(new SimRegOfflineDataListView(d));
-            SimRegOfflineDataRecViewAdapter adapter = new SimRegOfflineDataRecViewAdapter(SimRegOfflineDataActivity.this,getIntent().getStringExtra("globalMode"), getIntent().getStringExtra("db-offline-to-main"));
+            SimRegOfflineDataRecViewAdapter adapter = new SimRegOfflineDataRecViewAdapter(SimRegOfflineDataActivity.this,getIntent().getStringExtra("globalMode"), getIntent().getStringExtra("db-offline-to-main"), getIntent().getStringExtra("agentNumber"));
             adapter.setContacts(offlinedata);
             offlinedataRecView.setAdapter(adapter);
             offlinedataRecView.setLayoutManager(new LinearLayoutManager(SimRegOfflineDataActivity.this)); }
@@ -119,7 +121,7 @@ public class SimRegOfflineDataActivity extends AppCompatActivity {
             offlinedata.add(new SimRegOfflineDataListView(c));
             offlinedata.add(new SimRegOfflineDataListView(d));
             offlinedata.add(new SimRegOfflineDataListView(e));
-            SimRegOfflineDataRecViewAdapter adapter = new SimRegOfflineDataRecViewAdapter(SimRegOfflineDataActivity.this,getIntent().getStringExtra("globalMode"), getIntent().getStringExtra("db-offline-to-main"));
+            SimRegOfflineDataRecViewAdapter adapter = new SimRegOfflineDataRecViewAdapter(SimRegOfflineDataActivity.this,getIntent().getStringExtra("globalMode"), getIntent().getStringExtra("db-offline-to-main"),getIntent().getStringExtra("agentNumber"));
             adapter.setContacts(offlinedata);
             offlinedataRecView.setAdapter(adapter);
             offlinedataRecView.setLayoutManager(new LinearLayoutManager(SimRegOfflineDataActivity.this));    }

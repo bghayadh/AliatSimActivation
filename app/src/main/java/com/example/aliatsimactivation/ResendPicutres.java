@@ -33,6 +33,7 @@ public class ResendPicutres extends AppCompatActivity {
     private Button resend;
     private Button btnmain;
     private SFTP sftp = new SFTP();
+    private String agentNumber;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +50,7 @@ public class ResendPicutres extends AppCompatActivity {
         btnmain=findViewById(R.id.btnmain);
         Intent i = this.getIntent();
         globalsimid=i.getStringExtra("globalsimid");
+        agentNumber=i.getStringExtra("agentNumber");
         System.out.println("globalimid : "+globalsimid);
 
         if (globalsimid != "0") {
@@ -92,6 +94,7 @@ public class ResendPicutres extends AppCompatActivity {
                 Intent intent =new Intent(getApplicationContext(),MainActivity.class);
                 intent.putExtra("db-offline-to-main", "0");
                 intent.putExtra("globalMode","Online");
+                intent.putExtra("agentNumber",agentNumber);
                 startActivity(intent);
             }
         });

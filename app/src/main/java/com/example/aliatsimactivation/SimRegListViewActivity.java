@@ -168,6 +168,7 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
                 Intent intent =new Intent(getApplicationContext(),MainActivity.class);
                 intent.putExtra("db-offline-to-main", datestr);
                 intent.putExtra("globalMode","Online");
+                intent.putExtra("agentNumber",agentNumber);
                 startActivity(intent);
             }
         });

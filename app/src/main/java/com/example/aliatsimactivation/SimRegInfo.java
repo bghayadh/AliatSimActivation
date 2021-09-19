@@ -345,6 +345,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     Intent i = new Intent(SimRegInfo.this, MainActivity.class);
                     i.putExtra("db-offline-to-main",stroffile);
                     i.putExtra("globalMode",globalMode);
+                    i.putExtra("agentNumber",agentNumber);
                     startActivity(i);
                 }
             }
@@ -394,33 +395,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             }
 
 
-            //check the existence of the msisdn file to get the agent msisnd
-            //after checking the existence fill it in the edittext and disable it
-            try {
-                FileInputStream fis = null;
-
-                File file = new File(getFilesDir(), "MSISDN.txt");
-                if (file.exists()) {
-                    System.out.println("file Exists");
-                    fis = openFileInput("MSISDN.txt");
-                    InputStreamReader isr = new InputStreamReader(fis);
-                    BufferedReader br = new BufferedReader(isr);
-                    StringBuilder sb = new StringBuilder();
-                    String text;
-                    while ((text = br.readLine()) != null) {
-                        sb.append(text).append("\n");
-                        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
-                        editagent.setText(text.toString());
-                        editagent.setEnabled(false);
-                    }
-
-
-                } else {
-                    System.out.println("login filevdon't exist");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+           editagent.setText(agentNumber);
 
             // add dsicard and button left when changing pictures and signature
             String Off5 = intent.getStringExtra("offline5");
@@ -564,6 +539,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     i.putExtra("message_key", globalsimid);
                     i.putExtra("globalMode",globalMode);
                     i.putExtra("db-offline-to-main",stroffile);
+                    i.putExtra("agentNumber",agentNumber);
                     startActivity(i);
                 }
             });
@@ -933,6 +909,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     Intent i = new Intent(SimRegInfo.this, MainActivity.class);
                     i.putExtra("db-offline-to-main",stroffile);
                     i.putExtra("globalMode",globalMode);
+                    i.putExtra("agentNumber",agentNumber);
                     startActivity(i);
                 }
             });
@@ -1691,36 +1668,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 }
             });
 
-
-
-
-
-            try {
-                FileInputStream fis = null;
-
-                File file = new File(getFilesDir(), "MSISDN.txt");
-                if (file.exists()) {
-                    System.out.println("file Exists");
-                    fis = openFileInput("MSISDN.txt");
-                    InputStreamReader isr = new InputStreamReader(fis);
-                    BufferedReader br = new BufferedReader(isr);
-                    StringBuilder sb = new StringBuilder();
-                    String text;
-                    while ((text = br.readLine()) != null) {
-                        sb.append(text).append("\n");
-                        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
-                        editagent.setText(text.toString());
-                        editagent.setEnabled(false);
-                    }
-
-
-                } else {
-                    System.out.println("login filevdon't exist");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+            editagent.setText(agentNumber);
             File dir = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
             File[] files = dir.listFiles();
             count = 0;
@@ -1856,6 +1804,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 public void onClick(View v) {
                     Intent i = new Intent(SimRegInfo.this, MainActivity.class);
                     i.putExtra("db-offline-to-main",stroffile);
+                    i.putExtra("agentNumber",agentNumber);
                     i.putExtra("globalMode",globalMode);
                     startActivity(i);
                 }
@@ -2057,6 +2006,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     Intent i = new Intent(SimRegInfo.this, SimRegOfflineDataActivity.class);
                     i.putExtra("globalMode",globalMode);
                     i.putExtra("db-offline-to-main",stroffile);
+                    i.putExtra("agentNumber",agentNumber);
                     startActivity(i);
                 }
             });

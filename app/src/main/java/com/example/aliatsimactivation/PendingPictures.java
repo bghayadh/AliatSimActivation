@@ -85,6 +85,7 @@ public class PendingPictures extends AppCompatActivity implements DatePickerDial
                 Intent intent =new Intent(getApplicationContext(),MainActivity.class);
                 intent.putExtra("db-offline-to-main", "1");
                 intent.putExtra("globalMode","Online");
+                intent.putExtra("agentNumber",agentNumber);
                 startActivity(intent);
             }
         });
@@ -174,6 +175,7 @@ public class PendingPictures extends AppCompatActivity implements DatePickerDial
         Intent intent =new Intent(getApplicationContext(),MainActivity.class);
         intent.putExtra("db-offline-to-main", "0");
         intent.putExtra("globalMode","Online");
+        intent.putExtra("agentNumber",agentNumber);
         startActivity(intent);
     }
 
@@ -248,7 +250,7 @@ public class PendingPictures extends AppCompatActivity implements DatePickerDial
                     System.out.println("pagination before "+ pagination);
                     pagination = pagination + 1;
                     System.out.println("pagination after "+ pagination);
-                    adapter = new PendingPictureRecViewAdapter(PendingPictures.this,getIntent().getStringExtra("globalMode"));
+                    adapter = new PendingPictureRecViewAdapter(PendingPictures.this,getIntent().getStringExtra("globalMode"),getIntent().getStringExtra("agentNumber"));
                     adapter.setContacts(simA);
                     pendingpicrec.setAdapter(adapter);
                     pendingpicrec.setLayoutManager(new LinearLayoutManager(PendingPictures.this));

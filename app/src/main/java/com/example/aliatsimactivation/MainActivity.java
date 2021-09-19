@@ -143,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
                                 Intent i=new Intent(MainActivity.this,MainActivity.class);
                                 i.putExtra("globalMode",globalMode);
                                 i.putExtra("db-offline-to-main","1");
+                                i.putExtra("agentNumber",agentNumber);
                                 startActivity(i);
                                 System.out.println("globalMode " +globalMode);
                                 btnMode.setBackgroundColor(R.color.mixte);
@@ -189,31 +190,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        try {
-            FileInputStream fis = null;
 
-            File file = new File(getFilesDir(), "MSISDN.txt");
-            if (file.exists()) {
-                System.out.println("file Exists");
-                fis = openFileInput("MSISDN.txt");
-                InputStreamReader isr = new InputStreamReader(fis);
-                BufferedReader br = new BufferedReader(isr);
-                StringBuilder sb = new StringBuilder();
-                while ((text = br.readLine()) != null) {
-                    sb.append(text).append("\n");
-                    Toast.makeText(this, text, Toast.LENGTH_LONG).show();
-                    System.out.println("text pre : "+text);
-
-                    agentNumber=text;
-                }
-
-                System.out.println("agent number : "+agentNumber);
-
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         File dir = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
         File[] files = dir.listFiles();
@@ -240,6 +217,7 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("globalMode", globalMode);
                     intent.putExtra("message_key", "0");
                     intent.putExtra("db-offline-to-main",modestatus );
+                    intent.putExtra("agentNumber",agentNumber );
                     startActivity(intent);
                 }
 
@@ -250,6 +228,8 @@ public class MainActivity extends AppCompatActivity {
         Intent i=this.getIntent();
         OpenMode=i.getStringExtra("globalMode");
         modestatus=i.getStringExtra("db-offline-to-main");
+        agentNumber=i.getStringExtra("agentNumber");
+        System.out.println("agentNumber : "+agentNumber);
         System.out.println("globalMode from back : "+OpenMode);
 
 
@@ -319,6 +299,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent i=new Intent(getApplicationContext(),SimRegInfo.class);
                     i.putExtra("message_key","0");
                     i.putExtra("globalMode","Offline");
+                    i.putExtra("agentNumber",agentNumber);
                     startActivity(i);
                 }
             }

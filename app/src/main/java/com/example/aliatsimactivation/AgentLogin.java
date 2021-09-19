@@ -12,10 +12,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -27,7 +31,7 @@ public class AgentLogin extends AppCompatActivity {
     private TextView txtmsisdn,txtpin;
     private EditText editmsisdn,editpin;
     private String agentNumber,RegisterResult,s0;
-    private String login="0";
+    private String login="0",agentstatus,filepincode;
     private String[] data;
     private Connection conn;
     private boolean connectflag=false;
@@ -57,6 +61,7 @@ public class AgentLogin extends AppCompatActivity {
 
         if(login==null || login.equalsIgnoreCase("login")){
             File file = new File(getApplicationContext().getFilesDir(), "MSISDN.txt");
+
             if(file.exists()){
                 login="login";
                 StringBuilder text = new StringBuilder();
@@ -80,16 +85,36 @@ public class AgentLogin extends AppCompatActivity {
                 System.out.println("R.R : "+ RegisterResult);
                 //split the line through : and set them into the edittexts of msisdn and pin
                 String[] data = RegisterResult.split(":");
-                String s0 = data[0];
-                agentNumber=s0;
+                agentNumber= data[0];
+                filepincode = data[1];
                 System.out.println("agent Number : "+ agentNumber);
                 editmsisdn.setText(agentNumber);
                 editmsisdn.setEnabled(false);
+
+                System.out.println("filepincode" +filepincode);
+                //read offline file
                 File file1 = new File(getApplicationContext().getFilesDir(), "Offlinedata.txt");
                 if(file1.exists()){
                     Toast.makeText(getApplicationContext(),"You Must Complete Your Registration First",Toast.LENGTH_LONG).show();
                     btnlogin.setEnabled(false);
+                } else {
+                        // check to go tomainactivity if activate and has pin
+                        agentstatus = getStatus();
+                        System.out.println("agentstatus" +agentstatus);
+                        if (agentstatus.equalsIgnoreCase("Activate") && filepincode != "PIN") {
+                                Intent i1 = new Intent(getApplicationContext(), MainActivity.class);
+                            i1.putExtra("db-offline-to-main", "1");
+                            i1.putExtra("globalMode", "Online");
+                            i1.putExtra("agentNumber", agentNumber);
+                            startActivity(i1);
+                        } else {
+                            Toast.makeText(getApplicationContext(), "You account is not activated yet", Toast.LENGTH_LONG).show();
+                        }
+
+
+
                 }
+
             }else {
                 login = "0";
 
@@ -114,9 +139,47 @@ public class AgentLogin extends AppCompatActivity {
                 String code = editpin.getText().toString();
                 String sts = "Activate";
                 if(login.equalsIgnoreCase("login") && code.equalsIgnoreCase(pincode) && agentstatus.equalsIgnoreCase(sts)) {
-                        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+
+                    try {
+
+                        File file = new File(getApplicationContext().getFilesDir(), "MSISDN.txt");
+
+                        FileInputStream is;
+                        BufferedReader reader;
+                        is = new FileInputStream(file);
+                        reader = new BufferedReader(new InputStreamReader(is));
+                        String line = reader.readLine();
+                        String OldContent=null;
+                        while(line != null){
+                            if (OldContent==null) {
+                                OldContent = line+System.lineSeparator();
+                            } else {
+                                OldContent = OldContent+line+System.lineSeparator(); }
+                            line = reader.readLine();
+
+                            if(OldContent.contains("PIN")) {
+                                String newContent = OldContent.replaceAll("PIN",editpin.getText().toString());
+                                FileWriter fw = new FileWriter(file.getAbsoluteFile());
+                                BufferedWriter bw = new BufferedWriter(fw);
+                                bw.write(newContent.toString());
+                                bw.close();
+                            }
+
+
+                        }
+                        reader.close();
+
+
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+
+
+                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
                         i.putExtra("db-offline-to-main", "1");
                         i.putExtra("globalMode", "Online");
+                        i.putExtra("agentNumber", agentNumber);
                         startActivity(i);
 
                 } else {

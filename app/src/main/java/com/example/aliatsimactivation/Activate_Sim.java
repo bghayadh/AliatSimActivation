@@ -344,6 +344,7 @@ public class Activate_Sim extends AppCompatActivity {
                     intent.putExtra("message_key",globalsimid);
                     intent.putExtra("globalMode",globalMode);
                     intent.putExtra("db-offline","1");
+                    intent.putExtra("agentNumber",agentNumber);
                     startActivity(intent);
                 }
             });

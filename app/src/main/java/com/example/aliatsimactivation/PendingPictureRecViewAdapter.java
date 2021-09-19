@@ -33,16 +33,17 @@ public class PendingPictureRecViewAdapter extends RecyclerView.Adapter<PendingPi
 
     private ArrayList<PendingPictureListView> list=new ArrayList<>();
     private Context context;
-    private String frontimg,backimg,signimg,globalsimid,globalMode,Front_Status,Back_Status,Sign_Status;
+    private String frontimg,backimg,signimg,globalsimid,globalMode,Front_Status,Back_Status,Sign_Status,agentNumber;
     private Connection conn;
     private boolean connectflag=false;
     SFTP sftp=new SFTP();
     Thread thread;
 
 
-    public PendingPictureRecViewAdapter(Context context, String globalMode) {
+    public PendingPictureRecViewAdapter(Context context, String globalMode, String agentNumber) {
         this.context=context;
         this.globalMode=globalMode;
+        this.agentNumber=agentNumber;
     }
     @NonNull
     @Override
@@ -92,6 +93,7 @@ public class PendingPictureRecViewAdapter extends RecyclerView.Adapter<PendingPi
 
                 Intent i=new Intent(context,ResendPicutres.class);
                 i.putExtra("globalsimid",holder.globalsimid.getText().toString());
+                i.putExtra("agentNumber",agentNumber);
                 context.startActivity(i);
             }
         });
