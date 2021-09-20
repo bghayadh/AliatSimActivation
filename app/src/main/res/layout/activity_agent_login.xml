@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/teal_700"
-        android:text="ver 1.0.19"/>
+        android:text="ver 1.0.26"/>
 
 
 
@@ -151,6 +151,27 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/waitline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:baselineAligned="false"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/txtwait"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"/>
+    </LinearLayout>
 
     <Button
         android:layout_width="match_parent"

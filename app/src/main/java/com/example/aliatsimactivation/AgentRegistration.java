@@ -70,7 +70,7 @@ public class AgentRegistration extends AppCompatActivity {
     private String AgentImage,AgentFrontID,AgentBackID,Code,value;
     private boolean connectflag=false;
     private String secondfileContents,secondfileContents2,secondfileContents3,secondfileContents4,secondfileContents5,secondfileContents6,secondfileContent7,secondfileContent8,secondfileContent9,secondfileContent10;
-    private String gimagestatus,gfrontstatus,gbackstatus,globalagentID="0";
+    private String gimagestatus,gfrontstatus,gbackstatus,globalagentID="0",modestatus="0";
     private String file = "MSISDN.txt";
     private String secondfile = "Offlinedata.txt";
     private boolean regionflag=false;
@@ -208,6 +208,9 @@ public class AgentRegistration extends AppCompatActivity {
         BtnBackID=findViewById(R.id.btnagentbackid);
         textstatus=findViewById(R.id.textstatus);
         txtlinear=findViewById(R.id.lineartxtmsg);
+
+        Intent i=this.getIntent();
+        modestatus=i.getStringExtra("message_key");
 
         ActivityCompat.requestPermissions(AgentRegistration.this, new String[]{
                 Manifest.permission.CAMERA}, 100);
@@ -752,61 +755,62 @@ public class AgentRegistration extends AppCompatActivity {
     }
 
     //return region names...
-    public ArrayList<String> GetRegions()
-    {
+    public ArrayList<String> GetRegions() {
         ArrayList<String> my_array = new ArrayList<String>();
-        boolean flg=false;
-        if ((flg = connecttoDB()) == true) {
-            Statement stmt3 = null;
+        boolean flg = false;
+        if (!modestatus.equalsIgnoreCase("-100")) {
+                    if ((flg = connecttoDB()) == true) {
+                        Statement stmt3 = null;
 
+                        try {
+                            stmt3 = conn.createStatement();
+
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                        //select region names
+                        String sqlStmt1 = "SELECT REGION_NAME FROM REGION";
+                        ResultSet rs1 = null;
+
+                        try {
+                            rs1 = stmt3.executeQuery(sqlStmt1);
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                        my_array.add("NONE");
+                        while (true) {
+                            try {
+                                if (!rs1.next()) break;
+                                value = (rs1.getString("REGION_NAME"));
+                                my_array.add(value);
+
+                            } catch (SQLException throwables) {
+                                throwables.printStackTrace();
+                            }
+
+
+                        }
+
+                        try {
+                            rs1.close();
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                        try {
+                            stmt3.close();
+                            conn.close();
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+
+                    }
+
+            }
             try {
-                stmt3 = conn.createStatement();
-
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                txtlinear.setVisibility(View.GONE);
+            } catch (Exception e) {
+                System.out.println(e.toString());
             }
-            //select region names
-            String sqlStmt1 = "SELECT REGION_NAME FROM REGION";
-            ResultSet rs1 = null;
-
-            try {
-                rs1 = stmt3.executeQuery(sqlStmt1);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-            my_array.add("NONE");
-            while (true) {
-                try {
-                    if (!rs1.next()) break;
-                    value = (rs1.getString("REGION_NAME"));
-                    my_array.add(value);
-
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-
-
-            }
-
-            try {
-                rs1.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-            try {
-                stmt3.close();
-                conn.close ( );
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-
-        }
-        try  {
-            txtlinear.setVisibility(View.GONE);
-            textstatus.setVisibility(View.GONE);
-        }catch(Exception e) {
-            System.out.println(e.toString());
-        }
         return my_array;
     }
 
