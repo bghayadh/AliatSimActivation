@@ -1969,6 +1969,11 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                                 bw.write(editussdstatus.getText().toString());
                                                 bw.close();
 
+                                                // to refresh pade and keep our current file
+                                                Button BtnData=findViewById(R.id.BtnData);
+                                                BtnData.setVisibility(View.VISIBLE);
+                                                count=count+1;
+                                                BtnData.setText(String.valueOf(count));
 
                                                 //Toast.makeText(SimRegInfo.this, fileName + " is saved to\n" + dir, Toast.LENGTH_SHORT).show();
                                                 //Intent intent = new Intent(SimRegInfo.this, SimRegOfflineDataActivity.class);
@@ -1979,7 +1984,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                                 e.printStackTrace();
                                             }
                                             Toast.makeText(SimRegInfo.this,"Saving Offline",Toast.LENGTH_SHORT).show();
-                                             startActivity(getIntent());
+                                             //startActivity(getIntent());
                                         }
 
 
@@ -2688,15 +2693,19 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         txtmsg.setText("Saving offmode completed");
                         Thread.sleep(500);
                         txtmsg.setText("");
-                        //Toast.makeText(SimRegInfo.this, fileName + " is saved to\n" + dir, Toast.LENGTH_SHORT).show();
-                        //Intent intent = new Intent(SimRegInfo.this, SimRegOfflineDataActivity.class);
-                        // startActivity(intent);
+
+                        // to refresh pade and keep our current file
+                        Button BtnData=findViewById(R.id.BtnData);
+                        BtnData.setVisibility(View.VISIBLE);
+                        count=count+1;
+                        BtnData.setText(String.valueOf(count));
+
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    startActivity(getIntent());
+                    //startActivity(getIntent());
                     System.out.println ("SAVE COMPLETED  WHEN DB not reachable");
 
 
