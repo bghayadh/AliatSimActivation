@@ -369,7 +369,6 @@
             android:orientation="horizontal"
             android:baselineAligned="false"
             android:id="@+id/lineartxtmsg"
-            android:visibility="gone"
             android:weightSum="1">
 
 
@@ -380,7 +379,7 @@
                 android:layout_height="30dp"
                 android:textColor="@color/black"
                 android:textSize="26dp"
-                android:text="Please Wait... "
+                android:text=""
                 />
         </LinearLayout>
 

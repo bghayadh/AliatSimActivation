@@ -389,6 +389,7 @@
             android:layout_marginEnd="15dp"
             android:maxLines="1"
             android:maxLength="50"
+            android:enabled="false"
             android:inputType="textPersonName"
             android:background="@null"/>
 
