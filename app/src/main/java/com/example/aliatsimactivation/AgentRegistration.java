@@ -3,6 +3,8 @@ package com.example.aliatsimactivation;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
@@ -67,7 +70,7 @@ public class AgentRegistration extends AppCompatActivity {
     private int count=0;
     private File OfflineAgent;
     private String fileContents,fileContents2,regionName,fullname;
-    private String AgentImage,AgentFrontID,AgentBackID,Code,value,globalMode,DBMode,PIN;
+    private String AgentImage,AgentFrontID,AgentBackID,Code,value,globalMode,DBMode,PIN,agentID;
     private boolean connectflag=false;
     private String secondfileContents,secondfileContents2,secondfileContents3,secondfileContents4,secondfileContents5,secondfileContents6,secondfileContent7,secondfileContent8,secondfileContent9,secondfileContent10;
     private String gimagestatus,gfrontstatus,gbackstatus,globalagentID="0";
@@ -76,7 +79,7 @@ public class AgentRegistration extends AppCompatActivity {
     private String secondfile = "Offlinedata.txt";
     private boolean regionflag=false;
     SFTP sftp=new SFTP();
-    private LinearLayout txtlinear;
+
 
 
 
@@ -208,7 +211,6 @@ public class AgentRegistration extends AppCompatActivity {
         BtnFrontID=findViewById(R.id.btnagentfrontid);
         BtnBackID=findViewById(R.id.btnagentbackid);
         textstatus=findViewById(R.id.textstatus);
-        txtlinear=findViewById(R.id.lineartxtmsg);
 
         ActivityCompat.requestPermissions(AgentRegistration.this, new String[]{
                 Manifest.permission.CAMERA}, 100);
@@ -229,13 +231,19 @@ public class AgentRegistration extends AppCompatActivity {
 
         if(globalMode.equalsIgnoreCase("Offline") || DBMode.equalsIgnoreCase("-100")){
             verify.setText("SAVE");
+            ArrayList<String> my_array = new ArrayList<String>();
+            my_array.add("NONE");
+            ArrayAdapter my_Adapter = new ArrayAdapter(this, R.layout.spinner_row, my_array);
+            spregion.setAdapter(my_Adapter);
         }
 
+
         if(DBMode.equalsIgnoreCase("-100")){
-            txtlinear.setVisibility(View.INVISIBLE);
+
         }else {
             thread1.start();
         }
+
         System.out.println(globalMode+" "+DBMode);
 
         File file1 = new File(getApplicationContext().getFilesDir(), "Offlinedata.txt");
@@ -287,7 +295,6 @@ public class AgentRegistration extends AppCompatActivity {
         gfrontstatus="0";
         gbackstatus="0";
         gimagestatus="0";
-        txtlinear.setVisibility(View.VISIBLE);
 
 
         BtnAgentImage.setOnClickListener(new View.OnClickListener() {
@@ -374,11 +381,41 @@ public class AgentRegistration extends AppCompatActivity {
 
 
         System.out.println("you are here now ");
-        txtlinear.setVisibility(View.GONE);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            NotificationChannel channel = new NotificationChannel("My Notification","My Notification", NotificationManager.IMPORTANCE_HIGH);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+
+
         verify.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View v) {
+                // to validate if network connection are back
+                if(globalMode.equalsIgnoreCase("Offline")) {
+                    ConnectivityManager connMgr = (ConnectivityManager) getApplicationContext ( )
+                            .getSystemService(Context.CONNECTIVITY_SERVICE);
+
+                    NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+                    if (networkInfo != null && networkInfo.isConnected() ) {
+                        globalMode="Online" ;
+                        DBMode="0";
+                    }
+                }
+
+                // to validate if reachability are back
+                if (DBMode.equalsIgnoreCase("-100") && globalMode.equalsIgnoreCase("Online") ) {
+                    Toast.makeText(getApplicationContext(),"Please wait while saving and returning to agent login form",Toast.LENGTH_LONG).show();
+                    if ((connecttoDB()) == true) {
+                        globalMode="Online" ;
+                        DBMode="0";
+                                            }
+                }
+
 
               if(globalMode.equalsIgnoreCase("Online")){
 
@@ -431,7 +468,7 @@ public class AgentRegistration extends AppCompatActivity {
                             Calendar calendar = new GregorianCalendar();
                             calendar.setTime(date);
                             int year = calendar.get(Calendar.YEAR);
-                            String agentID = "AG_" + year + "_";
+                            agentID = "AG_" + year + "_";
 
 
 
@@ -476,79 +513,15 @@ public class AgentRegistration extends AppCompatActivity {
                                         }
                                         System.out.println(regionid);
                                         System.out.println(spregion.getSelectedItem().toString());
-                                        try {
 
-                                            PreparedStatement stmtinsert1 = null;
-                                            if (globalagentID.equalsIgnoreCase("0") || OfflineAgent.exists()) {
-                                                //sending notification with a verification code
-                                                NotificationCompat.Builder builder = new NotificationCompat.Builder(AgentRegistration.this, "My Notification");
-                                                builder.setContentTitle("Enter This Code to Verify your Registration");
-                                                builder.setContentText(Code);
-                                                builder.setSmallIcon(R.drawable.ic_baseline_message_24);
-                                                builder.setAutoCancel(true);
-
-                                                NotificationManagerCompat managerCompat = NotificationManagerCompat.from(AgentRegistration.this);
-                                                managerCompat.notify(1, builder.build());
-
-
-                                                Statement stmt1 = null;
-
-                                                stmt1 = conn.createStatement();
-                                                String sqlStmt = "select AGENT_SEQ.nextval as nbr from dual";
-                                                ResultSet rs1 = null;
-                                                try {
-                                                    rs1 = stmt1.executeQuery(sqlStmt);
-                                                } catch (SQLException throwables) {
-                                                    throwables.printStackTrace();
-                                                }
-
-                                                while (true) {
-                                                    try {
-                                                        if (!rs1.next()) break;
-                                                        globalagentID = agentID + rs1.getString("nbr");
-                                                        System.out.println("AGENT ID"+globalagentID);
-
-                                                    } catch (SQLException throwables) {
-                                                        throwables.printStackTrace();
-                                                    }
-                                                }
-
-
-
-
-                                                //This part needs a lot of changes
-                                                //save agentlogin in Database
-                                                stmtinsert1 = conn.prepareStatement("insert into AGENT (AGENT_ID,FIRST_NAME,LAST_NAME,DISPLAY_NAME,ADDRESS,EMAIL,MSISDN,CREATE_DATE,LAST_MODIFIED_DATE,STATUS,PIN_CODE,REGION_NAME,AGENT_IMAGE,AGENT_FRONT_ID,AGENT_BACK_ID,VERIFICATION_CODE,AGENT_IMAGE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS,REGION_ID,LONGITUDE,LATITUDE,FULL_NAME) values " +
-                                                        "('"+globalagentID+"','"+edtfname.getText().toString()+"','"+edtlname.getText().toString()+"','"+edtdname.getText().toString()+"','"+edtaddress.getText().toString()+"','"+edtemail.getText().toString()+"','"+edtphonenbr.getText().toString()+"',sysdate,sysdate,'"+edtstatus.getText().toString()+"','"+PIN+"','"+ regionName +"','"+AgentImage+"','"+AgentFrontID+"','"+AgentBackID+"','"+Code+"',0,0,0,'"+regionid+"','"+edtlong.getText().toString()+"','"+edtlat.getText().toString()+"' ,'" +fullname+"')");
-                                            }else{
-                                                stmtinsert1 = conn.prepareStatement("update AGENT set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + edtfname.getText() + "',DISPLAY_NAME='" + edtdname.getText() + "',LAST_NAME='" + edtlname.getText() + "',FULL_NAME='" + fullname + "' ,MSISDN='" + edtphonenbr + "',ADDRESS='" + edtaddress.getText() + "',EMAIL='" + edtemail + "',REGION='" + regionName +"', AGENT_IMAGE='"+AgentImage+"', AGENT_FRONT_ID='"+AgentFrontID+"', AGENT_BACK_ID='"+AgentBackID+"',REGION_ID='"+regionid+"' where AGENT_ID  ='" + globalagentID + "'");
-
-                                            }
-                                            try {
-                                                stmtinsert1.executeUpdate();
-                                                createandSaveMSISDNandPIN();
-                                                OfflineAgent.delete();
-                                                Toast.makeText(getApplicationContext(), "Saving Completed", Toast.LENGTH_SHORT).show();
-                                                //thread to send images to sftp
-                                                if (gimagestatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0") || gbackstatus.equalsIgnoreCase("0")) {
-                                                    Toast.makeText(AgentRegistration.this, "Uploading Photos started", Toast.LENGTH_LONG).show();
-                                                    threadimage.start();
-                                                }
-                                                Toast.makeText(AgentRegistration.this, "Uploading Photos Completed", Toast.LENGTH_LONG).show();
-                                            } catch (SQLException throwables) {
-                                                throwables.printStackTrace();
-                                            }
-                                            try {
-
-                                                stmtinsert1.close();
-                                                conn.close();
-                                            } catch (SQLException throwables) {
-                                                throwables.printStackTrace();
-                                            }
-
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
+                                        threadsave.start();
+                                        Toast.makeText(getApplicationContext(), "Saving Completed", Toast.LENGTH_SHORT).show();
+                                        if (gimagestatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0") || gbackstatus.equalsIgnoreCase("0")) {
+                                            Toast.makeText(AgentRegistration.this, "Uploading Photos started", Toast.LENGTH_LONG).show();
+                                            threadimage.start();
                                         }
+                                        Toast.makeText(AgentRegistration.this, "Uploading Photos Completed", Toast.LENGTH_LONG).show();
+
 
 
                                         //if we have cnnection the value sent is 1
@@ -759,7 +732,7 @@ public class AgentRegistration extends AppCompatActivity {
             fos.write(fileContents.getBytes());
             fos.write(":".getBytes());
             fos.write("PIN".getBytes());
-            Toast.makeText(this, "Data is saved "+ getFilesDir(), Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this, "Data is saved "+ getFilesDir(), Toast.LENGTH_SHORT).show();
             System.out.println(getFilesDir());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -1044,5 +1017,81 @@ public class AgentRegistration extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    Thread threadsave= new Thread(new Runnable() {
+        @Override
+        public void run() {
+            try {
+
+                PreparedStatement stmtinsert1 = null;
+                if (globalagentID.equalsIgnoreCase("0") || OfflineAgent.exists()) {
+                    //sending notification with a verification code
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(AgentRegistration.this, "My Notification");
+                    builder.setContentTitle("Enter This Code to Verify your Registration");
+                    builder.setContentText(Code);
+                    builder.setSmallIcon(R.drawable.ic_baseline_message_24);
+                    builder.setAutoCancel(true);
+
+                    NotificationManagerCompat managerCompat = NotificationManagerCompat.from(AgentRegistration.this);
+                    managerCompat.notify(1, builder.build());
+
+
+                    Statement stmt1 = null;
+
+                    stmt1 = conn.createStatement();
+                    String sqlStmt = "select AGENT_SEQ.nextval as nbr from dual";
+                    ResultSet rs1 = null;
+                    try {
+                        rs1 = stmt1.executeQuery(sqlStmt);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+
+                    while (true) {
+                        try {
+                            if (!rs1.next()) break;
+                            globalagentID = agentID + rs1.getString("nbr");
+                            System.out.println("AGENT ID"+globalagentID);
+
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                    }
+
+
+
+
+                    //This part needs a lot of changes
+                    //save agentlogin in Database
+                    stmtinsert1 = conn.prepareStatement("insert into AGENT (AGENT_ID,FIRST_NAME,LAST_NAME,DISPLAY_NAME,ADDRESS,EMAIL,MSISDN,CREATE_DATE,LAST_MODIFIED_DATE,STATUS,PIN_CODE,REGION_NAME,AGENT_IMAGE,AGENT_FRONT_ID,AGENT_BACK_ID,VERIFICATION_CODE,AGENT_IMAGE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS,REGION_ID,LONGITUDE,LATITUDE,FULL_NAME) values " +
+                            "('"+globalagentID+"','"+edtfname.getText().toString()+"','"+edtlname.getText().toString()+"','"+edtdname.getText().toString()+"','"+edtaddress.getText().toString()+"','"+edtemail.getText().toString()+"','"+edtphonenbr.getText().toString()+"',sysdate,sysdate,'"+edtstatus.getText().toString()+"','"+PIN+"','"+ regionName +"','"+AgentImage+"','"+AgentFrontID+"','"+AgentBackID+"','"+Code+"',0,0,0,'"+regionid+"','"+edtlong.getText().toString()+"','"+edtlat.getText().toString()+"' ,'" +fullname+"')");
+                }else{
+                    stmtinsert1 = conn.prepareStatement("update AGENT set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + edtfname.getText() + "',DISPLAY_NAME='" + edtdname.getText() + "',LAST_NAME='" + edtlname.getText() + "',FULL_NAME='" + fullname + "' ,MSISDN='" + edtphonenbr + "',ADDRESS='" + edtaddress.getText() + "',EMAIL='" + edtemail + "',REGION='" + regionName +"', AGENT_IMAGE='"+AgentImage+"', AGENT_FRONT_ID='"+AgentFrontID+"', AGENT_BACK_ID='"+AgentBackID+"',REGION_ID='"+regionid+"' where AGENT_ID  ='" + globalagentID + "'");
+
+                }
+                try {
+                    stmtinsert1.executeUpdate();
+                    createandSaveMSISDNandPIN();
+                    OfflineAgent.delete();
+
+                    //thread to send images to sftp
+
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                try {
+
+                    stmtinsert1.close();
+                    conn.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    });
+
 
 }
