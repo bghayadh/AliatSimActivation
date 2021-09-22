@@ -28,66 +28,13 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_activity);
 
-
-
-
-        new Handler().postDelayed(new Runnable() {
+        Handler handler = new Handler();
+        handler.post(new Runnable() {
             @Override
             public void run() {
-                File file = new File(getApplicationContext().getFilesDir(), "MSISDN.txt");
-                if(file.exists()){
-                    login="login";
-                    StringBuilder text = new StringBuilder();
-
-                    try {
-                        FileInputStream fIn = openFileInput("MSISDN.txt");
-                        int c;
-                        String temp = "";
-
-                        while ((c = fIn.read()) != -1) {
-                            temp = temp + Character.toString((char) c);
-                        }
-                        text.append(temp);
-                        text.append('\n');
-
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    RegisterResult = text.toString();
-                    data=RegisterResult.split(":");
-                    agentNumber=data[0];
-                }else{
-                    login="0";
-                    agentNumber="";
-                }
-
-                ConnectivityManager connMgr = (ConnectivityManager) SplashActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-                NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-
-                if (networkInfo != null && networkInfo.isConnected()){
-                    globalMode="Online";
-
-                    boolean flg=false;
-                    if(flg=connecttoDB()==true){
-                        DBMode="0";
-                    }else{
-                        DBMode="-100";
-                    }
-                }else{
-                    globalMode="Offline";
-                }
-                Intent i=new Intent(getApplicationContext(),AgentLogin.class);
-                i.putExtra("login",login);
-                i.putExtra("globalMode",globalMode);
-                i.putExtra("db-offline-to-main",DBMode);
-                i.putExtra("agentNumber",agentNumber);
-                startActivity(i);
-                finish();
+                thread1.start();
             }
-        },SPLASH_TIME_OUT);
+        });
     }
 
 
@@ -129,4 +76,61 @@ public class SplashActivity extends AppCompatActivity {
         }
         return connectflag;
     }
+    Thread thread1 = new Thread(new Runnable() {
+
+        @Override
+        public void run() {
+            File file = new File(getApplicationContext().getFilesDir(), "MSISDN.txt");
+            if(file.exists()){
+                login="login";
+                StringBuilder text = new StringBuilder();
+
+                try {
+                    FileInputStream fIn = openFileInput("MSISDN.txt");
+                    int c;
+                    String temp = "";
+
+                    while ((c = fIn.read()) != -1) {
+                        temp = temp + Character.toString((char) c);
+                    }
+                    text.append(temp);
+                    text.append('\n');
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                RegisterResult = text.toString();
+                data=RegisterResult.split(":");
+                agentNumber=data[0];
+            }else{
+                login="0";
+                agentNumber="";
+            }
+            ConnectivityManager connMgr = (ConnectivityManager) SplashActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+            if (networkInfo != null && networkInfo.isConnected()){
+                globalMode="Online";
+
+                boolean flg=false;
+                if(flg=connecttoDB()==true){
+                    DBMode="0";
+                }else{
+                    DBMode="-100";
+                }
+            }else{
+                globalMode="Offline";
+            }
+            Intent i=new Intent(getApplicationContext(),AgentLogin.class);
+            i.putExtra("login",login);
+            i.putExtra("globalMode",globalMode);
+            i.putExtra("db-offline-to-main",DBMode);
+            i.putExtra("agentNumber",agentNumber);
+            startActivity(i);
+            finish();
+        }
+    });
 }
