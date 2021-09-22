@@ -30,14 +30,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class AgentLogin extends AppCompatActivity {
-    private Button btnlogin,BtnData;
-    private TextView txtmsisdn,txtpin,txtwait;
-    private EditText editmsisdn,editpin;
-    private String agentNumber,RegisterResult,s0,GSTATUS,GPIN;
-    private String login="0",agentstatus,filepincode;
+    private Button btnlogin, BtnData,BtnExit;
+    private TextView txtmsisdn, txtpin;
+    private EditText editmsisdn, editpin;
+    private String agentNumber, RegisterResult, DBMode,globalMode,GSTATUS,GPIN;
+    private String login = "0", agentstatus, filepincode;
     private String[] data;
     private Connection conn;
-    private boolean connectflag=false;
+    private boolean connectflag = false;
 
 
     @Override
@@ -52,75 +52,175 @@ public class AgentLogin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agent_login);
 
-        btnlogin=findViewById(R.id.signup);
-        editmsisdn=findViewById(R.id.editmsisdn);
-        editpin=findViewById(R.id.editpin);
-        txtmsisdn=findViewById(R.id.txtmsisdn);
-        txtpin=findViewById(R.id.txtpincode);
-        txtwait=findViewById(R.id.txtwait);
-        BtnData=findViewById(R.id.BtnData);
-        Intent i=this.getIntent();
-        login=i.getStringExtra("login");
+        btnlogin = findViewById(R.id.signup);
+        editmsisdn = findViewById(R.id.editmsisdn);
+        editpin = findViewById(R.id.editpin);
+        txtmsisdn = findViewById(R.id.txtmsisdn);
+        txtpin = findViewById(R.id.txtpincode);
+        BtnData = findViewById(R.id.BtnData);
+        BtnExit= findViewById(R.id.BtnExit);
 
-        ConnectivityManager connMgr = (ConnectivityManager) getApplicationContext ( )
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        Intent i = this.getIntent();
+        login = i.getStringExtra("login");
+        agentNumber=i.getStringExtra("agentNumber");
+        globalMode=i.getStringExtra("globalMode");
+        DBMode=i.getStringExtra("db-offline-to-main");
 
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        System.out.println("login : "+login);
+        System.out.println("agentNumber : "+agentNumber);
+        System.out.println("globalMode : "+globalMode);
+        System.out.println("DBMode : "+DBMode);
 
 
-        if (networkInfo != null && networkInfo.isConnected() ) {
-            thread1.start();
-        } else {
-            if(login==null || login.equalsIgnoreCase("login")) {
+        if(globalMode.equalsIgnoreCase("Online")) {
+            if (DBMode.equalsIgnoreCase("0")){
+                getStatusPin();
+                if(GSTATUS==null && GPIN==null){
+                    GSTATUS="0";
+                    GPIN="0";
+                }
+            System.out.println("GSTATUS :" + GSTATUS);
+            System.out.println("GPIN :" + GPIN);
+            File file = new File(getApplicationContext().getFilesDir(), "MSISDN.txt");
+            if (file.exists()) {
+                RegisterResult = getagentpinnumber();
+                //split the line through : and set them into the edittexts of msisdn and pin
+                String[] data = RegisterResult.split(":");
+                filepincode = data[1];
+                if (GSTATUS.equalsIgnoreCase("Activated") && filepincode.toString().trim().equalsIgnoreCase(GPIN)) {
+
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.putExtra("globalMode", globalMode);
+                    intent.putExtra("db-offline-to-main", DBMode);
+                    intent.putExtra("agentNumber", agentNumber);
+                    startActivity(intent);
+                    }else{
+                    Toast.makeText(getApplicationContext(), "You are not activated", Toast.LENGTH_LONG).show();
+                }
+                }
+            }else{
                 File file = new File(getApplicationContext().getFilesDir(), "MSISDN.txt");
-                if(file.exists()){
-                    login="login";
-                    RegisterResult = getagentpinnumber();
+                if (file.exists()) {
+                    String RegisterResult = getagentpinnumber();
                     //split the line through : and set them into the edittexts of msisdn and pin
                     String[] data = RegisterResult.split(":");
-                    agentNumber= data[0];
                     filepincode = data[1];
-                    System.out.println("agent Number : "+ agentNumber);
-                    editmsisdn.setText(agentNumber);
-                    editmsisdn.setEnabled(false);
-                    if (filepincode.toString().trim().equalsIgnoreCase("PIN")) {
-                         Toast.makeText(AgentLogin.this, "YOU ARE NOT APPROVED YET", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Intent i1 = new Intent(getApplicationContext(), MainActivity.class);
-                        i1.putExtra("db-offline-to-main", "0");
-                        i1.putExtra("globalMode", "Offline");
-                        i1.putExtra("agentNumber", agentNumber);
-                        startActivity(i1);
+                    Toast.makeText(getApplicationContext(), "You Don't have reachability", Toast.LENGTH_LONG).show();
+                    if (!filepincode.trim().toString().equalsIgnoreCase("PIN")) {
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.putExtra("globalMode", globalMode);
+                        intent.putExtra("db-offline-to-main", DBMode);
+                        intent.putExtra("agentNumber", agentNumber);
+                        startActivity(intent);
+                    }else{
+                        Toast.makeText(getApplicationContext(),"Not Activated yet !",Toast.LENGTH_LONG).show();
+
                     }
-                }else {
-                    login="0";
                 }
             }
+        }else{
+            Toast.makeText(getApplicationContext(),"You are offline",Toast.LENGTH_LONG).show();
+            File file = new File(getApplicationContext().getFilesDir(), "MSISDN.txt");
+            if (file.exists()) {
+                String RegisterResult = getagentpinnumber();
+                //split the line through : and set them into the edittexts of msisdn and pin
+                String[] data = RegisterResult.split(":");
+                filepincode = data[1];
+                if (!filepincode.trim().toString().equalsIgnoreCase("PIN")) {
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.putExtra("globalMode", globalMode);
+                    intent.putExtra("db-offline-to-main", DBMode);
+                    intent.putExtra("agentNumber", agentNumber);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(getApplicationContext(),"Not Activated yet !",Toast.LENGTH_LONG).show();
 
+                }
+            }
         }
 
+        if(login.equalsIgnoreCase("0")){
+            txtmsisdn.setVisibility(View.INVISIBLE);
+            txtpin.setVisibility(View.INVISIBLE);
+            editmsisdn.setVisibility(View.INVISIBLE);
+            editpin.setVisibility(View.INVISIBLE);
+        }else{
+            btnlogin.setText("LOGIN");
+            editmsisdn.setText(agentNumber);
+            editmsisdn.setEnabled(false);
+        }
+
+        BtnExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                finishAffinity();
+            }
+        });
 
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                txtwait.setText("Please wait");
-                thread3.start();
+                if(login.equalsIgnoreCase("0")){
+                    Intent intent = new Intent(getApplicationContext(),AgentRegistration.class);
+                    intent.putExtra("globalMode",globalMode);
+                    intent.putExtra("db-offline-to-main",DBMode);
+                    startActivity(intent);
+                }else{
+                    getStatusPin();
+                    if(GSTATUS.equalsIgnoreCase("Activated") && editpin.getText().toString().equalsIgnoreCase(GPIN)){
+                       try{
+                        File file = new File(getApplicationContext().getFilesDir(), "MSISDN.txt");
+
+                        FileInputStream is;
+                        BufferedReader reader;
+                        is = new FileInputStream(file);
+                        reader = new BufferedReader(new InputStreamReader(is));
+                        String line = reader.readLine();
+                        String OldContent=null;
+                        while(line != null){
+                            if (OldContent==null) {
+                                OldContent = line+System.lineSeparator();
+                            } else {
+                                OldContent = OldContent+line+System.lineSeparator(); }
+                            line = reader.readLine();
+
+                            if(OldContent.contains("PIN")) {
+                                String newContent = OldContent.replaceAll("PIN",editpin.getText().toString());
+                                FileWriter fw = new FileWriter(file.getAbsoluteFile());
+                                BufferedWriter bw = new BufferedWriter(fw);
+                                bw.write(newContent.toString());
+                                bw.close();
+                            }
+
+
+                        }
+                        reader.close();
+
+
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                        intent.putExtra("globalMode",globalMode);
+                        intent.putExtra("db-offline-to-main",DBMode);
+                        intent.putExtra("agentNumber",agentNumber);
+                        startActivity(intent);
+                    }else{
+                        if(! editpin.getText().toString().trim().equalsIgnoreCase(GPIN)){
+                            Toast.makeText(getApplicationContext(),"Invalid Pin",Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(getApplicationContext(),"Not Activated yet !",Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                }
             }
         });
 
-
-        //check the existence of the file and disable the edittexts
-        try {
-
-
-            File fileDir1 = new File(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "Offlinedata.txt");
-            File file1 = new File(getApplicationContext().getFilesDir(), "Offlinedata.txt");
-            if (file1.exists()) {
-                BtnData.setVisibility(View.VISIBLE); //SHOW the button
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        File file = new File(getApplicationContext().getFilesDir(), "Offlinedata.txt");
+        if(file.exists()){
+            BtnData.setVisibility(View.VISIBLE);
         }
 
         BtnData.setOnClickListener(new View.OnClickListener() {
@@ -171,12 +271,52 @@ public class AgentLogin extends AppCompatActivity {
                 intent.putExtra("front",k);
                 intent.putExtra("back",l);
                 intent.putExtra("message_key", "1");
+                intent.putExtra("globalMode", globalMode);
+                intent.putExtra("db-offline-to-main", DBMode);
                 startActivity(intent);
             }
         });
 
+
     }
 
+    public boolean connecttoDB() {
+        // connect to DB
+        OraDB oradb= new OraDB();
+        String url = oradb.getoraurl ();
+        String userName = oradb.getorausername ();
+        String password = oradb.getorapwd ();
+        try {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            try {
+                //Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+                conn = DriverManager.getConnection(url, userName, password);
+                if (conn != null) {
+                    connectflag = true;
+                } else {
+                    connectflag = false;
+                }
+
+                //Toast.makeText (MainActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
+            } catch (SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
+                System.out.println("error is: " + e.toString());
+                //Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
+                connectflag = false;
+            } /*catch (IllegalAccessException e) {
+            System.out.println("error is: " +e.toString());
+            Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();
+            connectflag=false;
+        }*/ catch (Exception e) {
+                System.out.println("error is: " + e.toString());
+                //Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
+                connectflag = false;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return connectflag;
+    }
 
     public void getStatusPin()
     {
@@ -246,7 +386,7 @@ public class AgentLogin extends AppCompatActivity {
                 try {
                     if (!rs2.next()) break;
                     GSTATUS = (rs2.getString("STATUS"));
-                  } catch (SQLException throwables) {
+                } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
 
@@ -262,48 +402,9 @@ public class AgentLogin extends AppCompatActivity {
                 throwables.printStackTrace();
             }
 
-        }else {
-            GSTATUS = "Offline";
         }
 
-    }
 
-    public boolean connecttoDB() {
-        // connect to DB
-        OraDB oradb= new OraDB();
-        String url = oradb.getoraurl ();
-        String userName = oradb.getorausername ();
-        String password = oradb.getorapwd ();
-        try {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-            try {
-                //Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
-                conn = DriverManager.getConnection(url, userName, password);
-                if (conn != null) {
-                    connectflag = true;
-                } else {
-                    connectflag = false;
-                }
-
-                //Toast.makeText (MainActivity.this,"Connected to the database",Toast.LENGTH_SHORT).show ();
-            } catch (SQLException e) { //catch (IllegalArgumentException e)       e.getClass().getName()   catch (Exception e)
-                System.out.println("error is: " + e.toString());
-                //Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
-                connectflag = false;
-            } /*catch (IllegalAccessException e) {
-            System.out.println("error is: " +e.toString());
-            Toast.makeText (getApplicationContext(),"" +e.toString(),Toast.LENGTH_SHORT).show ();
-            connectflag=false;
-        }*/ catch (Exception e) {
-                System.out.println("error is: " + e.toString());
-                //Toast.makeText(getApplicationContext(), "" + e.toString(), Toast.LENGTH_SHORT).show();
-                connectflag = false;
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return connectflag;
     }
 
     public String getagentpinnumber() {
@@ -330,169 +431,4 @@ public class AgentLogin extends AppCompatActivity {
         return result;
     }
 
-    Thread thread1 = new Thread() {
-        @Override
-        public void run() {
-            runOnUiThread(new Runnable(){
-                @Override
-                public void run() {
-
-                    if(login==null || login.equalsIgnoreCase("login")){
-                        File file = new File(getApplicationContext().getFilesDir(), "MSISDN.txt");
-
-                        if(file.exists()){
-                            login="login";
-                            RegisterResult = getagentpinnumber();
-                            System.out.println("R.R : "+ RegisterResult);
-                            //split the line through : and set them into the edittexts of msisdn and pin
-                            String[] data = RegisterResult.split(":");
-                            agentNumber= data[0];
-                            filepincode = data[1].trim();
-                            System.out.println("agent Number : "+ agentNumber);
-                            editmsisdn.setText(agentNumber);
-                            editmsisdn.setEnabled(false);
-
-                            System.out.println("filepincode" +filepincode);
-                            //read offline file
-                            File file1 = new File(getApplicationContext().getFilesDir(), "Offlinedata.txt");
-                            if(file1.exists()){
-                                Toast.makeText(getApplicationContext(),"You Must Complete Your Registration First",Toast.LENGTH_LONG).show();
-                                btnlogin.setEnabled(false);
-                            } else {
-                                // check to go tomainactivity if activate and has pin
-                                getStatusPin();
-                                agentstatus = GSTATUS;
-                                System.out.println("agentstatus" + agentstatus);
-                            //    if(agentstatus.equalsIgnoreCase("Activate") && filepincode != "PIN")
-
-                                // here if no reachability to DB
-                                if (agentstatus.equalsIgnoreCase("Offline")) {
-                                    Intent i1 = new Intent(getApplicationContext(), MainActivity.class);
-                                    i1.putExtra("db-offline-to-main", "-100");
-                                    i1.putExtra("globalMode", "Online");
-                                    i1.putExtra("agentNumber", agentNumber);
-                                    startActivity(i1);
-                                } else {
-                                     // if we have DB access
-                                     if (agentstatus.equalsIgnoreCase("Activate") && ! filepincode.trim().equalsIgnoreCase("PIN") ) {
-                                        Intent i1 = new Intent(getApplicationContext(), MainActivity.class);
-                                        i1.putExtra("db-offline-to-main", "1");
-                                        i1.putExtra("globalMode", "Online");
-                                        i1.putExtra("agentNumber", agentNumber);
-                                        startActivity(i1);
-                                    } else {
-                                        Toast.makeText(getApplicationContext(), "You account is not activated yet", Toast.LENGTH_LONG).show();
-                                    }
-                                }
-
-
-                            }
-
-                        }else {
-                            login = "0";
-
-                        }
-                    }
-
-                    if(login.equalsIgnoreCase("login")){
-                        btnlogin.setText("LOGIN");
-                    }else{
-                        editpin.setVisibility(View.GONE);
-                        editmsisdn.setVisibility(View.GONE);
-                        txtpin.setVisibility(View.GONE);
-                        txtmsisdn.setVisibility(View.GONE);
-                    }
-
-
-                }
-            });
-        }
-    };
-
-    Thread thread3 = new Thread() {
-        @Override
-        public void run() {
-            runOnUiThread(new Runnable(){
-                @Override
-                public void run() {
-
-                    getStatusPin();
-                    agentstatus=GSTATUS;
-                    String code = editpin.getText().toString();
-                    String sts = "Activate";
-
-                    System.out.println("login is now "+login);
-                    System.out.println("code is now "+code);
-                    System.out.println("agentstatus is now "+agentstatus);
-                    if(login.equalsIgnoreCase("login") && code.equalsIgnoreCase(GPIN) && agentstatus.equalsIgnoreCase(sts)) {
-
-                        try {
-
-                            File file = new File(getApplicationContext().getFilesDir(), "MSISDN.txt");
-
-                            FileInputStream is;
-                            BufferedReader reader;
-                            is = new FileInputStream(file);
-                            reader = new BufferedReader(new InputStreamReader(is));
-                            String line = reader.readLine();
-                            String OldContent=null;
-                            while(line != null){
-                                if (OldContent==null) {
-                                    OldContent = line+System.lineSeparator();
-                                } else {
-                                    OldContent = OldContent+line+System.lineSeparator(); }
-                                line = reader.readLine();
-
-                                if(OldContent.contains("PIN")) {
-                                    String newContent = OldContent.replaceAll("PIN",editpin.getText().toString());
-                                    FileWriter fw = new FileWriter(file.getAbsoluteFile());
-                                    BufferedWriter bw = new BufferedWriter(fw);
-                                    bw.write(newContent.toString());
-                                    bw.close();
-                                }
-
-
-                            }
-                            reader.close();
-
-
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
-                        Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                        i.putExtra("db-offline-to-main", "1");
-                        i.putExtra("globalMode", "Online");
-                        i.putExtra("agentNumber", agentNumber);
-                        startActivity(i);
-
-                    } else {
-                        System.out.println("code is now "+code);
-                        System.out.println("GSTATUS is now "+GSTATUS);
-                        System.out.println("GPIN is now "+GPIN);
-                        if (! code.equalsIgnoreCase("")) {
-                            if (code.equalsIgnoreCase(GPIN)) {
-                                Toast.makeText(AgentLogin.this, "YOU ARE NOT APPROVED YET", Toast.LENGTH_SHORT).show();
-                                startActivity(getIntent());
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Invalid PINCODE", Toast.LENGTH_LONG).show();
-                                startActivity(getIntent());
-                            }
-                        }
-                    }
-                    if(login.equalsIgnoreCase("0")){
-                        Intent i;
-                        if(connectflag==false) {
-                             i = new Intent(getApplicationContext(), AgentRegistration.class);
-                             i.putExtra("message_key", "-100");
-                        } else {
-                             i = new Intent(getApplicationContext(), AgentRegistration.class);
-                             i.putExtra("message_key", "1");
-                        }
-                        startActivity(i);
-                    }
-
-                }
-            });
-        }
-    };
 }

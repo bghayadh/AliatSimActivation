@@ -40,6 +40,17 @@
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textAlignment="center"/>
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/btnMode1"
+                android:layout_marginEnd="60dp"
+                android:layout_marginTop="30dp"
+                android:layout_alignParentRight="true"
+                app:cornerRadius="50dp"
+                style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+                android:backgroundTint="@color/icontelkom_background">
+            </com.google.android.material.button.MaterialButton>
 
             <com.google.android.material.button.MaterialButton
                 android:layout_width="20dp"
@@ -378,7 +389,7 @@
             android:layout_marginEnd="15dp"
             android:maxLines="1"
             android:maxLength="50"
-            android:enabled="false"
+            android:inputType="textPersonName"
             android:background="@null"/>
 
 

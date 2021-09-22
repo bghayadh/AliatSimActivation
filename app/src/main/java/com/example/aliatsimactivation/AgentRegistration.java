@@ -66,11 +66,12 @@ public class AgentRegistration extends AppCompatActivity {
     private Connection conn;
     private int count=0;
     private File OfflineAgent;
-    private String fileContents,fileContents2,regionName;
-    private String AgentImage,AgentFrontID,AgentBackID,Code,value;
+    private String fileContents,fileContents2,regionName,fullname;
+    private String AgentImage,AgentFrontID,AgentBackID,Code,value,globalMode,DBMode,PIN;
     private boolean connectflag=false;
     private String secondfileContents,secondfileContents2,secondfileContents3,secondfileContents4,secondfileContents5,secondfileContents6,secondfileContent7,secondfileContent8,secondfileContent9,secondfileContent10;
-    private String gimagestatus,gfrontstatus,gbackstatus,globalagentID="0",modestatus="0";
+    private String gimagestatus,gfrontstatus,gbackstatus,globalagentID="0";
+    private String regionid="0";
     private String file = "MSISDN.txt";
     private String secondfile = "Offlinedata.txt";
     private boolean regionflag=false;
@@ -209,9 +210,6 @@ public class AgentRegistration extends AppCompatActivity {
         textstatus=findViewById(R.id.textstatus);
         txtlinear=findViewById(R.id.lineartxtmsg);
 
-        Intent i=this.getIntent();
-        modestatus=i.getStringExtra("message_key");
-
         ActivityCompat.requestPermissions(AgentRegistration.this, new String[]{
                 Manifest.permission.CAMERA}, 100);
         ActivityCompat.requestPermissions(AgentRegistration.this, new String[]{
@@ -219,18 +217,27 @@ public class AgentRegistration extends AppCompatActivity {
         ActivityCompat.requestPermissions(AgentRegistration.this, new String[]{
                 Manifest.permission.CAMERA}, 102);
 
-       /* ArrayList<String> my_array = new ArrayList<String>();
-        my_array.add("NONE");
-        ArrayAdapter my_Adapter = new ArrayAdapter(this, R.layout.spinner_row, my_array);
-        spregion.setAdapter(my_Adapter);*/
 
 
-        thread1.start();
 
         OfflineAgent=new File(getApplicationContext().getFilesDir(), "Offlinedata.txt");
 
         //case of resend data of agent when he save his data locally:
         Intent intent=getIntent();
+        globalMode=intent.getStringExtra("globalMode");
+        DBMode=intent.getStringExtra("db-offline-to-main");
+
+        if(globalMode.equalsIgnoreCase("Offline") || DBMode.equalsIgnoreCase("-100")){
+            verify.setText("SAVE");
+        }
+
+        if(DBMode.equalsIgnoreCase("-100")){
+            txtlinear.setVisibility(View.INVISIBLE);
+        }else {
+            thread1.start();
+        }
+        System.out.println(globalMode+" "+DBMode);
+
         File file1 = new File(getApplicationContext().getFilesDir(), "Offlinedata.txt");
         if(file1.exists()){
             edtfname.setText(intent.getStringExtra("fname"));
@@ -319,6 +326,8 @@ public class AgentRegistration extends AppCompatActivity {
             }
         });
 
+        //Generate Pin
+        PIN=generateSessionKey(4);
 
         // Send code for verification
         Code=generateSessionKey(6);
@@ -363,17 +372,15 @@ public class AgentRegistration extends AppCompatActivity {
             }
         });
 
+
+        System.out.println("you are here now ");
+        txtlinear.setVisibility(View.GONE);
         verify.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View v) {
 
-                ConnectivityManager connMgr = (ConnectivityManager) getApplicationContext()
-                        .getSystemService(Context.CONNECTIVITY_SERVICE);
-
-                NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-                //validation for network connection on the wifi or mobile data
-                if (networkInfo != null && networkInfo.isConnected()) {
+              if(globalMode.equalsIgnoreCase("Online")){
 
 
                     try {
@@ -419,46 +426,48 @@ public class AgentRegistration extends AppCompatActivity {
 
 
                         } else{
-                            AlertDialog.Builder mydialog = new AlertDialog.Builder(AgentRegistration.this);
-                            LayoutInflater inflater = getLayoutInflater();
-                            View dialogLayout = inflater.inflate(R.layout.alert_dialog_verification, null);
-                            mydialog.setTitle("Enter The Code");
 
-                            EditText edt1 = dialogLayout.findViewById(R.id.edt1);
-                            EditText edt2 = dialogLayout.findViewById(R.id.edt2);
-                            EditText edt3 = dialogLayout.findViewById(R.id.edt3);
-                            EditText edt4 = dialogLayout.findViewById(R.id.edt4);
-                            EditText edt5 = dialogLayout.findViewById(R.id.edt5);
-                            EditText edt6 = dialogLayout.findViewById(R.id.edt6);
-                            String A = String.valueOf(f);
-                            String B = String.valueOf(e);
-                            String C = String.valueOf(d);
-                            String D = String.valueOf(c);
-                            String E = String.valueOf(b);
-                            String F = String.valueOf(a);
-                            edt1.setText(A);
-                            edt2.setText(B);
-                            edt3.setText(C);
-                            edt4.setText(D);
-                            edt5.setText(E);
-                            edt6.setText(F);
+                            Date date = new Date();
+                            Calendar calendar = new GregorianCalendar();
+                            calendar.setTime(date);
+                            int year = calendar.get(Calendar.YEAR);
+                            String agentID = "AG_" + year + "_";
 
-                            mydialog.setPositiveButton("Verify", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
 
-                                    /////Saving Data into table Agent and send photos to SFTP and save local file
-                                    Toast.makeText(AgentRegistration.this, "In process please wait", Toast.LENGTH_LONG).show();
-                                    String regionid="0";
-                                    Date date = new Date();
-                                    Calendar calendar = new GregorianCalendar();
-                                    calendar.setTime(date);
-                                    int year = calendar.get(Calendar.YEAR);
-                                    String agentID = "AG_" + year + "_";
-                                    PreparedStatement stmtinsert1 = null;
-                                    Statement stmt1 = null;
-                                    boolean flg = false;
-                                    if ((flg = connecttoDB()) == true) {
+
+                            if (DBMode.equalsIgnoreCase("0")) {
+                                AlertDialog.Builder mydialog = new AlertDialog.Builder(AgentRegistration.this);
+                                LayoutInflater inflater = getLayoutInflater();
+                                View dialogLayout = inflater.inflate(R.layout.alert_dialog_verification, null);
+                                mydialog.setTitle("Enter The Code");
+
+                                EditText edt1 = dialogLayout.findViewById(R.id.edt1);
+                                EditText edt2 = dialogLayout.findViewById(R.id.edt2);
+                                EditText edt3 = dialogLayout.findViewById(R.id.edt3);
+                                EditText edt4 = dialogLayout.findViewById(R.id.edt4);
+                                EditText edt5 = dialogLayout.findViewById(R.id.edt5);
+                                EditText edt6 = dialogLayout.findViewById(R.id.edt6);
+                                String A = String.valueOf(f);
+                                String B = String.valueOf(e);
+                                String C = String.valueOf(d);
+                                String D = String.valueOf(c);
+                                String E = String.valueOf(b);
+                                String F = String.valueOf(a);
+                                edt1.setText(A);
+                                edt2.setText(B);
+                                edt3.setText(C);
+                                edt4.setText(D);
+                                edt5.setText(E);
+                                edt6.setText(F);
+
+                                mydialog.setPositiveButton("Verify", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        fullname = edtfname.getText().toString() + " " + edtlname.getText().toString();
+                                        /////Saving Data into table Agent and send photos to SFTP and save local file
+                                        TextView txt1 = dialogLayout.findViewById(R.id.txt1);
+                                        txt1.setVisibility(View.VISIBLE);
+                                        Toast.makeText(AgentRegistration.this, "In process please wait", Toast.LENGTH_LONG).show();
                                         if (regionName.equalsIgnoreCase("NONE")) {
                                             regionid ="0";
                                         } else {
@@ -468,6 +477,8 @@ public class AgentRegistration extends AppCompatActivity {
                                         System.out.println(regionid);
                                         System.out.println(spregion.getSelectedItem().toString());
                                         try {
+
+                                            PreparedStatement stmtinsert1 = null;
                                             if (globalagentID.equalsIgnoreCase("0") || OfflineAgent.exists()) {
                                                 //sending notification with a verification code
                                                 NotificationCompat.Builder builder = new NotificationCompat.Builder(AgentRegistration.this, "My Notification");
@@ -480,6 +491,7 @@ public class AgentRegistration extends AppCompatActivity {
                                                 managerCompat.notify(1, builder.build());
 
 
+                                                Statement stmt1 = null;
 
                                                 stmt1 = conn.createStatement();
                                                 String sqlStmt = "select AGENT_SEQ.nextval as nbr from dual";
@@ -506,10 +518,10 @@ public class AgentRegistration extends AppCompatActivity {
 
                                                 //This part needs a lot of changes
                                                 //save agentlogin in Database
-                                                stmtinsert1 = conn.prepareStatement("insert into AGENT (AGENT_ID,FIRST_NAME,LAST_NAME,DISPLAY_NAME,ADDRESS,EMAIL,MSISDN,CREATE_DATE,LAST_MODIFIED_DATE,STATUS,PIN_CODE,REGION_NAME,AGENT_IMAGE,AGENT_FRONT_ID,AGENT_BACK_ID,VERIFICATION_CODE,AGENT_IMAGE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS,REGION_ID,LONGITUDE,LATITUDE) values " +
-                                                        "('"+globalagentID+"','"+edtfname.getText().toString()+"','"+edtlname.getText().toString()+"','"+edtdname.getText().toString()+"','"+edtaddress.getText().toString()+"','"+edtemail.getText().toString()+"','"+edtphonenbr.getText().toString()+"',sysdate,sysdate,'"+edtstatus.getText().toString()+"',0,'"+ regionName +"','"+AgentImage+"','"+AgentFrontID+"','"+AgentBackID+"','"+Code+"',0,0,0,'"+regionid+"','"+edtlong.getText().toString()+"','"+edtlat.getText().toString()+"')");
+                                                stmtinsert1 = conn.prepareStatement("insert into AGENT (AGENT_ID,FIRST_NAME,LAST_NAME,DISPLAY_NAME,ADDRESS,EMAIL,MSISDN,CREATE_DATE,LAST_MODIFIED_DATE,STATUS,PIN_CODE,REGION_NAME,AGENT_IMAGE,AGENT_FRONT_ID,AGENT_BACK_ID,VERIFICATION_CODE,AGENT_IMAGE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS,REGION_ID,LONGITUDE,LATITUDE,FULL_NAME) values " +
+                                                        "('"+globalagentID+"','"+edtfname.getText().toString()+"','"+edtlname.getText().toString()+"','"+edtdname.getText().toString()+"','"+edtaddress.getText().toString()+"','"+edtemail.getText().toString()+"','"+edtphonenbr.getText().toString()+"',sysdate,sysdate,'"+edtstatus.getText().toString()+"','"+PIN+"','"+ regionName +"','"+AgentImage+"','"+AgentFrontID+"','"+AgentBackID+"','"+Code+"',0,0,0,'"+regionid+"','"+edtlong.getText().toString()+"','"+edtlat.getText().toString()+"' ,'" +fullname+"')");
                                             }else{
-                                                stmtinsert1 = conn.prepareStatement("update AGENT set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + edtfname.getText() + "',DISPLAY_NAME='" + edtdname.getText() + "',LAST_NAME='" + edtlname.getText() + "',MSISDN='" + edtphonenbr + "',ADDRESS='" + edtaddress.getText() + "',EMAIL='" + edtemail + "',REGION='" + regionName +"', AGENT_IMAGE='"+AgentImage+"', AGENT_FRONT_ID='"+AgentFrontID+"', AGENT_BACK_ID='"+AgentBackID+"',REGION_ID='"+regionid+"' where AGENT_ID  ='" + globalagentID + "'");
+                                                stmtinsert1 = conn.prepareStatement("update AGENT set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + edtfname.getText() + "',DISPLAY_NAME='" + edtdname.getText() + "',LAST_NAME='" + edtlname.getText() + "',FULL_NAME='" + fullname + "' ,MSISDN='" + edtphonenbr + "',ADDRESS='" + edtaddress.getText() + "',EMAIL='" + edtemail + "',REGION='" + regionName +"', AGENT_IMAGE='"+AgentImage+"', AGENT_FRONT_ID='"+AgentFrontID+"', AGENT_BACK_ID='"+AgentBackID+"',REGION_ID='"+regionid+"' where AGENT_ID  ='" + globalagentID + "'");
 
                                             }
                                             try {
@@ -520,7 +532,7 @@ public class AgentRegistration extends AppCompatActivity {
                                                 //thread to send images to sftp
                                                 if (gimagestatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0") || gbackstatus.equalsIgnoreCase("0")) {
                                                     Toast.makeText(AgentRegistration.this, "Uploading Photos started", Toast.LENGTH_LONG).show();
-                                                     threadimage.start();
+                                                    threadimage.start();
                                                 }
                                                 Toast.makeText(AgentRegistration.this, "Uploading Photos Completed", Toast.LENGTH_LONG).show();
                                             } catch (SQLException throwables) {
@@ -542,85 +554,95 @@ public class AgentRegistration extends AppCompatActivity {
                                         //if we have cnnection the value sent is 1
                                         Intent intent = new Intent(getApplicationContext(), AgentLogin.class);
                                         intent.putExtra("login","login");
+                                        intent.putExtra("globalMode",globalMode);
+                                        intent.putExtra("db-offline-to-main",DBMode);
+                                        intent.putExtra("agentNumber",edtphonenbr.getText().toString());
                                         startActivity(intent);
-                                    }else{
-                                        createandSaveOfflinedata();
-                                        createandSaveMSISDNandPIN();
-                                        Intent intent = new Intent(getApplicationContext(), AgentLogin.class);
-                                        startActivity(intent);
+
                                     }
-                                }
+                                });mydialog.setView(dialogLayout);
+                                mydialog.show();
+                                //sending notification with a verification code
+                                NotificationCompat.Builder builder = new NotificationCompat.Builder(AgentRegistration.this, "My Notification");
+                                builder.setContentTitle("Enter This Code to Verify your Registration");
+                                builder.setContentText(Code);
+                                builder.setSmallIcon(R.drawable.ic_baseline_message_24);
+                                builder.setAutoCancel(true);
 
-                            });
-                            mydialog.setView(dialogLayout);
-                            mydialog.show();
-                            //sending notification with a verification code
-                            NotificationCompat.Builder builder = new NotificationCompat.Builder(AgentRegistration.this, "My Notification");
-                            builder.setContentTitle("Enter This Code to Verify your Registration");
-                            builder.setContentText(Code);
-                            builder.setSmallIcon(R.drawable.ic_baseline_message_24);
-                            builder.setAutoCancel(true);
+                                NotificationManagerCompat managerCompat = NotificationManagerCompat.from(AgentRegistration.this);
+                                managerCompat.notify(1, builder.build());
 
-                            NotificationManagerCompat managerCompat = NotificationManagerCompat.from(AgentRegistration.this);
-                            managerCompat.notify(1, builder.build());
 
+                            }else {
+
+                                createandSaveOfflinedata();
+                                createandSaveMSISDNandPIN();
+                                Intent intent = new Intent(getApplicationContext(), AgentLogin.class);
+                                intent.putExtra("login","login");
+                                intent.putExtra("globalMode",globalMode);
+                                intent.putExtra("db-offline-to-main",DBMode);
+                                intent.putExtra("agentNumber",edtphonenbr.getText().toString());
+                                startActivity(intent);
+
+                            }
 
                         }
+
 
 
                     }catch (Exception e){
                         e.printStackTrace();
                     }
-                ///Offline Mode...
+                    ///Offline Mode...
                 }else {
-                    AlertDialog.Builder mydialog = new AlertDialog.Builder(AgentRegistration.this);
-                    LayoutInflater inflater = getLayoutInflater();
-                    View dialogLayout = inflater.inflate(R.layout.alert_dialog_verification, null);
-                    mydialog.setTitle("Enter The Code");
 
-                    EditText edt1 = dialogLayout.findViewById(R.id.edt1);
-                    EditText edt2 = dialogLayout.findViewById(R.id.edt2);
-                    EditText edt3 = dialogLayout.findViewById(R.id.edt3);
-                    EditText edt4 = dialogLayout.findViewById(R.id.edt4);
-                    EditText edt5 = dialogLayout.findViewById(R.id.edt5);
-                    EditText edt6 = dialogLayout.findViewById(R.id.edt6);
-                    String A = String.valueOf(f);
-                    String B = String.valueOf(e);
-                    String C = String.valueOf(d);
-                    String D = String.valueOf(c);
-                    String E = String.valueOf(b);
-                    String F = String.valueOf(a);
-                    edt1.setText(A);
-                    edt2.setText(B);
-                    edt3.setText(C);
-                    edt4.setText(D);
-                    edt5.setText(E);
-                    edt6.setText(F);
-                    mydialog.setPositiveButton("Verify", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            createandSaveMSISDNandPIN();
-                            createandSaveOfflinedata();
-                            Intent intent = new Intent(getApplicationContext(), AgentLogin.class);
-                            startActivity(intent);
-                        }
-                    });
-                    mydialog.setView(dialogLayout);
-                    mydialog.show();
+                  if (TextUtils.isEmpty(edtfname.getText())|| TextUtils.isEmpty(edtlname.getText()) || TextUtils.isEmpty(edtdname.getText()) || TextUtils.isEmpty(edtaddress.getText()) || TextUtils.isEmpty(edtemail.getText()) ||TextUtils.isEmpty(edtphonenbr.getText()) || TextUtils.isEmpty(AgentImage) || TextUtils.isEmpty(AgentFrontID) || TextUtils.isEmpty(AgentBackID) || TextUtils.isEmpty(edtlat.getText()) || TextUtils.isEmpty(edtlong.getText())) {
 
-                    //sending notification with a verification code
-                    NotificationCompat.Builder builder = new NotificationCompat.Builder(AgentRegistration.this, "My Notification");
-                    builder.setContentTitle("Enter This Code to Verify your Registration");
-                    builder.setContentText(Code);
-                    builder.setSmallIcon(R.drawable.ic_baseline_message_24);
-                    builder.setAutoCancel(true);
 
-                    NotificationManagerCompat managerCompat = NotificationManagerCompat.from(AgentRegistration.this);
-                    managerCompat.notify(1, builder.build());
-
+                      if (TextUtils.isEmpty(edtfname.getText())) {
+                          edtfname.setError("Enter First Name");
+                      }
+                      if (TextUtils.isEmpty(edtlname.getText())) {
+                          edtlname.setError("Enter Last Name");
+                      }
+                      if (TextUtils.isEmpty(edtdname.getText())) {
+                          edtdname.setError("Enter Display Name");
+                      }
+                      if (TextUtils.isEmpty(edtaddress.getText())) {
+                          edtaddress.setError("Enter Address");
+                      }
+                      if (TextUtils.isEmpty(edtemail.getText())) {
+                          edtemail.setError("Enter a Valid Email");
+                      }
+                      if (TextUtils.isEmpty(edtphonenbr.getText())) {
+                          edtphonenbr.setError("Enter Phone Number");
+                      }
+                      if (AgentImage==null) {
+                          BtnAgentImage.setError("Take a Photo");
+                      }
+                      if (AgentFrontID==null) {
+                          BtnFrontID.setError("Take a Photo");
+                      }
+                      if (AgentBackID==null) {
+                          BtnBackID.setError("Take a Photo");
+                      }
+                      if (TextUtils.isEmpty(edtlat.getText())) {
+                          edtlat.setError("Enter Latitude");
+                      }
+                      if (TextUtils.isEmpty(edtlong.getText())) {
+                          edtlong.setError("Enter Longitude");
+                      }
+                  } else {
+                      createandSaveOfflinedata();
+                      createandSaveMSISDNandPIN();
+                      Intent intent = new Intent(getApplicationContext(), AgentLogin.class);
+                      intent.putExtra("login", "login");
+                      intent.putExtra("globalMode", globalMode);
+                      intent.putExtra("db-offline-to-main", DBMode);
+                      intent.putExtra("agentNumber", edtphonenbr.getText().toString());
+                      startActivity(intent);
+                  }
                 }
-
-
             }
         });
 
@@ -755,62 +777,61 @@ public class AgentRegistration extends AppCompatActivity {
     }
 
     //return region names...
-    public ArrayList<String> GetRegions() {
+    public ArrayList<String> GetRegions()
+    {
         ArrayList<String> my_array = new ArrayList<String>();
-        boolean flg = false;
-        if (!modestatus.equalsIgnoreCase("-100")) {
-                    if ((flg = connecttoDB()) == true) {
-                        Statement stmt3 = null;
+        boolean flg=false;
+        if ((flg = connecttoDB()) == true) {
+            Statement stmt3 = null;
 
-                        try {
-                            stmt3 = conn.createStatement();
+            try {
+                stmt3 = conn.createStatement();
 
-                        } catch (SQLException throwables) {
-                            throwables.printStackTrace();
-                        }
-                        //select region names
-                        String sqlStmt1 = "SELECT REGION_NAME FROM REGION";
-                        ResultSet rs1 = null;
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            //select region names
+            String sqlStmt1 = "SELECT REGION_NAME FROM REGION";
+            ResultSet rs1 = null;
 
-                        try {
-                            rs1 = stmt3.executeQuery(sqlStmt1);
-                        } catch (SQLException throwables) {
-                            throwables.printStackTrace();
-                        }
-                        my_array.add("NONE");
-                        while (true) {
-                            try {
-                                if (!rs1.next()) break;
-                                value = (rs1.getString("REGION_NAME"));
-                                my_array.add(value);
+            try {
+                rs1 = stmt3.executeQuery(sqlStmt1);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            my_array.add("NONE");
+            while (true) {
+                try {
+                    if (!rs1.next()) break;
+                    value = (rs1.getString("REGION_NAME"));
+                    my_array.add(value);
 
-                            } catch (SQLException throwables) {
-                                throwables.printStackTrace();
-                            }
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
 
 
-                        }
+            }
 
-                        try {
-                            rs1.close();
-                        } catch (SQLException throwables) {
-                            throwables.printStackTrace();
-                        }
-                        try {
-                            stmt3.close();
-                            conn.close();
-                        } catch (SQLException throwables) {
-                            throwables.printStackTrace();
-                        }
-
-                    }
-
+            try {
+                rs1.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
             try {
-                txtlinear.setVisibility(View.GONE);
-            } catch (Exception e) {
-                System.out.println(e.toString());
+                stmt3.close();
+                conn.close ( );
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
+
+        }
+        try  {
+
+
+        }catch(Exception e) {
+            System.out.println(e.toString());
+        }
         return my_array;
     }
 
@@ -877,13 +898,13 @@ public class AgentRegistration extends AppCompatActivity {
     public void FillSpinner()
     {
 
-            ArrayList<String> my_array = new ArrayList<String>();
-            my_array = GetRegions();
+        ArrayList<String> my_array = new ArrayList<String>();
+        my_array = GetRegions();
 
-            if(my_array.size()>0) {
-                ArrayAdapter my_Adapter = new ArrayAdapter(this, R.layout.spinner_row, my_array);
-                spregion.setAdapter(my_Adapter);
-            }
+        if(my_array.size()>0) {
+            ArrayAdapter my_Adapter = new ArrayAdapter(this, R.layout.spinner_row, my_array);
+            spregion.setAdapter(my_Adapter);
+        }
 
     }
 

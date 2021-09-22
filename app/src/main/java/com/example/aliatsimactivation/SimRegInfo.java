@@ -76,7 +76,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     private int count;
     public Connection conn;
     private String globalsimid,simID;
-    private Button submit, frontid, backid,btnlvsimreg,btnclientimg;
+    private Button submit, frontid, backid,btnlvsimreg,btnclientimg,BtnMode1;
     private Button sign;
     private File file,OfflineFile;
     private String nationality = "";
@@ -303,6 +303,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         ussdview=findViewById(R.id.ussdview);
         btnMode=findViewById(R.id.btnMode);
         checkSim=findViewById(R.id.simulation);
+        BtnMode1=findViewById(R.id.btnMode1);
         sp.setEnabled(false);
 
         Date c = Calendar.getInstance().getTime();
@@ -324,10 +325,22 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         stroffile= intent.getStringExtra("db-offline-to-main");
         globalMode=intent.getStringExtra("globalMode");
         agentNumber=intent.getStringExtra("agentNumber");
+        String Off55 = intent.getStringExtra("offline5");
+        String myFileName1 = "SIM_" + Off55 + ".txt";
+        File directory1 = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+        File OfflineFile1 = new File(directory1,myFileName1);
+
         if (globalMode.equalsIgnoreCase("Online")) {
-            btnMode.setBackgroundColor(Color.BLUE);
+            btnMode.setBackgroundColor(Color.GREEN);
+            BtnMode1.setBackgroundColor(Color.BLUE);
+            if(stroffile.equalsIgnoreCase("-100") || OfflineFile1.exists()){
+                BtnMode1.setBackgroundColor(Color.GRAY);
+            }else{
+                BtnMode1.setBackgroundColor(Color.BLUE);
+            }
         }else {
-            btnMode.setBackgroundColor(Color.GRAY);
+            btnMode.setBackgroundColor(Color.RED);
+            BtnMode1.setBackgroundColor(Color.GRAY);
         }
 
 
