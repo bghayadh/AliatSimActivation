@@ -3,8 +3,6 @@ package com.example.aliatsimactivation;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,7 +11,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
@@ -232,14 +229,10 @@ public class AgentRegistration extends AppCompatActivity {
 
         if(globalMode.equalsIgnoreCase("Offline") || DBMode.equalsIgnoreCase("-100")){
             verify.setText("SAVE");
-            ArrayList<String> my_array = new ArrayList<String>();
-            my_array.add("NONE");
-            ArrayAdapter my_Adapter = new ArrayAdapter(this, R.layout.spinner_row, my_array);
-            spregion.setAdapter(my_Adapter);
         }
 
         if(DBMode.equalsIgnoreCase("-100")){
-
+            txtlinear.setVisibility(View.INVISIBLE);
         }else {
             thread1.start();
         }
@@ -381,44 +374,11 @@ public class AgentRegistration extends AppCompatActivity {
 
 
         System.out.println("you are here now ");
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-        {
-            NotificationChannel channel = new NotificationChannel("My Notification","My Notification", NotificationManager.IMPORTANCE_HIGH);
-            NotificationManager manager = getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(channel);
-        }
-
+        txtlinear.setVisibility(View.GONE);
         verify.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View v) {
-
-
-                // to validate if network connection are back
-                if(globalMode.equalsIgnoreCase("Offline")) {
-                    ConnectivityManager connMgr = (ConnectivityManager) getApplicationContext ( )
-                            .getSystemService(Context.CONNECTIVITY_SERVICE);
-
-                    NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-
-                    if (networkInfo != null && networkInfo.isConnected() ) {
-                        globalMode="Online" ;
-                        DBMode="0";
-                    }
-                }
-                // to validate if reachability are back
-                if (DBMode.equalsIgnoreCase("-100") && globalMode.equalsIgnoreCase("Online") ) {
-                        Toast.makeText(getApplicationContext(), "Please wait while saving and returning to agent login form", Toast.LENGTH_LONG).show();
-                    if ((connecttoDB()) == true) {
-                        globalMode = "Online";
-                        DBMode = "0";
-                        try {
-                            conn.close();
-                        } catch (SQLException throwables) {
-                            throwables.printStackTrace();
-                        }
-                    }
-                }
 
               if(globalMode.equalsIgnoreCase("Online")){
 
@@ -517,6 +477,7 @@ public class AgentRegistration extends AppCompatActivity {
                                         System.out.println(regionid);
                                         System.out.println(spregion.getSelectedItem().toString());
                                         try {
+
                                             PreparedStatement stmtinsert1 = null;
                                             if (globalagentID.equalsIgnoreCase("0") || OfflineAgent.exists()) {
                                                 //sending notification with a verification code
@@ -529,7 +490,7 @@ public class AgentRegistration extends AppCompatActivity {
                                                 NotificationManagerCompat managerCompat = NotificationManagerCompat.from(AgentRegistration.this);
                                                 managerCompat.notify(1, builder.build());
 
-                                                connecttoDB();
+
                                                 Statement stmt1 = null;
 
                                                 stmt1 = conn.createStatement();
@@ -859,7 +820,7 @@ public class AgentRegistration extends AppCompatActivity {
             }
             try {
                 stmt3.close();
-                conn.close();
+                conn.close ( );
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
@@ -915,13 +876,11 @@ public class AgentRegistration extends AppCompatActivity {
             }
             try {
                 rs1.close();
-
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
             try {
                 stmt3.close();
-                conn.close();
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
