@@ -416,7 +416,6 @@ public class AgentRegistration extends AppCompatActivity {
             @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View v) {
-
                 // to validate if network connection are back
                 if(globalMode.equalsIgnoreCase("Offline")) {
                     ConnectivityManager connMgr = (ConnectivityManager) getApplicationContext ( )
@@ -1110,5 +1109,6 @@ public class AgentRegistration extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
 
 }

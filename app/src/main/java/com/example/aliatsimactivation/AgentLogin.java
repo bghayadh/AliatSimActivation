@@ -49,24 +49,14 @@ public class AgentLogin extends AppCompatActivity {
     private boolean connectflag = false;
     protected PowerManager.WakeLock mWakeLock;
 
-    @Override
-    protected void onUserLeaveHint() {
-        super.onUserLeaveHint();
-        finishAffinity();
-    }
 
     @Override
     public void onBackPressed() {
         finishAffinity();
     }
 
-    @Override
-    protected void onRestart() {
-        this.recreate();
-        super.onRestart();
-    }
 
-    /// for lock and unlock power button
+   /* /// for lock and unlock power button
     @Override
     protected void onPause() {
         super.onPause();
@@ -85,7 +75,7 @@ public class AgentLogin extends AppCompatActivity {
             startActivity(checkingIntent);
             finish();
         }
-    }
+    }*/
 
 
     @SuppressLint("InvalidWakeLockTag")
