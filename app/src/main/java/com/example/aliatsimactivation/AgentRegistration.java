@@ -74,7 +74,7 @@ public class AgentRegistration extends AppCompatActivity {
     private boolean connectflag=false;
     private String secondfileContents,secondfileContents2,secondfileContents3,secondfileContents4,secondfileContents5,secondfileContents6,secondfileContent7,secondfileContent8,secondfileContent9,secondfileContent10;
     private String gimagestatus,gfrontstatus,gbackstatus,globalagentID="0";
-    private String regionid="0";
+    private String regionid="0",login,emailpattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";;
     private String file = "MSISDN.txt";
     private String secondfile = "Offlinedata.txt";
     private boolean regionflag=false;
@@ -188,6 +188,26 @@ public class AgentRegistration extends AppCompatActivity {
             }
         }
     }
+
+
+
+    @Override
+    public void onBackPressed() {
+        File file = new File(getApplicationContext().getFilesDir(), "MSISDN.txt");
+        if(file.exists()) {
+            login = "login";
+        }else {
+            login = "0";
+        }
+        Intent i=new Intent(getApplicationContext(),AgentLogin.class);
+        i.putExtra("login",login);
+        i.putExtra("globalMode",globalMode);
+        i.putExtra("db-offline-to-main",DBMode);
+        i.putExtra("agentNumber",edtphonenbr.getText().toString());
+        startActivity(i);
+        finish();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -233,7 +253,7 @@ public class AgentRegistration extends AppCompatActivity {
         if(globalMode.equalsIgnoreCase("Offline") || DBMode.equalsIgnoreCase("-100")){
             verify.setText("SAVE");
             ArrayList<String> my_array = new ArrayList<String>();
-            my_array.add("NONE");
+            my_array.add("None");
             ArrayAdapter my_Adapter = new ArrayAdapter(this, R.layout.spinner_row, my_array);
             spregion.setAdapter(my_Adapter);
         }
@@ -287,7 +307,7 @@ public class AgentRegistration extends AppCompatActivity {
             }
 
         }else {
-            regionName="NONE";
+            regionName="None";
         }
 
 
@@ -410,20 +430,6 @@ public class AgentRegistration extends AppCompatActivity {
                     }
                 }
 
-
-                // to validate if reachability are back
-                if (DBMode.equalsIgnoreCase("-100") && globalMode.equalsIgnoreCase("Online") ) {
-                    Toast.makeText(getApplicationContext(),"Please wait while saving and returning to agent login form",Toast.LENGTH_LONG).show();
-                    if ((connecttoDB()) == true) {
-                        globalMode="Online" ;
-                        DBMode="0";
-                    }
-                }
-
-
-
-
-
                 if(globalMode.equalsIgnoreCase("Online")){
 
 
@@ -431,8 +437,11 @@ public class AgentRegistration extends AppCompatActivity {
 
                         //validat that all fiedls not to be empty
 
-                        if (TextUtils.isEmpty(edtfname.getText())|| TextUtils.isEmpty(edtlname.getText()) || TextUtils.isEmpty(edtdname.getText()) || TextUtils.isEmpty(edtaddress.getText()) || TextUtils.isEmpty(edtemail.getText()) ||TextUtils.isEmpty(edtphonenbr.getText()) || TextUtils.isEmpty(AgentImage) || TextUtils.isEmpty(AgentFrontID) || TextUtils.isEmpty(AgentBackID) || TextUtils.isEmpty(edtlat.getText()) || TextUtils.isEmpty(edtlong.getText())) {
+                        if (TextUtils.isEmpty(edtfname.getText())|| TextUtils.isEmpty(edtlname.getText()) || TextUtils.isEmpty(edtdname.getText()) || TextUtils.isEmpty(edtaddress.getText()) || TextUtils.isEmpty(edtemail.getText()) ||TextUtils.isEmpty(edtphonenbr.getText()) || TextUtils.isEmpty(AgentImage) || TextUtils.isEmpty(AgentFrontID) || TextUtils.isEmpty(AgentBackID) || TextUtils.isEmpty(edtlat.getText()) || TextUtils.isEmpty(edtlong.getText()) || !edtemail.getText().toString().matches(emailpattern)) {
 
+                            if (!edtemail.getText().toString().matches(emailpattern)) {
+                                edtemail.setError("Enter a Valid Email");
+                            }
 
                             if (TextUtils.isEmpty(edtfname.getText())) {
                                 edtfname.setError("Enter First Name");
@@ -478,13 +487,41 @@ public class AgentRegistration extends AppCompatActivity {
                             String agentID = "AG_" + year + "_";
 
 
+                            // to validate if reachability are back
+                            if (DBMode.equalsIgnoreCase("-100") ) {
+                                Toast.makeText(getApplicationContext(),"Please wait while saving and returning to agent login form",Toast.LENGTH_LONG).show();
+                                if ((connecttoDB()) == true) {
+                                    globalMode="Online" ;
+                                    DBMode="0";
+                                    try {
+                                        conn.close();
+                                    } catch (SQLException throwables) {
+                                        throwables.printStackTrace();
+                                    }
+                                }
+                            }
+
+
 
                             if (DBMode.equalsIgnoreCase("0")) {
+                                //sending notification with a verification code
+                                NotificationCompat.Builder builder = new NotificationCompat.Builder(AgentRegistration.this, "My Notification");
+                                builder.setContentTitle("Enter This Code to Verify your Registration");
+                                builder.setContentText(Code);
+                                builder.setSmallIcon(R.drawable.ic_baseline_message_24);
+                                builder.setAutoCancel(true);
+
+                                NotificationManagerCompat managerCompat = NotificationManagerCompat.from(AgentRegistration.this);
+                                managerCompat.notify(1, builder.build());
+
+                                Thread.sleep(2000);
+
                                 AlertDialog.Builder mydialog = new AlertDialog.Builder(AgentRegistration.this);
                                 LayoutInflater inflater = getLayoutInflater();
                                 View dialogLayout = inflater.inflate(R.layout.alert_dialog_verification, null);
                                 mydialog.setTitle("Enter The Code");
 
+                                Thread.sleep(1000);
                                 EditText edt1 = dialogLayout.findViewById(R.id.edt1);
                                 EditText edt2 = dialogLayout.findViewById(R.id.edt2);
                                 EditText edt3 = dialogLayout.findViewById(R.id.edt3);
@@ -504,7 +541,7 @@ public class AgentRegistration extends AppCompatActivity {
                                 edt5.setText(E);
                                 edt6.setText(F);
 
-                                mydialog.setPositiveButton("Verify", new DialogInterface.OnClickListener() {
+                                mydialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         fullname = edtfname.getText().toString() + " " + edtlname.getText().toString();
@@ -512,7 +549,7 @@ public class AgentRegistration extends AppCompatActivity {
                                         TextView txt1 = dialogLayout.findViewById(R.id.txt1);
                                         txt1.setVisibility(View.VISIBLE);
                                         Toast.makeText(AgentRegistration.this, "In process please wait", Toast.LENGTH_LONG).show();
-                                        if (regionName.equalsIgnoreCase("NONE")) {
+                                        if (regionName.equalsIgnoreCase("None")) {
                                             regionid ="0";
                                         } else {
                                             regionid = getRegionID(spregion.getSelectedItem().toString());
@@ -524,15 +561,6 @@ public class AgentRegistration extends AppCompatActivity {
 
                                             PreparedStatement stmtinsert1 = null;
                                             if (globalagentID.equalsIgnoreCase("0") || OfflineAgent.exists()) {
-                                                //sending notification with a verification code
-                                                NotificationCompat.Builder builder = new NotificationCompat.Builder(AgentRegistration.this, "My Notification");
-                                                builder.setContentTitle("Enter This Code to Verify your Registration");
-                                                builder.setContentText(Code);
-                                                builder.setSmallIcon(R.drawable.ic_baseline_message_24);
-                                                builder.setAutoCancel(true);
-
-                                                NotificationManagerCompat managerCompat = NotificationManagerCompat.from(AgentRegistration.this);
-                                                managerCompat.notify(1, builder.build());
 
                                                 connecttoDB();
                                                 Statement stmt1 = null;
@@ -606,19 +634,8 @@ public class AgentRegistration extends AppCompatActivity {
                                     }
                                 });mydialog.setView(dialogLayout);
                                 mydialog.show();
-                                //sending notification with a verification code
-                                NotificationCompat.Builder builder = new NotificationCompat.Builder(AgentRegistration.this, "My Notification");
-                                builder.setContentTitle("Enter This Code to Verify your Registration");
-                                builder.setContentText(Code);
-                                builder.setSmallIcon(R.drawable.ic_baseline_message_24);
-                                builder.setAutoCancel(true);
-
-                                NotificationManagerCompat managerCompat = NotificationManagerCompat.from(AgentRegistration.this);
-                                managerCompat.notify(1, builder.build());
-
 
                             }else {
-
                                 createandSaveOfflinedata();
                                 createandSaveMSISDNandPIN();
                                 Intent intent = new Intent(getApplicationContext(), AgentLogin.class);
@@ -640,8 +657,11 @@ public class AgentRegistration extends AppCompatActivity {
                     ///Offline Mode...
                 }else {
 
-                  if (TextUtils.isEmpty(edtfname.getText())|| TextUtils.isEmpty(edtlname.getText()) || TextUtils.isEmpty(edtdname.getText()) || TextUtils.isEmpty(edtaddress.getText()) || TextUtils.isEmpty(edtemail.getText()) ||TextUtils.isEmpty(edtphonenbr.getText()) || TextUtils.isEmpty(AgentImage) || TextUtils.isEmpty(AgentFrontID) || TextUtils.isEmpty(AgentBackID) || TextUtils.isEmpty(edtlat.getText()) || TextUtils.isEmpty(edtlong.getText())) {
+                    if (TextUtils.isEmpty(edtfname.getText())|| TextUtils.isEmpty(edtlname.getText()) || TextUtils.isEmpty(edtdname.getText()) || TextUtils.isEmpty(edtaddress.getText()) || TextUtils.isEmpty(edtemail.getText()) ||TextUtils.isEmpty(edtphonenbr.getText()) || TextUtils.isEmpty(AgentImage) || TextUtils.isEmpty(AgentFrontID) || TextUtils.isEmpty(AgentBackID) || TextUtils.isEmpty(edtlat.getText()) || TextUtils.isEmpty(edtlong.getText()) || !edtemail.getText().toString().matches(emailpattern)) {
 
+                        if (!edtemail.getText().toString().matches(emailpattern)) {
+                            edtemail.setError("Enter a Valid Email");
+                        }
 
                       if (TextUtils.isEmpty(edtfname.getText())) {
                           edtfname.setError("Enter First Name");
@@ -844,7 +864,7 @@ public class AgentRegistration extends AppCompatActivity {
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
-            my_array.add("NONE");
+            my_array.add("None");
             while (true) {
                 try {
                     if (!rs1.next()) break;

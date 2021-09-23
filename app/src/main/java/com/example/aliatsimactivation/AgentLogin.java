@@ -1,15 +1,22 @@
 package com.example.aliatsimactivation;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
+import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.PowerManager;
 import android.os.StrictMode;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -29,6 +36,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import static android.os.PowerManager.SCREEN_DIM_WAKE_LOCK;
+
 public class AgentLogin extends AppCompatActivity {
     private Button btnlogin, BtnData,BtnExit;
     private TextView txtmsisdn, txtpin;
@@ -38,7 +47,18 @@ public class AgentLogin extends AppCompatActivity {
     private String[] data;
     private Connection conn;
     private boolean connectflag = false;
+    protected PowerManager.WakeLock mWakeLock;
 
+    @Override
+    protected void onUserLeaveHint() {
+        super.onUserLeaveHint();
+        finishAffinity();
+    }
+
+    @Override
+    public void onBackPressed() {
+        finishAffinity();
+    }
 
     @Override
     protected void onRestart() {
@@ -46,11 +66,40 @@ public class AgentLogin extends AppCompatActivity {
         super.onRestart();
     }
 
+    /// for lock and unlock power button
+    @Override
+    protected void onPause() {
+        super.onPause();
 
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        boolean screenOn;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+            screenOn = pm.isInteractive();
+        } else {
+            screenOn = pm.isScreenOn();
+        }
+        if (!screenOn) {    //Screen off by lock or power
+            Intent checkingIntent = new Intent(this, AgentLogin.class);
+            //checkingIntent.putExtra("checking",true);
+            checkingIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(checkingIntent);
+            finish();
+        }
+    }
+
+
+    @SuppressLint("InvalidWakeLockTag")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agent_login);
+
+        /*// to fix locker issue of mobile
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        this.mWakeLock = pm.newWakeLock(SCREEN_DIM_WAKE_LOCK, "My Tag");
+        this.mWakeLock.acquire();*/
+
 
         btnlogin = findViewById(R.id.signup);
         editmsisdn = findViewById(R.id.editmsisdn);
@@ -70,6 +119,9 @@ public class AgentLogin extends AppCompatActivity {
         System.out.println("agentNumber : "+agentNumber);
         System.out.println("globalMode : "+globalMode);
         System.out.println("DBMode : "+DBMode);
+
+
+
 
 
         if(globalMode.equalsIgnoreCase("Online")) {
@@ -430,5 +482,7 @@ public class AgentLogin extends AppCompatActivity {
         result = text.toString();
         return result;
     }
+
+
 
 }

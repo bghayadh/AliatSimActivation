@@ -23,6 +23,9 @@ public class SplashActivity extends AppCompatActivity {
     private Connection conn;
     private String[] data;
     private String globalMode,DBMode="0",login,RegisterResult,agentNumber;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
