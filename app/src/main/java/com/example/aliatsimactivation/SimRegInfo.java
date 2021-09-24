@@ -103,6 +103,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     String pass = sftp.getPass();
     String host = sftp.getServer();
     int e = sftp.getPort();
+    String clientSFTPpath="/usr/share/tomcat/webapps/alm/resources/";
     private Button Btnftp,BtnDelete,BtnMain,BtnRegandActivate,btnMode;
     private ImageButton signimgIcon, frontimgIcon, backimgIcon,btndob,clientimgIcon;
     private String[] imagesource;
@@ -1151,7 +1152,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
                                                 //save on line
                                                 threadload1.start();
-
+                                                BtnMode1.setBackgroundColor(Color.BLUE);
                                                 // reduce counter of local save files
                                                 if (OfflineFile.exists()) {
                                                     // reduce counter of local save files
@@ -1220,7 +1221,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
                             channelSftp.connect();
                             System.out.println("connected");
-                            channelSftp.cd("SIMPICSFTP");
+                            String fullpath=clientSFTPpath+"ClientPic";
+                            channelSftp.cd(fullpath);
                             System.out.println(channelSftp.pwd());
                             String path = channelSftp.pwd() + "/";
                             System.out.println("u are here");
@@ -1273,7 +1275,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
                             channelSftp.connect();
                             System.out.println("connected");
-                            channelSftp.cd("SIMPICSFTP");
+                            String fullpath=clientSFTPpath+"ClientPic";
+                            channelSftp.cd(fullpath);
                             System.out.println(channelSftp.pwd());
                             String path = channelSftp.pwd() + "/";
                             System.out.println("u are here");
@@ -1327,7 +1330,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
                             channelSftp.connect();
                             System.out.println("connected");
-                            channelSftp.cd("SIMPICSFTP");
+                            String fullpath=clientSFTPpath+"ClientPic";
+                            channelSftp.cd(fullpath);
                             System.out.println(channelSftp.pwd());
                             String path = channelSftp.pwd() + "/";
                             System.out.println("u are here");
@@ -1379,7 +1383,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
                             channelSftp.connect();
                             System.out.println("connected");
-                            channelSftp.cd("SIMPICSFTP");
+                            String fullpath=clientSFTPpath+"ClientPic";
+                            channelSftp.cd(fullpath);
                             System.out.println(channelSftp.pwd());
                             String path = channelSftp.pwd() + "/";
                             System.out.println("u are here");
@@ -1983,10 +1988,12 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                                 bw.close();
 
                                                 // to refresh pade and keep our current file
-                                                Button BtnData=findViewById(R.id.BtnData);
-                                                BtnData.setVisibility(View.VISIBLE);
-                                                count=count+1;
-                                                BtnData.setText(String.valueOf(count));
+                                                count++;
+                                                Button BtnData = (Button) findViewById(R.id.BtnData);
+                                                if (count != 0) {
+                                                    BtnData.setVisibility(View.VISIBLE); //SHOW the button
+                                                    BtnData.setText(String.valueOf(count));
+                                                }
 
                                                 //Toast.makeText(SimRegInfo.this, fileName + " is saved to\n" + dir, Toast.LENGTH_SHORT).show();
                                                 //Intent intent = new Intent(SimRegInfo.this, SimRegOfflineDataActivity.class);
@@ -2259,13 +2266,14 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     System.out.println("Step Connect");
                     channelSftp = (ChannelSftp) session.openChannel("sftp");
                     channelSftp.connect();
+                    channelSftp.cd(clientSFTPpath);
                 }
                 //check if the global status if equals zero do it
                 if(gsigstatus.equalsIgnoreCase("0")) {
                     if(e!=0) {
                         File signpic = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), SIGN + ".jpg");
                         String sign = String.valueOf(signpic);
-                        channelSftp.put(sign, "SIMPICSFTP");
+                        channelSftp.put(sign, "ClientPic");
                         Boolean success1 = true;
 
                         if (success1) {
@@ -2289,7 +2297,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     if(e!=0) {
                         File frontpic = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), FRONT + ".jpg");
                         String front = String.valueOf(frontpic);
-                        channelSftp.put(front, "SIMPICSFTP");
+                        channelSftp.put(front, "ClientPic");
                         Boolean success2 = true;
 
                         if (success2) {
@@ -2310,7 +2318,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     if(e!=0) {
                     File backpic = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), BACK + ".jpg");
                     String back = String.valueOf(backpic);
-                    channelSftp.put(back, "SIMPICSFTP");
+                    channelSftp.put(back, "ClientPic");
                     Boolean success3 = true;
 
                     if (success3) {
@@ -2332,7 +2340,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     if (e != 0) {
                         File clientpic = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), CLIENT + ".jpg");
                         String client = String.valueOf(clientpic);
-                        channelSftp.put(client, "SIMPICSFTP");
+                        channelSftp.put(client, "ClientPic");
                         Boolean success4 = true;
 
                         if (success4) {
@@ -2444,7 +2452,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 System.out.println("Step Connect");
                 ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
                 channelSftp.connect();
-                channelSftp.cd("SIMPICSFTP");
+                String fullpath =clientSFTPpath+"ClientPic";
+                channelSftp.cd(fullpath);
                 String path=channelSftp.pwd();
 
                 //check if the global status if equals zero do it
@@ -2706,13 +2715,18 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         txtmsg.setText("Saving offmode completed");
                         Thread.sleep(500);
                         txtmsg.setText("");
-
+                        // to call to add count files
+                        threadsave.start();
+                        /*
                         // to refresh pade and keep our current file
-                        Button BtnData=findViewById(R.id.BtnData);
-                        BtnData.setVisibility(View.VISIBLE);
-                        count=count+1;
-                        BtnData.setText(String.valueOf(count));
-
+                        count++;
+                        Button BtnData = (Button) findViewById(R.id.BtnData);
+                        if (count != 0) {
+                            BtnData.setVisibility(View.VISIBLE); //SHOW the button
+                            BtnData.setText(String.valueOf(count));
+                        }
+                        BtnMode1.setBackgroundColor(Color.GRAY);
+                        */
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -2879,6 +2893,22 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         });
     }
 
-
+    Thread threadsave = new Thread() {
+        public void run() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    // to refresh pade and keep our current file
+                    count++;
+                    Button BtnData = (Button) findViewById(R.id.BtnData);
+                    if (count != 0) {
+                        BtnData.setVisibility(View.VISIBLE); //SHOW the button
+                        BtnData.setText(String.valueOf(count));
+                    }
+                    BtnMode1.setBackgroundColor(Color.GRAY);
+                }
+            });
+        }
+    };
 
 }

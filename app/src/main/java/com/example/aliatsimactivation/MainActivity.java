@@ -244,7 +244,6 @@ public class MainActivity extends AppCompatActivity {
         if(OpenMode.equalsIgnoreCase("Online"))
         {
             globalMode="Online";
-
             // btnMode.setBackgroundColor(R.color.mixte);
         }else{
             globalMode="Offline";
@@ -262,7 +261,8 @@ public class MainActivity extends AppCompatActivity {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                thread1.start();
+                //thread1.start();
+                thread2.start();
             }
         });
 
@@ -886,7 +886,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                             textstatus.setText("");
                             //call pending picture count
-                            thread2.start();
+                            //thread2.start();
                         } else {
                             textstatus.setText("");
                             System.out.println("database not connected");
@@ -966,7 +966,12 @@ public class MainActivity extends AppCompatActivity {
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
-
+                    //call thread1
+                    thread1.start();
+                }else {
+                    TextView  textstatus=findViewById(R.id.textstatus);
+                    textstatus.setText("");
+                    System.out.println("database not connected");
                 }
             }
 

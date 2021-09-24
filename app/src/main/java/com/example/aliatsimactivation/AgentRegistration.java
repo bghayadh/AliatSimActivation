@@ -260,7 +260,7 @@ public class AgentRegistration extends AppCompatActivity {
 
 
         if(DBMode.equalsIgnoreCase("-100")){
-            txtlinear.setVisibility(View.INVISIBLE);
+
         }else {
             thread1.start();
         }
@@ -315,7 +315,7 @@ public class AgentRegistration extends AppCompatActivity {
         gfrontstatus="0";
         gbackstatus="0";
         gimagestatus="0";
-        txtlinear.setVisibility(View.VISIBLE);
+
 
 
         BtnAgentImage.setOnClickListener(new View.OnClickListener() {
@@ -401,8 +401,7 @@ public class AgentRegistration extends AppCompatActivity {
         });
 
 
-        System.out.println("you are here now ");
-        txtlinear.setVisibility(View.GONE);
+
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
@@ -410,6 +409,8 @@ public class AgentRegistration extends AppCompatActivity {
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(channel);
         }
+
+
 
 
         verify.setOnClickListener(new View.OnClickListener() {
@@ -1018,13 +1019,14 @@ public class AgentRegistration extends AppCompatActivity {
                     System.out.println("Step Connect");
                     ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
                     channelSftp.connect();
-
+                    String agentSFTPpath="/usr/share/tomcat/webapps/alm/resources/";
+                    channelSftp.cd(agentSFTPpath);
                     //check if the global status if equals zero do it
                     if(gimagestatus.equalsIgnoreCase("0")) {
 
                         File agentimg = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), AgentImage + ".jpg");
                         String imgagent = String.valueOf(agentimg);
-                        channelSftp.put(imgagent, "SIMAGENTSFTP");
+                        channelSftp.put(imgagent, "AgentPic");
                         Boolean success1 = true;
 
                         if (success1) {
@@ -1039,7 +1041,7 @@ public class AgentRegistration extends AppCompatActivity {
 
                         File agentfrontid = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), AgentFrontID + ".jpg");
                         String frontid = String.valueOf(agentfrontid);
-                        channelSftp.put(frontid, "SIMAGENTSFTP");
+                        channelSftp.put(frontid, "AgentPic");
                         Boolean success2 = true;
 
                         if (success2) {
@@ -1054,10 +1056,10 @@ public class AgentRegistration extends AppCompatActivity {
 
                         File agenbackid = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), AgentBackID + ".jpg");
                         String backid = String.valueOf(agenbackid);
-                        channelSftp.put(backid, "SIMAGENTSFTP");
-                        Boolean success2 = true;
+                        channelSftp.put(backid, "AgentPic");
+                        Boolean success3 = true;
 
-                        if (success2) {
+                        if (success3) {
                             System.out.println("upload completed : " + backid);
                             UpdateAgentPicStatus(globalagentID,"BACK_SIDE_ID_STATUS");
                             BtnBackID.setBackgroundColor(Color.GREEN);
@@ -1110,5 +1112,17 @@ public class AgentRegistration extends AppCompatActivity {
         }
     }
 
+    Thread showwait = new Thread() {
+        public void run() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println("WAIT  .........");
+                    textstatus=findViewById(R.id.textstatus);
+                    textstatus.setText("Please wait");
+                }
+            });
+        }
+    };
 
 }

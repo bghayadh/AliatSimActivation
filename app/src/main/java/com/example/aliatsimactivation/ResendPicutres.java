@@ -34,6 +34,8 @@ public class ResendPicutres extends AppCompatActivity {
     private Button btnmain;
     private SFTP sftp = new SFTP();
     private String agentNumber;
+    String clientSFTPpath="/usr/share/tomcat/webapps/alm/resources/";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -244,12 +246,13 @@ public class ResendPicutres extends AppCompatActivity {
                 System.out.println("Step Connect");
                 ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
                 channelSftp.connect();
+                channelSftp.cd(clientSFTPpath);
                 //check if the global status if equals zero do it
                 if(gsigstatus.equalsIgnoreCase("0")) {
 
                     File signpic = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), txtsignature.getText().toString() + ".jpg");
                     String sign = String.valueOf(signpic);
-                    channelSftp.put(sign, "SIMPICSFTP");
+                    channelSftp.put(sign, "ClientPic");
                     Boolean success1 = true;
 
                     if (success1) {
@@ -267,7 +270,7 @@ public class ResendPicutres extends AppCompatActivity {
 
                     File frontpic=new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), txtfrontimage.getText().toString() + ".jpg");
                     String front=String.valueOf(frontpic);
-                    channelSftp.put(front, "SIMPICSFTP");
+                    channelSftp.put(front, "ClientPic");
                     Boolean success2 = true;
 
                     if(success2){
@@ -283,7 +286,7 @@ public class ResendPicutres extends AppCompatActivity {
                 if(gbackstatus.equalsIgnoreCase("0")) {
                     File backpic = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), txtbackimage.getText().toString() + ".jpg");
                     String back = String.valueOf(backpic);
-                    channelSftp.put(back, "SIMPICSFTP");
+                    channelSftp.put(back, "ClientPic");
                     Boolean success3 = true;
 
                     if (success3) {
@@ -299,7 +302,7 @@ public class ResendPicutres extends AppCompatActivity {
 
                     File clientpic = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), txtclientimgname.getText().toString() + ".jpg");
                     String client = String.valueOf(clientpic);
-                    channelSftp.put(client, "SIMPICSFTP");
+                    channelSftp.put(client, "ClientPic");
                     Boolean success4 = true;
 
                     if (success4) {
@@ -318,7 +321,7 @@ public class ResendPicutres extends AppCompatActivity {
                 session.disconnect();
 
                 Thread.sleep(500);
-                txtmsg.setText("");
+                txtmsg.setText("Sending completed");
             }catch(Exception e){
                 e.printStackTrace();
             }
