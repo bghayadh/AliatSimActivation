@@ -1006,6 +1006,24 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     String state = editpost.getText().toString();
                     String agentmsisdn = editagent.getText().toString();
 
+
+                    System.out.println("fname"+fname);
+                    System.out.println("mname"+mname);
+                    System.out.println("lname"+lname);
+                    System.out.println("msisdn"+msisdn);
+                    System.out.println("idType"+idType);
+                    System.out.println("idNumber"+idNumber);
+                    System.out.println("dob"+dob);
+                    System.out.println("email"+email);
+                    System.out.println("gender"+gender);
+                    System.out.println("altnumber"+altnumber);
+                    System.out.println("address1"+address1);
+                    System.out.println("state"+state);
+                    System.out.println("agentmsisdn"+agentmsisdn);
+                    System.out.println("agentNumber"+agentNumber);
+
+
+
                     Intent a = new Intent(SimRegInfo.this, Activate_Sim.class);
                     a.putExtra("globalsimid", globalsimid);
                     a.putExtra("globalMode",globalMode);
