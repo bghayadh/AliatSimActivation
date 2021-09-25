@@ -80,7 +80,7 @@ public class AgentRegistration extends AppCompatActivity {
     private boolean regionflag=false;
     SFTP sftp=new SFTP();
     private LinearLayout txtlinear;
-
+    private GpsTracker gpsTracker;
 
 
     @Override
@@ -240,7 +240,18 @@ public class AgentRegistration extends AppCompatActivity {
         ActivityCompat.requestPermissions(AgentRegistration.this, new String[]{
                 Manifest.permission.CAMERA}, 102);
 
-
+        // call class Gps to get our location
+        gpsTracker = new GpsTracker (getApplicationContext ( ));
+        if (gpsTracker.canGetLocation ( )) {
+            double latitude = gpsTracker.getLatitude ( );
+            double longitude = gpsTracker.getLongitude ( );
+            edtlat.setText(String.valueOf(latitude));
+            edtlong.setText(String.valueOf(longitude));
+        } else {
+            gpsTracker.showSettingsAlert ( );
+            edtlat.setText("0");
+            edtlong.setText("0");
+        }
 
 
         OfflineAgent=new File(getApplicationContext().getFilesDir(), "Offlinedata.txt");

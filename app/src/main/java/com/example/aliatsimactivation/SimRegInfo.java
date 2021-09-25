@@ -126,8 +126,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100) {
-            FRONT = editfname.getText().toString() + editlname.getText().toString() + "_FRONT_" + editmobile.getText().toString() + "_" + editidagent.getText().toString()+"_"+picsdate;
 
+            FRONT = editfname.getText().toString() + editlname.getText().toString()+ "_FRONT_" + editmobile.getText().toString() + "_" + editidagent.getText().toString()+"_"+picsdate;
             Bitmap bmp = (Bitmap) data.getExtras().get("data");
 
             file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), FRONT + ".jpg");
@@ -164,7 +164,6 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
         if (requestCode == 101) {
             BACK = editfname.getText().toString() + editlname.getText().toString() + "_BACK_" + editmobile.getText().toString() + "_" + editidagent.getText().toString()+"_"+picsdate;
-
             Bitmap bmp = (Bitmap) data.getExtras().get("data");
             file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), BACK + ".jpg");
 
@@ -2379,7 +2378,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     session.disconnect();
                 }
                 txtmsg.setText("Transaction completed");
-                Thread.sleep(500);
+                Thread.sleep(2000);
                 txtmsg.setText("");
             }catch(Exception e){
                 e.printStackTrace();

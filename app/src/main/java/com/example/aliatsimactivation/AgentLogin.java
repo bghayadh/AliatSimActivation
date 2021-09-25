@@ -1,13 +1,16 @@
 package com.example.aliatsimactivation;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -111,7 +114,14 @@ public class AgentLogin extends AppCompatActivity {
         System.out.println("DBMode : "+DBMode);
 
 
-
+        // check if we have permission to get our location in manifest xml file
+        try {
+            if (ContextCompat.checkSelfPermission (getApplicationContext ( ), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions (this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+            }
+        } catch (Exception e) {
+            e.printStackTrace ( );
+        }
 
 
         if(globalMode.equalsIgnoreCase("Online")) {
