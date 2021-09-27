@@ -214,13 +214,13 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
         try {
             System.out.println("CONNECT HERE");
             if((flg=connecttoDB())==true) {
-
+                if (getAgentStatus()==true) {
                 System.out.println("CONNECT HERE");
                 // define recyclerview of sitelistview
 
                 simA = new ArrayList<>();
                 simdb = new ArrayList<>();
-                datestr="0";
+                datestr = "0";
                 //Add data for sitelistview recyclerview
                 Statement stmt1 = null;
                 int i = 0;
@@ -232,8 +232,8 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
                 System.out.println("you are here");
 
 
-                System.out.println("text : "+agentNumber);
-                String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY CREATED_DATE DESC) row_num,CREATED_DATE,AGENT_NUMBER,CLIENT_ID,FIRST_NAME,LAST_NAME,MOBILE_NUMBER,STATUS from CLIENTS where TO_DATE(TO_CHAR(CREATED_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + datet.getText() + "','DD-MM-YYYY')) T WHERE row_num >= '" + vfrom + "' AND row_num <='" + vto + "' AND AGENT_NUMBER='"+agentNumber+"'";
+                System.out.println("text : " + agentNumber);
+                String sqlStmt = "SELECT * FROM (select ROW_NUMBER() OVER (ORDER BY CREATED_DATE DESC) row_num,CREATED_DATE,AGENT_NUMBER,CLIENT_ID,FIRST_NAME,LAST_NAME,MOBILE_NUMBER,STATUS from CLIENTS where TO_DATE(TO_CHAR(CREATED_DATE,'DD-MM-YYYY'),'DD-MM-YYYY') =TO_DATE('" + datet.getText() + "','DD-MM-YYYY')) T WHERE row_num >= '" + vfrom + "' AND row_num <='" + vto + "' AND AGENT_NUMBER='" + agentNumber + "'";
                 System.out.println(sqlStmt);
                 ResultSet rs1 = null;
 
@@ -249,7 +249,8 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
 
                         if (!rs1.next()) break;
                         arraysize = arraysize + 1;
-                        simdb.add(new SimRegListView(rs1.getString("CLIENT_ID"), rs1.getString("ROW_NUM"),rs1.getString("FIRST_NAME") + " " + rs1.getString("LAST_NAME"), rs1.getString("MOBILE_NUMBER"), rs1.getString("STATUS")));                    } catch (SQLException throwables) {
+                        simdb.add(new SimRegListView(rs1.getString("CLIENT_ID"), rs1.getString("ROW_NUM"), rs1.getString("FIRST_NAME") + " " + rs1.getString("LAST_NAME"), rs1.getString("MOBILE_NUMBER"), rs1.getString("STATUS")));
+                    } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
                 }
@@ -266,7 +267,14 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
 
                 //Fill Listview
                 FilllistView();
-
+            }
+                else {
+                    Toast.makeText(getApplicationContext(),"Access denied",Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(Intent.ACTION_MAIN);
+                    intent.addCategory(Intent.CATEGORY_HOME);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
             }
 
         }catch (Exception e){
@@ -506,4 +514,54 @@ public class SimRegListViewActivity extends AppCompatActivity implements DatePic
     };
 
 
+    public boolean getAgentStatus()
+    {
+        String Agentstatus = null;
+        boolean statusflg = false;
+
+        Statement stmtagent = null;
+
+        try {
+            stmtagent = connsite.createStatement();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        String sqlStmtagent = "SELECT STATUS FROM AGENT WHERE MSISDN = '"+ agentNumber+"' ";
+        ResultSet rsagent = null;
+
+        try {
+            rsagent = stmtagent.executeQuery(sqlStmtagent);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        while (true) {
+            try {
+                if (!rsagent.next()) break;
+                Agentstatus = (rsagent.getString("STATUS"));
+                if (Agentstatus.equalsIgnoreCase("Activated")){
+                    statusflg = true;
+                } else {
+                    statusflg = false;
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+        }
+        try {
+            rsagent.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        try {
+            stmtagent.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return statusflg;
+
+    }
 }

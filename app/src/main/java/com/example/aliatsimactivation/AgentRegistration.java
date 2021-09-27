@@ -22,6 +22,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,6 +61,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Properties;
 import java.util.Random;
+
+import static java.lang.Thread.sleep;
 
 public class AgentRegistration extends AppCompatActivity {
     private EditText edtfname,edtlname,edtdname,edtaddress,edtemail,edtphonenbr,edtlong,edtlat,edtstatus;
@@ -525,14 +528,14 @@ public class AgentRegistration extends AppCompatActivity {
                                 NotificationManagerCompat managerCompat = NotificationManagerCompat.from(AgentRegistration.this);
                                 managerCompat.notify(1, builder.build());
 
-                                Thread.sleep(2000);
+                                sleep(2000);
 
                                 AlertDialog.Builder mydialog = new AlertDialog.Builder(AgentRegistration.this);
                                 LayoutInflater inflater = getLayoutInflater();
                                 View dialogLayout = inflater.inflate(R.layout.alert_dialog_verification, null);
                                 mydialog.setTitle("Enter The Code");
 
-                                Thread.sleep(1000);
+                                sleep(1000);
                                 EditText edt1 = dialogLayout.findViewById(R.id.edt1);
                                 EditText edt2 = dialogLayout.findViewById(R.id.edt2);
                                 EditText edt3 = dialogLayout.findViewById(R.id.edt3);

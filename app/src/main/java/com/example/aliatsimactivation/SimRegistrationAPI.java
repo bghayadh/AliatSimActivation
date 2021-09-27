@@ -3,6 +3,7 @@ package com.example.aliatsimactivation;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.StrictMode;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
@@ -22,7 +23,9 @@ import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -349,6 +352,5 @@ public String getrequestid() {
     System.out.println("month and valtime "+ valyear+valmonth+valday+valtime);
     return (valyear+valmonth+valday+valtime);
 }
-
 
 }

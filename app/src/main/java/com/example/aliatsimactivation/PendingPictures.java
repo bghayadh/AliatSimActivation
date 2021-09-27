@@ -184,6 +184,7 @@ public class PendingPictures extends AppCompatActivity implements DatePickerDial
         boolean flg=false;
         try {
             if((flg=connecttoDB())==true) {
+                if (getAgentStatus()==true) {
                 // define recyclerview of sitelistview
                 simA = new ArrayList<>();
                 simdb = new ArrayList<>();
@@ -329,6 +330,14 @@ public class PendingPictures extends AppCompatActivity implements DatePickerDial
                     pendingpicrec.setAdapter(adapter);
                 }
 
+            }
+            else {
+                Toast.makeText(getApplicationContext(),"Access denied",Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(Intent.ACTION_MAIN);
+                    intent.addCategory(Intent.CATEGORY_HOME);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+            }
 
             }
 
@@ -403,4 +412,55 @@ public class PendingPictures extends AppCompatActivity implements DatePickerDial
             });
         }
     };
+
+    public boolean getAgentStatus()
+    {
+        String Agentstatus = null;
+        boolean statusflg = false;
+
+        Statement stmtagent = null;
+
+        try {
+            stmtagent = conn.createStatement();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        String sqlStmtagent = "SELECT STATUS FROM AGENT WHERE MSISDN = '"+ agentNumber+"' ";
+        ResultSet rsagent = null;
+
+        try {
+            rsagent = stmtagent.executeQuery(sqlStmtagent);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        while (true) {
+            try {
+                if (!rsagent.next()) break;
+                Agentstatus = (rsagent.getString("STATUS"));
+                if (Agentstatus.equalsIgnoreCase("Activated")){
+                    statusflg = true;
+                } else {
+                    statusflg = false;
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+        }
+        try {
+            rsagent.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        try {
+            stmtagent.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return statusflg;
+
+    }
 }

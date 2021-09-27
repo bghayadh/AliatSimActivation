@@ -923,6 +923,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if ((flg = connecttoDB()) == true) {
 
+                    if (getAgentStatus()==true) {
                     System.out.println("STarteeeed");
                     Statement stmt3 = null;
                     System.out.println("yalla");
@@ -933,7 +934,7 @@ public class MainActivity extends AppCompatActivity {
                         throwables.printStackTrace();
                     }
                     System.out.println("you are here");
-                    String sqlStmt1 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY CLIENT_ID) row_num,AGENT_NUMBER,front_side_id_status,back_side_id_status,signature_status,CLIENT_PHOTO_STATUS from CLIENTS where CLIENT_PHOTO_STATUS='0' or front_side_id_status='0' or back_side_id_status='0' or signature_status='0') T where AGENT_NUMBER='"+agentNumber+"'";
+                    String sqlStmt1 = "SELECT COUNT(*) FROM (select ROW_NUMBER() OVER (ORDER BY CLIENT_ID) row_num,AGENT_NUMBER,front_side_id_status,back_side_id_status,signature_status,CLIENT_PHOTO_STATUS from CLIENTS where CLIENT_PHOTO_STATUS='0' or front_side_id_status='0' or back_side_id_status='0' or signature_status='0') T where AGENT_NUMBER='" + agentNumber + "'";
                     ResultSet rs1 = null;
                     try {
                         rs1 = stmt3.executeQuery(sqlStmt1);
@@ -944,7 +945,7 @@ public class MainActivity extends AppCompatActivity {
                     while (true) {
                         try {
                             if (!rs1.next()) break;
-                            String value=rs1.getString("COUNT(*)");
+                            String value = rs1.getString("COUNT(*)");
                             if (value.equalsIgnoreCase("0")) {
                                 //dont show counter number
                             } else {
@@ -968,6 +969,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                     //call thread1
                     thread1.start();
+                } else {
+                        Toast.makeText(getApplicationContext(),"Access denied",Toast.LENGTH_LONG).show();
+                        finishAffinity();
+                    }
+
                 }else {
                     TextView  textstatus=findViewById(R.id.textstatus);
                     textstatus.setText("");
@@ -1071,5 +1077,56 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         return animator;
+    }
+
+    public boolean getAgentStatus()
+    {
+        String Agentstatus = null;
+        boolean statusflg = false;
+
+            Statement stmtagent = null;
+
+            try {
+                stmtagent = conn.createStatement();
+
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            String sqlStmtagent = "SELECT STATUS FROM AGENT WHERE MSISDN = '"+ agentNumber+"' ";
+            ResultSet rsagent = null;
+
+            try {
+                rsagent = stmtagent.executeQuery(sqlStmtagent);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+            while (true) {
+                try {
+                    if (!rsagent.next()) break;
+                    Agentstatus = (rsagent.getString("STATUS"));
+                    if (Agentstatus.equalsIgnoreCase("Activated")){
+                        statusflg = true;
+                    } else {
+                        statusflg = false;
+                    }
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+
+            }
+            try {
+                rsagent.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            try {
+                stmtagent.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+        return statusflg;
+
     }
 }

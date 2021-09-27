@@ -22,7 +22,9 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -938,7 +940,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     try {
                         if ((flg = connecttoDB()) == true) {
 
-
+                            if (getAgentStatus()==true) {
                             Toast.makeText(SimRegInfo.this, "Starting Deletion in DataBase", Toast.LENGTH_SHORT).show();
                             PreparedStatement stmtinsert1 = null;
 
@@ -965,6 +967,14 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             i.putExtra("agentNumber",agentNumber);
                             i.putExtra("message_key",stroffile);
                             startActivity(i);
+
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(),"Access denied",Toast.LENGTH_LONG).show();
+                            finishAffinity();
+                        }
+
+
                         } else {
                             String myFileName = "SIM_" + editmobile.getText().toString() + ".txt";
                             File directory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
@@ -1517,6 +1527,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             gfrontstatus="0";
             gbackstatus="0";
             gclientstatus="0";
+
 
             btndob.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -2611,10 +2622,11 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             try {
                 txtmsg.setText("Please wait ...");
                 if ((flg = connecttoDB()) == true) {
+                    if (getAgentStatus()==true) {
                     PreparedStatement stmtinsert1 = null;
 
                     try {
-                        if (globalsimid.equalsIgnoreCase("0") || OfflineFile.exists() ) {
+                        if (globalsimid.equalsIgnoreCase("0") || OfflineFile.exists()) {
                             // if it is a new Warehouse we will use insert
 
 
@@ -2643,9 +2655,9 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
 
                             // send data from fragment to super activity
-                            String ussd_status="USSD";
+                            String ussd_status = "USSD";
                             stmtinsert1 = conn.prepareStatement("insert into CLIENTS (CLIENT_ID,DISPLAY_NAME,CREATED_DATE,LAST_MODIFIED_DATE,FIRST_NAME,MIDDLE_NAME,LAST_NAME,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHYSICAL_LOCATION,STATUS,POSTAL_ADDRESS,GENDER,AGENT_NUMBER,CLIENT_ID_NUMBER,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,CLIENT_PHOTO,SIGNATURE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS,CLIENT_PHOTO_STATUS,USSD_STATUS,DEPARTMENT,DESCREPTION) values " +
-                                    "('"+globalsimid+"',0,sysdate, sysdate,'" + editfname.getText() +"','" + editmname.getText() + "', '" + editlname.getText() +"','" + editmobile.getText() +"',TO_DATE('" + editdate.getText() + "','DD-MM-YYYY'),'" + nationality + "','" + editaltnumber.getText() + "','" + editemail.getText() + "','" + editphylocation.getText() + "','"+ b +"','"+ editpost.getText() +"','" + gender + "','" + editagent.getText() +"','" +editidagent.getText() +"','"+ SIGN + "','" + FRONT + "','" + BACK + "','" + CLIENT + "',0,0,0,0,'"+ussd_status+"',0,0)");
+                                    "('" + globalsimid + "',0,sysdate, sysdate,'" + editfname.getText() + "','" + editmname.getText() + "', '" + editlname.getText() + "','" + editmobile.getText() + "',TO_DATE('" + editdate.getText() + "','DD-MM-YYYY'),'" + nationality + "','" + editaltnumber.getText() + "','" + editemail.getText() + "','" + editphylocation.getText() + "','" + b + "','" + editpost.getText() + "','" + gender + "','" + editagent.getText() + "','" + editidagent.getText() + "','" + SIGN + "','" + FRONT + "','" + BACK + "','" + CLIENT + "',0,0,0,0,'" + ussd_status + "',0,0)");
                         } else {
                             stmtinsert1 = conn.prepareStatement("update CLIENTS set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + editfname.getText() + "',MIDDLE_NAME='" + editmname.getText() + "',LAST_NAME='" + editlname.getText() + "',STATUS='" + b + "',MOBILE_NUMBER='" + editmobile.getText() + "',NATIONALITY='" + nationality + "',ALTERNATIVE_NUMBER='" + editaltnumber.getText() + "',EMAIL_ADDRESS='" + editemail.getText() + "',PHYSICAL_LOCATION='" + editphylocation.getText() + "',POSTAL_ADDRESS='" + editpost.getText() + "',GENDER='" + gender + "',AGENT_NUMBER='" + editagent.getText() + "',CLIENT_ID_NUMBER='" + editidagent.getText() + "',SIGNATURE='" + SIGN + "',ID_FRONT_SIDE_PHOTO='" + FRONT + "',ID_BACK_SID_PHOTO='" + BACK + "',USSD_STATUS='" + editussdstatus.getText().toString() + "',CLIENT_PHOTO='" + CLIENT + "' where CLIENT_ID  ='" + globalsimid + "'");
                         }
@@ -2663,8 +2675,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             //Toast.makeText(SimRegInfo.this, "New SIM Uploading Photos started", Toast.LENGTH_LONG).show();
                             thread1.start();
                             // Toast.makeText(SimRegInfo.this, "New SIM Upload Completed", Toast.LENGTH_LONG).show();
-                        }
-                        else {
+                        } else {
                             if (gsigstatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0") || gbackstatus.equalsIgnoreCase("0") || gclientstatus.equalsIgnoreCase("0")) {
                                 //Toast.makeText(SimRegInfo.this, "Exist SIM Uploading Photos started", Toast.LENGTH_LONG).show();
                                 thread1.start();
@@ -2672,11 +2683,6 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             }
 
                         }
-
-
-
-
-
 
 
                     } catch (SQLException throwables) {
@@ -2693,7 +2699,14 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     }
 
 
-
+                    }
+                    else {
+                        txtmsg.setText("Access denied");
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        intent.addCategory(Intent.CATEGORY_HOME);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
 
                 }
                 else {
@@ -2927,5 +2940,56 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             });
         }
     };
+
+    public boolean getAgentStatus()
+    {
+        String Agentstatus = null;
+        boolean statusflg = false;
+
+        Statement stmtagent = null;
+
+        try {
+            stmtagent = conn.createStatement();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        String sqlStmtagent = "SELECT STATUS FROM AGENT WHERE MSISDN = '"+ agentNumber+"' ";
+        ResultSet rsagent = null;
+
+        try {
+            rsagent = stmtagent.executeQuery(sqlStmtagent);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        while (true) {
+            try {
+                if (!rsagent.next()) break;
+                Agentstatus = (rsagent.getString("STATUS"));
+                if (Agentstatus.equalsIgnoreCase("Activated")){
+                    statusflg = true;
+                } else {
+                    statusflg = false;
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+        }
+        try {
+            rsagent.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        try {
+            stmtagent.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return statusflg;
+
+    }
+
 
 }
