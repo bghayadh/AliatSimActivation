@@ -78,7 +78,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     private String gender = null;
     private int count;
     public Connection conn;
-    private String globalsimid,simID;
+    private String globalsimid,simID,vartext="";
     private Button submit, frontid, backid,btnlvsimreg,btnclientimg,BtnModedata,BtnModesave;
     private Button sign;
     private File file,OfflineFile;
@@ -383,6 +383,63 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         ConnectivityManager connMgr = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+
+        //online validation if we chnaged in radios,textboxes
+        //on text change for first name
+        editfname.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                vartext=editfname.getText().toString();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!vartext.equalsIgnoreCase("")) {
+                    if (vartext.equalsIgnoreCase(editfname.getText().toString())) {
+
+                    } else {
+                        BtnModesave.setBackgroundColor(Color.rgb(255, 102, 0));
+                        txtmodesave.setText("Not Saved");
+                    }
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        editmname.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                vartext=editmname.getText().toString();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!vartext.equalsIgnoreCase("")) {
+                    if (vartext.equalsIgnoreCase(editmname.getText().toString())) {
+
+                    } else {
+                        BtnModesave.setBackgroundColor(Color.rgb(255, 102, 0));
+                        txtmodesave.setText("Not Saved");
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        ////////////////////////////////////////////////////////
+
+
+
+
 
         if (networkInfo != null && networkInfo.isConnected() && globalMode.equalsIgnoreCase("Online")) {
 
