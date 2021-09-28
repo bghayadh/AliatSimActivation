@@ -355,6 +355,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             BtnModedata.setBackgroundColor(Color.GRAY);
             txtmode.setText("Offline");
             txtmodedata.setText("Offline Data");
+            BtnModesave.setBackgroundColor(Color.rgb(255,102,0));
          }
 
 
@@ -429,6 +430,11 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
 
            editagent.setText(agentNumber);
+
+
+
+
+
 
             // add dsicard and button left when changing pictures and signature
             String Off5 = intent.getStringExtra("offline5");
@@ -634,7 +640,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         }else {
                             frontimgIcon.setVisibility(View.INVISIBLE);
                         }
-
+                    BtnModesave.setBackgroundColor(Color.rgb(255,102,0));
+                    txtmodesave.setText("Not Saved");
                 }
             });
 
@@ -715,6 +722,9 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         }else {
                             backimgIcon.setVisibility(View.INVISIBLE);
                         }
+
+                    BtnModesave.setBackgroundColor(Color.rgb(255,102,0));
+                    txtmodesave.setText("Not Saved");
 
                 }
             });
@@ -800,7 +810,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         }else{
                             signimgIcon.setVisibility(View.INVISIBLE);
                         }
-
+                    BtnModesave.setBackgroundColor(Color.rgb(255,102,0));
+                    txtmodesave.setText("Not Saved");
                 }
             });
 
@@ -887,7 +898,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         }else {
                             clientimgIcon.setVisibility(View.INVISIBLE);
                         }
-
+                    BtnModesave.setBackgroundColor(Color.rgb(255,102,0));
+                    txtmodesave.setText("Not Saved");
                 }
             });
 
@@ -1550,9 +1562,6 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             Date c1 = Calendar.getInstance().getTime();
             SimpleDateFormat df1=new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
             editdate.setText((df.format(c1)).toString());
-
-
-
             Intent intent1 = SimRegInfo.this.getIntent();
             String str1 = intent.getStringExtra("message_key");
             System.out.println("str1 : "+str1);
@@ -1600,7 +1609,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         }else {
                             frontimgIcon.setVisibility(View.INVISIBLE);
                         }
-
+                    BtnModesave.setBackgroundColor(Color.rgb(255,102,0));
+                    txtmodesave.setText("Not Saved");
                 }
             });
 
@@ -1643,7 +1653,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         }else {
                             backimgIcon.setVisibility(View.INVISIBLE);
                         }
-
+                    BtnModesave.setBackgroundColor(Color.rgb(255,102,0));
+                    txtmodesave.setText("Not Saved");
                 }
             });
 
@@ -1687,7 +1698,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         }else{
                             signimgIcon.setVisibility(View.INVISIBLE);
                         }
-
+                    BtnModesave.setBackgroundColor(Color.rgb(255,102,0));
+                    txtmodesave.setText("Not Saved");
                 }
             });
             //discarding picture from saving
@@ -1732,7 +1744,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         }else {
                             clientimgIcon.setVisibility(View.INVISIBLE);
                         }
-
+                    BtnModesave.setBackgroundColor(Color.rgb(255,102,0));
+                    txtmodesave.setText("Not Saved");
                 }
             });
 
@@ -2070,8 +2083,20 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                                 BtnModesave.setBackgroundColor(Color.GREEN);
                                                 txtmodesave.setText("Saved");
                                                 // to refresh pade and keep our current file
-                                                count++;
+                                                //////count++;
+                                                ////////////////////
                                                 Button BtnData = (Button) findViewById(R.id.BtnData);
+
+                                                File dir1 = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+                                                File[] files = dir1.listFiles();
+                                                count = 0;
+                                                for (File f : files) {
+                                                    String name = f.getName();
+                                                    if (name.startsWith("SIM") && name.endsWith(".txt"))
+                                                        count++;
+                                                    System.out.println("COUNT IS:" + count);
+                                                }
+                                                ////////
                                                 if (count != 0) {
                                                     BtnData.setVisibility(View.VISIBLE); //SHOW the button
                                                     BtnData.setText(String.valueOf(count));
@@ -2651,6 +2676,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
+
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -2663,6 +2689,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         public void run() {
             try {
                 getDataforSimfromDB();
+
             }catch (Exception e) {
                 System.out.println(e.toString());
             }
@@ -2846,9 +2873,27 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
 
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        String date= dayOfMonth+"-"+(month+1)+"-"+year;
-        editdate.setText(date);
+       String vday=null,vmonth=null;
+        if ((dayOfMonth) <10 ) {
+            vday="0"+(dayOfMonth);
+        }else {
+            vday= String.valueOf((dayOfMonth));
+        }
 
+        if ((month+1) <10 ) {
+            vmonth="0"+(month+1);
+        }else {
+            vmonth= String.valueOf((month+1));
+        }
+
+        String date= vday+"-"+vmonth+"-"+year;
+        if (date.equalsIgnoreCase(editdate.getText().toString())) {
+
+        }else {
+            editdate.setText(date);
+            BtnModesave.setBackgroundColor(Color.rgb(255, 102, 0));
+            txtmodesave.setText("Not Saved");
+        }
     }
     //not in use
     class ExampleRunnable implements Runnable {
