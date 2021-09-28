@@ -78,7 +78,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     private int count;
     public Connection conn;
     private String globalsimid,simID;
-    private Button submit, frontid, backid,btnlvsimreg,btnclientimg,BtnMode1;
+    private Button submit, frontid, backid,btnlvsimreg,btnclientimg,BtnModedata,BtnModesave;
     private Button sign;
     private File file,OfflineFile;
     private String nationality = "";
@@ -95,7 +95,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     private String s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,s12,s13,s14,s15,s16,s17,b;
     private String emailpattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+",emailpattern1 = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+\\.+[a-z]+";
     private EditText editaltnumber,editemail,editphylocation,editpost,editussdstatus;
-    private TextView editlname, editfname, textF, textB, textS;
+    private TextView editlname, editfname, textF, textB, textS,txtmode,txtmodedata,txtmodesave;
     private String file1 = "MSISDN.txt";
     private String s0, s1, Result,CLIENT,gclientstatus;
     private String FRONT, BACK, SIGN = null;
@@ -304,8 +304,12 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         txtussd=findViewById(R.id.txtussd);
         ussdview=findViewById(R.id.ussdview);
         btnMode=findViewById(R.id.btnMode);
+        BtnModesave=findViewById(R.id.btnModesave);
         checkSim=findViewById(R.id.simulation);
-        BtnMode1=findViewById(R.id.btnMode1);
+        BtnModedata=findViewById(R.id.btnModedata);
+        txtmode=findViewById(R.id.txtmode);
+        txtmodedata=findViewById(R.id.txtmodedata);
+        txtmodesave=findViewById(R.id.txtmodesave);
         sp.setEnabled(false);
 
         Date c = Calendar.getInstance().getTime();
@@ -332,18 +336,26 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         File directory1 = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
         File OfflineFile1 = new File(directory1,myFileName1);
 
+
+
         if (globalMode.equalsIgnoreCase("Online")) {
             btnMode.setBackgroundColor(Color.GREEN);
-            BtnMode1.setBackgroundColor(Color.BLUE);
+            BtnModedata.setBackgroundColor(Color.BLUE);
+            txtmode.setText("Online");
+            txtmodedata.setText("Online Data");
             if(stroffile.equalsIgnoreCase("-100") || OfflineFile1.exists()){
-                BtnMode1.setBackgroundColor(Color.GRAY);
+                BtnModedata.setBackgroundColor(Color.GRAY);
+                txtmodedata.setText("Offline Data");
             }else{
-                BtnMode1.setBackgroundColor(Color.BLUE);
+                BtnModedata.setBackgroundColor(Color.BLUE);
+                txtmodedata.setText("Online Data");
             }
         }else {
             btnMode.setBackgroundColor(Color.RED);
-            BtnMode1.setBackgroundColor(Color.GRAY);
-        }
+            BtnModedata.setBackgroundColor(Color.GRAY);
+            txtmode.setText("Offline");
+            txtmodedata.setText("Offline Data");
+         }
 
 
         //show arrow
@@ -373,16 +385,22 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         if (networkInfo != null && networkInfo.isConnected() && globalMode.equalsIgnoreCase("Online")) {
 
             Toast.makeText(SimRegInfo.this, "Connected", Toast.LENGTH_SHORT).show();
-
+            System.out.println("globalsimid "+ globalsimid);
 
             if(globalsimid.equalsIgnoreCase("0")){
+                System.out.println("globalsimid 11"+ globalsimid);
                 gsigstatus="0";
                 gfrontstatus="0";
                 gbackstatus="0";
                 gclientstatus="0";
+                BtnModesave.setBackgroundColor(Color.rgb(255,102,0));
+                txtmodesave.setText("New");
             }
 
-            if (globalsimid != "0") {
+            if (!globalsimid.equalsIgnoreCase("0")) {
+                System.out.println("globalsimid 22"+ globalsimid);
+                BtnModesave.setBackgroundColor(Color.GREEN);
+                txtmodesave.setText("Saved");
                 // Handler handler = new Handler();
                 //  handler.post(new Runnable() {
                 //     @Override
@@ -470,7 +488,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         foreign.setChecked(true);
                     }
                 }
-
+                BtnModesave.setBackgroundColor(Color.GREEN);
+                txtmodesave.setText("Saved");
                 String Off17 = intent.getStringExtra("offline17");
                 sp.setSelection(((ArrayAdapter<String>) sp.getAdapter()).getPosition(Off17));
 
@@ -1192,7 +1211,10 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
                                                 //save on line
                                                 threadload1.start();
-                                                BtnMode1.setBackgroundColor(Color.BLUE);
+                                                BtnModedata.setBackgroundColor(Color.BLUE);
+                                                txtmodedata.setText("Online Data");
+                                                BtnModesave.setBackgroundColor(Color.GREEN);
+                                                txtmodesave.setText("Saved");
                                                 // reduce counter of local save files
                                                 if (OfflineFile.exists()) {
                                                     // reduce counter of local save files
@@ -1747,6 +1769,9 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             OfflineFile = new File(directory,myFileName);
             if (OfflineFile.exists())
             {
+
+                BtnModesave.setBackgroundColor(Color.GREEN);
+                txtmodesave.setText("Saved");
                 String Off1 = intent.getStringExtra("offline1");
                 editfname.setText(Off1);
                 System.out.println("fname :"+Off1);
@@ -2042,7 +2067,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                                 bw.write(b + "\n");
                                                 bw.write(editussdstatus.getText().toString());
                                                 bw.close();
-
+                                                BtnModesave.setBackgroundColor(Color.GREEN);
+                                                txtmodesave.setText("Saved");
                                                 // to refresh pade and keep our current file
                                                 count++;
                                                 Button BtnData = (Button) findViewById(R.id.BtnData);
@@ -2783,7 +2809,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             BtnData.setVisibility(View.VISIBLE); //SHOW the button
                             BtnData.setText(String.valueOf(count));
                         }
-                        BtnMode1.setBackgroundColor(Color.GRAY);
+                        BtnModedata.setBackgroundColor(Color.GRAY);
                         */
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
@@ -2963,7 +2989,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         BtnData.setVisibility(View.VISIBLE); //SHOW the button
                         BtnData.setText(String.valueOf(count));
                     }
-                    BtnMode1.setBackgroundColor(Color.GRAY);
+                    BtnModedata.setBackgroundColor(Color.GRAY);
+                    txtmodedata.setText("Offline Data");
                 }
             });
         }

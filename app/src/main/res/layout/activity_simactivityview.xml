@@ -17,7 +17,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="90dp"
             android:background ="#00aaca">
 
             <ImageButton
@@ -40,29 +40,72 @@
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textAlignment="center"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="ONLINE"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/white"
+                android:id="@+id/txtmode"
+                android:layout_marginEnd="60dp"/>
+
             <com.google.android.material.button.MaterialButton
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:id="@+id/btnMode1"
-                android:layout_marginEnd="60dp"
-                android:layout_marginTop="30dp"
+                android:id="@+id/btnMode"
+                android:layout_alignParentRight="true"
+                app:cornerRadius="50dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
+                style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+                android:backgroundTint="@color/icontelkom_background">
+            </com.google.android.material.button.MaterialButton>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="Offline Data"
+                android:textColor="@color/white"
+                android:id="@+id/txtmodedata"
+                android:layout_marginTop="35dp"
+                android:layout_marginEnd="50dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/btnModedata"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="35dp"
                 android:layout_alignParentRight="true"
                 app:cornerRadius="50dp"
                 style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
                 android:backgroundTint="@color/icontelkom_background">
             </com.google.android.material.button.MaterialButton>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="NEW"
+                android:textColor="@color/white"
+                android:id="@+id/txtmodesave"
+                android:layout_marginTop="65dp"
+                android:layout_marginEnd="50dp"/>
             <com.google.android.material.button.MaterialButton
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:id="@+id/btnMode"
+                android:id="@+id/btnModesave"
                 android:layout_marginEnd="20dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="65dp"
                 android:layout_alignParentRight="true"
                 app:cornerRadius="50dp"
-                style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
-                android:backgroundTint="@color/icontelkom_background">
+                style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton">
             </com.google.android.material.button.MaterialButton>
+
 
             <!--
             <ImageButton
