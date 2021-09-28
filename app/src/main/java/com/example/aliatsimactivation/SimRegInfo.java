@@ -93,7 +93,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     private String gsigstatus,gfrontstatus,gbackstatus,agentNumber;
     private String vsimid,vpic,vcol;
     private String s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,s12,s13,s14,s15,s16,s17,b;
-    private String emailpattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+    private String emailpattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+",emailpattern1 = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+\\.+[a-z]+";
     private EditText editaltnumber,editemail,editphylocation,editpost,editussdstatus;
     private TextView editlname, editfname, textF, textB, textS;
     private String file1 = "MSISDN.txt";
@@ -1077,8 +1077,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     if (SIGN==null || FRONT==null || BACK==null || CLIENT==null) {
                         Toast.makeText(SimRegInfo.this, "Must Have Signature and Photos", Toast.LENGTH_LONG).show();
                     } else {
-                        if (editfname.getText().toString().matches("") || editmname.getText().toString().matches("") || editlname.getText().toString().matches("") || editmobile.getText().toString().matches("") || editaltnumber.getText().toString().matches("") || editemail.getText().toString().matches("") || editphylocation.getText().toString().matches("") || editpost.getText().toString().matches("") || !editemail.getText().toString().matches(emailpattern) || fb < 18 || !checkBox.isChecked() || SIGN == null || FRONT == null || BACK == null || fb == 0 || editdate.getText().toString() == null || CLIENT==null) {
-                            Toast.makeText(SimRegInfo.this, "You have empty fields mandatory", Toast.LENGTH_LONG).show();
+                        if (editfname.getText().toString().matches("") || editmname.getText().toString().matches("") || editlname.getText().toString().matches("") || editmobile.getText().toString().matches("") || editaltnumber.getText().toString().matches("") || editemail.getText().toString().matches("") || editphylocation.getText().toString().matches("") || editpost.getText().toString().matches("") ||  fb < 18 || !checkBox.isChecked() || SIGN == null || FRONT == null || BACK == null || fb == 0 || editdate.getText().toString() == null || CLIENT==null) {
+                            Toast.makeText(SimRegInfo.this, "Check your fields", Toast.LENGTH_LONG).show();
                             if (editfname.getText().toString().matches("")) {
                                 editfname.setError("Empty Field");
                             }
@@ -1090,6 +1090,9 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             }
                             if (editmobile.getText().toString().matches("")) {
                                 editmobile.setError("Empty Field");
+                            }
+                            if(editmobile.getText().toString().startsWith("0")){
+                                editmobile.setError("Client number must be 9 numbers and not start with 0");
                             }
                             if (editaltnumber.getText().toString().matches("")) {
                                 editaltnumber.setError("Empty Field");
@@ -1103,7 +1106,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             if (editpost.getText().toString().matches("")) {
                                 editpost.setError("Empty Field");
                             }
-                            if (!editemail.getText().toString().matches(emailpattern)) {
+                            if (!editemail.getText().toString().matches(emailpattern) && !editemail.getText().toString().matches(emailpattern1)) {
                                 editemail.setError("Invalid email address");
                             }
 
@@ -1133,6 +1136,16 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                 sp.setSelection(1);
                             }
                         } else {
+                            if(editmobile.getText().toString().startsWith("0")){
+                                editmobile.setError("Client number must be 9 numbers and not start with 0");
+                                Toast.makeText(getApplicationContext(),"Check your client mobile number",Toast.LENGTH_LONG).show();
+                                return ;
+                            }
+                            if (!editemail.getText().toString().matches(emailpattern) && !editemail.getText().toString().matches(emailpattern1)) {
+                                editemail.setError("Invalid email address");
+                                Toast.makeText(getApplicationContext(),"Check your email",Toast.LENGTH_LONG).show();
+                                return ;
+                            }
                             if (male.isChecked()) {
                                 gender = "Male";
                             }
@@ -1924,7 +1937,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     } else {
                         String dY[] = editdate.getText().toString().split("-");
                         fb = getAge(Integer.parseInt(dY[2]), Integer.parseInt(dY[1]), Integer.parseInt(dY[0]));
-                        if (editfname.getText().toString().matches("") || editmname.getText().toString().matches("") || editlname.getText().toString().matches("") || editmobile.getText().toString().matches("") || editaltnumber.getText().toString().matches("") || editemail.getText().toString().matches("") || editphylocation.getText().toString().matches("") || editpost.getText().toString().matches("") || !editemail.getText().toString().matches(emailpattern) || fb < 18 || !checkBox.isChecked() || SIGN == null || FRONT == null || BACK == null || fb == 0 || editdate.getText().toString() == null || CLIENT==null) {
+                        if (editfname.getText().toString().matches("") || editmname.getText().toString().matches("") || editlname.getText().toString().matches("") || editmobile.getText().toString().matches("") || editaltnumber.getText().toString().matches("") || editemail.getText().toString().matches("") || editphylocation.getText().toString().matches("") || editpost.getText().toString().matches("") || fb < 18 || !checkBox.isChecked() || SIGN == null || FRONT == null || BACK == null || fb == 0 || editdate.getText().toString() == null || CLIENT==null) {
 
                             if (editfname.getText().toString().matches("")) {
                                 editfname.setError("Empty Field");
@@ -1938,6 +1951,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             if (editmobile.getText().toString().matches("")) {
                                 editmobile.setError("Empty Field");
                             }
+
                             if (editaltnumber.getText().toString().matches("")) {
                                 editaltnumber.setError("Empty Field");
                             }
@@ -1950,9 +1964,10 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             if (editpost.getText().toString().matches("")) {
                                 editpost.setError("Empty Field");
                             }
-                            if (!editemail.getText().toString().matches(emailpattern)) {
-                                editemail.setError("Invalid email address");
+                            if (editmobile.getText().toString().matches("")) {
+                                editmobile.setError("Empty Field");
                             }
+
 
                             if (fb < 18 && fb >= 0) {
                                 editdate.setError("Under Age");
@@ -1963,6 +1978,18 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                 Toast.makeText(SimRegInfo.this, "Accept Terms And Conditions", Toast.LENGTH_SHORT).show();
                             }
                         } else {
+                            if (editmobile.getText().toString().startsWith("0")) {
+                                editmobile.setError("Client number must be 9 numbers and not start with 0");
+                                Toast.makeText(getApplicationContext(), "Check your client mobile number", Toast.LENGTH_LONG).show();
+                                return;
+                            }
+
+                            if (!editemail.getText().toString().matches(emailpattern) && !editemail.getText().toString().matches(emailpattern1)) {
+                                editemail.setError("Invalid email address");
+                                Toast.makeText(getApplicationContext(),"Check your email",Toast.LENGTH_LONG).show();
+                                return ;
+                            }
+
                             //start saving
                             new AlertDialog.Builder(SimRegInfo.this)
                                     .setTitle("Submit")
@@ -1972,6 +1999,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                     // The dialog is automatically dismissed when a dialog button is clicked.
                                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
+
                                             if (male.isChecked()) {
                                                 gender = "Male";
                                             }

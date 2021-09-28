@@ -72,12 +72,12 @@ public class AgentRegistration extends AppCompatActivity {
     private Connection conn;
     private int count=0;
     private File OfflineAgent;
-    private String fileContents,fileContents2,regionName,fullname;
+    private String fileContents,fileContents2,regionName,fullname,emailpattern1 = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+\\.+[a-z]+";
     private String AgentImage,AgentFrontID,AgentBackID,Code,value,globalMode,DBMode,PIN;
     private boolean connectflag=false;
     private String secondfileContents,secondfileContents2,secondfileContents3,secondfileContents4,secondfileContents5,secondfileContents6,secondfileContent7,secondfileContent8,secondfileContent9,secondfileContent10;
     private String gimagestatus,gfrontstatus,gbackstatus,globalagentID="0";
-    private String regionid="0",login,emailpattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";;
+    private String regionid="0",login,emailpattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     private String file = "MSISDN.txt";
     private String secondfile = "Offlinedata.txt";
     private boolean regionflag=false;
@@ -446,14 +446,13 @@ public class AgentRegistration extends AppCompatActivity {
 
                 if(globalMode.equalsIgnoreCase("Online")){
 
-
                     try {
 
                         //validat that all fiedls not to be empty
 
-                        if (TextUtils.isEmpty(edtfname.getText())|| TextUtils.isEmpty(edtlname.getText()) || TextUtils.isEmpty(edtdname.getText()) || TextUtils.isEmpty(edtaddress.getText()) || TextUtils.isEmpty(edtemail.getText()) ||TextUtils.isEmpty(edtphonenbr.getText()) || TextUtils.isEmpty(AgentImage) || TextUtils.isEmpty(AgentFrontID) || TextUtils.isEmpty(AgentBackID) || TextUtils.isEmpty(edtlat.getText()) || TextUtils.isEmpty(edtlong.getText()) || !edtemail.getText().toString().matches(emailpattern)) {
+                        if (TextUtils.isEmpty(edtfname.getText())|| TextUtils.isEmpty(edtlname.getText()) || TextUtils.isEmpty(edtdname.getText()) || TextUtils.isEmpty(edtaddress.getText()) || TextUtils.isEmpty(edtemail.getText()) ||TextUtils.isEmpty(edtphonenbr.getText()) || TextUtils.isEmpty(AgentImage) || TextUtils.isEmpty(AgentFrontID) || TextUtils.isEmpty(AgentBackID) || TextUtils.isEmpty(edtlat.getText()) || TextUtils.isEmpty(edtlong.getText()) ) {
 
-                            if (!edtemail.getText().toString().matches(emailpattern)) {
+                            if (!edtemail.getText().toString().matches(emailpattern) && !edtemail.getText().toString().matches(emailpattern1)) {
                                 edtemail.setError("Enter a Valid Email");
                             }
 
