@@ -963,6 +963,11 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             BtnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (sp.getSelectedItem().toString().toString().equalsIgnoreCase("New")) {
+                        Toast.makeText(SimRegInfo.this, "Set offline mode to delete offline files", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    if (sp.getSelectedItem().toString().toString().equalsIgnoreCase("In Progress")) {
                     Toast.makeText(SimRegInfo.this, "Deleting Photos from SFTP", Toast.LENGTH_LONG).show();
                     thread2.start();
                     Toast.makeText(SimRegInfo.this, "The Photos Deleted from SFTP", Toast.LENGTH_LONG).show();
@@ -1019,9 +1024,12 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
+                }else {
+                    Toast.makeText(SimRegInfo.this,"Delete valid for in progress status",Toast.LENGTH_LONG).show();
+                }
 
                 }
+
             });
 
             BtnRegandActivate.setOnClickListener(new View.OnClickListener() {
@@ -1910,13 +1918,18 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             BtnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String myFileName = "SIM_" + editmobile.getText().toString() + ".txt";
-                    File directory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
-                    OfflineFile = new File(directory,myFileName);
-                    OfflineFile.delete();
-                    Toast.makeText(SimRegInfo.this,"Offline File Deleted Successfully",Toast.LENGTH_LONG).show();
-                    finish();
-                    startActivity(getIntent());
+                    if (sp.getSelectedItem().toString().toString().equalsIgnoreCase("In Progress") || sp.getSelectedItem().toString().toString().equalsIgnoreCase("New")) {
+                        String myFileName = "SIM_" + editmobile.getText().toString() + ".txt";
+                        File directory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+                        OfflineFile = new File(directory,myFileName);
+                        OfflineFile.delete();
+                        Toast.makeText(SimRegInfo.this,"Offline File Deleted Successfully",Toast.LENGTH_LONG).show();
+                        finish();
+                        startActivity(getIntent());
+                    }else {
+                        Toast.makeText(SimRegInfo.this,"Delete valid for in progress status",Toast.LENGTH_LONG).show();
+                    }
+
                 }
             });
 
