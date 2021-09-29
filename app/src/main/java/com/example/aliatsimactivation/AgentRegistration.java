@@ -525,7 +525,7 @@ public class AgentRegistration extends AppCompatActivity {
 
 
 
-                                    //sending notification with a verification code
+                                ////sending notification with a verification code
                                 NotificationCompat.Builder builder = new NotificationCompat.Builder(AgentRegistration.this, "My Notification");
                                 builder.setContentTitle("Enter This Code to Verify your Registration");
                                 builder.setContentText(Code);
