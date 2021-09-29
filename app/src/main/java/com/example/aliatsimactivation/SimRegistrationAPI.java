@@ -215,7 +215,7 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
             }
         }
 
-        if(api_response_code=="0")
+        if(response_message.contains("Success"))
         {
             registration_status="Success";
         }else{

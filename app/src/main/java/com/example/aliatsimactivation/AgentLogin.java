@@ -112,7 +112,7 @@ public class AgentLogin extends AppCompatActivity {
         System.out.println("agentNumber : "+agentNumber);
         System.out.println("globalMode : "+globalMode);
         System.out.println("DBMode : "+DBMode);
-
+        Toast.makeText(getApplicationContext(),"You are logged using agent number: "+agentNumber,Toast.LENGTH_LONG).show();
 
         // check if we have permission to get our location in manifest xml file
         try {

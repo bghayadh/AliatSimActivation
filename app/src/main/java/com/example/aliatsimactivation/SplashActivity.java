@@ -9,6 +9,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,6 +39,7 @@ public class SplashActivity extends AppCompatActivity {
                 thread1.start();
             }
         });
+
     }
 
 
@@ -107,6 +109,7 @@ public class SplashActivity extends AppCompatActivity {
                 RegisterResult = text.toString();
                 data=RegisterResult.split(":");
                 agentNumber=data[0];
+
             }else{
                 login="0";
                 agentNumber="";

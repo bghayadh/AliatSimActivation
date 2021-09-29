@@ -322,6 +322,11 @@ public class ResendPicutres extends AppCompatActivity {
 
                 Thread.sleep(500);
                 txtmsg.setText("Sending completed");
+                Intent intent =new Intent(getApplicationContext(),MainActivity.class);
+                intent.putExtra("db-offline-to-main", "0");
+                intent.putExtra("globalMode","Online");
+                intent.putExtra("agentNumber",agentNumber);
+                startActivity(intent);
             }catch(Exception e){
                 e.printStackTrace();
             }

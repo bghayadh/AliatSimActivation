@@ -435,6 +435,229 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             }
         });
 
+        editlname.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                vartext=editlname.getText().toString();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!vartext.equalsIgnoreCase("")) {
+                    if (vartext.equalsIgnoreCase(editlname.getText().toString())) {
+
+                    } else {
+                        BtnModesave.setBackgroundColor(Color.rgb(255, 102, 0));
+                        txtmodesave.setText("Not Saved");
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        editidagent.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                vartext=editidagent.getText().toString();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!vartext.equalsIgnoreCase("")) {
+                    if (vartext.equalsIgnoreCase(editidagent.getText().toString())) {
+
+                    } else {
+                        BtnModesave.setBackgroundColor(Color.rgb(255, 102, 0));
+                        txtmodesave.setText("Not Saved");
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+
+        editmobile.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                vartext=editmobile.getText().toString();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!vartext.equalsIgnoreCase("")) {
+                    if (vartext.equalsIgnoreCase(editmobile.getText().toString())) {
+
+                    } else {
+                        BtnModesave.setBackgroundColor(Color.rgb(255, 102, 0));
+                        txtmodesave.setText("Not Saved");
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+        editaltnumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                vartext=editaltnumber.getText().toString();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!vartext.equalsIgnoreCase("")) {
+                    if (vartext.equalsIgnoreCase(editaltnumber.getText().toString())) {
+
+                    } else {
+                        BtnModesave.setBackgroundColor(Color.rgb(255, 102, 0));
+                        txtmodesave.setText("Not Saved");
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+        editemail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                vartext=editemail.getText().toString();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!vartext.equalsIgnoreCase("")) {
+                    if (vartext.equalsIgnoreCase(editemail.getText().toString())) {
+
+                    } else {
+                        BtnModesave.setBackgroundColor(Color.rgb(255, 102, 0));
+                        txtmodesave.setText("Not Saved");
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        editphylocation.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                vartext=editphylocation.getText().toString();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!vartext.equalsIgnoreCase("")) {
+                    if (vartext.equalsIgnoreCase(editphylocation.getText().toString())) {
+
+                    } else {
+                        BtnModesave.setBackgroundColor(Color.rgb(255, 102, 0));
+                        txtmodesave.setText("Not Saved");
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        editpost.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                vartext=editpost.getText().toString();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!vartext.equalsIgnoreCase("")) {
+                    if (vartext.equalsIgnoreCase(editpost.getText().toString())) {
+
+                    } else {
+                        BtnModesave.setBackgroundColor(Color.rgb(255, 102, 0));
+                        txtmodesave.setText("Not Saved");
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+
+        male.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(!globalsimid.equalsIgnoreCase("0") && male.isChecked()){
+
+                }else {
+                    BtnModesave.setBackgroundColor(Color.rgb(255, 102, 0));
+                    txtmodesave.setText("Not Saved");
+                }
+
+            }
+        });
+
+        female.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(!globalsimid.equalsIgnoreCase("0") && female.isChecked()){
+
+                }else {
+                    BtnModesave.setBackgroundColor(Color.rgb(255, 102, 0));
+                    txtmodesave.setText("Not Saved");
+                }
+            }
+        });
+
+        kenya.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!globalsimid.equalsIgnoreCase("0") && kenya.isChecked()) {
+
+                } else {
+                    BtnModesave.setBackgroundColor(Color.rgb(255, 102, 0));
+                    txtmodesave.setText("Not Saved");
+                }
+            }
+        });
+
+        foreign.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!globalsimid.equalsIgnoreCase("0") && foreign.isChecked()) {
+
+                } else {
+                    BtnModesave.setBackgroundColor(Color.rgb(255, 102, 0));
+                    txtmodesave.setText("Not Saved");
+                }
+            }
+        });
+
         ////////////////////////////////////////////////////////
 
 
@@ -2822,7 +3045,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             // send data from fragment to super activity
                             String ussd_status = "USSD";
                             stmtinsert1 = conn.prepareStatement("insert into CLIENTS (CLIENT_ID,DISPLAY_NAME,CREATED_DATE,LAST_MODIFIED_DATE,FIRST_NAME,MIDDLE_NAME,LAST_NAME,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHYSICAL_LOCATION,STATUS,POSTAL_ADDRESS,GENDER,AGENT_NUMBER,CLIENT_ID_NUMBER,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,CLIENT_PHOTO,SIGNATURE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS,CLIENT_PHOTO_STATUS,USSD_STATUS,DEPARTMENT,DESCREPTION) values " +
-                                    "('" + globalsimid + "',0,sysdate, sysdate,'" + editfname.getText() + "','" + editmname.getText() + "', '" + editlname.getText() + "','" + editmobile.getText() + "',TO_DATE('" + editdate.getText() + "','DD-MM-YYYY'),'" + nationality + "','" + editaltnumber.getText() + "','" + editemail.getText() + "','" + editphylocation.getText() + "','" + b + "','" + editpost.getText() + "','" + gender + "','" + editagent.getText() + "','" + editidagent.getText() + "','" + SIGN + "','" + FRONT + "','" + BACK + "','" + CLIENT + "',0,0,0,0,'" + ussd_status + "',0,0)");
+                                    "('" + globalsimid + "',0,sysdate, sysdate,'" + editfname.getText() + "','" + editmname.getText() + "', '" + editlname.getText() + "','" + editmobile.getText() + "',TO_DATE('" + editdate.getText() + "','DD-MM-YYYY'),'" + nationality + "','" + editaltnumber.getText() + "','" + editemail.getText() + "','" + editphylocation.getText() + "','" + b + "','" + editpost.getText() + "','" + gender + "','" + agentNumber + "','" + editidagent.getText() + "','" + SIGN + "','" + FRONT + "','" + BACK + "','" + CLIENT + "',0,0,0,0,'" + ussd_status + "',0,0)");
                         } else {
                             stmtinsert1 = conn.prepareStatement("update CLIENTS set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + editfname.getText() + "',MIDDLE_NAME='" + editmname.getText() + "',LAST_NAME='" + editlname.getText() + "',STATUS='" + b + "',MOBILE_NUMBER='" + editmobile.getText() + "',NATIONALITY='" + nationality + "',ALTERNATIVE_NUMBER='" + editaltnumber.getText() + "',EMAIL_ADDRESS='" + editemail.getText() + "',PHYSICAL_LOCATION='" + editphylocation.getText() + "',POSTAL_ADDRESS='" + editpost.getText() + "',GENDER='" + gender + "',AGENT_NUMBER='" + editagent.getText() + "',CLIENT_ID_NUMBER='" + editidagent.getText() + "',SIGNATURE='" + SIGN + "',ID_FRONT_SIDE_PHOTO='" + FRONT + "',ID_BACK_SID_PHOTO='" + BACK + "',USSD_STATUS='" + editussdstatus.getText().toString() + "',CLIENT_PHOTO='" + CLIENT + "' where CLIENT_ID  ='" + globalsimid + "'");
                         }
