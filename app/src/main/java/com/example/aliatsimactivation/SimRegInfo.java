@@ -1499,7 +1499,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                     .setMessage("Are you sure you want to Submit this form?")
                                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
-
+                                           progressBar.setVisibility(View.VISIBLE);
                                            progressBar.setProgress(0);
                                             Date date = new Date();
                                             Calendar calendar = new GregorianCalendar();
@@ -3016,7 +3016,16 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             try {
                 txtmsg.setText("Please wait ...");
                 if ((flg = connecttoDB()) == true) {
+
                     if (getAgentStatus()==true) {
+
+                        if ((validateclientmobilenumber(editmobile.getText().toString()) ==true) && (globalsimid.equalsIgnoreCase("0"))){
+                            txtmsg.setText("MSISDN already existed and activated , cannot be saved");
+                            progressBar.setVisibility(View.INVISIBLE);
+                            Thread.sleep(2000);
+                            txtmsg.setText("");
+                            return;
+                        }
                     PreparedStatement stmtinsert1 = null;
 
                     try {
@@ -3455,6 +3464,41 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         return statusflg;
 
     }
+    public boolean validateclientmobilenumber(String vcltNumber) {
+        boolean clientNbr=false;
+        String cltnbr;
+        Statement stmt1 = null;
+             try {
+                stmt1 = conn.createStatement();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            String sqlStmt = "select * from CLIENTS where MOBILE_NUMBER='" + vcltNumber + "' AND STATUS='Success' ";
+            ResultSet rs1 = null;
+            try {
+                rs1 = stmt1.executeQuery(sqlStmt);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
 
+            while (true) {
+                try {
+                    if (!rs1.next()) break;
+                    cltnbr = rs1.getString("MOBILE_NUMBER");
+                    clientNbr = true;
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+            try {
+                rs1.close();
+                stmt1.close();
+              } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+        return clientNbr;
+
+    }
 
 }
