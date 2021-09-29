@@ -112,7 +112,7 @@ public class AgentLogin extends AppCompatActivity {
         System.out.println("agentNumber : "+agentNumber);
         System.out.println("globalMode : "+globalMode);
         System.out.println("DBMode : "+DBMode);
-        Toast.makeText(getApplicationContext(),"You are logged using agent number: "+agentNumber,Toast.LENGTH_LONG).show();
+
 
         // check if we have permission to get our location in manifest xml file
         try {
@@ -140,7 +140,7 @@ public class AgentLogin extends AppCompatActivity {
                 String[] data = RegisterResult.split(":");
                 filepincode = data[1];
                 if (GSTATUS.equalsIgnoreCase("Activated") && filepincode.toString().trim().equalsIgnoreCase(GPIN)) {
-
+                    Toast.makeText(getApplicationContext(),"You are logged using agent number: "+agentNumber,Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.putExtra("globalMode", globalMode);
                     intent.putExtra("db-offline-to-main", DBMode);

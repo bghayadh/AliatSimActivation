@@ -37,6 +37,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -73,10 +74,12 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Properties;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private String gender = null;
-    private int count;
+    private int count,counter=0;
     public Connection conn;
     private String globalsimid,simID,vartext="";
     private Button submit, frontid, backid,btnlvsimreg,btnclientimg,BtnModedata,BtnModesave;
@@ -122,7 +125,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     private View linesign,linefront,lineback,lineclient,ussdview;  //line under discard
     private TextView discardsign,discardfront,discardback,discardclient; // for discard
     private String globalMode,gclientstatusnew,gclientstatusorigin,CLIENTorigin,CLIENTnew;
-
+    private ProgressBar progressBar;
 
     //capture images from cam and save it on the phone
     @Override
@@ -312,6 +315,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         txtmodedata=findViewById(R.id.txtmodedata);
         txtmodesave=findViewById(R.id.txtmodesave);
         sp.setEnabled(false);
+        progressBar=findViewById(R.id.progressbar);
 
         Date c = Calendar.getInstance().getTime();
         SimpleDateFormat df=new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
@@ -1496,7 +1500,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
 
-
+                                           progressBar.setProgress(0);
                                             Date date = new Date();
                                             Calendar calendar = new GregorianCalendar();
                                             calendar.setTime(date);
@@ -2691,7 +2695,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         Boolean success1 = true;
 
                         if (success1) {
-                            txtmsg.setText("upload completed : " + sign);
+                            //txtmsg.setText("upload completed : " + sign);
                             System.out.println("upload completed : " + sign);
                             UpdateSimRegistrationPicStatus(globalsimid, "SIGNATURE_STATUS",1);
                             signimgIcon.setColorFilter(Color.GREEN);
@@ -2706,7 +2710,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         UpdateSimRegistrationPicStatus(globalsimid, "SIGNATURE_STATUS",0);
                     }
                 }
-
+                progressBar.setProgress(42);
                 if(gfrontstatus.equalsIgnoreCase("0")){
                     if(e!=0) {
                         File frontpic = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), FRONT + ".jpg");
@@ -2715,7 +2719,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         Boolean success2 = true;
 
                         if (success2) {
-                            txtmsg.setText("upload completed : " + front);
+                            //txtmsg.setText("upload completed : " + front);
                             System.out.println("upload completed : " + front);
                             UpdateSimRegistrationPicStatus(globalsimid, "FRONT_SIDE_ID_STATUS",1);
                             frontimgIcon.setColorFilter(Color.GREEN);
@@ -2728,6 +2732,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         UpdateSimRegistrationPicStatus(globalsimid, "FRONT_SIDE_ID_STATUS",0);
                     }
                 }
+                progressBar.setProgress(45);
                 if(gbackstatus.equalsIgnoreCase("0")) {
                     if(e!=0) {
                     File backpic = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), BACK + ".jpg");
@@ -2736,7 +2741,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     Boolean success3 = true;
 
                     if (success3) {
-                        txtmsg.setText("upload completed : " + back);
+                        //txtmsg.setText("upload completed : " + back);
                         System.out.println("upload completed : " + back);
                         UpdateSimRegistrationPicStatus(globalsimid, "BACK_SIDE_ID_STATUS",1);
                         backimgIcon.setColorFilter(Color.GREEN);
@@ -2749,7 +2754,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         UpdateSimRegistrationPicStatus(globalsimid, "BACK_SIDE_ID_STATUS",0);
                     }
                 }
-
+                progressBar.setProgress(47);
                 if(gclientstatus.equalsIgnoreCase("0")) {
                     if (e != 0) {
                         File clientpic = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), CLIENT + ".jpg");
@@ -2758,7 +2763,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         Boolean success4 = true;
 
                         if (success4) {
-                            txtmsg.setText("upload completed : " + client);
+                            //txtmsg.setText("upload completed : " + client);
                             System.out.println("upload completed : " + client);
                             UpdateSimRegistrationPicStatus(globalsimid, "CLIENT_PHOTO_STATUS", 1);
                             clientimgIcon.setColorFilter(Color.GREEN);
@@ -2774,6 +2779,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     channelSftp.disconnect();
                     session.disconnect();
                 }
+                progressBar.setProgress(100);
                 txtmsg.setText("Transaction completed");
                 Thread.sleep(2000);
                 txtmsg.setText("");
@@ -3017,7 +3023,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         if (globalsimid.equalsIgnoreCase("0") || OfflineFile.exists()) {
                             // if it is a new Warehouse we will use insert
 
-
+                            progressBar.setProgress(10);
                             Statement stmt1 = null;
                             stmt1 = conn.createStatement();
                             String sqlStmt = "select CLIENTS_SEQ.nextval as nbr from dual";
@@ -3049,15 +3055,17 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         } else {
                             stmtinsert1 = conn.prepareStatement("update CLIENTS set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + editfname.getText() + "',MIDDLE_NAME='" + editmname.getText() + "',LAST_NAME='" + editlname.getText() + "',STATUS='" + b + "',MOBILE_NUMBER='" + editmobile.getText() + "',NATIONALITY='" + nationality + "',ALTERNATIVE_NUMBER='" + editaltnumber.getText() + "',EMAIL_ADDRESS='" + editemail.getText() + "',PHYSICAL_LOCATION='" + editphylocation.getText() + "',POSTAL_ADDRESS='" + editpost.getText() + "',GENDER='" + gender + "',AGENT_NUMBER='" + editagent.getText() + "',CLIENT_ID_NUMBER='" + editidagent.getText() + "',SIGNATURE='" + SIGN + "',ID_FRONT_SIDE_PHOTO='" + FRONT + "',ID_BACK_SID_PHOTO='" + BACK + "',USSD_STATUS='" + editussdstatus.getText().toString() + "',CLIENT_PHOTO='" + CLIENT + "' where CLIENT_ID  ='" + globalsimid + "'");
                         }
-                        txtmsg.setText("Saving Completed,now start load pictures");
+                        txtmsg.setText("DB Data Saving completed");
+                        progressBar.setProgress(30);
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
                     try {
                         stmtinsert1.executeUpdate();
                         OfflineFile.delete();
+                        progressBar.setProgress(40);
 
-
+                        txtmsg.setText("Start upload pictures");
                         //calling to upload pictures  using stfp
                         if (globalsimid.equalsIgnoreCase("0")) {
                             //Toast.makeText(SimRegInfo.this, "New SIM Uploading Photos started", Toast.LENGTH_LONG).show();
@@ -3081,7 +3089,31 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     try {
                         stmtinsert1.close();
                         conn.close();
-                        txtmsg.setText("Data Saving completed");
+                        if (!gsigstatus.equalsIgnoreCase("0") && !gfrontstatus.equalsIgnoreCase("0") && !gbackstatus.equalsIgnoreCase("0") && !gclientstatus.equalsIgnoreCase("0")) {
+                            progressBar.setProgress(100);
+                            txtmsg.setText("Transaction completed");
+                            Thread.sleep(2000);
+                            txtmsg.setText("");
+                            progressBar.setProgress(0);
+                            Intent intent =  new Intent(getApplicationContext(), SimRegInfo.class);
+                            intent.putExtra("message_key", globalsimid);
+                            intent.putExtra("db-offline", "1");
+                            intent.putExtra("globalMode","Online");
+                            intent.putExtra("db-offline-to-main","1");
+                            intent.putExtra("agentNumber",agentNumber);
+                            startActivity(intent);
+                        } else {
+
+                            //recall form
+                            Thread.sleep(20000);
+                            Intent intent = new Intent(getApplicationContext(), SimRegInfo.class);
+                            intent.putExtra("message_key", globalsimid);
+                            intent.putExtra("db-offline", "1");
+                            intent.putExtra("globalMode", "Online");
+                            intent.putExtra("db-offline-to-main", "1");
+                            intent.putExtra("agentNumber", agentNumber);
+                            startActivity(intent);
+                        }
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
