@@ -341,7 +341,10 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         File directory1 = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
         File OfflineFile1 = new File(directory1,myFileName1);
 
-
+        //in case agent was null to get it from local file
+         if (agentNumber==null || agentNumber=="") {
+            getagentnumber();
+        }
 
         if (globalMode.equalsIgnoreCase("Online")) {
             btnMode.setBackgroundColor(Color.GREEN);
@@ -3499,6 +3502,35 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
         return clientNbr;
 
+    }
+
+    public void getagentnumber() {
+        File file = new File(getApplicationContext().getFilesDir(), "MSISDN.txt");
+        if(file.exists()){
+            StringBuilder text = new StringBuilder();
+            String[] data;
+            String RegisterResult="";
+            try {
+                FileInputStream fIn = openFileInput("MSISDN.txt");
+                int c;
+                String temp = "";
+
+                while ((c = fIn.read()) != -1) {
+                    temp = temp + Character.toString((char) c);
+                }
+                text.append(temp);
+                text.append('\n');
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            RegisterResult = text.toString();
+            data=RegisterResult.split(":");
+            agentNumber=data[0];
+            System.out.println("Bassam Agent is : "+agentNumber);
+        }
     }
 
 }

@@ -63,6 +63,7 @@ public class Activate_Sim extends AppCompatActivity {
         i.putExtra("message_key",stroffile);
         i.putExtra("globalMode",globalMode);
         i.putExtra("agentNumber",agentNumber);
+        i.putExtra("db-offline-to-main",stroffile);
         startActivity(i);
     }
 

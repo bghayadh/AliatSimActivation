@@ -214,8 +214,7 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
                 urlConnection.disconnect();
             }
         }
-
-        if(response_message.contains("Success"))
+        if(response_message.contains("Success") || response_message.contains("success") || response_message.contains("SUCCESS"))
         {
             registration_status="Success";
         }else{
