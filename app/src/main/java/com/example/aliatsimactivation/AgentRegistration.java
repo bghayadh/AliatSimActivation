@@ -405,8 +405,9 @@ public class AgentRegistration extends AppCompatActivity {
         spregion.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
             {
+                //int valeur=spregion.getAdapter().getCount();
                 regionName = parent.getItemAtPosition(position).toString(); //this is your selected item
-            }
+           }
             public void onNothingSelected(AdapterView<?> parent)
             {
 

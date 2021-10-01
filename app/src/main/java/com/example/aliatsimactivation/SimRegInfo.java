@@ -3022,13 +3022,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
                     if (getAgentStatus()==true) {
 
-                        if ((validateclientmobilenumber(editmobile.getText().toString()) ==true) && (globalsimid.equalsIgnoreCase("0"))){
-                            txtmsg.setText("MSISDN already existed and activated , cannot be saved");
-                            progressBar.setVisibility(View.INVISIBLE);
-                            Thread.sleep(2000);
-                            txtmsg.setText("");
-                            return;
-                        }
+
                     PreparedStatement stmtinsert1 = null;
 
                     try {
@@ -3465,42 +3459,6 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             throwables.printStackTrace();
         }
         return statusflg;
-
-    }
-    public boolean validateclientmobilenumber(String vcltNumber) {
-        boolean clientNbr=false;
-        String cltnbr;
-        Statement stmt1 = null;
-             try {
-                stmt1 = conn.createStatement();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-            String sqlStmt = "select * from CLIENTS where MOBILE_NUMBER='" + vcltNumber + "' AND STATUS='Success' ";
-            ResultSet rs1 = null;
-            try {
-                rs1 = stmt1.executeQuery(sqlStmt);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-
-            while (true) {
-                try {
-                    if (!rs1.next()) break;
-                    cltnbr = rs1.getString("MOBILE_NUMBER");
-                    clientNbr = true;
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            try {
-                rs1.close();
-                stmt1.close();
-              } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-
-        return clientNbr;
 
     }
 
