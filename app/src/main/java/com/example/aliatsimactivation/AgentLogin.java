@@ -1,5 +1,6 @@
 package com.example.aliatsimactivation;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
@@ -9,6 +10,7 @@ import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
@@ -18,6 +20,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.PowerManager;
 import android.os.StrictMode;
+import android.text.InputType;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -30,6 +33,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -43,7 +47,7 @@ import static android.os.PowerManager.SCREEN_DIM_WAKE_LOCK;
 
 public class AgentLogin extends AppCompatActivity {
     private Button btnlogin, BtnData,BtnExit;
-    private TextView txtmsisdn, txtpin;
+    private TextView txtmsisdn, txtpin,txtcheck;
     private EditText editmsisdn, editpin;
     private String agentNumber, RegisterResult, DBMode,globalMode,GSTATUS,GPIN;
     private String login = "0", agentstatus, filepincode;
@@ -101,6 +105,7 @@ public class AgentLogin extends AppCompatActivity {
         txtpin = findViewById(R.id.txtpincode);
         BtnData = findViewById(R.id.BtnData);
         BtnExit= findViewById(R.id.BtnExit);
+        txtcheck=findViewById(R.id.txtexists);
 
         Intent i = this.getIntent();
         login = i.getStringExtra("login");
@@ -200,6 +205,7 @@ public class AgentLogin extends AppCompatActivity {
             btnlogin.setText("LOGIN");
             editmsisdn.setText(agentNumber);
             editmsisdn.setEnabled(false);
+            txtcheck.setVisibility(View.INVISIBLE);
         }
 
         BtnExit.setOnClickListener(new View.OnClickListener() {
@@ -329,6 +335,59 @@ public class AgentLogin extends AppCompatActivity {
             }
         });
 
+        txtcheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder mydialog = new AlertDialog.Builder(AgentLogin.this);
+                mydialog.setTitle("Enter your MSISDN");
+
+                final EditText msisdn = new EditText(AgentLogin.this);
+                msisdn.setInputType(InputType.TYPE_CLASS_PHONE);
+                mydialog.setView(msisdn);
+
+                mydialog.setPositiveButton("Login", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(),"Please wait.. Trying to login",Toast.LENGTH_LONG).show();
+                        if(globalMode.equalsIgnoreCase("Online")) {
+                            if(DBMode.equalsIgnoreCase("-100")){
+                                Toast.makeText(getApplicationContext(),"Server Error please try again later",Toast.LENGTH_LONG).show();
+
+                            }else {
+                                agentNumber = msisdn.getText().toString();
+
+                                if (validateagentnumber(agentNumber.toString()) == true) {
+                                    System.out.println("Existed");
+                                    getStatusPin();
+                                    Toast.makeText(getApplicationContext(),"Logging in successfully, please wait",Toast.LENGTH_LONG).show();
+                                    System.out.println("PINCODE= " + GPIN);
+                                    createandSaveMSISDNandPIN(agentNumber.toString(), GPIN);
+                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    intent.putExtra("globalMode", globalMode);
+                                    intent.putExtra("db-offline-to-main", DBMode);
+                                    intent.putExtra("agentNumber", agentNumber.toString());
+                                    startActivity(intent);
+                                }else{
+                                    Toast.makeText(getApplicationContext(),"Not Found, create new Account",Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        }else{
+                            Toast.makeText(getApplicationContext(),"You are Offline please try again later",Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                });
+
+                mydialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                mydialog.show();
+            }
+        });
 
     }
 
@@ -483,6 +542,69 @@ public class AgentLogin extends AppCompatActivity {
         return result;
     }
 
+    //function to create and save the msisdn and pin
+    private void createandSaveMSISDNandPIN(String vmsisdn,String vpin){
 
+        FileOutputStream fos = null;
+        try {
+            fos = openFileOutput("MSISDN.txt", MODE_PRIVATE);
+            fos.write(vmsisdn.getBytes());
+            fos.write(":".getBytes());
+            fos.write(vpin.getBytes());
+            Toast.makeText(this, "Data is saved "+ getFilesDir(), Toast.LENGTH_SHORT).show();
+            System.out.println(getFilesDir());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            if (fos!= null){
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public boolean validateagentnumber(String vagentNumber) {
+        boolean agentNbr=false;
+        String agentNmbr;
+        Statement stmt1 = null;
+        if ((connecttoDB()) == true) {
+            try {
+                stmt1 = conn.createStatement();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            String sqlStmt = "select * from AGENT where MSISDN='" + vagentNumber + "' AND STATUS='Activated' ";
+            ResultSet rs1 = null;
+            try {
+                rs1 = stmt1.executeQuery(sqlStmt);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+            while (true) {
+                try {
+                    if (!rs1.next()) break;
+                    agentNmbr = rs1.getString("MSISDN");
+                    agentNbr = true;
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+            try {
+                rs1.close();
+                stmt1.close();
+                conn.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+        return agentNbr;
+
+    }
 
 }
