@@ -3014,7 +3014,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             try {
                 txtmsg.setText("Please wait ...");
                 if ((flg = connecttoDB()) == true) {
-
+                    if (getAgentStatus()==true) {
                     PreparedStatement stmtinsert1 = null;
                     try {
                         if (globalsimid.equalsIgnoreCase("0") || OfflineFile.exists()) {
@@ -3115,7 +3115,14 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         throwables.printStackTrace();
                     }
 
-
+                }
+                else {
+                    txtmsg.setText("Access denied");
+                    Intent intent = new Intent(Intent.ACTION_MAIN);
+                    intent.addCategory(Intent.CATEGORY_HOME);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
 
                 }
                 else {
@@ -3423,6 +3430,57 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             agentNumber=data[0];
             System.out.println("Bassam Agent is : "+agentNumber);
         }
+    }
+
+    public boolean getAgentStatus()
+    {
+        String Agentstatus = null;
+        boolean statusflg = false;
+
+        Statement stmtagent = null;
+
+        try {
+            stmtagent = conn.createStatement();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        String sqlStmtagent = "SELECT STATUS FROM AGENT WHERE MSISDN = '"+ agentNumber+"' ";
+        ResultSet rsagent = null;
+
+        try {
+            rsagent = stmtagent.executeQuery(sqlStmtagent);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        while (true) {
+            try {
+                if (!rsagent.next()) break;
+                Agentstatus = (rsagent.getString("STATUS"));
+                if (Agentstatus.equalsIgnoreCase("Activated")){
+                    statusflg = true;
+                } else {
+                    statusflg = false;
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+        }
+        try {
+            rsagent.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        try {
+            stmtagent.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return statusflg;
+
     }
 
 }

@@ -134,6 +134,7 @@ public class Activate_Sim extends AppCompatActivity {
                                 ActivityCompat.requestPermissions(Activate_Sim.this, new String[]{Manifest.permission.CALL_PHONE}, 1);
                                 System.out.println("NO ACTION");
                             } else {
+                                Toast.makeText(getApplicationContext(), "start sending SMS: " + UssdCode, Toast.LENGTH_SHORT).show();
                                 System.out.println("start sending " + UssdCode);
                                 //dial Ussd code
                                 startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + UssdCodeNew)));
