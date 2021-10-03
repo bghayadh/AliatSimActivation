@@ -1264,7 +1264,6 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     try {
                         if ((flg = connecttoDB()) == true) {
 
-                            if (getAgentStatus()==true) {
                             Toast.makeText(SimRegInfo.this, "Starting Deletion in DataBase", Toast.LENGTH_SHORT).show();
                             PreparedStatement stmtinsert1 = null;
 
@@ -1292,11 +1291,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             i.putExtra("message_key",stroffile);
                             startActivity(i);
 
-                        }
-                        else {
-                            Toast.makeText(getApplicationContext(),"Access denied",Toast.LENGTH_LONG).show();
-                            finishAffinity();
-                        }
+
 
 
                         } else {
@@ -3020,11 +3015,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 txtmsg.setText("Please wait ...");
                 if ((flg = connecttoDB()) == true) {
 
-                    if (getAgentStatus()==true) {
-
-
                     PreparedStatement stmtinsert1 = null;
-
                     try {
                         if (globalsimid.equalsIgnoreCase("0") || OfflineFile.exists()) {
                             // if it is a new Warehouse we will use insert
@@ -3125,14 +3116,6 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     }
 
 
-                    }
-                    else {
-                        txtmsg.setText("Access denied");
-                        Intent intent = new Intent(Intent.ACTION_MAIN);
-                        intent.addCategory(Intent.CATEGORY_HOME);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                    }
 
                 }
                 else {
@@ -3412,55 +3395,6 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         }
     };
 
-    public boolean getAgentStatus()
-    {
-        String Agentstatus = null;
-        boolean statusflg = false;
-
-        Statement stmtagent = null;
-
-        try {
-            stmtagent = conn.createStatement();
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        String sqlStmtagent = "SELECT STATUS FROM AGENT WHERE MSISDN = '"+ agentNumber+"' ";
-        ResultSet rsagent = null;
-
-        try {
-            rsagent = stmtagent.executeQuery(sqlStmtagent);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        while (true) {
-            try {
-                if (!rsagent.next()) break;
-                Agentstatus = (rsagent.getString("STATUS"));
-                if (Agentstatus.equalsIgnoreCase("Activated")){
-                    statusflg = true;
-                } else {
-                    statusflg = false;
-                }
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-
-        }
-        try {
-            rsagent.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        try {
-            stmtagent.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return statusflg;
-
-    }
 
     public void getagentnumber() {
         File file = new File(getApplicationContext().getFilesDir(), "MSISDN.txt");
