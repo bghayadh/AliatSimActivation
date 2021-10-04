@@ -138,24 +138,41 @@ public class AgentLogin extends AppCompatActivity {
                     GSTATUS="0";
                     GPIN="0";
                 }
-            System.out.println("GSTATUS :" + GSTATUS);
-            System.out.println("GPIN :" + GPIN);
-            File file = new File(getApplicationContext().getFilesDir(), "MSISDN.txt");
-            if (file.exists()) {
-                RegisterResult = getagentpinnumber();
-                //split the line through : and set them into the edittexts of msisdn and pin
-                String[] data = RegisterResult.split(":");
-                filepincode = data[1];
-                if (GSTATUS.equalsIgnoreCase("Activated") && filepincode.toString().trim().equalsIgnoreCase(GPIN)) {
-                    Toast.makeText(getApplicationContext(),"You are logged using agent number: "+agentNumber,Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    intent.putExtra("globalMode", globalMode);
-                    intent.putExtra("db-offline-to-main", DBMode);
-                    intent.putExtra("agentNumber", agentNumber);
-                    startActivity(intent);
+                System.out.println("GSTATUS :" + GSTATUS);
+                System.out.println("GPIN :" + GPIN);
+
+
+                File file = new File(getApplicationContext().getFilesDir(), "MSISDN.txt");
+                if (file.exists()) {
+                    RegisterResult = getagentpinnumber();
+
+                    //split the line through : and set them into the edittexts of msisdn and pin
+                    String[] data = RegisterResult.split(":");
+                    filepincode = data[1];
+
+                    /////////////////////////////////////////
+                    System.out.println("filepincode : "+filepincode);
+                    if(GPIN.equalsIgnoreCase("0") && !filepincode.equalsIgnoreCase("PIN"))
+                    {
+                        Intent intent = new Intent(getApplicationContext(),AgentRegistration.class);
+                        intent.putExtra("globalMode",globalMode);
+                        intent.putExtra("db-offline-to-main",DBMode);
+                        intent.putExtra("msisdn",agentNumber);
+                        startActivity(intent);
+                        return;
+                    }
+                    /////////////////////////////////////////
+
+                    if (GSTATUS.equalsIgnoreCase("Activated") && filepincode.toString().trim().equalsIgnoreCase(GPIN)) {
+                        Toast.makeText(getApplicationContext(),"You are logged using agent number: "+agentNumber,Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.putExtra("globalMode", globalMode);
+                        intent.putExtra("db-offline-to-main", DBMode);
+                        intent.putExtra("agentNumber", agentNumber);
+                        startActivity(intent);
                     }else{
-                    Toast.makeText(getApplicationContext(), "You are not activated", Toast.LENGTH_LONG).show();
-                }
+                        Toast.makeText(getApplicationContext(), "You are not activated", Toast.LENGTH_LONG).show();
+                    }
                 }
             }else{
                 File file = new File(getApplicationContext().getFilesDir(), "MSISDN.txt");
@@ -226,42 +243,43 @@ public class AgentLogin extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(),AgentRegistration.class);
                     intent.putExtra("globalMode",globalMode);
                     intent.putExtra("db-offline-to-main",DBMode);
+                    intent.putExtra("msisdn",agentNumber);
                     startActivity(intent);
                 }else{
                     getStatusPin();
                     if(GSTATUS.equalsIgnoreCase("Activated") && editpin.getText().toString().equalsIgnoreCase(GPIN)){
-                       try{
-                        File file = new File(getApplicationContext().getFilesDir(), "MSISDN.txt");
+                        try{
+                            File file = new File(getApplicationContext().getFilesDir(), "MSISDN.txt");
 
-                        FileInputStream is;
-                        BufferedReader reader;
-                        is = new FileInputStream(file);
-                        reader = new BufferedReader(new InputStreamReader(is));
-                        String line = reader.readLine();
-                        String OldContent=null;
-                        while(line != null){
-                            if (OldContent==null) {
-                                OldContent = line+System.lineSeparator();
-                            } else {
-                                OldContent = OldContent+line+System.lineSeparator(); }
-                            line = reader.readLine();
+                            FileInputStream is;
+                            BufferedReader reader;
+                            is = new FileInputStream(file);
+                            reader = new BufferedReader(new InputStreamReader(is));
+                            String line = reader.readLine();
+                            String OldContent=null;
+                            while(line != null){
+                                if (OldContent==null) {
+                                    OldContent = line+System.lineSeparator();
+                                } else {
+                                    OldContent = OldContent+line+System.lineSeparator(); }
+                                line = reader.readLine();
 
-                            if(OldContent.contains("PIN")) {
-                                String newContent = OldContent.replaceAll("PIN",editpin.getText().toString());
-                                FileWriter fw = new FileWriter(file.getAbsoluteFile());
-                                BufferedWriter bw = new BufferedWriter(fw);
-                                bw.write(newContent.toString());
-                                bw.close();
+                                if(OldContent.contains("PIN")) {
+                                    String newContent = OldContent.replaceAll("PIN",editpin.getText().toString());
+                                    FileWriter fw = new FileWriter(file.getAbsoluteFile());
+                                    BufferedWriter bw = new BufferedWriter(fw);
+                                    bw.write(newContent.toString());
+                                    bw.close();
+                                }
+
+
                             }
+                            reader.close();
 
 
+                        }catch (Exception e){
+                            e.printStackTrace();
                         }
-                        reader.close();
-
-
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
                         Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                         intent.putExtra("globalMode",globalMode);
                         intent.putExtra("db-offline-to-main",DBMode);
@@ -354,7 +372,7 @@ public class AgentLogin extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(),"Please wait.. Trying to login",Toast.LENGTH_LONG).show();
                         if(globalMode.equalsIgnoreCase("Online")) {
                             if(DBMode.equalsIgnoreCase("-100")){
-                                Toast.makeText(getApplicationContext(),"Server Error please try again later",Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(),"Reachability issue, no connection to database please try again later",Toast.LENGTH_LONG).show();
 
                             }else {
                                 agentNumber = msisdn.getText().toString();

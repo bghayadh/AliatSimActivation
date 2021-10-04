@@ -73,7 +73,7 @@ public class AgentRegistration extends AppCompatActivity {
     private int count=0;
     private File OfflineAgent;
     private String regionName,fullname,emailpattern1 = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+\\.+[a-z]+";
-    private String AgentImage,AgentFrontID,AgentBackID,Code,value,globalMode,DBMode,PIN;
+    private String AgentImage,AgentFrontID,AgentBackID,Code,value,globalMode,DBMode,PIN,agentNumber;
     private boolean connectflag=false;
     private String gimagestatus,gfrontstatus,gbackstatus,globalagentID="0";
     private String regionid="0",login,emailpattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
@@ -262,6 +262,9 @@ public class AgentRegistration extends AppCompatActivity {
         Intent intent=getIntent();
         globalMode=intent.getStringExtra("globalMode");
         DBMode=intent.getStringExtra("db-offline-to-main");
+        agentNumber=intent.getStringExtra("msisdn");
+
+        edtphonenbr.setText(agentNumber);
 
         if(globalMode.equalsIgnoreCase("Offline") || DBMode.equalsIgnoreCase("-100")){
             verify.setText("SAVE");
