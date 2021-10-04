@@ -1318,64 +1318,71 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             BtnRegandActivate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (!sp.getSelectedItem().toString().toString().equalsIgnoreCase("Success")) {
-                        if (male.isChecked()) {
-                            gender = "Male";
-                        }
-                        if (female.isChecked()) {
-                            gender = "Female";
-                        }
-                        String fname = editfname.getText().toString();
-                        String mname = editmname.getText().toString();
-                        String lname = editlname.getText().toString();
-                        String msisdn = editmobile.getText().toString();
-                        String idType = "IDCARD";
-                        String idNumber = editidagent.getText().toString();
-                        String dob = editdate.getText().toString();
-                        String email = editemail.getText().toString();
-                        String altnumber = editaltnumber.getText().toString();
-                        String address1 = editphylocation.getText().toString();
-                        String state = editpost.getText().toString();
-                        String agentmsisdn = editagent.getText().toString();
-
-
-                        System.out.println("fname" + fname);
-                        System.out.println("mname" + mname);
-                        System.out.println("lname" + lname);
-                        System.out.println("msisdn" + msisdn);
-                        System.out.println("idType" + idType);
-                        System.out.println("idNumber" + idNumber);
-                        System.out.println("dob" + dob);
-                        System.out.println("email" + email);
-                        System.out.println("gender" + gender);
-                        System.out.println("altnumber" + altnumber);
-                        System.out.println("address1" + address1);
-                        System.out.println("state" + state);
-                        System.out.println("agentmsisdn" + agentmsisdn);
-                        System.out.println("agentNumber" + agentNumber);
-
-
-                        Intent a = new Intent(SimRegInfo.this, Activate_Sim.class);
-                        a.putExtra("globalsimid", globalsimid);
-                        a.putExtra("globalMode", globalMode);
-                        a.putExtra("fname", fname);
-                        a.putExtra("mname", mname);
-                        a.putExtra("lname", lname);
-                        a.putExtra("msisdn", msisdn);
-                        a.putExtra("idType", idType);
-                        a.putExtra("idNumber", idNumber);
-                        a.putExtra("dob", dob);
-                        a.putExtra("email", email);
-                        a.putExtra("gender", gender);
-                        a.putExtra("altnumber", altnumber);
-                        a.putExtra("address1", address1);
-                        a.putExtra("state", state);
-                        a.putExtra("agentmsisdn", agentmsisdn);
-                        a.putExtra("mainstatus", sp.getSelectedItem().toString().toString());
-                        a.putExtra("agentNumber", agentNumber);
-                        startActivity(a);
+                    if (!txtmodesave.getText().toString().equalsIgnoreCase("Saved")) {
+                        Toast.makeText(SimRegInfo.this, "Complete your data saving before registrering", Toast.LENGTH_LONG).show();
+                        return;
                     } else {
-                        Toast.makeText(SimRegInfo.this, "Success status cannot be modified", Toast.LENGTH_LONG).show();
+
+
+                        if (!sp.getSelectedItem().toString().toString().equalsIgnoreCase("Success")) {
+                            if (male.isChecked()) {
+                                gender = "Male";
+                            }
+                            if (female.isChecked()) {
+                                gender = "Female";
+                            }
+                            String fname = editfname.getText().toString();
+                            String mname = editmname.getText().toString();
+                            String lname = editlname.getText().toString();
+                            String msisdn = editmobile.getText().toString();
+                            String idType = "IDCARD";
+                            String idNumber = editidagent.getText().toString();
+                            String dob = editdate.getText().toString();
+                            String email = editemail.getText().toString();
+                            String altnumber = editaltnumber.getText().toString();
+                            String address1 = editphylocation.getText().toString();
+                            String state = editpost.getText().toString();
+                            String agentmsisdn = editagent.getText().toString();
+
+
+                            System.out.println("fname" + fname);
+                            System.out.println("mname" + mname);
+                            System.out.println("lname" + lname);
+                            System.out.println("msisdn" + msisdn);
+                            System.out.println("idType" + idType);
+                            System.out.println("idNumber" + idNumber);
+                            System.out.println("dob" + dob);
+                            System.out.println("email" + email);
+                            System.out.println("gender" + gender);
+                            System.out.println("altnumber" + altnumber);
+                            System.out.println("address1" + address1);
+                            System.out.println("state" + state);
+                            System.out.println("agentmsisdn" + agentmsisdn);
+                            System.out.println("agentNumber" + agentNumber);
+
+
+                            Intent a = new Intent(SimRegInfo.this, Activate_Sim.class);
+                            a.putExtra("globalsimid", globalsimid);
+                            a.putExtra("globalMode", globalMode);
+                            a.putExtra("fname", fname);
+                            a.putExtra("mname", mname);
+                            a.putExtra("lname", lname);
+                            a.putExtra("msisdn", msisdn);
+                            a.putExtra("idType", idType);
+                            a.putExtra("idNumber", idNumber);
+                            a.putExtra("dob", dob);
+                            a.putExtra("email", email);
+                            a.putExtra("gender", gender);
+                            a.putExtra("altnumber", altnumber);
+                            a.putExtra("address1", address1);
+                            a.putExtra("state", state);
+                            a.putExtra("agentmsisdn", agentmsisdn);
+                            a.putExtra("mainstatus", sp.getSelectedItem().toString().toString());
+                            a.putExtra("agentNumber", agentNumber);
+                            startActivity(a);
+                        } else {
+                            Toast.makeText(SimRegInfo.this, "Success status cannot be modified", Toast.LENGTH_LONG).show();
+                        }
                     }
                 }
             });
@@ -1412,8 +1419,13 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                             if (editmobile.getText().toString().matches("")) {
                                 editmobile.setError("Empty Field");
                             }
-                            if (editmobile.getText().toString().startsWith("0")) {
+                            if (editmobile.getText().toString().startsWith("0") ) {
+                                editmobile.setError("Remove the 0 at the beginning");
+                                return;
+                            }
+                            if(editmobile.getText().toString().length() == 10) {
                                 editmobile.setError("Client number must be 9 numbers and not start with 0");
+                                return;
                             }
                             if (editaltnumber.getText().toString().matches("")) {
                                 editaltnumber.setError("Empty Field");
@@ -1457,11 +1469,15 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                 sp.setSelection(1);
                             }
                         } else {
-                            if (editmobile.getText().toString().startsWith("0")) {
-                                editmobile.setError("Client number must be 9 numbers and not start with 0");
-                                Toast.makeText(getApplicationContext(), "Check your client mobile number", Toast.LENGTH_LONG).show();
+                            if (editmobile.getText().toString().startsWith("0") ) {
+                                editmobile.setError("Remove the 0 at the beginning");
                                 return;
                             }
+                            if(editmobile.getText().toString().length() == 10) {
+                                    editmobile.setError("Client number must be 9 numbers and not start with 0");
+                                    return;
+                            }
+
                             if (!editemail.getText().toString().matches(emailpattern) && !editemail.getText().toString().matches(emailpattern1)) {
                                 editemail.setError("Invalid email address");
                                 Toast.makeText(getApplicationContext(), "Check your email", Toast.LENGTH_LONG).show();
@@ -2325,9 +2341,12 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                 Toast.makeText(SimRegInfo.this, "Accept Terms And Conditions", Toast.LENGTH_SHORT).show();
                             }
                         } else {
-                            if (editmobile.getText().toString().startsWith("0")) {
+                            if (editmobile.getText().toString().startsWith("0") ) {
+                                editmobile.setError("Remove the 0 at the beginning");
+                                return;
+                            }
+                            if(editmobile.getText().toString().length() == 10) {
                                 editmobile.setError("Client number must be 9 numbers and not start with 0");
-                                Toast.makeText(getApplicationContext(), "Check your client mobile number", Toast.LENGTH_LONG).show();
                                 return;
                             }
 
@@ -3305,6 +3324,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     checkSim.setEnabled(false);
                     Button BtnData=findViewById(R.id.BtnData);
                     BtnData.setEnabled(false);
+                    BtnDelete.setEnabled(false);
                 }
                 if (stat.matches("Failed")) {
                     sp.setSelection(3);
