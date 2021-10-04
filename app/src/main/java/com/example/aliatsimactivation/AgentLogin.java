@@ -55,7 +55,7 @@ public class AgentLogin extends AppCompatActivity {
     private Connection conn;
     private boolean connectflag = false;
     protected PowerManager.WakeLock mWakeLock;
-
+    private View underline;
 
     @Override
     public void onBackPressed() {
@@ -106,6 +106,8 @@ public class AgentLogin extends AppCompatActivity {
         BtnData = findViewById(R.id.BtnData);
         BtnExit= findViewById(R.id.BtnExit);
         txtcheck=findViewById(R.id.txtexists);
+        underline = findViewById(R.id.underline);
+
 
         Intent i = this.getIntent();
         login = i.getStringExtra("login");
@@ -206,6 +208,7 @@ public class AgentLogin extends AppCompatActivity {
             editmsisdn.setText(agentNumber);
             editmsisdn.setEnabled(false);
             txtcheck.setVisibility(View.INVISIBLE);
+            underline.setVisibility(View.GONE);
         }
 
         BtnExit.setOnClickListener(new View.OnClickListener() {
