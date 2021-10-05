@@ -107,7 +107,7 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
             postData.addProperty("clientPassword", "iPacsUssd@123");
             postData.addProperty("agentMsisdn", agentmsisdn);
 
-            URL url = new URL("http://10.22.25.100:8995/ipacs/ussd/api/");
+            URL url = new URL("http://10.22.25.10:8995/ipacs/ussd/api/");
             System.out.println("step1");
             try {
             urlConnection = (HttpURLConnection) url.openConnection();
