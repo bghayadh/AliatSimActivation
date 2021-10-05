@@ -51,7 +51,6 @@ public class Activate_Sim extends AppCompatActivity {
     private String globalMode,ussddate,txtussdstatus;
     Connection conn;
     private LocalTime time,start,end;//to validate to time to access switch
-    private int flagstart,flagend;//flag
     private boolean connectflag=false;
 
 
@@ -214,11 +213,7 @@ public class Activate_Sim extends AppCompatActivity {
                     start=LocalTime.of(6,00,00);
                     end=LocalTime.of(22,00,00);
 
-                    //comparing times
-                    flagstart=time.compareTo(start);
-                    flagend=time.compareTo(end);
-                    System.out.println(flagend+" "+flagstart);
-                    clicks=1;
+
 
 
 
@@ -227,13 +222,12 @@ public class Activate_Sim extends AppCompatActivity {
                         globalsimid = i.getStringExtra("globalsimid");
                         Toast.makeText(getApplicationContext(), "Already Success cannot resend command", Toast.LENGTH_SHORT).show();
                     } else {
-                        if(flagstart==1 && flagend==-1)
-                        {
+
                             if (globalsimid.equalsIgnoreCase("0")) {
                                 Toast.makeText(getApplicationContext(), "Save your data first", Toast.LENGTH_LONG).show();
                             } else
                             {
-                                Toast.makeText(getApplicationContext(), "Please wait while registration until getting response back", Toast.LENGTH_LONG).show();
+
                                 registerflag="1";
                                 globalsimid = i.getStringExtra("globalsimid");
                                 //System.out.println("id : " + globalsimid);
@@ -272,9 +266,7 @@ public class Activate_Sim extends AppCompatActivity {
                                 }
                             }// end else 2nd
 
-                        }else {
-                            Toast.makeText(getApplicationContext(),"Please Try again between 6AM and 10PM",Toast.LENGTH_LONG).show();
-                        }
+
 
                     }
 
@@ -314,6 +306,7 @@ public class Activate_Sim extends AppCompatActivity {
                     intent.putExtra("globalMode",globalMode);
                     intent.putExtra("agentNumber",agentNumber);
                     intent.putExtra("db-offline","1");
+                    intent.putExtra("db-offline-to-main",stroffile);
                     startActivity(intent);
                 }
             });

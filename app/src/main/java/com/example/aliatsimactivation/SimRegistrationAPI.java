@@ -79,7 +79,7 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
 
         //776761539    msisdn
         HttpURLConnection urlConnection = null;
-
+        Boolean connectionFailed=false;
         try {
             String getid=getrequestid();
             JsonObject postData = new JsonObject();
@@ -107,7 +107,7 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
             postData.addProperty("clientPassword", "iPacsUssd@123");
             postData.addProperty("agentMsisdn", agentmsisdn);
 
-            URL url = new URL("http://10.22.25.10:8995/ipacs/ussd/api/");
+            URL url = new URL("http://10.22.25.100:8995/ipacs/ussd/api/");
             System.out.println("step1");
             try {
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -118,22 +118,101 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
             urlConnection.setDoInput(true);
             urlConnection.setChunkedStreamingMode(0);
             System.out.println("step3");
-            try {
-                OutputStream out = new BufferedOutputStream(urlConnection.getOutputStream());
 
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-                        out, "UTF-8"));
-                writer.write(postData.toString());
-                writer.flush();
-                flag = 1;
-                } catch (UnknownHostException e) {
-                e.printStackTrace();
-                flag = 0;
+                /// validate if we have access to URL
+
+                try {
+                    HttpURLConnection  httpConnection = (HttpURLConnection) url.openConnection();
+                    httpConnection.setConnectTimeout(5000);
+                    int responseCode = httpConnection.getResponseCode();
+                    if (responseCode != 200)  {
+                        System.out.println("IN IN");
+                        urlConnection.connect();
+                        connectionFailed=true;
+                        try {
+                            OutputStream out = new BufferedOutputStream(urlConnection.getOutputStream());
+
+                            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+                                    out, "UTF-8"));
+                            writer.write(postData.toString());
+                            writer.flush();
+                            flag = 1;
+
+                            if (flag == 1){
+                                System.out.println("Sent successfully to server");
+
+
+                                int code = urlConnection.getResponseCode();
+
+                                System.out.println("Get code " + code);
+
+                                //if (code !=  201) {
+                                //     throw new IOException ("Invalid response from server: " + code);
+                                //  }
+
+                                BufferedReader rd = new BufferedReader(new InputStreamReader(
+                                        urlConnection.getInputStream()));
+                                String line = null;
+                                while ((line = rd.readLine()) != null) {
+                                    //Log.i("data", line);
+                                    System.out.println("Get result " + line);
+
+                                    if (line.contains("responseCode")) {
+                                        System.out.println("Found");
+                                        int m = 0;
+                                        m = line.indexOf(";");
+                                        String response_code = line.substring(m + 1, line.length());
+                                        String[] test1 = response_code.split("[:,]");
+                                        System.out.println(test1[1].toString());
+                                        String[] splitterString = test1[1].split("\"");
+
+                                        for (String s : splitterString) {
+
+                                            api_response_code = s;
+                                            System.out.println("code : " + api_response_code);
+
+                                        }
+                                    }
+
+                                    if (line.contains("message")) {
+                                        System.out.println("Found");
+
+                                        int n = 0;
+                                        n = line.indexOf(";");
+                                        String message = line.substring(n + 1, line.length());
+                                        String[] test1 = message.split("[:,]");
+                                        String[] splitterString = test1[1].split("\"");
+                                        for (String s : splitterString) {
+                                            response_message = s;
+                                            System.out.println("response message : " + response_message);
+
+
+                                        }
+
+
+                                    }
+
+                                }
+
+
+                            }
+
+
+                        } catch (UnknownHostException e) {
+                            e.printStackTrace();
+                            flag = 0;
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                            flag = 0;
+                        }
+                    }
+                } catch(Exception e) {
+                    System.out.println("OUT OUT 33333");
+                    connectionFailed=false;
                 }
-                catch (Exception e) {
-                e.printStackTrace();
-                flag = 0;
-                }
+                /////////////////////////////////////////////
+
             } catch (MalformedURLException e) {
                 e.printStackTrace();
                 System.out.println("step4");
@@ -148,64 +227,7 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
                 flag = 0;
             }
 
-            if (flag == 1){
-                System.out.println("Sent successfully to server");
 
-
-            int code = urlConnection.getResponseCode();
-
-            System.out.println("Get code " + code);
-
-            //if (code !=  201) {
-            //     throw new IOException ("Invalid response from server: " + code);
-            //  }
-
-            BufferedReader rd = new BufferedReader(new InputStreamReader(
-                    urlConnection.getInputStream()));
-            String line = null;
-            while ((line = rd.readLine()) != null) {
-                //Log.i("data", line);
-                System.out.println("Get result " + line);
-
-                if (line.contains("responseCode")) {
-                    System.out.println("Found");
-                    int m = 0;
-                    m = line.indexOf(";");
-                    String response_code = line.substring(m + 1, line.length());
-                    String[] test1 = response_code.split("[:,]");
-                    System.out.println(test1[1].toString());
-                    String[] splitterString = test1[1].split("\"");
-
-                    for (String s : splitterString) {
-
-                        api_response_code = s;
-                        System.out.println("code : " + api_response_code);
-
-                    }
-                }
-
-                if (line.contains("message")) {
-                    System.out.println("Found");
-
-                    int n = 0;
-                    n = line.indexOf(";");
-                    String message = line.substring(n + 1, line.length());
-                    String[] test1 = message.split("[:,]");
-                    String[] splitterString = test1[1].split("\"");
-                    for (String s : splitterString) {
-                        response_message = s;
-                        System.out.println("response message : " + response_message);
-
-
-                    }
-
-
-                }
-
-            }
-
-
-        }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -214,21 +236,22 @@ public class SimRegistrationAPI extends AsyncTask<String, Void, String> {
                 urlConnection.disconnect();
             }
         }
-        if(response_message.contains("Success") || response_message.contains("success") || response_message.contains("SUCCESS"))
-        {
-            registration_status="Success";
-        }else{
-            registration_status="Failed";
+
+        if (connectionFailed==true) {
+            if (response_message.contains("Success") || response_message.contains("success") || response_message.contains("SUCCESS")) {
+                registration_status = "Success";
+            } else {
+                registration_status = "Failed";
+            }
+            System.out.println("status : " + registration_status);
+
+
+            // to call update in database (SIM status
+            thread1.start();
+
+            data = api_response_code + "!!" + response_message;
+            System.out.println("data: " + data);
         }
-        System.out.println("status : "+registration_status);
-
-
-         // to call update in database (SIM status
-         thread1.start();
-
-        data=api_response_code+"!!"+response_message;
-        System.out.println("data: "+data);
-
         return data;
     }
 
