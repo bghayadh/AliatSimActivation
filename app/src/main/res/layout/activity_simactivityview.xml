@@ -966,8 +966,8 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/BtnData"
                 style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_below="@id/chterms"
                 android:layout_alignParentLeft="true"
                 android:layout_marginTop="10dp"

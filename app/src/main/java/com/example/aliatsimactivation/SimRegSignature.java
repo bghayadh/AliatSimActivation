@@ -207,7 +207,7 @@ public class SimRegSignature extends AppCompatActivity {
             // Close the output stream.
             fileOutputStream.close();
 
-            Toast.makeText(getApplicationContext(), "Signature file is saved to sdcard/Pictures  " , Toast.LENGTH_LONG).show();
+           // Toast.makeText(getApplicationContext(), "Signature file is saved to sdcard/Pictures  " , Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             Log.v("Signature Gestures", e.getMessage());
             e.printStackTrace();

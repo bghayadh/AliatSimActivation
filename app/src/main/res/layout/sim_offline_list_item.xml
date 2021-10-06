@@ -7,14 +7,11 @@
 
 
     <!-- this is how to add underline LIne in recylcer -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#F50CFA03" />
+
 
     <TextView
         android:layout_width="300dp"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:id="@+id/txttitle"
         android:textStyle="bold"
         android:textColor="@color/white"
@@ -28,10 +25,13 @@
         android:src="@drawable/ic_baseline_send_24"
         android:id="@+id/sendImage"
         android:background="@drawable/ic_baseline_send_24"
-        android:layout_marginTop="15dp"
-        android:layout_toRightOf="@+id/txttitle"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentRight="true"
         />
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/txttitle"
+        android:background="#F50CFA03" />
 
 </RelativeLayout>
-

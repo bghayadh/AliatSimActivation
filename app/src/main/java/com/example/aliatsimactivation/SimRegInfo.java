@@ -2471,9 +2471,9 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 }
             });
 
-            if (count >= 5) {
+            if (count >= 40) {
                 submit.setEnabled(false);
-                Toast.makeText(SimRegInfo.this, "You Already Have 5 Unsubmitted Files", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SimRegInfo.this, "You Already Have 40 files been submitted", Toast.LENGTH_SHORT).show();
             }
             if (count != 0) {
                 BtnData.setVisibility(View.VISIBLE); //SHOW the button
