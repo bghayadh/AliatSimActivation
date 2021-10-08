@@ -36,6 +36,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean connectflag=false;
     private int count=0;
     private String globaltotal=null,text,agentNumber,modestatus;
-    private String globalMode="0";
+    private String globalMode="0",result,pincode;
     private String OpenMode="Online";
     private ImageButton btnMenu;
     private Button btnMode;
@@ -179,8 +180,24 @@ public class MainActivity extends AppCompatActivity {
                                 return true;
 
                             case R.id.three:
-                                // Intent i1 =new Intent(MainActivity.this,UserRegister.class);
-                                // startActivity(i1);
+                                if(globalMode.equalsIgnoreCase("Online")) {
+                                    if(modestatus.equalsIgnoreCase("-100")){
+                                        Toast.makeText(getApplicationContext(),"You don't have reachability",Toast.LENGTH_LONG).show();
+                                        System.out.println("You don't have reachability");
+                                    }else {
+                                        result = getagentpinnumber();
+                                        String[] data = result.split(":");
+                                        pincode=data[1];
+                                        Intent i1 = new Intent(MainActivity.this, AgentProfile.class);
+                                        i1.putExtra("agentNumber", agentNumber);
+                                        i1.putExtra("pincode",pincode);
+                                        startActivity(i1);
+                                    }
+                                }else{
+                                    Toast.makeText(getApplicationContext(),"You are offline",Toast.LENGTH_LONG).show();
+                                    System.out.println("You are offline");
+                                }
+
                             default:
                                 return false;
                         }
@@ -1129,4 +1146,30 @@ public class MainActivity extends AppCompatActivity {
         return statusflg;
 
     }
+
+    public String getagentpinnumber() {
+        String result = null;
+        File file = new File(getApplicationContext().getFilesDir(), "MSISDN.txt");
+        StringBuilder text = new StringBuilder();
+
+        try {
+            FileInputStream fIn = openFileInput("MSISDN.txt");
+            int c;
+            String temp = "";
+
+            while ((c = fIn.read()) != -1) {
+                temp = temp + Character.toString((char) c);
+            }
+            text.append(temp);
+            text.append('\n');
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        result = text.toString();
+        return result;
+    }
+
+
 }

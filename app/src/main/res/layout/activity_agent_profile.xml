@@ -1,77 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    android:background="#FFFFFF">
-
+    android:layout_width="match_parent" android:background="#FFFFFF">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFF"
-        tools:context=".AgentRegistration"
         android:orientation="vertical">
-
-
-
-        <LinearLayout
-            android:id="@+id/logoLayout"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:baselineAligned="false"
-            android:weightSum="1">
+            android:layout_height="70dp"
+            android:background ="#00aaca">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView1"
-                android:src="@drawable/registericon">
-
-            </ImageView>
-        </LinearLayout>
-
-
-
-        <LinearLayout
-            android:id="@+id/firstLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:baselineAligned="false"
-            android:weightSum="2">
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="20dp"
+                android:id="@+id/backarrow"
+                android:src="@drawable/ic_baseline_arrow_back_24"
+                android:background="@null" />
 
             <TextView
-                android:id="@+id/fname"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="First Name"
-                android:textAlignment="center"
-                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_toRightOf="@+id/backarrow"
+                android:id="@+id/txtsim"
+                android:text="Agent Profile"
+                android:layout_marginEnd="50dp"
+                android:textColor="@color/white"
                 android:textSize="20sp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"/>
+                android:textAlignment="center"/>
 
-            <EditText
-                android:id="@+id/edtfname"
-                android:layout_width="fill_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/silver"
-                android:hint="Enter First Name"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="17sp"
-                android:layout_weight="1"
-                android:layout_marginEnd="10dp"/>
-        </LinearLayout>
+                android:layout_alignParentRight="true"
+                android:text=""
+                android:layout_marginTop="5dp"
+                android:textColor="@color/white"
+                android:id="@+id/edtstatus" />
 
+        </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:baselineAligned="false"
+        android:weightSum="2"
+        >
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_new1"
+            android:id="@+id/agentpic">
+        </ImageView>
 
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/fullname"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:layout_marginStart="25dp">
+        </TextView>
 
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/agentMSISDN"
+            android:layout_marginTop="30dp"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:layout_marginStart="-300dp">
+        </TextView>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/editfields"
+            android:layout_marginTop="40dp"
+            android:textColor="@color/black"
+            android:layout_marginStart="100dp"
+            android:text="EDIT">
+        </TextView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="70dp"
+            android:layout_marginStart="-500dp"
+            android:background="@color/black" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/firstLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:baselineAligned="false"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/fname"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="First Name"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"/>
+
+        <EditText
+            android:id="@+id/edtfname"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/silver"
+            android:hint="Enter First Name"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            android:layout_weight="1"
+            android:layout_marginEnd="10dp"/>
+    </LinearLayout>
 
         <LinearLayout
             android:id="@+id/secomdLayout"
@@ -219,45 +277,6 @@
                 android:layout_marginEnd="10dp"/>
         </LinearLayout>
 
-
-
-        <LinearLayout
-            android:id="@+id/fifthLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:baselineAligned="false"
-            android:weightSum="2">
-
-            <TextView
-                android:id="@+id/phonenb"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Phone Number"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="10dp"/>
-
-            <EditText
-                android:id="@+id/edtphone"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textColorHint="@color/silver"
-                android:hint="Enter Number"
-                android:inputType="phone"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="17sp"
-                android:layout_weight="1"
-                android:layout_marginEnd="15dp"/>
-        </LinearLayout>
-
-
-
         <LinearLayout
             android:id="@+id/Layout3"
             android:layout_width="match_parent"
@@ -293,8 +312,6 @@
                 android:layout_weight="1"
                 android:layout_marginEnd="10dp"/>
         </LinearLayout>
-
-
 
         <LinearLayout
             android:id="@+id/Layout4"
@@ -365,205 +382,15 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:baselineAligned="false"
-            android:id="@+id/lineartxtmsg"
-            android:weightSum="1">
-
-
-            <TextView
-                android:id="@+id/textstatus"
-                android:layout_marginStart="140dp"
-                android:layout_width="200dp"
-                android:layout_height="30dp"
-                android:textColor="@color/black"
-                android:textSize="26dp"
-                android:text=""
-                />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/Layout6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:baselineAligned="false"
-            android:weightSum="2">
-
-            <TextView
-                android:id="@+id/status"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Status"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:layout_weight="1"
-
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"/>
-
-            <EditText
-                android:id="@+id/edtstatus"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="In Progress"
-                android:textColor="@color/black"
-                android:enabled="false"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="10dp" />
-
-        </LinearLayout>
-
-
-
-
-
-
-
-
-        <LinearLayout
-            android:id="@+id/sixLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:baselineAligned="false"
-            android:weightSum="2">
-
-            <TextView
-                android:id="@+id/agentimage"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Agent Image"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"/>
-
-            <Button
-                android:id="@+id/btnagentimg"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/menusgrey"
-                android:text="Agent Image"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:layout_weight="1"
-                android:layout_marginEnd="10dp"/>
-        </LinearLayout>
-
-
-
-
-        <LinearLayout
-            android:id="@+id/sevenLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:baselineAligned="false"
-            android:weightSum="2">
-
-            <TextView
-                android:id="@+id/frontid"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Agent Front ID"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"/>
-
-            <Button
-                android:id="@+id/btnagentfrontid"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/menusgrey"
-                android:text="Agent Front ID"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:layout_weight="1"
-                android:layout_marginEnd="10dp"/>
-        </LinearLayout>
-
-
-
-
-        <LinearLayout
-            android:id="@+id/eightLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:baselineAligned="false"
-            android:weightSum="2">
-
-            <TextView
-                android:id="@+id/backid"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Agent Back ID"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"/>
-
-            <Button
-                android:id="@+id/btnagentbackid"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/menusgrey"
-                android:text="Agent Back ID"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:layout_weight="1"
-                android:layout_marginEnd="10dp"/>
-        </LinearLayout>
-
-
-
-
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Verify"
-            android:id="@+id/verify"
-            android:layout_marginTop="10dp"
+            android:text="Update"
+            android:id="@+id/update"
+            android:layout_marginTop="20dp"
             android:layout_alignParentBottom="true"
             android:textSize="14sp"
             android:textColor="@color/black"
             android:backgroundTint="@color/menusgrey" />
-
-
-
-
-
-        <TextView
-            android:id="@+id/text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:visibility="gone"/>
-
     </LinearLayout>
-
 </ScrollView>
-

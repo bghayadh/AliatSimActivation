@@ -52,7 +52,8 @@
         <activity android:name=".ResendPicutres" android:configChanges="orientation|screenSize"></activity>
         <activity android:name=".AgentLogin" android:configChanges="orientation|screenSize"></activity>
         <activity android:name=".AgentRegistration" android:configChanges="orientation|screenSize"></activity>
-        <activity android:name=".SplashActivity">
+        <activity android:name=".AgentProfile" android:configChanges="orientation|screenSize"/>
+        <activity android:name=".SplashActivity" android:configChanges="orientation|screenSize" >
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -8,7 +8,7 @@
         android:title="Mode Offline"/>
     <item
         android:id="@+id/three"
-        android:title="Login User"/>
+        android:title="Agent Profile"/>
     <item
         android:id="@+id/four"
         android:title="Ver 1.0.38"/>
