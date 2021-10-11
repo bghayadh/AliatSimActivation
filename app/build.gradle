@@ -50,6 +50,6 @@ dependencies {
     //api integration
     implementation 'com.google.code.gson:gson:2.8.5'
     //Jsch
-    compile 'com.jcraft:jsch:0.1.54'
+    implementation 'com.jcraft:jsch:0.1.54'
 
 }

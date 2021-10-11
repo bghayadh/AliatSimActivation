@@ -126,6 +126,9 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     private TextView discardsign,discardfront,discardback,discardclient; // for discard
     private String globalMode,gclientstatusnew,gclientstatusorigin,CLIENTorigin,CLIENTnew;
     private ProgressBar progressBar;
+    private GpsTracker gpsTracker;
+    private TextView txtlong,txtlat,txtselllong,txtselllat;
+    private EditText edtlong,edtlat,edtselllong,edtselllat;
 
     //capture images from cam and save it on the phone
     @Override
@@ -316,6 +319,10 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         txtmodesave=findViewById(R.id.txtmodesave);
         sp.setEnabled(false);
         progressBar=findViewById(R.id.progressbar);
+        edtlat=findViewById(R.id.edtlat);
+        edtlong=findViewById(R.id.edtlong);
+        edtselllat=findViewById(R.id.edtselllat);
+        edtselllong=findViewById(R.id.edtselllong);
 
         Date c = Calendar.getInstance().getTime();
         SimpleDateFormat df=new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
@@ -684,6 +691,24 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 gclientstatus="0";
                 BtnModesave.setBackgroundColor(Color.rgb(255,102,0));
                 txtmodesave.setText("New");
+
+                // call class Gps to get our location
+                gpsTracker = new GpsTracker (getApplicationContext ( ));
+                if (gpsTracker.canGetLocation ( )) {
+                    double latitude = gpsTracker.getLatitude ( );
+                    double longitude = gpsTracker.getLongitude ( );
+                    edtlat.setText(String.valueOf(latitude));
+                    edtlong.setText(String.valueOf(longitude));
+                    edtselllat.setText(String.valueOf(latitude));
+                    edtselllong.setText(String.valueOf(longitude));
+                } else {
+                    gpsTracker.showSettingsAlert ( );
+                    edtlat.setText("0");
+                    edtlong.setText("0");
+                    edtselllat.setText("0");
+                    edtselllong.setText("0");
+                }
+
             }
 
             if (!globalsimid.equalsIgnoreCase("0")) {
@@ -2980,7 +3005,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
                     Statement stmt1 = null;
                     stmt1 = conn.createStatement();
-                    String sqlStmt = "select FIRST_NAME,MIDDLE_NAME,LAST_NAME,STATUS,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHYSICAL_LOCATION,POSTAL_ADDRESS,GENDER,CLIENT_ID_NUMBER,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,SIGNATURE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS,CLIENT_PHOTO,CLIENT_PHOTO_STATUS,USSD_STATUS FROM CLIENTS where CLIENT_ID = '" + globalsimid + "'";
+                    String sqlStmt = "select FIRST_NAME,MIDDLE_NAME,LAST_NAME,STATUS,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHYSICAL_LOCATION,POSTAL_ADDRESS,GENDER,CLIENT_ID_NUMBER,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,SIGNATURE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS,CLIENT_PHOTO,CLIENT_PHOTO_STATUS,USSD_STATUS,LONGITUDE,LATITUDE,SELLING_LONGITUDE,SELLING_LATITUDE FROM CLIENTS where CLIENT_ID = '" + globalsimid + "'";
                     ResultSet rs1 = null;
                     try {
                         rs1 = stmt1.executeQuery(sqlStmt);
@@ -2991,7 +3016,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     while (true) {
                         try {
                             if (!rs1.next()) break;
-                            FilldatafromDataBase(true,rs1.getString("FIRST_NAME"),rs1.getString("MIDDLE_NAME"),rs1.getString("LAST_NAME"),rs1.getString("MOBILE_NUMBER"),rs1.getString("DATE_OF_BIRTH").substring(8, 10) + "-" + rs1.getString("DATE_OF_BIRTH").substring(5, 7) + "-" + rs1.getString("DATE_OF_BIRTH").substring(0, 4),rs1.getString("NATIONALITY"),rs1.getString("ALTERNATIVE_NUMBER"),rs1.getString("EMAIL_ADDRESS"),rs1.getString("PHYSICAL_LOCATION"),rs1.getString("POSTAL_ADDRESS"),rs1.getString("GENDER"),rs1.getString("STATUS"),rs1.getString("CLIENT_ID_NUMBER"),rs1.getString("ID_FRONT_SIDE_PHOTO"),rs1.getString("ID_BACK_SID_PHOTO"),rs1.getString("SIGNATURE"),rs1.getString("SIGNATURE_STATUS"),rs1.getString("FRONT_SIDE_ID_STATUS"),rs1.getString("BACK_SIDE_ID_STATUS"),rs1.getString("CLIENT_PHOTO"),rs1.getString("CLIENT_PHOTO_STATUS"),rs1.getString("USSD_STATUS"));
+                            FilldatafromDataBase(true,rs1.getString("FIRST_NAME"),rs1.getString("MIDDLE_NAME"),rs1.getString("LAST_NAME"),rs1.getString("MOBILE_NUMBER"),rs1.getString("DATE_OF_BIRTH").substring(8, 10) + "-" + rs1.getString("DATE_OF_BIRTH").substring(5, 7) + "-" + rs1.getString("DATE_OF_BIRTH").substring(0, 4),rs1.getString("NATIONALITY"),rs1.getString("ALTERNATIVE_NUMBER"),rs1.getString("EMAIL_ADDRESS"),rs1.getString("PHYSICAL_LOCATION"),rs1.getString("POSTAL_ADDRESS"),rs1.getString("GENDER"),rs1.getString("STATUS"),rs1.getString("CLIENT_ID_NUMBER"),rs1.getString("ID_FRONT_SIDE_PHOTO"),rs1.getString("ID_BACK_SID_PHOTO"),rs1.getString("SIGNATURE"),rs1.getString("SIGNATURE_STATUS"),rs1.getString("FRONT_SIDE_ID_STATUS"),rs1.getString("BACK_SIDE_ID_STATUS"),rs1.getString("CLIENT_PHOTO"),rs1.getString("CLIENT_PHOTO_STATUS"),rs1.getString("USSD_STATUS"),rs1.getString("LONGITUDE"),rs1.getString("LATITUDE"),rs1.getString("SELLING_LONGITUDE"),rs1.getString("SELLING_LATITUDE"));
 
                             //System.out.println(rs1.getString("compteur"));
 
@@ -3066,10 +3091,10 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
                             // send data from fragment to super activity
                             String ussd_status = "USSD";
-                            stmtinsert1 = conn.prepareStatement("insert into CLIENTS (CLIENT_ID,DISPLAY_NAME,CREATED_DATE,LAST_MODIFIED_DATE,FIRST_NAME,MIDDLE_NAME,LAST_NAME,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHYSICAL_LOCATION,STATUS,POSTAL_ADDRESS,GENDER,AGENT_NUMBER,CLIENT_ID_NUMBER,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,CLIENT_PHOTO,SIGNATURE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS,CLIENT_PHOTO_STATUS,USSD_STATUS,DEPARTMENT,DESCREPTION) values " +
-                                    "('" + globalsimid + "',0,sysdate, sysdate,'" + editfname.getText() + "','" + editmname.getText() + "', '" + editlname.getText() + "','" + editmobile.getText() + "',TO_DATE('" + editdate.getText() + "','DD-MM-YYYY'),'" + nationality + "','" + editaltnumber.getText() + "','" + editemail.getText() + "','" + editphylocation.getText() + "','" + b + "','" + editpost.getText() + "','" + gender + "','" + agentNumber + "','" + editidagent.getText() + "','" + SIGN + "','" + FRONT + "','" + BACK + "','" + CLIENT + "',0,0,0,0,'" + editussdstatus.getText().toString() + "',0,0)");
+                            stmtinsert1 = conn.prepareStatement("insert into CLIENTS (CLIENT_ID,DISPLAY_NAME,CREATED_DATE,LAST_MODIFIED_DATE,FIRST_NAME,MIDDLE_NAME,LAST_NAME,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHYSICAL_LOCATION,STATUS,POSTAL_ADDRESS,GENDER,AGENT_NUMBER,CLIENT_ID_NUMBER,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,CLIENT_PHOTO,SIGNATURE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS,CLIENT_PHOTO_STATUS,USSD_STATUS,DEPARTMENT,DESCREPTION,LONGITUDE,LATITUDE,SELLING_LONGITUDE,SELLING_LATITUDE) values " +
+                                    "('" + globalsimid + "',0,sysdate, sysdate,'" + editfname.getText() + "','" + editmname.getText() + "', '" + editlname.getText() + "','" + editmobile.getText() + "',TO_DATE('" + editdate.getText() + "','DD-MM-YYYY'),'" + nationality + "','" + editaltnumber.getText() + "','" + editemail.getText() + "','" + editphylocation.getText() + "','" + b + "','" + editpost.getText() + "','" + gender + "','" + agentNumber + "','" + editidagent.getText() + "','" + SIGN + "','" + FRONT + "','" + BACK + "','" + CLIENT + "',0,0,0,0,'" + editussdstatus.getText().toString() + "',0,0,'"+edtlong.getText().toString()+"','"+edtlat.getText().toString()+"','"+edtselllong.getText().toString()+"','"+edtselllat.getText().toString()+"')");
                         } else {
-                            stmtinsert1 = conn.prepareStatement("update CLIENTS set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + editfname.getText() + "',MIDDLE_NAME='" + editmname.getText() + "',LAST_NAME='" + editlname.getText() + "',STATUS='" + b + "',MOBILE_NUMBER='" + editmobile.getText() + "',NATIONALITY='" + nationality + "',ALTERNATIVE_NUMBER='" + editaltnumber.getText() + "',EMAIL_ADDRESS='" + editemail.getText() + "',PHYSICAL_LOCATION='" + editphylocation.getText() + "',POSTAL_ADDRESS='" + editpost.getText() + "',GENDER='" + gender + "',AGENT_NUMBER='" + editagent.getText() + "',CLIENT_ID_NUMBER='" + editidagent.getText() + "',SIGNATURE='" + SIGN + "',ID_FRONT_SIDE_PHOTO='" + FRONT + "',ID_BACK_SID_PHOTO='" + BACK + "',USSD_STATUS='" + editussdstatus.getText().toString() + "',CLIENT_PHOTO='" + CLIENT + "' where CLIENT_ID  ='" + globalsimid + "'");
+                            stmtinsert1 = conn.prepareStatement("update CLIENTS set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + editfname.getText() + "',MIDDLE_NAME='" + editmname.getText() + "',LAST_NAME='" + editlname.getText() + "',STATUS='" + b + "',MOBILE_NUMBER='" + editmobile.getText() + "',NATIONALITY='" + nationality + "',ALTERNATIVE_NUMBER='" + editaltnumber.getText() + "',EMAIL_ADDRESS='" + editemail.getText() + "',PHYSICAL_LOCATION='" + editphylocation.getText() + "',POSTAL_ADDRESS='" + editpost.getText() + "',GENDER='" + gender + "',AGENT_NUMBER='" + editagent.getText() + "',CLIENT_ID_NUMBER='" + editidagent.getText() + "',SIGNATURE='" + SIGN + "',ID_FRONT_SIDE_PHOTO='" + FRONT + "',ID_BACK_SID_PHOTO='" + BACK + "',USSD_STATUS='" + editussdstatus.getText().toString() + "',CLIENT_PHOTO='" + CLIENT + "', LONGITUDE='"+edtlong.getText().toString()+"',LATITUDE='"+edtlat.getText().toString()+"',SELLING_LONGITUDE='"+edtselllong.getText().toString()+"',SELLING_LATITUDE='"+edtselllat.getText().toString()+"' where CLIENT_ID  ='" + globalsimid + "'");
                         }
                         txtmsg.setText("DB Data Saving completed");
                         progressBar.setProgress(30);
@@ -3261,7 +3286,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         }
     }
 
-    public void FilldatafromDataBase(Boolean valeur,String firstname,String middlename,String lastname,String mobilenuber,String dob,String nation,String altnumber,String emailadrs,String phylocation,String postaladr,String vgender,String stat, String agentid,String txtf, String txtb, String txts,String gsigstat,String gfrontstat,String gbackstat,String txtc,String gclientstat,String ussdstatus  ) {
+    public void FilldatafromDataBase(Boolean valeur,String firstname,String middlename,String lastname,String mobilenuber,String dob,String nation,String altnumber,String emailadrs,String phylocation,String postaladr,String vgender,String stat, String agentid,String txtf, String txtb, String txts,String gsigstat,String gfrontstat,String gbackstat,String txtc,String gclientstat,String ussdstatus,String longt,String lat,String selllong,String selllat  ) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -3271,6 +3296,10 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 editlname.setText(lastname);
                 editmobile.setText(mobilenuber);
                 editdate.setText(dob);
+                edtlong.setText(longt);
+                edtlat.setText(lat);
+                edtselllong.setText(selllong);
+                edtselllat.setText(selllat);
                 if (nation.matches("Foreign")) {
                     foreign.setChecked(true);
                     kenya.setChecked(false);

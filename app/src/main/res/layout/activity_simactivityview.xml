@@ -754,12 +754,155 @@
             android:background="@null"/>
 
         <View
-            android:id="@+id/ussdview"
+            android:id="@+id/longview"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="13dp"
             android:layout_below="@+id/txtussd"
             android:visibility="gone"
+            android:background="@color/menusgrey" />
+
+        <TextView
+            android:id="@+id/txtlong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:text="Longitude"
+            android:textSize="20sp"
+            android:textColor="@color/black"/>
+
+
+
+        <EditText
+            android:id="@+id/edtlong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:textColor="#808080"
+            android:hint="Longitude"
+            android:textColorHint="#808080"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:maxLines="1"
+            android:maxLength="50"
+            android:inputType="textPersonName"
+            android:background="@null"/>
+
+        <View
+            android:id="@+id/ussdview"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="13dp"
+            android:layout_below="@+id/edtlong"
+            android:background="@color/menusgrey" />
+
+        <TextView
+            android:id="@+id/txtlat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:text="Latitude"
+            android:textSize="20sp"
+            android:textColor="@color/black"/>
+
+
+
+        <EditText
+            android:id="@+id/edtlat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:textColor="#808080"
+            android:hint="Latitude"
+            android:textColorHint="#808080"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:maxLines="1"
+            android:maxLength="50"
+            android:inputType="textPersonName"
+            android:background="@null"/>
+
+        <View
+            android:id="@+id/latview"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="13dp"
+            android:layout_below="@+id/edtlong"
+            android:background="@color/menusgrey" />
+        <TextView
+            android:id="@+id/txtselllong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:text="Selling Longitude"
+            android:textSize="20sp"
+            android:textColor="@color/black"/>
+
+
+
+        <EditText
+            android:id="@+id/edtselllong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:textColor="#808080"
+            android:hint="Selling Longitude"
+            android:textColorHint="#808080"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:maxLines="1"
+            android:maxLength="50"
+            android:inputType="textPersonName"
+            android:background="@null"/>
+
+        <View
+            android:id="@+id/longsellview"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="13dp"
+            android:layout_below="@+id/edtlong"
+            android:background="@color/menusgrey" />
+        <TextView
+            android:id="@+id/txtselllat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:text="Selling Latitude"
+            android:textSize="20sp"
+            android:textColor="@color/black"/>
+
+
+
+        <EditText
+            android:id="@+id/edtselllat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:textColor="#808080"
+            android:hint="Selling Latitude"
+            android:textColorHint="#808080"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:maxLines="1"
+            android:maxLength="50"
+            android:inputType="textPersonName"
+            android:background="@null"/>
+
+
+        <View
+            android:id="@+id/latsellview"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="13dp"
+            android:layout_below="@+id/edtlong"
             android:background="@color/menusgrey" />
 
 
