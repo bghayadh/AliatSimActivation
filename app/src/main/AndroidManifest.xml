@@ -8,23 +8,28 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-    <!-- android:hardwareAccelerated="true" -->
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <application
-        android:hardwareAccelerated="true"
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@drawable/registericon"
-        android:requestLegacyExternalStorage="true"
         android:label="Telkom SIM Registration"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@drawable/registericon"
         android:supportsRtl="true"
         android:theme="@style/Theme.AliatSimActivation"
         android:usesCleartextTraffic="true">
-
-        <!-- Optionally, register AnalyticsReceiver and AnalyticsService to support background
+        <activity
+            android:name=".CameraActivity"
+            android:exported="false" />
+        <!--
+     Optionally, register AnalyticsReceiver and AnalyticsService to support background
      dispatching on non-Google Play devices
         <receiver android:name="com.google.android.gms.analytics.AnalyticsReceiver"
             android:enabled="true">
@@ -34,27 +39,62 @@
         </receiver>
         <service android:name="com.google.android.gms.analytics.AnalyticsService"
             android:enabled="true"
-            android:exported="false"/>-->
-
-        <activity android:name=".SimRegInfo" android:configChanges="orientation|screenSize"></activity>
-        <activity android:name=".SimRegistrationReport" android:configChanges="orientation|screenSize" />
-        <activity android:name=".Activate_Sim" android:configChanges="orientation|screenSize"/>
-        <activity android:name=".ClientOfflineDataActivity" android:configChanges="orientation|screenSize"/>
-        <activity android:name=".UserRegister" android:configChanges="orientation|screenSize"/>
-        <activity android:name=".MainActivity" android:configChanges="orientation|screenSize"/>
-        <activity android:name=".ClientChargeInfoActivity" android:configChanges="orientation|screenSize"/>
-        <activity android:name=".ClientChargeListViewActivity" android:configChanges="orientation|screenSize"/>
-        <activity android:name=".UserLoginActivity" android:configChanges="orientation|screenSize"/>
-        <activity android:name=".SimRegListViewActivity" android:configChanges="orientation|screenSize"/>
-        <activity android:name=".SimRegSignature" android:configChanges="orientation|screenSize"/>
-        <activity android:name=".SimRegOfflineDataActivity" android:configChanges="orientation|screenSize"/>
-        <activity android:name=".PendingPictures" android:configChanges="orientation|screenSize"></activity>
-        <activity android:name=".ResendPicutres" android:configChanges="orientation|screenSize"></activity>
-        <activity android:name=".AgentLogin" android:configChanges="orientation|screenSize"></activity>
-        <activity android:name=".AgentRegistration" android:configChanges="orientation|screenSize"></activity>
-        <activity android:name=".AgentProfile" android:configChanges="orientation|screenSize"/>
-        <activity android:name=".SplashActivity" android:configChanges="orientation|screenSize" >
-
+            android:exported="false"/>
+        -->
+        <activity
+            android:name=".SimRegInfo"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".SimRegistrationReport"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".Activate_Sim"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".ClientOfflineDataActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".UserRegister"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".ClientChargeInfoActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".ClientChargeListViewActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".UserLoginActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".SimRegListViewActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".SimRegSignature"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".SimRegOfflineDataActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".PendingPictures"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".ResendPicutres"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".AgentLogin"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".AgentRegistration"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".AgentProfile"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".SplashActivity"
+            android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -62,7 +102,5 @@
             </intent-filter>
         </activity>
     </application>
-
-
 
 </manifest>

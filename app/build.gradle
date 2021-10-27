@@ -46,7 +46,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:1.1.0"
     // used them for Google maps
     implementation 'androidx.multidex:multidex:2.0.1'
-    implementation 'com.google.android.gms:play-services:11.8.0'
+    implementation 'com.google.android.gms:play-services-vision:19.0.0'
     //api integration
     implementation 'com.google.code.gson:gson:2.8.5'
     //Jsch

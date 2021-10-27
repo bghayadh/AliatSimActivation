@@ -101,7 +101,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     private EditText editaltnumber,editemail,editphylocation,editpost,editussdstatus;
     private TextView editlname, editfname, textF, textB, textS,txtmode,txtmodedata,txtmodesave;
     private String file1 = "MSISDN.txt";
-    private String s0, s1, Result,CLIENT,gclientstatus;
+    private String s0, s1, Result,CLIENT,gclientstatus,Cameraresult;
     private String FRONT, BACK, SIGN = null;
     private TextView editidagent, editagent,textC,txtussd;
     SFTP sftp = new SFTP();
@@ -171,6 +171,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
         }
 
+        /*
         if (requestCode == 101) {
             BACK = editfname.getText().toString() + editlname.getText().toString() + "_BACK_" + editmobile.getText().toString() + "_" + editidagent.getText().toString()+"_"+picsdate;
             Bitmap bmp = (Bitmap) data.getExtras().get("data");
@@ -204,7 +205,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 gbackstatus="0";
             }
 
-        }
+        } */
 
         if (requestCode == 102) {
             CLIENT = editfname.getText().toString() + editlname.getText().toString() + "_CLIENT_" + editmobile.getText().toString() + "_" + editidagent.getText().toString()+"_"+picsdate;
@@ -348,7 +349,20 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         File directory1 = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
         File OfflineFile1 = new File(directory1,myFileName1);
 
-        //in case agent was null to get it from local file
+        //read value and result from camera
+        String Cameravalue = intent.getStringExtra("key_value");
+        System.out.println("reading value: "+ Cameravalue );
+        Cameraresult = intent.getStringExtra("key_result");
+        System.out.println("reading result: "+ Cameraresult );
+        editidagent.setText( getIntent().getStringExtra("keyIDnb"));
+        editfname.setText(getIntent().getStringExtra("keyFirstName"));
+        editmname.setText(getIntent().getStringExtra("keyMiddleName"));
+        editlname.setText(getIntent().getStringExtra("keyLastName"));
+        editdate.setText(getIntent().getStringExtra("keyDate"));
+        Cameravalue=editfname.getText().toString() + editlname.getText().toString() + "_BACK_" + editmobile.getText().toString() + "_" + editidagent.getText().toString()+"_"+picsdate;
+        textB.setText(Cameravalue);
+
+         //in case agent was null to get it from local file
          if (agentNumber==null || agentNumber=="") {
             getagentnumber();
         }
@@ -394,6 +408,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             }
         });
 
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 27);
         ConnectivityManager connMgr = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -1002,12 +1017,20 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 }
             });
 
+
+
+
             //back id button to capture the id back side
             backid.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(intent, 101);
+
+                    Intent intent = new Intent(SimRegInfo.this, CameraActivity.class);
+                    intent.putExtra("message_key",globalsimid);
+                    intent.putExtra("db-offline-to-main",stroffile);
+                    intent.putExtra("globalMode",globalMode);
+                    intent.putExtra("agentNumber",agentNumber);
+                    startActivity(intent);
 
                         BACKnew=BACK;
 
@@ -1041,6 +1064,16 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
                 }
             });
+
+            // imageicon visibility after capturing from camera
+            if (textB.getText().toString() != "") {
+                backimgIcon.setVisibility(View.VISIBLE);
+                backimgIcon.setBackgroundResource(0);
+                discardback.setVisibility(View.VISIBLE);
+                lineback.setVisibility(View.VISIBLE);
+            }
+
+
 
             //discarding picture from saving
             discardback.setOnClickListener(new View.OnClickListener() {
