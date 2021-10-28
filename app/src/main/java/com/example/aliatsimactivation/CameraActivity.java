@@ -1,5 +1,6 @@
 package com.example.aliatsimactivation;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -10,6 +11,7 @@ import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.hardware.Camera;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -30,11 +32,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class CameraActivity extends AppCompatActivity implements SurfaceHolder.Callback {
     TextView testView;
-    private String BACK,BACK_CROPED,value,stroffile,globalMode,agentNumber,globalsimid ;
+    private String BACK,BACK_CROPED,value,stroffile,globalMode,agentNumber,globalsimid,picsdate ;
     Camera camera;
     SurfaceView surfaceView;
     SurfaceHolder surfaceHolder;
@@ -44,6 +48,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
     Camera.PictureCallback jpegCallback;
     private String result,Date,IDnb,FirstName,MiddleName,LastName;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +64,12 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
         // deprecated setting, but required on Android versions prior to 3.0
         surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
+        // get picture file name using date day month hour min and sec
+        LocalDateTime picsdT= LocalDateTime.now();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String formatDateTime = picsdT.format(format);
+        System.out.println("After Formatting: " + formatDateTime);
+        picsdate=formatDateTime;
 
         Intent intent = CameraActivity.this.getIntent();
         globalsimid= intent.getStringExtra("message_key");
@@ -71,7 +82,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
             @SuppressLint("WrongConstant")
             public void onPictureTaken(byte[] data, Camera camera) {
                 FileOutputStream outStream = null;
-                BACK = "PICK_BACK";
+                BACK = "PICK_BACK_"+picsdate;
                 try {
                     File file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), BACK + ".jpg");
                     outStream = new FileOutputStream(file);
@@ -111,7 +122,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
                 System.out.println("Capture photo "+result);
                 System.out.println("--------------------");
                 Intent intent = new Intent(CameraActivity.this, SimRegInfo.class);
-                value = "Captured and Croped";
+                value = BACK;
                 intent.putExtra("key_value",value);
                 intent.putExtra("key_result",result);
                 intent.putExtra("message_key",globalsimid);
@@ -123,6 +134,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
                 intent.putExtra("key1MiddleName",MiddleName);
                 intent.putExtra("keyLastName",LastName);
                 intent.putExtra("keyDate",Date);
+
                 startActivity(intent);
 
             }

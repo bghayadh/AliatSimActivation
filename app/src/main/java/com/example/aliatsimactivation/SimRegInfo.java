@@ -349,24 +349,33 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         File directory1 = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
         File OfflineFile1 = new File(directory1,myFileName1);
 
+
+
         //read value and result from camera
         String Cameravalue = intent.getStringExtra("key_value");
         System.out.println("reading value: "+ Cameravalue );
-        Cameraresult = intent.getStringExtra("key_result");
-        System.out.println("reading result: "+ Cameraresult );
-        editidagent.setText( getIntent().getStringExtra("keyIDnb"));
-        editfname.setText(getIntent().getStringExtra("keyFirstName"));
-        editmname.setText(getIntent().getStringExtra("keyMiddleName"));
-        editlname.setText(getIntent().getStringExtra("keyLastName"));
-        editdate.setText(getIntent().getStringExtra("keyDate"));
-        if(Cameravalue==null){
-            Cameravalue=editfname.getText().toString() + editlname.getText().toString() + "_BACK_" + editmobile.getText().toString() + "_" + editidagent.getText().toString()+"_"+picsdate;
-            textB.setText(Cameravalue);
-        }else{
-            textB.setText(Cameravalue);
+        if (Cameravalue==null) {
+
+        } else {
+            Cameraresult = intent.getStringExtra("key_result");
+            System.out.println("reading result: " + Cameraresult);
+            editidagent.setText(getIntent().getStringExtra("keyIDnb"));
+            editfname.setText(getIntent().getStringExtra("keyFirstName"));
+            editmname.setText(getIntent().getStringExtra("keyMiddleName"));
+            editlname.setText(getIntent().getStringExtra("keyLastName"));
+            editdate.setText(getIntent().getStringExtra("keyDate"));
+            if (Cameraresult == null) {
+                Cameraresult = Cameravalue;
+                textB.setText(Cameraresult);
+                BACK = Cameraresult;
+            } else {
+                textB.setText(Cameraresult);
+                BACK = Cameraresult;
+            }
+            //
+            System.out.println("textB : " + textB.getText().toString());
+
         }
-       //
-        System.out.println("textB : "+textB.getText().toString());
 
          //in case agent was null to get it from local file
          if (agentNumber==null || agentNumber=="") {
@@ -1038,6 +1047,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     intent.putExtra("agentNumber",agentNumber);
                     startActivity(intent);
 
+
+
                         BACKnew=BACK;
 
                         if(globalsimid.equalsIgnoreCase("0")) {
@@ -1466,10 +1477,10 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
                     String dY[] = editdate.getText().toString().split("-");
                     fb = getAge(Integer.parseInt(dY[2]), Integer.parseInt(dY[1]), Integer.parseInt(dY[0]));
-                    if (SIGN == null || FRONT == null || textB.getText().toString() == null || CLIENT == null) {
+                    if (SIGN == null || FRONT == null || BACK == null || CLIENT == null) {
                         Toast.makeText(SimRegInfo.this, "Must Have Signature and Photos", Toast.LENGTH_LONG).show();
                     } else {
-                        if (editfname.getText().toString().matches("") || editmname.getText().toString().matches("") || editlname.getText().toString().matches("") || editmobile.getText().toString().matches("") || editaltnumber.getText().toString().matches("") || editemail.getText().toString().matches("") || editphylocation.getText().toString().matches("") || editpost.getText().toString().matches("") || fb < 18 || !checkBox.isChecked() || SIGN == null || FRONT == null || textB.getText().toString() == null || fb == 0 || editdate.getText().toString() == null || CLIENT == null) {
+                        if (editfname.getText().toString().matches("") || editmname.getText().toString().matches("") || editlname.getText().toString().matches("") || editmobile.getText().toString().matches("") || editaltnumber.getText().toString().matches("") || editemail.getText().toString().matches("") || editphylocation.getText().toString().matches("") || editpost.getText().toString().matches("") || fb < 18 || !checkBox.isChecked() || SIGN == null || FRONT == null || BACK == null || fb == 0 || editdate.getText().toString() == null || CLIENT == null) {
                             Toast.makeText(SimRegInfo.this, "Check your fields", Toast.LENGTH_LONG).show();
                             if (editfname.getText().toString().matches("")) {
                                 editfname.setError("Empty Field");
@@ -2016,8 +2027,15 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 @Override
                 public void onClick(View v) {
 
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(intent, 101);
+                       // Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                       // startActivityForResult(intent, 101);
+
+                    Intent intent = new Intent(SimRegInfo.this, CameraActivity.class);
+                    intent.putExtra("message_key",globalsimid);
+                    intent.putExtra("db-offline-to-main",stroffile);
+                    intent.putExtra("globalMode",globalMode);
+                    intent.putExtra("agentNumber",agentNumber);
+                    startActivity(intent);
 
                         BACKnew=BACK;
 
@@ -2025,7 +2043,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         backimgIcon.setColorFilter(Color.parseColor("#4169E1"));
                         lineback.setVisibility(View.VISIBLE);
                         discardback.setVisibility(View.VISIBLE);
-
+                        System.out.println("textB.getText().toString() "+textB.getText().toString() );
                         if (textB.getText().toString() != "") {
 
                             backimgIcon.setVisibility(View.VISIBLE);
