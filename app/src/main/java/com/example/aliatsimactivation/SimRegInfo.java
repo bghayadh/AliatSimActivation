@@ -359,8 +359,14 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         editmname.setText(getIntent().getStringExtra("keyMiddleName"));
         editlname.setText(getIntent().getStringExtra("keyLastName"));
         editdate.setText(getIntent().getStringExtra("keyDate"));
-        Cameravalue=editfname.getText().toString() + editlname.getText().toString() + "_BACK_" + editmobile.getText().toString() + "_" + editidagent.getText().toString()+"_"+picsdate;
-        textB.setText(Cameravalue);
+        if(Cameravalue==null){
+            Cameravalue=editfname.getText().toString() + editlname.getText().toString() + "_BACK_" + editmobile.getText().toString() + "_" + editidagent.getText().toString()+"_"+picsdate;
+            textB.setText(Cameravalue);
+        }else{
+            textB.setText(Cameravalue);
+        }
+       //
+        System.out.println("textB : "+textB.getText().toString());
 
          //in case agent was null to get it from local file
          if (agentNumber==null || agentNumber=="") {
@@ -1460,10 +1466,10 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
                     String dY[] = editdate.getText().toString().split("-");
                     fb = getAge(Integer.parseInt(dY[2]), Integer.parseInt(dY[1]), Integer.parseInt(dY[0]));
-                    if (SIGN == null || FRONT == null || BACK == null || CLIENT == null) {
+                    if (SIGN == null || FRONT == null || textB.getText().toString() == null || CLIENT == null) {
                         Toast.makeText(SimRegInfo.this, "Must Have Signature and Photos", Toast.LENGTH_LONG).show();
                     } else {
-                        if (editfname.getText().toString().matches("") || editmname.getText().toString().matches("") || editlname.getText().toString().matches("") || editmobile.getText().toString().matches("") || editaltnumber.getText().toString().matches("") || editemail.getText().toString().matches("") || editphylocation.getText().toString().matches("") || editpost.getText().toString().matches("") || fb < 18 || !checkBox.isChecked() || SIGN == null || FRONT == null || BACK == null || fb == 0 || editdate.getText().toString() == null || CLIENT == null) {
+                        if (editfname.getText().toString().matches("") || editmname.getText().toString().matches("") || editlname.getText().toString().matches("") || editmobile.getText().toString().matches("") || editaltnumber.getText().toString().matches("") || editemail.getText().toString().matches("") || editphylocation.getText().toString().matches("") || editpost.getText().toString().matches("") || fb < 18 || !checkBox.isChecked() || SIGN == null || FRONT == null || textB.getText().toString() == null || fb == 0 || editdate.getText().toString() == null || CLIENT == null) {
                             Toast.makeText(SimRegInfo.this, "Check your fields", Toast.LENGTH_LONG).show();
                             if (editfname.getText().toString().matches("")) {
                                 editfname.setError("Empty Field");

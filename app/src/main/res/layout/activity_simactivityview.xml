@@ -127,7 +127,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
-            android:text="ID Front Side"
+            android:text="ID Back Side"
             android:textSize="20sp"
             android:textColor="@color/black"/>
 
@@ -136,97 +136,6 @@
             android:layout_height="wrap_content"
             android:weightSum="5"
             android:id="@+id/front"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/bfront"
-                android:layout_width="fill_parent"
-                android:layout_height="60dp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:textColor="@color/white"
-                android:backgroundTint="#505050"
-                android:text="Front Image"/>
-
-            <ImageButton
-                android:id="@+id/frontimgIcon"
-                android:layout_width="fill_parent"
-                android:layout_height="30dp"
-                android:layout_weight="4"
-                android:clickable="true"
-                android:layout_marginEnd="15dp"
-                android:layout_marginTop="28dp"
-                android:background="@null"
-                android:layout_toRightOf="@+id/bfront"
-                android:src="@drawable/imgbtn_foreground"
-                android:visibility="gone"/>
-
-            <TextView
-                android:id="@+id/frontpath"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
-                android:layout_toRightOf="@id/bfront"
-                android:backgroundTint="@color/red"
-                android:visibility="gone" />
-
-        </LinearLayout>
-
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#FFFFFF">
-
-
-            <TextView
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/frontstatus"
-                android:text="DISCARD"
-                android:textColor="@color/red"
-                android:layout_marginStart="15dp"
-                android:visibility="gone"/>
-            <View
-                android:layout_width="60dp"
-                android:layout_height="0.7dp"
-                android:id="@+id/line1"
-                android:layout_below="@+id/frontstatus"
-                android:background="@color/red"
-                android:layout_marginStart="15dp"
-                android:visibility="gone"/>
-
-        </RelativeLayout>
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="6dp"
-            android:background="@color/menusgrey" />
-
-
-
-        <TextView
-            android:id="@+id/textView14"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            android:text="ID Back Side"
-            android:textSize="20sp"
-            android:textColor="@color/black"/>
-
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="5"
-            android:id="@+id/back"
             android:orientation="horizontal">
 
             <Button
@@ -239,8 +148,7 @@
                 android:layout_marginEnd="15dp"
                 android:textColor="@color/white"
                 android:backgroundTint="#505050"
-                android:text="Back Image"/>
-
+                android:text="Back ID Image"/>
 
             <ImageButton
                 android:id="@+id/backimgIcon"
@@ -251,7 +159,7 @@
                 android:layout_marginEnd="15dp"
                 android:layout_marginTop="28dp"
                 android:background="@null"
-                android:layout_toRightOf="@+id/bback"
+                android:layout_toRightOf="@+id/bfront"
                 android:src="@drawable/imgbtn_foreground"
                 android:visibility="gone"/>
 
@@ -260,7 +168,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="60dp"
-                android:layout_toRightOf="@id/bsigniture"
+                android:layout_toRightOf="@id/bback"
                 android:backgroundTint="@color/red"
                 android:visibility="gone" />
 
@@ -284,8 +192,100 @@
             <View
                 android:layout_width="60dp"
                 android:layout_height="0.7dp"
-                android:id="@+id/line2"
+                android:id="@+id/line1"
                 android:layout_below="@+id/backstatus"
+                android:background="@color/red"
+                android:layout_marginStart="15dp"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="6dp"
+            android:background="@color/menusgrey" />
+
+
+
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:text="ID Front Side"
+            android:textSize="20sp"
+            android:textColor="@color/black"/>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="5"
+            android:id="@+id/back"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/bfront"
+                android:layout_width="fill_parent"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:textColor="@color/white"
+                android:backgroundTint="#505050"
+                android:text="Front ID Image"/>
+
+
+            <ImageButton
+                android:id="@+id/frontimgIcon"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:layout_weight="4"
+                android:clickable="true"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="28dp"
+                android:background="@null"
+                android:layout_toRightOf="@+id/bfront"
+                android:src="@drawable/imgbtn_foreground"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/frontpath"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
+                android:layout_toRightOf="@id/bsigniture"
+                android:backgroundTint="@color/red"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF">
+
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/frontstatus"
+                android:text="DISCARD"
+                android:textColor="@color/red"
+                android:layout_marginStart="15dp"
+                android:visibility="gone"/>
+            <View
+                android:layout_width="60dp"
+                android:layout_height="0.7dp"
+                android:id="@+id/line2"
+                android:layout_below="@+id/frontstatus"
                 android:background="@color/red"
                 android:layout_marginStart="15dp"
                 android:visibility="gone"/>
