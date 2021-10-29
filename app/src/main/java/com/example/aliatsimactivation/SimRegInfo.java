@@ -364,21 +364,41 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             editmname.setText(getIntent().getStringExtra("keyMiddleName"));
             editlname.setText(getIntent().getStringExtra("keyLastName"));
             editdate.setText(getIntent().getStringExtra("keyDate"));
-            if (Cameraresult == null) {
-                Cameraresult = Cameravalue;
-                textB.setText(Cameraresult);
-                BACK = Cameraresult;
+            Cameraresult = Cameravalue;
+            textB.setText(Cameraresult);
+            BACK = Cameraresult;
+            BACKnew=BACK;
+
+            if (textB.getText().toString() != "") {
+
+                backimgIcon.setVisibility(View.VISIBLE);
+                backimgIcon.setBackgroundResource(0);
+                gbackstatus = gbackstatusnew;
+                discardback.setVisibility(View.VISIBLE);
+                lineback.setVisibility(View.VISIBLE);
+
             } else {
-                textB.setText(Cameraresult);
-                BACK = Cameraresult;
+                backimgIcon.setVisibility(View.INVISIBLE);
             }
-            //
             System.out.println("textB : " + textB.getText().toString());
 
+            if (globalsimid.equalsIgnoreCase("0")) {
+                backimgIcon.setColorFilter(Color.parseColor("#4169E1"));
+                lineback.setVisibility(View.VISIBLE);
+                discardback.setVisibility(View.VISIBLE);
+
+            } else {
+                backimgIcon.setColorFilter(Color.parseColor("#ffa500"));
+                gbackstatusnew = "0";
+
+            }
+
+            BtnModesave.setBackgroundColor(Color.rgb(255, 102, 0));
+            txtmodesave.setText("Not Saved");
         }
 
-         //in case agent was null to get it from local file
-         if (agentNumber==null || agentNumber=="") {
+        //in case agent was null to get it from local file
+        if (agentNumber==null || agentNumber=="") {
             getagentnumber();
         }
 
@@ -400,7 +420,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             txtmode.setText("Offline");
             txtmodedata.setText("Offline Data");
             BtnModesave.setBackgroundColor(Color.rgb(255,102,0));
-         }
+        }
 
 
         //show arrow
@@ -429,6 +449,33 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
 
+        //back id button to capture the id back side
+        backid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(globalMode.equalsIgnoreCase("Online")) {
+                    if (globalsimid.equalsIgnoreCase("0")) {
+                        backimgIcon.setColorFilter(Color.parseColor("#4169E1"));
+                        backimgIcon.setVisibility(View.VISIBLE);
+                        backimgIcon.setVisibility(View.VISIBLE);
+                        discardback.setVisibility(View.VISIBLE);
+                        lineback.setVisibility(View.VISIBLE);
+                    } else {
+                        frontimgIcon.setColorFilter(Color.parseColor("#ffa500"));
+                        gfrontstatusnew = "0";
+
+                    }
+                }
+                Intent intent = new Intent(SimRegInfo.this, CameraActivity.class);
+                intent.putExtra("message_key",globalsimid);
+                intent.putExtra("db-offline-to-main",stroffile);
+                intent.putExtra("globalMode",globalMode);
+                intent.putExtra("agentNumber",agentNumber);
+                startActivity(intent);
+
+            }
+
+        });
         //online validation if we chnaged in radios,textboxes
         //on text change for first name
         editfname.addTextChangedListener(new TextWatcher() {
@@ -772,7 +819,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             }
 
 
-           editagent.setText(agentNumber);
+            editagent.setText(agentNumber);
 
 
 
@@ -953,36 +1000,36 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 @Override
                 public void onClick(View v) {
 
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(intent, 100);
-                        FRONTnew=FRONT;
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(intent, 100);
+                    FRONTnew=FRONT;
 
 
-                        if(globalsimid.equalsIgnoreCase("0")) {
-                            frontimgIcon.setColorFilter(Color.parseColor("#4169E1"));
-                            frontimgIcon.setVisibility(View.VISIBLE);
-                            frontimgIcon.setVisibility(View.VISIBLE);
-                            discardfront.setVisibility(View.VISIBLE);
-                            linefront.setVisibility(View.VISIBLE);
+                    if(globalsimid.equalsIgnoreCase("0")) {
+                        frontimgIcon.setColorFilter(Color.parseColor("#4169E1"));
+                        frontimgIcon.setVisibility(View.VISIBLE);
+                        frontimgIcon.setVisibility(View.VISIBLE);
+                        discardfront.setVisibility(View.VISIBLE);
+                        linefront.setVisibility(View.VISIBLE);
 
-                        }else{
-                            frontimgIcon.setColorFilter(Color.parseColor("#ffa500"));
-                            gfrontstatusnew="0";
+                    }else{
+                        frontimgIcon.setColorFilter(Color.parseColor("#ffa500"));
+                        gfrontstatusnew="0";
 
-                        }
+                    }
 
 
-                        if (textF.getText().toString() != "") {
+                    if (textF.getText().toString() != "") {
 
-                            frontimgIcon.setVisibility(View.VISIBLE);
-                            frontimgIcon.setBackgroundResource(0);
-                            gfrontstatus =gfrontstatusnew;
-                            discardfront.setVisibility(View.VISIBLE);
-                            linefront.setVisibility(View.VISIBLE);
+                        frontimgIcon.setVisibility(View.VISIBLE);
+                        frontimgIcon.setBackgroundResource(0);
+                        gfrontstatus =gfrontstatusnew;
+                        discardfront.setVisibility(View.VISIBLE);
+                        linefront.setVisibility(View.VISIBLE);
 
-                        }else {
-                            frontimgIcon.setVisibility(View.INVISIBLE);
-                        }
+                    }else {
+                        frontimgIcon.setVisibility(View.INVISIBLE);
+                    }
                     BtnModesave.setBackgroundColor(Color.rgb(255,102,0));
                     txtmodesave.setText("Not Saved");
                 }
@@ -1035,60 +1082,8 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
 
 
-            //back id button to capture the id back side
-            backid.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    Intent intent = new Intent(SimRegInfo.this, CameraActivity.class);
-                    intent.putExtra("message_key",globalsimid);
-                    intent.putExtra("db-offline-to-main",stroffile);
-                    intent.putExtra("globalMode",globalMode);
-                    intent.putExtra("agentNumber",agentNumber);
-                    startActivity(intent);
 
 
-
-                        BACKnew=BACK;
-
-                        if(globalsimid.equalsIgnoreCase("0")) {
-                            backimgIcon.setColorFilter(Color.parseColor("#4169E1"));
-                            lineback.setVisibility(View.VISIBLE);
-                            discardback.setVisibility(View.VISIBLE);
-
-
-                        }else{
-                            backimgIcon.setColorFilter(Color.parseColor("#ffa500"));
-                            gbackstatusnew="0";
-
-                        }
-
-
-                        if (textB.getText().toString() != "") {
-
-                            backimgIcon.setVisibility(View.VISIBLE);
-                            backimgIcon.setBackgroundResource(0);
-                            gbackstatus =gbackstatusnew;
-                            discardback.setVisibility(View.VISIBLE);
-                            lineback.setVisibility(View.VISIBLE);
-
-                        }else {
-                            backimgIcon.setVisibility(View.INVISIBLE);
-                        }
-
-                    BtnModesave.setBackgroundColor(Color.rgb(255,102,0));
-                    txtmodesave.setText("Not Saved");
-
-                }
-            });
-
-            // imageicon visibility after capturing from camera
-            if (textB.getText().toString() != "") {
-                backimgIcon.setVisibility(View.VISIBLE);
-                backimgIcon.setBackgroundResource(0);
-                discardback.setVisibility(View.VISIBLE);
-                lineback.setVisibility(View.VISIBLE);
-            }
 
 
 
@@ -1148,31 +1143,31 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 @Override
                 public void onClick(View v) {
 
-                        Intent a = new Intent(getApplicationContext(), SimRegSignature.class);
-                        SIGN = editfname.getText().toString() + editlname.getText().toString() + "SIGNATURE" + editmobile.getText().toString() + "" + editidagent.getText().toString()+""+picsdate;
-                        SIGNnew=SIGN;
-                        a.putExtra("sign", SIGN);
-                        startActivity(a);
-                        if(globalsimid.equalsIgnoreCase("0")) {
-                            signimgIcon.setColorFilter(Color.parseColor("#4169E1"));
+                    Intent a = new Intent(getApplicationContext(), SimRegSignature.class);
+                    SIGN = editfname.getText().toString() + editlname.getText().toString() + "SIGNATURE" + editmobile.getText().toString() + "" + editidagent.getText().toString()+""+picsdate;
+                    SIGNnew=SIGN;
+                    a.putExtra("sign", SIGN);
+                    startActivity(a);
+                    if(globalsimid.equalsIgnoreCase("0")) {
+                        signimgIcon.setColorFilter(Color.parseColor("#4169E1"));
 
 
-                        }else{
-                            signimgIcon.setColorFilter(Color.parseColor("#ffa500"));
-                            gsigstatusnew="0";
+                    }else{
+                        signimgIcon.setColorFilter(Color.parseColor("#ffa500"));
+                        gsigstatusnew="0";
 
-                        }
-                        textS.setText(SIGN);
+                    }
+                    textS.setText(SIGN);
 
-                        if (textS.getText().toString() != "") {
-                            signimgIcon.setVisibility(View.VISIBLE);
-                            signimgIcon.setBackgroundResource(0);
-                            gsigstatus = "0";
-                            discardsign.setVisibility(View.VISIBLE);
-                            linesign.setVisibility(View.VISIBLE);
-                        }else{
-                            signimgIcon.setVisibility(View.INVISIBLE);
-                        }
+                    if (textS.getText().toString() != "") {
+                        signimgIcon.setVisibility(View.VISIBLE);
+                        signimgIcon.setBackgroundResource(0);
+                        gsigstatus = "0";
+                        discardsign.setVisibility(View.VISIBLE);
+                        linesign.setVisibility(View.VISIBLE);
+                    }else{
+                        signimgIcon.setVisibility(View.INVISIBLE);
+                    }
                     BtnModesave.setBackgroundColor(Color.rgb(255,102,0));
                     txtmodesave.setText("Not Saved");
                 }
@@ -1231,36 +1226,36 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 @Override
                 public void onClick(View v) {
 
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(intent, 102);
-                        CLIENTnew=CLIENT;
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(intent, 102);
+                    CLIENTnew=CLIENT;
 
 
-                        if(globalsimid.equalsIgnoreCase("0")) {
-                            clientimgIcon.setColorFilter(Color.parseColor("#4169E1"));
-                            clientimgIcon.setVisibility(View.VISIBLE);
-                            clientimgIcon.setVisibility(View.VISIBLE);
-                            discardclient.setVisibility(View.VISIBLE);
-                            lineclient.setVisibility(View.VISIBLE);
+                    if(globalsimid.equalsIgnoreCase("0")) {
+                        clientimgIcon.setColorFilter(Color.parseColor("#4169E1"));
+                        clientimgIcon.setVisibility(View.VISIBLE);
+                        clientimgIcon.setVisibility(View.VISIBLE);
+                        discardclient.setVisibility(View.VISIBLE);
+                        lineclient.setVisibility(View.VISIBLE);
 
-                        }else{
-                            clientimgIcon.setColorFilter(Color.parseColor("#ffa500"));
-                            gclientstatusnew="0";
+                    }else{
+                        clientimgIcon.setColorFilter(Color.parseColor("#ffa500"));
+                        gclientstatusnew="0";
 
-                        }
+                    }
 
 
-                        if (textC.getText().toString() != "") {
+                    if (textC.getText().toString() != "") {
 
-                            clientimgIcon.setVisibility(View.VISIBLE);
-                            clientimgIcon.setBackgroundResource(0);
-                            gclientstatus =gclientstatusnew;
-                            discardclient.setVisibility(View.VISIBLE);
-                            lineclient.setVisibility(View.VISIBLE);
+                        clientimgIcon.setVisibility(View.VISIBLE);
+                        clientimgIcon.setBackgroundResource(0);
+                        gclientstatus =gclientstatusnew;
+                        discardclient.setVisibility(View.VISIBLE);
+                        lineclient.setVisibility(View.VISIBLE);
 
-                        }else {
-                            clientimgIcon.setVisibility(View.INVISIBLE);
-                        }
+                    }else {
+                        clientimgIcon.setVisibility(View.INVISIBLE);
+                    }
                     BtnModesave.setBackgroundColor(Color.rgb(255,102,0));
                     txtmodesave.setText("Not Saved");
                 }
@@ -1331,60 +1326,60 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         return;
                     }
                     if (sp.getSelectedItem().toString().toString().equalsIgnoreCase("In Progress")) {
-                    Toast.makeText(SimRegInfo.this, "Deleting Photos from SFTP", Toast.LENGTH_LONG).show();
-                    thread2.start();
-                    Toast.makeText(SimRegInfo.this, "The Photos Deleted from SFTP", Toast.LENGTH_LONG).show();
+                        Toast.makeText(SimRegInfo.this, "Deleting Photos from SFTP", Toast.LENGTH_LONG).show();
+                        thread2.start();
+                        Toast.makeText(SimRegInfo.this, "The Photos Deleted from SFTP", Toast.LENGTH_LONG).show();
 
-                    boolean flg = false;
-                    try {
-                        if ((flg = connecttoDB()) == true) {
+                        boolean flg = false;
+                        try {
+                            if ((flg = connecttoDB()) == true) {
 
-                            Toast.makeText(SimRegInfo.this, "Starting Deletion in DataBase", Toast.LENGTH_SHORT).show();
-                            PreparedStatement stmtinsert1 = null;
+                                Toast.makeText(SimRegInfo.this, "Starting Deletion in DataBase", Toast.LENGTH_SHORT).show();
+                                PreparedStatement stmtinsert1 = null;
 
-                            try {
-                                stmtinsert1 = conn.prepareStatement("delete from CLIENTS where CLIENT_ID ='" + globalsimid + "'");
-                            } catch (SQLException throwables) {
-                                throwables.printStackTrace();
+                                try {
+                                    stmtinsert1 = conn.prepareStatement("delete from CLIENTS where CLIENT_ID ='" + globalsimid + "'");
+                                } catch (SQLException throwables) {
+                                    throwables.printStackTrace();
+                                }
+                                try {
+                                    stmtinsert1.executeUpdate();
+                                    Toast.makeText(SimRegInfo.this, "Deleted Completed from DataBase", Toast.LENGTH_LONG).show();
+                                } catch (SQLException throwables) {
+                                    throwables.printStackTrace();
+                                }
+
+
+                                try {
+                                    stmtinsert1.close();
+                                    conn.close();
+                                } catch (SQLException throwables) {
+                                    throwables.printStackTrace();
+                                }
+                                Intent i = new Intent(SimRegInfo.this, SimRegListViewActivity.class);
+                                i.putExtra("agentNumber",agentNumber);
+                                i.putExtra("message_key",stroffile);
+                                startActivity(i);
+
+
+
+
+                            } else {
+                                String myFileName = "SIM_" + editmobile.getText().toString() + ".txt";
+                                File directory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+                                OfflineFile = new File(directory,myFileName);
+                                OfflineFile.delete();
+                                Toast.makeText(SimRegInfo.this,"Offline File Deleted Successfully",Toast.LENGTH_LONG).show();
+                                finish();
+                                startActivity(getIntent());
                             }
-                            try {
-                                stmtinsert1.executeUpdate();
-                                Toast.makeText(SimRegInfo.this, "Deleted Completed from DataBase", Toast.LENGTH_LONG).show();
-                            } catch (SQLException throwables) {
-                                throwables.printStackTrace();
-                            }
 
-
-                            try {
-                                stmtinsert1.close();
-                                conn.close();
-                            } catch (SQLException throwables) {
-                                throwables.printStackTrace();
-                            }
-                            Intent i = new Intent(SimRegInfo.this, SimRegListViewActivity.class);
-                            i.putExtra("agentNumber",agentNumber);
-                            i.putExtra("message_key",stroffile);
-                            startActivity(i);
-
-
-
-
-                        } else {
-                            String myFileName = "SIM_" + editmobile.getText().toString() + ".txt";
-                            File directory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
-                            OfflineFile = new File(directory,myFileName);
-                            OfflineFile.delete();
-                            Toast.makeText(SimRegInfo.this,"Offline File Deleted Successfully",Toast.LENGTH_LONG).show();
-                            finish();
-                            startActivity(getIntent());
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    }else {
+                        Toast.makeText(SimRegInfo.this,"Delete valid for in progress status",Toast.LENGTH_LONG).show();
                     }
-                }else {
-                    Toast.makeText(SimRegInfo.this,"Delete valid for in progress status",Toast.LENGTH_LONG).show();
-                }
 
                 }
 
@@ -1468,196 +1463,196 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-               if (!sp.getSelectedItem().toString().toString().equalsIgnoreCase("Success")) {
-                    if (sp.getSelectedItem().toString().matches("New")) {
-                        b = "In Progress";
-                        sp.setSelection(1);
-                    }
-
-
-                    String dY[] = editdate.getText().toString().split("-");
-                    fb = getAge(Integer.parseInt(dY[2]), Integer.parseInt(dY[1]), Integer.parseInt(dY[0]));
-                    if (SIGN == null || FRONT == null || BACK == null || CLIENT == null) {
-                        Toast.makeText(SimRegInfo.this, "Must Have Signature and Photos", Toast.LENGTH_LONG).show();
-                    } else {
-                        if (editfname.getText().toString().matches("") || editmname.getText().toString().matches("") || editlname.getText().toString().matches("") || editmobile.getText().toString().matches("") || editaltnumber.getText().toString().matches("") || editemail.getText().toString().matches("") || editphylocation.getText().toString().matches("") || editpost.getText().toString().matches("") || fb < 18 || !checkBox.isChecked() || SIGN == null || FRONT == null || BACK == null || fb == 0 || editdate.getText().toString() == null || CLIENT == null) {
-                            Toast.makeText(SimRegInfo.this, "Check your fields", Toast.LENGTH_LONG).show();
-                            if (editfname.getText().toString().matches("")) {
-                                editfname.setError("Empty Field");
-                            }
-                            if (editmname.getText().toString().matches("")) {
-                                editmname.setError("Empty Field");
-                            }
-                            if (editlname.getText().toString().matches("")) {
-                                editlname.setError("Empty Field");
-                            }
-                            if (editmobile.getText().toString().matches("")) {
-                                editmobile.setError("Empty Field");
-                            }
-                            if (editmobile.getText().toString().startsWith("0") ) {
-                                editmobile.setError("Remove the 0 at the beginning");
-                                return;
-                            }
-                            if(editmobile.getText().toString().length() == 10) {
-                                editmobile.setError("Client number must be 9 numbers and not start with 0");
-                                return;
-                            }
-                            if (editaltnumber.getText().toString().matches("")) {
-                                editaltnumber.setError("Empty Field");
-                            }
-                            if (editemail.getText().toString().matches("")) {
-                                editemail.setError("Empty Field");
-                            }
-                            if (editphylocation.getText().toString().matches("")) {
-                                editphylocation.setError("Empty Field");
-                            }
-                            if (editpost.getText().toString().matches("")) {
-                                editpost.setError("Empty Field");
-                            }
-                            if (!editemail.getText().toString().matches(emailpattern) && !editemail.getText().toString().matches(emailpattern1)) {
-                                editemail.setError("Invalid email address");
-                            }
-
-                            if (fb < 18 && fb >= 0) {
-                                editdate.setError("Under Age");
-                            } else if (fb >= 18) {
-                                editdate.setError(null);
-                            }
-                            if (!checkBox.isChecked()) {
-                                Toast.makeText(SimRegInfo.this, "Accept Terms And Conditions", Toast.LENGTH_SHORT).show();
-                            }
-                            if (male.isChecked()) {
-                                gender = "Male";
-                            }
-                            if (female.isChecked()) {
-                                gender = "Female";
-                            }
-                            if (kenya.isChecked()) {
-                                nationality = "Kenyan";
-                            }
-                            if (foreign.isChecked()) {
-                                nationality = "Foreign";
-                            }
-                            b = sp.getSelectedItem().toString();
-                            if (sp.getSelectedItem().toString().matches("New")) {
-                                b = "In Progress";
-                                sp.setSelection(1);
-                            }
-                        } else {
-                            if (editmobile.getText().toString().startsWith("0") ) {
-                                editmobile.setError("Remove the 0 at the beginning");
-                                return;
-                            }
-                            if(editmobile.getText().toString().length() == 10) {
-                                    editmobile.setError("Client number must be 9 numbers and not start with 0");
-                                    return;
-                            }
-
-                            if (!editemail.getText().toString().matches(emailpattern) && !editemail.getText().toString().matches(emailpattern1)) {
-                                editemail.setError("Invalid email address");
-                                Toast.makeText(getApplicationContext(), "Check your email", Toast.LENGTH_LONG).show();
-                                return;
-                            }
-                            if (male.isChecked()) {
-                                gender = "Male";
-                            }
-                            if (female.isChecked()) {
-                                gender = "Female";
-                            }
-                            if (kenya.isChecked()) {
-                                nationality = "Kenyan";
-                            }
-                            if (foreign.isChecked()) {
-                                nationality = "Foreign";
-                            }
-
-                            if (checkSim.isChecked()) {
-                                e = 0;
-                            } else {
-                                e = 22;
-                            }
-
-                            b = sp.getSelectedItem().toString();
-                            if (sp.getSelectedItem().toString().matches("New")) {
-                                b = "In Progress";
-                                sp.setSelection(1);
-                            }
-                            //start saving
-                            new AlertDialog.Builder(SimRegInfo.this)
-                                    .setTitle("Submit")
-                                    .setMessage("Are you sure you want to Submit this form?")
-                                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                           progressBar.setVisibility(View.VISIBLE);
-                                           progressBar.setProgress(0);
-                                            Date date = new Date();
-                                            Calendar calendar = new GregorianCalendar();
-                                            calendar.setTime(date);
-                                            int year = calendar.get(Calendar.YEAR);
-                                            simID = "CL_" + year + "_";
-
-
-                                            try {
-                                                b = sp.getSelectedItem().toString();
-                                                if (sp.getSelectedItem().toString().matches("New")) {
-                                                    b = "In Progress";
-                                                    sp.setSelection(1);
-                                                }
-                                                ;
-
-
-                                                //save on line
-                                                threadload1.start();
-                                                BtnModedata.setBackgroundColor(Color.BLUE);
-                                                txtmodedata.setText("Online Data");
-                                                BtnModesave.setBackgroundColor(Color.GREEN);
-                                                txtmodesave.setText("Saved");
-                                                // reduce counter of local save files
-                                                if (OfflineFile.exists()) {
-                                                    // reduce counter of local save files
-                                                    count--;
-                                                    Button BtnData = (Button) findViewById(R.id.BtnData);
-                                                    if (count == 0) {
-                                                        BtnData.setVisibility(View.INVISIBLE);
-                                                    } else {
-                                                        BtnData.setText(String.valueOf(count));
-                                                    }
-                                                }
-
-                                                discardback.setVisibility(View.INVISIBLE);
-                                                discardfront.setVisibility(View.INVISIBLE);
-                                                discardsign.setVisibility(View.INVISIBLE);
-                                                discardclient.setVisibility(View.INVISIBLE);
-                                                lineback.setVisibility(View.INVISIBLE);
-                                                linefront.setVisibility(View.INVISIBLE);
-                                                lineclient.setVisibility(View.INVISIBLE);
-                                                linesign.setVisibility(View.INVISIBLE);
-
-
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
-                                            }
-
-
-                                        }
-
-
-                                    })
-
-                                    // A null listener allows the button to dismiss the dialog and take no further action.
-                                    .setNegativeButton(android.R.string.no, null)
-                                    .setIcon(android.R.drawable.ic_dialog_alert)
-                                    .show();
-
+                    if (!sp.getSelectedItem().toString().toString().equalsIgnoreCase("Success")) {
+                        if (sp.getSelectedItem().toString().matches("New")) {
+                            b = "In Progress";
+                            sp.setSelection(1);
                         }
 
 
-                    }
-                }else
+                        String dY[] = editdate.getText().toString().split("-");
+                        fb = getAge(Integer.parseInt(dY[2]), Integer.parseInt(dY[1]), Integer.parseInt(dY[0]));
+                        if (SIGN == null || FRONT == null || BACK == null || CLIENT == null) {
+                            Toast.makeText(SimRegInfo.this, "Must Have Signature and Photos", Toast.LENGTH_LONG).show();
+                        } else {
+                            if (editfname.getText().toString().matches("") || editmname.getText().toString().matches("") || editlname.getText().toString().matches("") || editmobile.getText().toString().matches("") || editaltnumber.getText().toString().matches("") || editemail.getText().toString().matches("") || editphylocation.getText().toString().matches("") || editpost.getText().toString().matches("") || fb < 18 || !checkBox.isChecked() || SIGN == null || FRONT == null || BACK == null || fb == 0 || editdate.getText().toString() == null || CLIENT == null) {
+                                Toast.makeText(SimRegInfo.this, "Check your fields", Toast.LENGTH_LONG).show();
+                                if (editfname.getText().toString().matches("")) {
+                                    editfname.setError("Empty Field");
+                                }
+                                if (editmname.getText().toString().matches("")) {
+                                    editmname.setError("Empty Field");
+                                }
+                                if (editlname.getText().toString().matches("")) {
+                                    editlname.setError("Empty Field");
+                                }
+                                if (editmobile.getText().toString().matches("")) {
+                                    editmobile.setError("Empty Field");
+                                }
+                                if (editmobile.getText().toString().startsWith("0") ) {
+                                    editmobile.setError("Remove the 0 at the beginning");
+                                    return;
+                                }
+                                if(editmobile.getText().toString().length() == 10) {
+                                    editmobile.setError("Client number must be 9 numbers and not start with 0");
+                                    return;
+                                }
+                                if (editaltnumber.getText().toString().matches("")) {
+                                    editaltnumber.setError("Empty Field");
+                                }
+                                if (editemail.getText().toString().matches("")) {
+                                    editemail.setError("Empty Field");
+                                }
+                                if (editphylocation.getText().toString().matches("")) {
+                                    editphylocation.setError("Empty Field");
+                                }
+                                if (editpost.getText().toString().matches("")) {
+                                    editpost.setError("Empty Field");
+                                }
+                                if (!editemail.getText().toString().matches(emailpattern) && !editemail.getText().toString().matches(emailpattern1)) {
+                                    editemail.setError("Invalid email address");
+                                }
 
-                {
-                    Toast.makeText(getApplicationContext(),"Success status canot be modified",Toast.LENGTH_LONG).show();
-                }
+                                if (fb < 18 && fb >= 0) {
+                                    editdate.setError("Under Age");
+                                } else if (fb >= 18) {
+                                    editdate.setError(null);
+                                }
+                                if (!checkBox.isChecked()) {
+                                    Toast.makeText(SimRegInfo.this, "Accept Terms And Conditions", Toast.LENGTH_SHORT).show();
+                                }
+                                if (male.isChecked()) {
+                                    gender = "Male";
+                                }
+                                if (female.isChecked()) {
+                                    gender = "Female";
+                                }
+                                if (kenya.isChecked()) {
+                                    nationality = "Kenyan";
+                                }
+                                if (foreign.isChecked()) {
+                                    nationality = "Foreign";
+                                }
+                                b = sp.getSelectedItem().toString();
+                                if (sp.getSelectedItem().toString().matches("New")) {
+                                    b = "In Progress";
+                                    sp.setSelection(1);
+                                }
+                            } else {
+                                if (editmobile.getText().toString().startsWith("0") ) {
+                                    editmobile.setError("Remove the 0 at the beginning");
+                                    return;
+                                }
+                                if(editmobile.getText().toString().length() == 10) {
+                                    editmobile.setError("Client number must be 9 numbers and not start with 0");
+                                    return;
+                                }
+
+                                if (!editemail.getText().toString().matches(emailpattern) && !editemail.getText().toString().matches(emailpattern1)) {
+                                    editemail.setError("Invalid email address");
+                                    Toast.makeText(getApplicationContext(), "Check your email", Toast.LENGTH_LONG).show();
+                                    return;
+                                }
+                                if (male.isChecked()) {
+                                    gender = "Male";
+                                }
+                                if (female.isChecked()) {
+                                    gender = "Female";
+                                }
+                                if (kenya.isChecked()) {
+                                    nationality = "Kenyan";
+                                }
+                                if (foreign.isChecked()) {
+                                    nationality = "Foreign";
+                                }
+
+                                if (checkSim.isChecked()) {
+                                    e = 0;
+                                } else {
+                                    e = 22;
+                                }
+
+                                b = sp.getSelectedItem().toString();
+                                if (sp.getSelectedItem().toString().matches("New")) {
+                                    b = "In Progress";
+                                    sp.setSelection(1);
+                                }
+                                //start saving
+                                new AlertDialog.Builder(SimRegInfo.this)
+                                        .setTitle("Submit")
+                                        .setMessage("Are you sure you want to Submit this form?")
+                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                progressBar.setVisibility(View.VISIBLE);
+                                                progressBar.setProgress(0);
+                                                Date date = new Date();
+                                                Calendar calendar = new GregorianCalendar();
+                                                calendar.setTime(date);
+                                                int year = calendar.get(Calendar.YEAR);
+                                                simID = "CL_" + year + "_";
+
+
+                                                try {
+                                                    b = sp.getSelectedItem().toString();
+                                                    if (sp.getSelectedItem().toString().matches("New")) {
+                                                        b = "In Progress";
+                                                        sp.setSelection(1);
+                                                    }
+                                                    ;
+
+
+                                                    //save on line
+                                                    threadload1.start();
+                                                    BtnModedata.setBackgroundColor(Color.BLUE);
+                                                    txtmodedata.setText("Online Data");
+                                                    BtnModesave.setBackgroundColor(Color.GREEN);
+                                                    txtmodesave.setText("Saved");
+                                                    // reduce counter of local save files
+                                                    if (OfflineFile.exists()) {
+                                                        // reduce counter of local save files
+                                                        count--;
+                                                        Button BtnData = (Button) findViewById(R.id.BtnData);
+                                                        if (count == 0) {
+                                                            BtnData.setVisibility(View.INVISIBLE);
+                                                        } else {
+                                                            BtnData.setText(String.valueOf(count));
+                                                        }
+                                                    }
+
+                                                    discardback.setVisibility(View.INVISIBLE);
+                                                    discardfront.setVisibility(View.INVISIBLE);
+                                                    discardsign.setVisibility(View.INVISIBLE);
+                                                    discardclient.setVisibility(View.INVISIBLE);
+                                                    lineback.setVisibility(View.INVISIBLE);
+                                                    linefront.setVisibility(View.INVISIBLE);
+                                                    lineclient.setVisibility(View.INVISIBLE);
+                                                    linesign.setVisibility(View.INVISIBLE);
+
+
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+
+
+                                            }
+
+
+                                        })
+
+                                        // A null listener allows the button to dismiss the dialog and take no further action.
+                                        .setNegativeButton(android.R.string.no, null)
+                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                        .show();
+
+                            }
+
+
+                        }
+                    }else
+
+                    {
+                        Toast.makeText(getApplicationContext(),"Success status canot be modified",Toast.LENGTH_LONG).show();
+                    }
                 }
             });
 
@@ -1886,40 +1881,38 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
             ////////end load picture from sftp
 
-
-
-
-
             Btnftp = findViewById(R.id.Btnftp);
             Btnftp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (!sp.getSelectedItem().toString().toString().equalsIgnoreCase("Success")) {
-                    if (checkSim.isChecked()) {
-                        e = 0;
-                    } else {
-                        e = 22;
-                    }
-                    //resend picture if not sent to sftp server
-                    if (e != 0) {
-                        if (globalsimid != "0") {
-                            if (gsigstatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0") || gbackstatus.equalsIgnoreCase("0") || gclientstatus.equalsIgnoreCase("0")) {
-                                Toast.makeText(SimRegInfo.this, "Uploading Photos started", Toast.LENGTH_LONG).show();
-                                System.out.println("UPDATE HERE");
-                                thread1.start();
-                                Toast.makeText(SimRegInfo.this, "Upload Completed", Toast.LENGTH_LONG).show();
-                            }
+                        if (checkSim.isChecked()) {
+                            e = 0;
+                        } else {
+                            e = 22;
                         }
-                    } else {
-                        Toast.makeText(SimRegInfo.this, "You cannot reupload pictures in simulation mmode", Toast.LENGTH_LONG).show();
+                        //resend picture if not sent to sftp server
+                        if (e != 0) {
+                            if (globalsimid != "0") {
+                                if (gsigstatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0") || gbackstatus.equalsIgnoreCase("0") || gclientstatus.equalsIgnoreCase("0")) {
+                                    Toast.makeText(SimRegInfo.this, "Uploading Photos started", Toast.LENGTH_LONG).show();
+                                    System.out.println("UPDATE HERE");
+                                    thread1.start();
+                                    Toast.makeText(SimRegInfo.this, "Upload Completed", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        } else {
+                            Toast.makeText(SimRegInfo.this, "You cannot reupload pictures in simulation mmode", Toast.LENGTH_LONG).show();
+                        }
+                    }else
+                    {
+                        Toast.makeText(SimRegInfo.this, "Success status cannot be modified", Toast.LENGTH_LONG).show();
                     }
-                }else
-                {
-                    Toast.makeText(SimRegInfo.this, "Success status cannot be modified", Toast.LENGTH_LONG).show();
-                }
                 }
             });
-        }
+        }//offline mode SIMREGINFO:
+
+
         else{
             Toast.makeText(SimRegInfo.this,"Offline Mode",Toast.LENGTH_SHORT).show();
 
@@ -1956,7 +1949,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             btndob=findViewById(R.id.btncalender);
             Date c1 = Calendar.getInstance().getTime();
             SimpleDateFormat df1=new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-            editdate.setText((df.format(c1)).toString());
+          //  editdate.setText((df.format(c1)).toString());
             Intent intent1 = SimRegInfo.this.getIntent();
             String str1 = intent.getStringExtra("message_key");
             System.out.println("str1 : "+str1);
@@ -1981,29 +1974,29 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 @Override
                 public void onClick(View v) {
 
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(intent, 100);
-                        FRONTnew=FRONT;
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(intent, 100);
+                    FRONTnew=FRONT;
 
 
-                        frontimgIcon.setColorFilter(Color.parseColor("#4169E1"));
+                    frontimgIcon.setColorFilter(Color.parseColor("#4169E1"));
+                    frontimgIcon.setVisibility(View.VISIBLE);
+                    frontimgIcon.setVisibility(View.VISIBLE);
+                    discardfront.setVisibility(View.VISIBLE);
+                    linefront.setVisibility(View.VISIBLE);
+
+
+                    if (textF.getText().toString() != "") {
+
                         frontimgIcon.setVisibility(View.VISIBLE);
-                        frontimgIcon.setVisibility(View.VISIBLE);
+                        frontimgIcon.setBackgroundResource(0);
+                        gfrontstatus =gfrontstatusnew;
                         discardfront.setVisibility(View.VISIBLE);
                         linefront.setVisibility(View.VISIBLE);
 
-
-                        if (textF.getText().toString() != "") {
-
-                            frontimgIcon.setVisibility(View.VISIBLE);
-                            frontimgIcon.setBackgroundResource(0);
-                            gfrontstatus =gfrontstatusnew;
-                            discardfront.setVisibility(View.VISIBLE);
-                            linefront.setVisibility(View.VISIBLE);
-
-                        }else {
-                            frontimgIcon.setVisibility(View.INVISIBLE);
-                        }
+                    }else {
+                        frontimgIcon.setVisibility(View.INVISIBLE);
+                    }
                     BtnModesave.setBackgroundColor(Color.rgb(255,102,0));
                     txtmodesave.setText("Not Saved");
                 }
@@ -2023,7 +2016,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 }
             });
 //back id button to capture the id back side
-            backid.setOnClickListener(new View.OnClickListener() {
+           /* backid.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -2058,7 +2051,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                     BtnModesave.setBackgroundColor(Color.rgb(255,102,0));
                     txtmodesave.setText("Not Saved");
                 }
-            });
+            });*/
 
             //discarding picture from saving
             discardback.setOnClickListener(new View.OnClickListener() {
@@ -2081,25 +2074,25 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 @Override
                 public void onClick(View v) {
 
-                        Intent a = new Intent(getApplicationContext(), SimRegSignature.class);
-                        SIGN = editfname.getText().toString() + editlname.getText().toString() + "SIGNATURE" + editmobile.getText().toString() + "" + editidagent.getText().toString()+""+picsdate;
-                        SIGNnew=SIGN;
-                        a.putExtra("sign", SIGN);
-                        startActivity(a);
+                    Intent a = new Intent(getApplicationContext(), SimRegSignature.class);
+                    SIGN = editfname.getText().toString() + editlname.getText().toString() + "SIGNATURE" + editmobile.getText().toString() + "" + editidagent.getText().toString()+""+picsdate;
+                    SIGNnew=SIGN;
+                    a.putExtra("sign", SIGN);
+                    startActivity(a);
 
-                        signimgIcon.setColorFilter(Color.parseColor("#4169E1"));
+                    signimgIcon.setColorFilter(Color.parseColor("#4169E1"));
 
-                        textS.setText(SIGN);
+                    textS.setText(SIGN);
 
-                        if (textS.getText().toString() != "") {
-                            signimgIcon.setVisibility(View.VISIBLE);
-                            signimgIcon.setBackgroundResource(0);
-                            gsigstatus = "0";
-                            discardsign.setVisibility(View.VISIBLE);
-                            linesign.setVisibility(View.VISIBLE);
-                        }else{
-                            signimgIcon.setVisibility(View.INVISIBLE);
-                        }
+                    if (textS.getText().toString() != "") {
+                        signimgIcon.setVisibility(View.VISIBLE);
+                        signimgIcon.setBackgroundResource(0);
+                        gsigstatus = "0";
+                        discardsign.setVisibility(View.VISIBLE);
+                        linesign.setVisibility(View.VISIBLE);
+                    }else{
+                        signimgIcon.setVisibility(View.INVISIBLE);
+                    }
                     BtnModesave.setBackgroundColor(Color.rgb(255,102,0));
                     txtmodesave.setText("Not Saved");
                 }
@@ -2126,26 +2119,26 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 @Override
                 public void onClick(View v) {
 
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(intent, 102);
-                        CLIENTnew=CLIENT;
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(intent, 102);
+                    CLIENTnew=CLIENT;
 
 
-                        clientimgIcon.setColorFilter(Color.parseColor("#4169E1"));
-                        lineclient.setVisibility(View.VISIBLE);
+                    clientimgIcon.setColorFilter(Color.parseColor("#4169E1"));
+                    lineclient.setVisibility(View.VISIBLE);
+                    discardclient.setVisibility(View.VISIBLE);
+
+                    if (textC.getText().toString() != "") {
+
+                        clientimgIcon.setVisibility(View.VISIBLE);
+                        clientimgIcon.setBackgroundResource(0);
+                        gclientstatus =gclientstatusnew;
                         discardclient.setVisibility(View.VISIBLE);
+                        lineclient.setVisibility(View.VISIBLE);
 
-                        if (textC.getText().toString() != "") {
-
-                            clientimgIcon.setVisibility(View.VISIBLE);
-                            clientimgIcon.setBackgroundResource(0);
-                            gclientstatus =gclientstatusnew;
-                            discardclient.setVisibility(View.VISIBLE);
-                            lineclient.setVisibility(View.VISIBLE);
-
-                        }else {
-                            clientimgIcon.setVisibility(View.INVISIBLE);
-                        }
+                    }else {
+                        clientimgIcon.setVisibility(View.INVISIBLE);
+                    }
                     BtnModesave.setBackgroundColor(Color.rgb(255,102,0));
                     txtmodesave.setText("Not Saved");
                 }
@@ -2383,7 +2376,6 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                         String dY[] = editdate.getText().toString().split("-");
                         fb = getAge(Integer.parseInt(dY[2]), Integer.parseInt(dY[1]), Integer.parseInt(dY[0]));
                         if (editfname.getText().toString().matches("") || editmname.getText().toString().matches("") || editlname.getText().toString().matches("") || editmobile.getText().toString().matches("") || editaltnumber.getText().toString().matches("") || editemail.getText().toString().matches("") || editphylocation.getText().toString().matches("") || editpost.getText().toString().matches("") || fb < 18 || !checkBox.isChecked() || SIGN == null || FRONT == null || BACK == null || fb == 0 || editdate.getText().toString() == null || CLIENT==null) {
-
                             if (editfname.getText().toString().matches("")) {
                                 editfname.setError("Empty Field");
                             }
@@ -2521,7 +2513,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                                                 e.printStackTrace();
                                             }
                                             Toast.makeText(SimRegInfo.this,"Saving Offline",Toast.LENGTH_SHORT).show();
-                                             //startActivity(getIntent());
+                                            //startActivity(getIntent());
                                         }
 
 
@@ -2572,6 +2564,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
             });
 
         }
+
     }
    /* public void SendTOftp() {
 
@@ -2834,21 +2827,21 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 progressBar.setProgress(45);
                 if(gbackstatus.equalsIgnoreCase("0")) {
                     if(e!=0) {
-                    File backpic = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), BACK + ".jpg");
-                    String back = String.valueOf(backpic);
-                    channelSftp.put(back, "ClientPic");
-                    Boolean success3 = true;
+                        File backpic = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), BACK + ".jpg");
+                        String back = String.valueOf(backpic);
+                        channelSftp.put(back, "ClientPic");
+                        Boolean success3 = true;
 
-                    if (success3) {
-                        //txtmsg.setText("upload completed : " + back);
-                        System.out.println("upload completed : " + back);
-                        UpdateSimRegistrationPicStatus(globalsimid, "BACK_SIDE_ID_STATUS",1);
-                        backimgIcon.setColorFilter(Color.GREEN);
-                        gbackstatus = "1";
-                        BACKorigin = BACK;
-                        backpic.delete();
+                        if (success3) {
+                            //txtmsg.setText("upload completed : " + back);
+                            System.out.println("upload completed : " + back);
+                            UpdateSimRegistrationPicStatus(globalsimid, "BACK_SIDE_ID_STATUS",1);
+                            backimgIcon.setColorFilter(Color.GREEN);
+                            gbackstatus = "1";
+                            BACKorigin = BACK;
+                            backpic.delete();
+                        }
                     }
-                }
                     else {
                         UpdateSimRegistrationPicStatus(globalsimid, "BACK_SIDE_ID_STATUS",0);
                     }
@@ -3116,114 +3109,114 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
                 txtmsg.setText("Please wait ...");
                 if ((flg = connecttoDB()) == true) {
                     if (getAgentStatus()==true) {
-                    PreparedStatement stmtinsert1 = null;
-                    try {
-                        if (globalsimid.equalsIgnoreCase("0") || OfflineFile.exists()) {
-                            // if it is a new Warehouse we will use insert
+                        PreparedStatement stmtinsert1 = null;
+                        try {
+                            if (globalsimid.equalsIgnoreCase("0") || OfflineFile.exists()) {
+                                // if it is a new Warehouse we will use insert
 
-                            progressBar.setProgress(10);
-                            Statement stmt1 = null;
-                            stmt1 = conn.createStatement();
-                            String sqlStmt = "select CLIENTS_SEQ.nextval as nbr from dual";
-                            ResultSet rs1 = null;
-                            try {
-                                rs1 = stmt1.executeQuery(sqlStmt);
-                            } catch (SQLException throwables) {
-                                throwables.printStackTrace();
-                            }
-
-                            while (true) {
+                                progressBar.setProgress(10);
+                                Statement stmt1 = null;
+                                stmt1 = conn.createStatement();
+                                String sqlStmt = "select CLIENTS_SEQ.nextval as nbr from dual";
+                                ResultSet rs1 = null;
                                 try {
-                                    if (!rs1.next()) break;
-                                    globalsimid = simID + rs1.getString("nbr");
-                                    //System.out.println(rs1.getString("compteur"));
-
+                                    rs1 = stmt1.executeQuery(sqlStmt);
                                 } catch (SQLException throwables) {
                                     throwables.printStackTrace();
                                 }
+
+                                while (true) {
+                                    try {
+                                        if (!rs1.next()) break;
+                                        globalsimid = simID + rs1.getString("nbr");
+                                        //System.out.println(rs1.getString("compteur"));
+
+                                    } catch (SQLException throwables) {
+                                        throwables.printStackTrace();
+                                    }
+                                }
+                                rs1.close();
+                                stmt1.close();
+
+
+                                // send data from fragment to super activity
+                                String ussd_status = "USSD";
+                                stmtinsert1 = conn.prepareStatement("insert into CLIENTS (CLIENT_ID,DISPLAY_NAME,CREATED_DATE,LAST_MODIFIED_DATE,FIRST_NAME,MIDDLE_NAME,LAST_NAME,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHYSICAL_LOCATION,STATUS,POSTAL_ADDRESS,GENDER,AGENT_NUMBER,CLIENT_ID_NUMBER,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,CLIENT_PHOTO,SIGNATURE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS,CLIENT_PHOTO_STATUS,USSD_STATUS,DEPARTMENT,DESCREPTION,LONGITUDE,LATITUDE,SELLING_LONGITUDE,SELLING_LATITUDE) values " +
+                                        "('" + globalsimid + "',0,sysdate, sysdate,'" + editfname.getText() + "','" + editmname.getText() + "', '" + editlname.getText() + "','" + editmobile.getText() + "',TO_DATE('" + editdate.getText() + "','DD-MM-YYYY'),'" + nationality + "','" + editaltnumber.getText() + "','" + editemail.getText() + "','" + editphylocation.getText() + "','" + b + "','" + editpost.getText() + "','" + gender + "','" + agentNumber + "','" + editidagent.getText() + "','" + SIGN + "','" + FRONT + "','" + BACK + "','" + CLIENT + "',0,0,0,0,'" + editussdstatus.getText().toString() + "',0,0,'"+edtlong.getText().toString()+"','"+edtlat.getText().toString()+"','"+edtselllong.getText().toString()+"','"+edtselllat.getText().toString()+"')");
+                            } else {
+                                stmtinsert1 = conn.prepareStatement("update CLIENTS set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + editfname.getText() + "',MIDDLE_NAME='" + editmname.getText() + "',LAST_NAME='" + editlname.getText() + "',STATUS='" + b + "',MOBILE_NUMBER='" + editmobile.getText() + "',NATIONALITY='" + nationality + "',ALTERNATIVE_NUMBER='" + editaltnumber.getText() + "',EMAIL_ADDRESS='" + editemail.getText() + "',PHYSICAL_LOCATION='" + editphylocation.getText() + "',POSTAL_ADDRESS='" + editpost.getText() + "',GENDER='" + gender + "',AGENT_NUMBER='" + editagent.getText() + "',CLIENT_ID_NUMBER='" + editidagent.getText() + "',SIGNATURE='" + SIGN + "',ID_FRONT_SIDE_PHOTO='" + FRONT + "',ID_BACK_SID_PHOTO='" + BACK + "',USSD_STATUS='" + editussdstatus.getText().toString() + "',CLIENT_PHOTO='" + CLIENT + "', LONGITUDE='"+edtlong.getText().toString()+"',LATITUDE='"+edtlat.getText().toString()+"',SELLING_LONGITUDE='"+edtselllong.getText().toString()+"',SELLING_LATITUDE='"+edtselllat.getText().toString()+"' where CLIENT_ID  ='" + globalsimid + "'");
                             }
-                            rs1.close();
-                            stmt1.close();
-
-
-                            // send data from fragment to super activity
-                            String ussd_status = "USSD";
-                            stmtinsert1 = conn.prepareStatement("insert into CLIENTS (CLIENT_ID,DISPLAY_NAME,CREATED_DATE,LAST_MODIFIED_DATE,FIRST_NAME,MIDDLE_NAME,LAST_NAME,MOBILE_NUMBER,DATE_OF_BIRTH,NATIONALITY,ALTERNATIVE_NUMBER,EMAIL_ADDRESS,PHYSICAL_LOCATION,STATUS,POSTAL_ADDRESS,GENDER,AGENT_NUMBER,CLIENT_ID_NUMBER,SIGNATURE,ID_FRONT_SIDE_PHOTO,ID_BACK_SID_PHOTO,CLIENT_PHOTO,SIGNATURE_STATUS,FRONT_SIDE_ID_STATUS,BACK_SIDE_ID_STATUS,CLIENT_PHOTO_STATUS,USSD_STATUS,DEPARTMENT,DESCREPTION,LONGITUDE,LATITUDE,SELLING_LONGITUDE,SELLING_LATITUDE) values " +
-                                    "('" + globalsimid + "',0,sysdate, sysdate,'" + editfname.getText() + "','" + editmname.getText() + "', '" + editlname.getText() + "','" + editmobile.getText() + "',TO_DATE('" + editdate.getText() + "','DD-MM-YYYY'),'" + nationality + "','" + editaltnumber.getText() + "','" + editemail.getText() + "','" + editphylocation.getText() + "','" + b + "','" + editpost.getText() + "','" + gender + "','" + agentNumber + "','" + editidagent.getText() + "','" + SIGN + "','" + FRONT + "','" + BACK + "','" + CLIENT + "',0,0,0,0,'" + editussdstatus.getText().toString() + "',0,0,'"+edtlong.getText().toString()+"','"+edtlat.getText().toString()+"','"+edtselllong.getText().toString()+"','"+edtselllat.getText().toString()+"')");
-                        } else {
-                            stmtinsert1 = conn.prepareStatement("update CLIENTS set LAST_MODIFIED_DATE=sysdate,FIRST_NAME='" + editfname.getText() + "',MIDDLE_NAME='" + editmname.getText() + "',LAST_NAME='" + editlname.getText() + "',STATUS='" + b + "',MOBILE_NUMBER='" + editmobile.getText() + "',NATIONALITY='" + nationality + "',ALTERNATIVE_NUMBER='" + editaltnumber.getText() + "',EMAIL_ADDRESS='" + editemail.getText() + "',PHYSICAL_LOCATION='" + editphylocation.getText() + "',POSTAL_ADDRESS='" + editpost.getText() + "',GENDER='" + gender + "',AGENT_NUMBER='" + editagent.getText() + "',CLIENT_ID_NUMBER='" + editidagent.getText() + "',SIGNATURE='" + SIGN + "',ID_FRONT_SIDE_PHOTO='" + FRONT + "',ID_BACK_SID_PHOTO='" + BACK + "',USSD_STATUS='" + editussdstatus.getText().toString() + "',CLIENT_PHOTO='" + CLIENT + "', LONGITUDE='"+edtlong.getText().toString()+"',LATITUDE='"+edtlat.getText().toString()+"',SELLING_LONGITUDE='"+edtselllong.getText().toString()+"',SELLING_LATITUDE='"+edtselllat.getText().toString()+"' where CLIENT_ID  ='" + globalsimid + "'");
+                            txtmsg.setText("DB Data Saving completed");
+                            progressBar.setProgress(30);
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
                         }
-                        txtmsg.setText("DB Data Saving completed");
-                        progressBar.setProgress(30);
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
-                    try {
-                        stmtinsert1.executeUpdate();
-                        OfflineFile.delete();
-                        progressBar.setProgress(40);
+                        try {
+                            stmtinsert1.executeUpdate();
+                            OfflineFile.delete();
+                            progressBar.setProgress(40);
 
-                        txtmsg.setText("Start upload pictures");
-                        //calling to upload pictures  using stfp
-                        if (globalsimid.equalsIgnoreCase("0")) {
-                            //Toast.makeText(SimRegInfo.this, "New SIM Uploading Photos started", Toast.LENGTH_LONG).show();
-                            thread1.start();
-                            // Toast.makeText(SimRegInfo.this, "New SIM Upload Completed", Toast.LENGTH_LONG).show();
-                        } else {
-                            if (gsigstatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0") || gbackstatus.equalsIgnoreCase("0") || gclientstatus.equalsIgnoreCase("0")) {
-                                //Toast.makeText(SimRegInfo.this, "Exist SIM Uploading Photos started", Toast.LENGTH_LONG).show();
+                            txtmsg.setText("Start upload pictures");
+                            //calling to upload pictures  using stfp
+                            if (globalsimid.equalsIgnoreCase("0")) {
+                                //Toast.makeText(SimRegInfo.this, "New SIM Uploading Photos started", Toast.LENGTH_LONG).show();
                                 thread1.start();
-                                // Toast.makeText(SimRegInfo.this, "Exist SIM Upload Completed", Toast.LENGTH_LONG).show();
+                                // Toast.makeText(SimRegInfo.this, "New SIM Upload Completed", Toast.LENGTH_LONG).show();
+                            } else {
+                                if (gsigstatus.equalsIgnoreCase("0") || gfrontstatus.equalsIgnoreCase("0") || gbackstatus.equalsIgnoreCase("0") || gclientstatus.equalsIgnoreCase("0")) {
+                                    //Toast.makeText(SimRegInfo.this, "Exist SIM Uploading Photos started", Toast.LENGTH_LONG).show();
+                                    thread1.start();
+                                    // Toast.makeText(SimRegInfo.this, "Exist SIM Upload Completed", Toast.LENGTH_LONG).show();
+                                }
+
                             }
 
+
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
                         }
 
 
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
+                        try {
+                            stmtinsert1.close();
+                            conn.close();
+                            if (!gsigstatus.equalsIgnoreCase("0") && !gfrontstatus.equalsIgnoreCase("0") && !gbackstatus.equalsIgnoreCase("0") && !gclientstatus.equalsIgnoreCase("0")) {
+                                progressBar.setProgress(100);
+                                txtmsg.setText("Transaction completed");
+                                Thread.sleep(2000);
+                                txtmsg.setText("");
+                                progressBar.setProgress(0);
+                                Intent intent =  new Intent(getApplicationContext(), SimRegInfo.class);
+                                intent.putExtra("message_key", globalsimid);
+                                intent.putExtra("db-offline", "1");
+                                intent.putExtra("globalMode","Online");
+                                intent.putExtra("db-offline-to-main","1");
+                                intent.putExtra("agentNumber",agentNumber);
+                                startActivity(intent);
+                            } else {
 
-
-                    try {
-                        stmtinsert1.close();
-                        conn.close();
-                        if (!gsigstatus.equalsIgnoreCase("0") && !gfrontstatus.equalsIgnoreCase("0") && !gbackstatus.equalsIgnoreCase("0") && !gclientstatus.equalsIgnoreCase("0")) {
-                            progressBar.setProgress(100);
-                            txtmsg.setText("Transaction completed");
-                            Thread.sleep(2000);
-                            txtmsg.setText("");
-                            progressBar.setProgress(0);
-                            Intent intent =  new Intent(getApplicationContext(), SimRegInfo.class);
-                            intent.putExtra("message_key", globalsimid);
-                            intent.putExtra("db-offline", "1");
-                            intent.putExtra("globalMode","Online");
-                            intent.putExtra("db-offline-to-main","1");
-                            intent.putExtra("agentNumber",agentNumber);
-                            startActivity(intent);
-                        } else {
-
-                            //recall form
-                            Thread.sleep(20000);
-                            Intent intent = new Intent(getApplicationContext(), SimRegInfo.class);
-                            intent.putExtra("message_key", globalsimid);
-                            intent.putExtra("db-offline", "1");
-                            intent.putExtra("globalMode", "Online");
-                            intent.putExtra("db-offline-to-main", "1");
-                            intent.putExtra("agentNumber", agentNumber);
-                            startActivity(intent);
+                                //recall form
+                                Thread.sleep(20000);
+                                Intent intent = new Intent(getApplicationContext(), SimRegInfo.class);
+                                intent.putExtra("message_key", globalsimid);
+                                intent.putExtra("db-offline", "1");
+                                intent.putExtra("globalMode", "Online");
+                                intent.putExtra("db-offline-to-main", "1");
+                                intent.putExtra("agentNumber", agentNumber);
+                                startActivity(intent);
+                            }
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
                         }
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
 
-                }
-                else {
-                    txtmsg.setText("Access denied");
-                    Intent intent = new Intent(Intent.ACTION_MAIN);
-                    intent.addCategory(Intent.CATEGORY_HOME);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                }
+                    }
+                    else {
+                        txtmsg.setText("Access denied");
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        intent.addCategory(Intent.CATEGORY_HOME);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
 
                 }
                 else {
@@ -3309,7 +3302,7 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
 
 
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-       String vday=null,vmonth=null;
+        String vday=null,vmonth=null;
         if ((dayOfMonth) <10 ) {
             vday="0"+(dayOfMonth);
         }else {
@@ -3590,3 +3583,4 @@ public class SimRegInfo extends AppCompatActivity implements DatePickerDialog.On
     }
 
 }
+

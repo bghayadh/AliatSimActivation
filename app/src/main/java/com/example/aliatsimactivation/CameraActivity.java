@@ -314,8 +314,11 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
                                 LastName = FullName[2];
                             }
                         } // END filling firstname, middlename and lastname
+
                     }
+
                 }
+
             } //END filling the data in editText
 
 
