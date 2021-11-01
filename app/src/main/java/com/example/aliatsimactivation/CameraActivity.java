@@ -246,83 +246,87 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
 
 
     public void TextRecognizer(Bitmap bitmap) {
-        TextRecognizer recognizer = new TextRecognizer.Builder(getApplicationContext()).build();
-        if (!recognizer.isOperational()) {
-            Toast.makeText(this, "Error", Toast.LENGTH_LONG).show();
-        } else {
-            Frame frame = new Frame.Builder().setBitmap(bitmap).build();
-            SparseArray<TextBlock> items = recognizer.detect(frame);
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < items.size(); i++) {
-                TextBlock myItem = items.valueAt(i);
-                sb.append(myItem.getValue());
-                sb.append("\n");
-            }
-            System.out.println("RESULT = " + sb.toString());
-            result = sb.toString();
+        try {
+            TextRecognizer recognizer = new TextRecognizer.Builder(getApplicationContext()).build();
+            if (!recognizer.isOperational()) {
+                Toast.makeText(this, "Error", Toast.LENGTH_LONG).show();
+            } else {
+                Frame frame = new Frame.Builder().setBitmap(bitmap).build();
+                SparseArray<TextBlock> items = recognizer.detect(frame);
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < items.size(); i++) {
+                    TextBlock myItem = items.valueAt(i);
+                    sb.append(myItem.getValue());
+                    sb.append("\n");
+                }
+                System.out.println("RESULT = " + sb.toString());
+                result = sb.toString();
 
 
-            //START filling the data in editText
-            String data[] = result.split("\n");
-            for (int i = 0; i < data.length; i++) {
+                //START filling the data in editText
+                String data[] = result.split("\n");
+                for (int i = 0; i < data.length; i++) {
 
-                if( data[i].length() > 10 && data[i].length() < 50){
-                    String check = data[i].substring(0, 1);
-                    String check1 = data[i].substring(1, 2);
-                    String check2 = data[i].substring(2, 3);
-                    String check3 = data[i].substring(3, 4);
-                    String check4 = data[i].substring(4, 5);
-                    String check5 = data[i].substring(5, 6);
-                    boolean alpahacheck = isAlpha(check);
-                    boolean alpahacheck1 = isAlpha(check1);
-                    boolean alpahacheck2 = isAlpha(check2);
-                    boolean alpahacheck3 = isAlpha(check3);
-                    boolean alpahacheck4 = isAlpha(check4);
-                    boolean alpahacheck5 = isAlpha(check5);
+                    if (data[i].length() > 10 && data[i].length() < 50) {
+                        String check = data[i].substring(0, 1);
+                        String check1 = data[i].substring(1, 2);
+                        String check2 = data[i].substring(2, 3);
+                        String check3 = data[i].substring(3, 4);
+                        String check4 = data[i].substring(4, 5);
+                        String check5 = data[i].substring(5, 6);
+                        boolean alpahacheck = isAlpha(check);
+                        boolean alpahacheck1 = isAlpha(check1);
+                        boolean alpahacheck2 = isAlpha(check2);
+                        boolean alpahacheck3 = isAlpha(check3);
+                        boolean alpahacheck4 = isAlpha(check4);
+                        boolean alpahacheck5 = isAlpha(check5);
 
-                    //FINDING THE DATE ROW
-                    if(data[i].contains("<") && alpahacheck == false && alpahacheck1 == false && alpahacheck2 == false && alpahacheck3 == false && alpahacheck4 == false && alpahacheck5 == false){
+                        //FINDING THE DATE ROW
+                        if (data[i].contains("<") && alpahacheck == false && alpahacheck1 == false && alpahacheck2 == false && alpahacheck3 == false && alpahacheck4 == false && alpahacheck5 == false) {
 
-                        //START filling date and id number
-                        String daterow= data[i].replaceAll("\\s", "");
-                        String DOB = daterow.substring(0, 6);
-                        String day = DOB.substring(4, 6);
-                        String month = DOB.substring(2, 4);
-                        String year = DOB.substring(0, 2);
-                        String year2 = daterow.substring(8, 10);
-                        System.out.println("year2   " + year2.trim());
-                        int yy = Integer.parseInt(year2.trim());
-                        int finalyear = yy - 18;
-                        if (finalyear >= 0) {
-                            Date = day + "-" + month + "-20" + year;
-                        } else {
-                            Date = day + "-" + month + "-19" + year;
-                        }
-                        String[] Number = daterow.split("<");
-                        IDnb = Number[1].substring(2,10);
-                        //END filling date and id number
-
-                        //START filling  firstname, middlename, and lastname
-                        if(data[i+1].contains("<") ){
-                            String namerow= data[i+1].replaceAll("\\s", "");
-                            String[] FullName = namerow.split("<");
-                            FirstName = FullName[0];
-                            LastName = FullName[1];
-                            if(FullName.length > 2) {
-                                FirstName = FullName[0];
-                                MiddleName = FullName[1];
-                                LastName = FullName[2];
+                            //START filling date and id number
+                            String daterow = data[i].replaceAll("\\s", "");
+                            String DOB = daterow.substring(0, 6);
+                            String day = DOB.substring(4, 6);
+                            String month = DOB.substring(2, 4);
+                            String year = DOB.substring(0, 2);
+                            String year2 = daterow.substring(8, 10);
+                            System.out.println("year2   " + year2.trim());
+                            int yy = Integer.parseInt(year2.trim());
+                            int finalyear = yy - 18;
+                            if (finalyear >= 0) {
+                                Date = day + "-" + month + "-20" + year;
+                            } else {
+                                Date = day + "-" + month + "-19" + year;
                             }
-                        } // END filling firstname, middlename and lastname
+                            String[] Number = daterow.split("<");
+                            IDnb = Number[1].substring(2, 10);
+                            //END filling date and id number
+
+                            //START filling  firstname, middlename, and lastname
+                            if (data[i + 1].contains("<")) {
+                                String namerow = data[i + 1].replaceAll("\\s", "");
+                                String[] FullName = namerow.split("<");
+                                FirstName = FullName[0];
+                                LastName = FullName[1];
+                                if (FullName.length > 2) {
+                                    FirstName = FullName[0];
+                                    MiddleName = FullName[1];
+                                    LastName = FullName[2];
+                                }
+                            } // END filling firstname, middlename and lastname
+
+                        }
 
                     }
 
-                }
-
-            } //END filling the data in editText
+                } //END filling the data in editText
 
 
-
+            }
+        }
+        catch (Exception e){
+            System.out.println(e.toString());
         }
     }
 
