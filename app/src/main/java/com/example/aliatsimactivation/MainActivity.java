@@ -331,8 +331,8 @@ public class MainActivity extends AppCompatActivity {
                 //check network connection
                 ConnectivityManager connMgr = (ConnectivityManager) getApplicationContext ( )
                         .getSystemService(Context.CONNECTIVITY_SERVICE);
-                Intent i1 = MainActivity.this.getIntent();
-                String strdbcon = i1.getStringExtra("db-offline-to-main").toString();
+                //Intent i1 = MainActivity.this.getIntent();
+               // String strdbcon = i1.getStringExtra("db-offline-to-main").toString();
                 NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
                 if (networkInfo != null && networkInfo.isConnected() && globalMode.equalsIgnoreCase("Online") ) {
