@@ -109,14 +109,25 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
                     Matrix matrix = new Matrix();
                     matrix.postRotate(90);
                     Bitmap b1 = Bitmap.createBitmap(b, 0, 0, b.getWidth(), b.getHeight(), matrix, true);
+                    //crop the saved bitmap old one
+                    //int x0 = b1.getWidth()/2;
+                   // int y0 = b1.getHeight()/2;
+                   // int dx = b1.getHeight()/4;
+                  //  int dy = b1.getHeight()/4;
+                   // Bitmap b2 = Bitmap.createBitmap(b1, x0-dx, y0-dy, x0+dx, y0+dy, null, true);
+                  //  cropImg.setImageBitmap(b2);
+                  //  TextRecognizer(b2);
+
                     //crop the saved bitmap
                     int x0 = b1.getWidth()/2;
                     int y0 = b1.getHeight()/2;
                     int dx = b1.getHeight()/4;
                     int dy = b1.getHeight()/4;
-                    Bitmap b2 = Bitmap.createBitmap(b1, x0-dx, y0-dy, x0+dx, y0+dy, null, true);
+                    int dy1 = b1.getHeight()/8;
+                    Bitmap b2 = Bitmap.createBitmap(b1, x0-dx, y0+dy1, x0+dx, dy, null, true);
                     cropImg.setImageBitmap(b2);
                     TextRecognizer(b2);
+
 
                 }
                 System.out.println("Capture photo "+result);
@@ -303,7 +314,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
                             IDnb = Number[1].substring(2, 10);
                             //END filling date and id number
 
-                            //START filling  firstname, middlename, and lastname
+                            /*//START filling  firstname, middlename, and lastname old one
                             if (data[i + 1].contains("<")) {
                                 String namerow = data[i + 1].replaceAll("\\s", "");
                                 String[] FullName = namerow.split("<");
@@ -314,6 +325,25 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
                                     MiddleName = FullName[1];
                                     LastName = FullName[2];
                                 }
+                            } // END filling firstname, middlename and lastname */
+
+                            //START filling  firstname, middlename, and lastname
+                            if(data[i+1].contains("<") ){
+                                String namerow= data[i+1].replaceAll("\\s", "");
+                                String[] FullName = namerow.split("<");
+                                if (FullName.length == 3){
+                                    FirstName = FullName[0];
+                                    MiddleName = FullName[1];
+                                    LastName = FullName[2];
+                                }
+                                if (FullName.length == 2){
+                                    FirstName = FullName[0];
+                                    MiddleName = FullName[1];
+                                }
+                                if (FullName.length == 1){
+                                    FirstName = FullName[0];
+                                }
+
                             } // END filling firstname, middlename and lastname
 
                         }

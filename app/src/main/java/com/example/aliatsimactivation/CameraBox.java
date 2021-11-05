@@ -25,8 +25,11 @@ public class CameraBox extends View {
         int y0 = canvas.getHeight()/2;
         int dx = canvas.getHeight()/4;
         int dy = canvas.getHeight()/4;
-        //draw guide box
-        canvas.drawRect(x0-dx, y0-dy, x0+dx, y0+dy, paint);
+        //draw guide box old rectangle
+        //canvas.drawRect(x0-dx, y0-dy, x0+dx, y0+dy, paint);
+        //draw smaller rectangle
+        int dy1 = canvas.getHeight()/8;
+        canvas.drawRect(x0-dx, y0+dy1, x0+dx,y0+dy , paint);
     }
 }
 
