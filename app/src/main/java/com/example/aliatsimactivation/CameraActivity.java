@@ -111,12 +111,12 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
                     Bitmap b1 = Bitmap.createBitmap(b, 0, 0, b.getWidth(), b.getHeight(), matrix, true);
                     //crop the saved bitmap old one
                     //int x0 = b1.getWidth()/2;
-                   // int y0 = b1.getHeight()/2;
-                   // int dx = b1.getHeight()/4;
-                  //  int dy = b1.getHeight()/4;
-                   // Bitmap b2 = Bitmap.createBitmap(b1, x0-dx, y0-dy, x0+dx, y0+dy, null, true);
-                  //  cropImg.setImageBitmap(b2);
-                  //  TextRecognizer(b2);
+                    // int y0 = b1.getHeight()/2;
+                    // int dx = b1.getHeight()/4;
+                    //  int dy = b1.getHeight()/4;
+                    // Bitmap b2 = Bitmap.createBitmap(b1, x0-dx, y0-dy, x0+dx, y0+dy, null, true);
+                    //  cropImg.setImageBitmap(b2);
+                    //  TextRecognizer(b2);
 
                     //crop the saved bitmap
                     int x0 = b1.getWidth()/2;
@@ -142,7 +142,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
                 intent.putExtra("agentNumber",agentNumber);
                 intent.putExtra("keyIDnb",IDnb);
                 intent.putExtra("keyFirstName",FirstName);
-                intent.putExtra("key1MiddleName",MiddleName);
+                intent.putExtra("keyMiddleName",MiddleName);
                 intent.putExtra("keyLastName",LastName);
                 intent.putExtra("keyDate",Date);
 
